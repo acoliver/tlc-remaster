@@ -15,7 +15,7 @@
 #include <typeinfo>
 #include <allegro.h>
 #include <alfont.h>
-#include <math.h>
+#include <cmath>
 #include "Module.h"
 #include "TileScroller.h"
 #include "Flux.h"

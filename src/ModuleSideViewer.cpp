@@ -2,8 +2,9 @@
 #include "env.h"
 #include "DataMgr.h"
 #include "ModuleSideViewer.h"
-#include "events.h"
+#include "Events.h"
 #include "Game.h"
+
 
 
 /*
@@ -85,8 +86,8 @@ void ModuleSideViewer::Draw()
 
 void ModuleSideViewer::Draw3D()
 {
-   Module::Draw3D();
 }
+
 
 void ModuleSideViewer::OnKeyPress( int keyCode )
 {

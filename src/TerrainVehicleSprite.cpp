@@ -125,8 +125,9 @@ void TerrainVehicleSprite::applybraking()
 
 void TerrainVehicleSprite::draw(BITMAP *dest) 
 { 
-	vehicle->drawframe_rotate(dest, vehicle->getFaceAngle() ); 
+	vehicle->DrawFrameRotated(dest, vehicle->getFaceAngle() );
 }
+
 
 float TerrainVehicleSprite::getVelocityX() 
 { 

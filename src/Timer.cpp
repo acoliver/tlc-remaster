@@ -1,10 +1,14 @@
 #include <allegro.h>
 #include "Timer.h"
 
+// macOS uses POSIX APIs
+#if defined(__APPLE__) || defined(__linux__)
+#include <sys/time.h>
+#endif
 
 Timer::Timer(void)
 {
-	#if defined(_POSIX_SOURCE)
+	#if defined(__APPLE__) || defined(__linux__) || defined(_POSIX_SOURCE)
 	gettimeofday(&initial, NULL);
 	#endif
 
@@ -15,10 +19,11 @@ Timer::~Timer(void){}
 
 long Timer::getTimer()
 {
-	#if defined(_MSC_VER) || defined(WIN32)
+	#if defined(_WIN32) || defined(_WIN64)
 	return (long) clock();
 
-	#elif defined(_POSIX_SOURCE)
+	#elif defined(__APPLE__) || defined(__linux__) || defined(_POSIX_SOURCE)
+
 	timeval current, delta;
 	gettimeofday(&current, NULL);
 	timersub(&current, &initial, &delta);

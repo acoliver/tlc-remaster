@@ -302,23 +302,23 @@ void ModuleStarport::OnEvent(Event *event)
 	//check for general events
 	switch(event->getEventType())
 	{
-		case 0xDEADBEEF + 2: //save game
+		case (int)(0xDEADBEEF + 2): //save game
 			g_game->gameState->AutoSave();
 			return;
 			break;
-		case 0xDEADBEEF + 3: //load game
+		case (int)(0xDEADBEEF + 3): //load game
 			g_game->gameState->AutoLoad();
 			return;
 			break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
 			escape = g_game->getGlobalString("ESCAPEMODULE");
 			g_game->modeMgr->LoadModule(escape);
 			return;
 			break;
 	}
+
 }
 
-#pragma region INPUT
 
 void ModuleStarport::OnKeyPress(int keyCode){ }
 
@@ -388,7 +388,6 @@ void ModuleStarport::OnMouseReleased(int button, int x, int y)	{ Module::OnMouse
 void ModuleStarport::OnMouseWheelDown(int x, int y)				{ Module::OnMouseWheelDown(x, y); }
 void ModuleStarport::OnMouseWheelUp(int x, int y)				{ Module::OnMouseWheelUp(x, y); }
 
-#pragma endregion
 
 
 void ModuleStarport::Update(){}

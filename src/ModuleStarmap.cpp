@@ -334,7 +334,6 @@ void ModuleStarmap::Draw()
 	Module::Draw();	
 	if(viewer_offset_y > -VIEWER_TARGET_OFFSET){
 		masked_blit(gui_starmap,g_game->GetBackBuffer(),0,0,120,viewer_offset_y,VIEWER_WIDTH,VIEWER_HEIGHT);	
-	#pragma region Draw Flux
 		flux_iter i = g_game->dataMgr->flux.begin();
 		while(i != g_game->dataMgr->flux.end() ){
 			if((*i)->VISIBLE() == true){
@@ -356,8 +355,6 @@ void ModuleStarmap::Draw()
 			}
 			i++;
 		}
-	#pragma endregion
-	#pragma region Draw Starmap
 		int new_x_offset = 120+X_OFFSET;
 		int new_y_offset = Y_OFFSET+viewer_offset_y;
 		int text_y = 480;
@@ -430,7 +427,6 @@ void ModuleStarmap::Draw()
 		//draw generated text
 		masked_blit(text,g_game->GetBackBuffer(),0,0,120+X_OFFSET/2,viewer_offset_y,VIEWER_WIDTH,VIEWER_HEIGHT);
 	
-	#pragma endregion
 	if(map_active){
 		if(viewer_offset_y < -30){
 			viewer_offset_y += VIEWER_MOVE_RATE;

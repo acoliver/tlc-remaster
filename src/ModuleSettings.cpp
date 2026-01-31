@@ -249,7 +249,6 @@ void ModuleSettings::Draw()
     g_game->Print24(g_game->GetBackBuffer(), x, y, "FULLSCREEN", WHITE);
 }
 
-#pragma region INPUT
 
 void ModuleSettings::OnKeyPressed(int keyCode){}
 void ModuleSettings::OnKeyPress( int keyCode ){}
@@ -302,7 +301,6 @@ void ModuleSettings::OnMouseWheelDown(int x, int y)
     resScrollbox->OnMouseWheelDown(x, y);
 }
 
-#pragma endregion
 
 //Save configuration settings back INTO the Config.lua file
 bool ModuleSettings::SaveConfigurationFile()

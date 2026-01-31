@@ -10,7 +10,8 @@
 #include "env.h"
 #include <allegro.h>
 #include <stdlib.h>
-#include <math.h> 
+#include <cmath>
+
 #include <iostream>
 #include <iomanip>
 #include <sstream>

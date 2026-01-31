@@ -344,11 +344,8 @@ void Quest::Activate()
 			}
 		}
 		
-		char *amtStr = new char[10];
-		itoa(itemsStarting[i]->Amount, amtStr, 10);
-		msg += amtStr;
+		msg += std::to_string(itemsStarting[i]->Amount);
 		msg += " ";
-		delete [] amtStr;
 
 		Item *item = g_game->dataMgr->GetItemByID(itemsStarting[i]->ItemID);
 		msg += item->name;
@@ -407,14 +404,10 @@ void Quest::Deactivate()
 		{
 			g_game->gameState->augCredits(-owe);
 
-			char *oweStr = new char[20];
-			itoa(owe, oweStr, 10);
-
 			std::string msg = "Since you seem to have misplaced the cargo we gave you at the beginning of this mission we'll be charging you for new supplies.  Your total comes to ";
-			msg += oweStr;
+			msg += std::to_string(owe);
 			msg += " MU. Next time I recommend you keep an eye on the cargo we give you for these missions.";
 			g_game->ShowMessageBoxWindow(msg);
-			delete [] oweStr;
 		}
 	}
 
@@ -426,7 +419,9 @@ void Quest::Complete()
 {
 	this->GiveReward();
 	state = 2;
-	g_game->gameState->SetQuestCompleted(this->id, true);
+	// Current GameState tracks completion for the active quest only.
+	g_game->gameState->setQuestCompleted(true);
+
 
 	for (int i=0; i < (int)this->requirements.size(); i++)
 	{
@@ -458,11 +453,8 @@ void Quest::GiveReward()
 
 	if (cashReward > 0)
 	{
-		char *amtStr = new char[10];
-		itoa(cashReward, amtStr, 10);
-		msg += amtStr;
+		msg += std::to_string(cashReward);
 		msg += " MU has added to your account. ";
-		delete [] amtStr;
 	}
 
 	//Give them the Items
@@ -482,11 +474,8 @@ void Quest::GiveReward()
 			}
 		}
 		
-		char *amtStr = new char[10];
-		itoa(itemsReward[i]->Amount, amtStr, 10);
-		msg += amtStr;
+		msg += std::to_string(itemsReward[i]->Amount);
 		msg += " ";
-		delete amtStr;
 
 		Item *item = g_game->dataMgr->GetItemByID(itemsReward[i]->ItemID);
 		msg += item->name;

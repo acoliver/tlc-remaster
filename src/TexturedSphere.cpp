@@ -7,7 +7,7 @@ TexturedSphere::TexturedSphere(int tex_size)
     TEX_SIZE = tex_size;
     MAP_SIZE = 256;
     ASPECT_RATIO = 1.04;
-    M_PI = 3.14159265;
+    m_pi = 3.14159265;
     coord_transform_table = NULL;
     screen2sphere_table = NULL;
     tex_table = NULL; 
@@ -78,8 +78,8 @@ bool TexturedSphere::SetTexture(BITMAP *new_texture)
 void TexturedSphere::Spherical2Cartesian(int alpha, int beta, double *x, double *y, double *z)
 {
     /* Convert to radians */
-	double alpha1 = (double)alpha * 2 * M_PI / MAP_SIZE;
-	double beta1  = (double)(beta - MAP_SIZE/2) * M_PI / MAP_SIZE;
+	double alpha1 = (double)alpha * 2 * m_pi / MAP_SIZE;
+	double beta1  = (double)(beta - MAP_SIZE/2) * m_pi / MAP_SIZE;
 	   
 	/* Convert to Cartesian */
 	*x = cos(alpha1) * cos(beta1);
@@ -98,14 +98,14 @@ void TexturedSphere::Cartesian2Sphere(double x, double y, double z, int *alpha, 
 	    if (w > 1) w = 1; if (w < -1) w = -1;   // Check bounds
 	    alpha1 = acos(w);
 	    if (z/cos(beta1) < 0) // Check for wrapping around top/bottom of sphere
-	        alpha1 = 2 * M_PI - alpha1;
+	        alpha1 = 2 * m_pi - alpha1;
 	}
 	else 
 	    alpha1 = 0;
 	   
 	/* Convert to texture coordinates */ 
-	*alpha = (int)(alpha1 / (M_PI * 2) * MAP_SIZE);
-	*beta  = (int)(beta1 / M_PI * MAP_SIZE + MAP_SIZE/2);
+	*alpha = (int)(alpha1 / (m_pi * 2) * MAP_SIZE);
+	*beta  = (int)(beta1 / m_pi * MAP_SIZE + MAP_SIZE/2);
 	   
 	/* 'Clip' the texture coordinates */
 	if (*alpha < 0) *alpha = 0;
@@ -192,7 +192,7 @@ void TexturedSphere::InitSphereLookupTables()
         to the initial Spherical Coordinates */
 	for(i = 0; i < TEX_SIZE; i++) 
     {
-	    screen2sphere_table[i] = (int)(acos((double)(i-TEX_SIZE/2+1) * 2/TEX_SIZE) * TEX_SIZE/M_PI);
+	    screen2sphere_table[i] = (int)(acos((double)(i-TEX_SIZE/2+1) * 2/TEX_SIZE) * TEX_SIZE/m_pi);
 	    screen2sphere_table[i] %= TEX_SIZE;
 	}
 }

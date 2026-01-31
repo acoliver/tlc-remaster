@@ -139,7 +139,6 @@ bool ModuleShipConfig::Init()
 ModuleShipConfig::~ModuleShipConfig(void) {}
 
 
-#pragma region INPUT
 
 void ModuleShipConfig::OnKeyPress(int keyCode)		{ }
 void ModuleShipConfig::OnKeyPressed(int keyCode)
@@ -208,7 +207,6 @@ void ModuleShipConfig::OnMouseReleased(int button, int x, int y)
 void ModuleShipConfig::OnMouseWheelUp(int x, int y)					{ }
 void ModuleShipConfig::OnMouseWheelDown(int x, int y)				{ }
 
-#pragma endregion
 
 void ModuleShipConfig::OnEvent(Event *event)
 {

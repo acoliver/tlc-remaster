@@ -499,7 +499,6 @@ void ModuleControlPanel::Close()
 	}
 }
 
-#pragma region INPUT
 void ModuleControlPanel::OnKeyPress(int keyCode){}
 void ModuleControlPanel::OnKeyPressed(int keyCode){}
 
@@ -724,13 +723,11 @@ void ModuleControlPanel::OnMouseWheelDown(int x, int y)
 	//Module::OnMouseWheelDown(x, y);
 }
 
-#pragma endregion
 
 
 void ModuleControlPanel::OnEvent(Event * event){}
 
 
-#pragma region COMMANDBUTTON
 //******************************************************************************
 // CommandButton
 //******************************************************************************
@@ -905,10 +902,8 @@ void ModuleControlPanel::CommandButton::Render(BITMAP *canvas, BITMAP *imgBackgr
 
 }
 
-#pragma endregion
 
 
-#pragma region OFFICERBUTTON
 
 //******************************************************************************
 // OfficerButton
@@ -1072,6 +1067,5 @@ void ModuleControlPanel::OfficerButton::DestroyCommon()
 {
 }
 
-#pragma endregion
 
 

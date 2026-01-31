@@ -427,25 +427,25 @@ function StandardQuestions()
 	--YOURSELVES THREAD
 
 	questions[10000] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"Should never be seen"}
 	}
 	questions[20000] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Should never be seen"}
 	}
 	questions[30000] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Should never be seen"}
 	}
 	questions[40000] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Ancients",
 		alien={"Should never be seen" }
@@ -453,7 +453,7 @@ function StandardQuestions()
 	questions[50000] = {
 		action="branch",
 		choices = {
-			{ text="Should never be seen",  goto=1 }
+			{ text="Should never be seen",  ["goto"]=1 }
 		}
 	}
 
@@ -565,11 +565,11 @@ end
 	questions[1] = {
 		action="branch",
 		choices = {
-			{ text="YOURSELVES", goto=10000 },
-			{ text="OTHER RACES", goto=20000 },
-			{ text="THE PAST", goto=30000 },
-			{ text="THE ANCIENTS", goto=40000 },
-			{ text="GENERAL INFO", goto = 50000 }
+			{ text="YOURSELVES", ["goto"]=10000 },
+			{ text="OTHER RACES", ["goto"]=20000 },
+			{ text="THE PAST", ["goto"]=30000 },
+			{ text="THE ANCIENTS", ["goto"]=40000 },
+			{ text="GENERAL INFO", ["goto"] = 50000 }
 		}
 	}
 

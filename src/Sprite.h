@@ -12,7 +12,7 @@
 #include "env.h"
 #include <allegro.h>
 #include <string>
-#include <math.h>
+#include <cmath>
 #include "Point2D.h"
 
 class Sprite {

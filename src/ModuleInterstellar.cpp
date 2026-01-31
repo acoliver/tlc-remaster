@@ -10,7 +10,6 @@ const int EVENT_INJECT_FUEL		= 100;
 const int ITEM_ENDURIUM			= 54;
 
 
-#pragma region HEADER
 
 #include <sstream>
 #include <exception>
@@ -69,9 +68,7 @@ PoliticalBoundary boundaries[] = {
 };
 
 
-#pragma endregion
 
-#pragma region STATIC EVENTS
 
 ModuleInterstellar::ModuleInterstellar(void){}
 ModuleInterstellar::~ModuleInterstellar(void){}
@@ -139,9 +136,7 @@ void ModuleInterstellar::Draw()
 }
 
 
-#pragma endregion
 
-#pragma region KEYBOARD
 
 void ModuleInterstellar::OnKeyPress(int keyCode)
 {
@@ -314,7 +309,6 @@ void ModuleInterstellar::OnKeyReleased(int keyCode)
 	}
 }
 
-#pragma endregion
 
 void ModuleInterstellar::OnEvent(Event *event)
 {
@@ -325,16 +319,16 @@ void ModuleInterstellar::OnEvent(Event *event)
 
 	int evtype = event->getEventType();
 	switch(evtype) {
-		case 0xDEADBEEF + 2: //save game
+		case (int)(0xDEADBEEF + 2): //save game
 			g_game->gameState->AutoSave();
 			g_game->printout(text, "<Game Saved>", WHITE, 5000);
 			return;
 			break;
-		case 0xDEADBEEF + 3: //load game
+		case (int)(0xDEADBEEF + 3): //load game
 			g_game->gameState->AutoLoad();
 			return;
 			break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
 			g_game->setVibration(0);
 			escape = g_game->getGlobalString("ESCAPEMODULE");
 			g_game->modeMgr->LoadModule(escape);
@@ -367,7 +361,6 @@ void ModuleInterstellar::OnEvent(Event *event)
 }
 
 
-#pragma region INIT_CLOSE
 
 bool ModuleInterstellar::Init()
 {
@@ -485,11 +478,9 @@ void ModuleInterstellar::Close()
 	}
 }
 
-#pragma endregion
 
 
 
-#pragma region ENCOUNTER CODE
 
 
 bool ModuleInterstellar::RollEncounter(AlienRaces forceThisRace)
@@ -774,7 +765,6 @@ void ModuleInterstellar::calculateEnemyFleetSize()
 }
 
 
-#pragma endregion
 
 int ModuleInterstellar::getFleetSizeByRace(bool small_fleet)
 {
@@ -1031,7 +1021,6 @@ void ModuleInterstellar::Update()
 
 
 
-#pragma region FLUX STUFF
 void ModuleInterstellar::doFluxTravel()
 {
 	//g_game->gameState->player->set_galactic_pos((*i)->TILE_EXIT().X * scroller->getTileWidth(), (*i)->TILE_EXIT().Y * scroller->getTileHeight());
@@ -1274,10 +1263,8 @@ void ModuleInterstellar::place_flux_exits()
 	}
 }
 
-#pragma endregion
 
 
-#pragma region GALAXY STUFF
 
 double ModuleInterstellar::getPlayerGalacticX()
 {
@@ -1414,4 +1401,3 @@ void ModuleInterstellar::identifyStar()
 
 }
 
-#pragma endregion

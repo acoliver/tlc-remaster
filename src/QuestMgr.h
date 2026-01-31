@@ -3,8 +3,10 @@
 #pragma once
 
 #include <string>
-#include "QuestMgr.h"
+
+#include "QuestEventInterfaces.h"
 #include "Script.h"
+
 
 #define QUEST_EVENT_ORBIT 100
 #define QUEST_EVENT_PLANETSCAN 101
@@ -19,6 +21,16 @@ public:
 	bool Initialize();
 	bool getNextQuest();
     bool getQuestByID(int id);
+
+	// Legacy per-requirement event managers (currently unused by QuestMgr itself).
+	QuestEventManager<ICollectedItemEvent> CollectedItemEventMgr;
+	QuestEventManager<IKillAnimalEvent> KillAnimalEventMgr;
+	QuestEventManager<IPlanetScanEvent> PlanetScanEventMgr;
+	QuestEventManager<IOrbitPlanetEvent> OrbitPlanetEventMgr;
+
+
+	QuestEventManager<IInteractEvent> InteractEventMgr;
+
 	bool getActiveQuest();
 
 	void raiseEvent(int eventid, int param1=-1, int param2=-1);

@@ -1,4 +1,3 @@
-#pragma region HEADER
 /*
 	STARFLIGHT - THE LOST COLONY
 	ModulePlanetSurface.cpp - Handles planetary surface
@@ -141,9 +140,7 @@ ModulePlanetSurface::ModulePlanetSurface(void) :
 ModulePlanetSurface::~ModulePlanetSurface(void){}
 
 
-#pragma endregion
 
-#pragma region INPUT
 
 void ModulePlanetSurface::OnKeyPress(int keyCode)
 {
@@ -283,9 +280,7 @@ void ModulePlanetSurface::OnMouseWheelDown(int x, int y)
 	messages->OnMouseWheelDown(x,y);
 }
 
-#pragma endregion
 
-#pragma region EVENTS
 
 void ModulePlanetSurface::OnEvent(Event *event)
 {
@@ -302,7 +297,7 @@ void ModulePlanetSurface::OnEvent(Event *event)
 		//	g_game->gameState->AutoLoad();
 		//	return;
 		//	break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
             {
 				g_game->setVibration(0);
 				string escape = g_game->getGlobalString("ESCAPEMODULE");
@@ -555,10 +550,8 @@ void ModulePlanetSurface::OnEvent(Event *event)
 	}
 	//g_game->gameState->setShip(ship);
 }
-#pragma endregion
 
 
-#pragma region INIT_CLOSE
 
 void ModulePlanetSurface::Close()
 {
@@ -1148,7 +1141,6 @@ bool ModulePlanetSurface::Init()
 
 	return true;
 }
-#pragma endregion
 
 void ModulePlanetSurface::CreatePSObyItemID(std::string scriptName, int itemid, int itemx, int itemy)
 {
@@ -1231,7 +1223,6 @@ void ModulePlanetSurface::RemovePlanetSurfaceObject(PlanetSurfaceObject *PSO)
 	}
 }
 
-#pragma region TILEMAP_CREATION
 bool ModulePlanetSurface::fabTilemap()
 {
 	//get current star data
@@ -1881,7 +1872,6 @@ bool ModulePlanetSurface::fabAcidic()
 
 	return true;
 }
-#pragma endregion
 
 
 void ModulePlanetSurface::Update()
@@ -2424,11 +2414,11 @@ bool ModulePlanetSurface::IsValidTile(int x, int y)
 }
 
 
-#pragma region LUA_JUNK
 void ModulePlanetSurface::SetupLua()
 {
 	/* initialize Lua */
-	LuaVM = lua_open();
+	LuaVM = luaL_newstate();
+
 
 	/* load Lua base libraries */
 	luaL_openlibs(LuaVM);
@@ -3944,4 +3934,3 @@ int L_StopSound(lua_State* luaVM)
 
 	return 0;
 }
-#pragma endregion

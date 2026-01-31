@@ -19,10 +19,9 @@
 #include "Sprite.h"
 #include "LogFile.h"
 
-#ifdef MSVC10_DEBUG
-	#include "GameState.h"
-#endif
+#include "GameState.h"
 ///////////////////////////////////////////
+
 // global constants
 ///////////////////////////////////////////
 

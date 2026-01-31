@@ -175,7 +175,6 @@ void ModuleStartup::Draw()
 	}
 }
 
-#pragma region INPUT
 
 void ModuleStartup::OnKeyPress(int keyCode){}
 void ModuleStartup::OnKeyPressed(int keyCode){}
@@ -231,7 +230,6 @@ void ModuleStartup::OnMouseReleased(int button, int x, int y)
 	}
 }
 
-#pragma endregion
 
 
 void ModuleStartup::OnEvent(Event *event){}

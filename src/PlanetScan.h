@@ -7,9 +7,12 @@
 #include <utility>
 #include "tinyxml/tinyxml.h"
 #include "QuestMgr.h"
+#include "QuestEventInterfaces.h"
 #include "GameState.h"
+#include "Requirement.h"
 
 class PlanetScan : public Requirement, public IPlanetScanEvent
+
 {
 public:
 	PlanetScan();

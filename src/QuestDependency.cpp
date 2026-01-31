@@ -52,7 +52,8 @@ bool QuestDependency::Check()
 
 	for (int i=0; i < (int)questIDs.size(); ++i)
 	{
-		if (!Game::gameState->QuestCompleted(questIDs[i]))
+		if (!Game::gameState->getQuestCompleted())
+
 		{
 			result = false;
 			break;

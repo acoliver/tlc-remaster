@@ -84,24 +84,19 @@ std::string CollectItem::ToString()
 	Item item; int amount = 0;
 	g_game->gameState->m_items.Get_Item_By_ID(itemid, item, amount);
 
-	char *amountStr = new char[10];
-	itoa(this->amount, amountStr, 10);
-
-	char *countStr = new char[10];
-	itoa(amount, countStr, 10);
-
 	std::string str = "Collect ";
-	
-	str += amountStr;
+
+	const std::string requiredAmountStr = std::to_string(this->amount);
+	const std::string currentAmountStr = std::to_string(amount);
+
+	str += requiredAmountStr;
 	str += " ";
 	str += Game::dataMgr->GetItemByID(itemid)->name;
 	str += " - ";
-	str += countStr;
+	str += currentAmountStr;
 	str += "/";
-	str += amountStr;
+	str += requiredAmountStr;
 
-	delete [] amountStr;
-	delete [] countStr;
 
 	return str;
 }

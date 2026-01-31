@@ -678,7 +678,6 @@ std::string Ship::getLaserClassString()						const { return convertClassTypeToSt
 bool Ship::HaveEngines()									const { return engineClass != NotInstalledType; }
 
 
-#pragma region FUEL_SYSTEM
 
 float Ship::getFuel()										  { return fuelPercentage;}
 
@@ -757,7 +756,6 @@ void Ship::injectEndurium()
 		g_game->printout(g_game->g_scrollbox, "We have no Endurium!", ORANGE,5000);
 
 }
-#pragma endregion
 
 //mutators
 void Ship::setName(std::string initName)							{ name = initName; }

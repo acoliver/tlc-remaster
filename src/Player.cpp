@@ -29,10 +29,11 @@ PlayerShip::PlayerShip()
 	this->ship->setY(768/2 - 128 - this->ship->getHeight()/2);
 
 	//ship movement variables
-	this->forward_thrust = SHIP_FORWARD_THRUST;
-	this->reverse_thrust = SHIP_REVERSE_THRUST;
-	this->lateral_thrust = SHIP_LATERAL_THRUST;
-	this->turnrate = SHIP_TURN_RATE;
+	this->forward_thrust = 0.10f;
+	this->reverse_thrust = 0.05f;
+	this->lateral_thrust = 0.07f;
+	this->turnrate = 5.0f;
+
 
 
 }
@@ -133,4 +134,5 @@ void PlayerShip::allstop()
 	this->ship->setVelY(0.0);
 }
 
-void PlayerShip::draw(BITMAP *dest) { this->ship->drawframe(dest, this->ship->getFaceAngle() ); }
+void PlayerShip::draw(BITMAP *dest) { this->ship->DrawFrame(dest); }
+

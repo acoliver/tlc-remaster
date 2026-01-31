@@ -1124,7 +1124,7 @@ end
 function add_last_quest()
 	-- Add one final quest to the end of the quest table to keep it from crashing
 	
-	size = table.getn(quests)
+	size = #quests
 	quests[size+1] = 
 	{
 		quest_id = "TLC65",
@@ -1139,7 +1139,7 @@ function add_last_quest()
 end
 
 function addQuest(qid, n, s, l, d, req1, req2, req3, rew1, rew2, rew3, nid)
-	num = table.getn(quests)+1
+	num = #quests+1
 	quests[num] = 
 	{
 		quest_id = qid,
@@ -1154,7 +1154,7 @@ function addQuest(qid, n, s, l, d, req1, req2, req3, rew1, rew2, rew3, nid)
 end
 
 function getActiveQuest()
-	for i=1,table.getn(quests) do 
+	for i=1,#quests do 
 		if quests[i].quest_id == active_quest_id then  
 			active_quest = i 
 			break
@@ -1207,7 +1207,7 @@ function getNextQuest()
 
 	--[[
 	-- Increment active_quest counter and then retrieve the new quest from the quests table
-	size = table.getn(quests)
+	size = #quests
 	if active_quest < size then
 		active_quest = active_quest + 1
 		getActiveQuest()
@@ -1215,7 +1215,7 @@ function getNextQuest()
 	end
 	--]]
 
-	for i=1,table.getn(quests) do 
+	for i=1,#quests do 
 		if quests[i].quest_id == next_id then  
 			active_quest = i 
 			active_quest_id = next_id 

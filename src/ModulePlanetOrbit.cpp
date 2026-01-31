@@ -1,4 +1,3 @@
-#pragma region HEADER
 /*
 	STARFLIGHT - THE LOST COLONY
 	ModulePlanetOrbit.cpp - Handles planet orbit
@@ -52,10 +51,8 @@ ModulePlanetOrbit::ModulePlanetOrbit(void)
 
 ModulePlanetOrbit::~ModulePlanetOrbit(void){}
 
-#pragma endregion
 
 
-#pragma region INPUT
 
 void ModulePlanetOrbit::OnKeyPress(int keyCode)
 {
@@ -100,7 +97,6 @@ void ModulePlanetOrbit::OnMouseWheelDown(int x, int y)
 	text->OnMouseWheelDown(x,y);
 }
 
-#pragma endregion
 
 
 void ModulePlanetOrbit::OnEvent(Event *event)

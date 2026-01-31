@@ -9,8 +9,10 @@
 #include "Requirement.h"
 #include "GameState.h"
 #include "QuestMgr.h"
+#include "QuestEventInterfaces.h"
 
 class CollectItem : public Requirement, public ICollectedItemEvent
+
 {
 public:
 	CollectItem();

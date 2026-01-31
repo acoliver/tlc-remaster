@@ -78,7 +78,6 @@ ModuleCantina::~ModuleCantina(void)
 	debug << "ModuleCantina Dead" << endl;
 }
 
-#pragma region INPUT
 
 void ModuleCantina::OnKeyPress(int keyCode)	{ }
 void ModuleCantina::OnKeyPressed(int keyCode){}
@@ -125,7 +124,6 @@ void ModuleCantina::OnEvent(Event *event)
 	}
 }
 
-#pragma endregion
 
 
 void ModuleCantina::Close()

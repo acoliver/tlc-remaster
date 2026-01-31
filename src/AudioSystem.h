@@ -3,8 +3,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fmod.h>
 #include "Game.h"
+
+// Audio is implemented via Allegro 5's audio addon.
+//
+// The public API remains largely unchanged to avoid invasive changes in the
+// game code.
+#include <allegro5/allegro_audio.h>
+
+struct ALLEGRO_MIXER;
+struct ALLEGRO_VOICE;
 
 class Sample
 {
@@ -14,8 +22,8 @@ private:
 	bool paused;
 
 public:
-	FMOD_SOUND	*sample;
-	FMOD_CHANNEL *channel;
+	ALLEGRO_SAMPLE	*sample;
+	ALLEGRO_SAMPLE_INSTANCE *channel;
 
 public:
 	Sample(void);
@@ -33,7 +41,7 @@ public:
 class AudioSystem
 {
 private:
-	FMOD_SYSTEM *system;
+	void *system;
 	typedef std::vector<Sample*> Samples;
 	typedef std::vector<Sample*>::iterator SampleIterator;
 	Samples samples;
@@ -42,7 +50,7 @@ private:
 public:
 	AudioSystem(void);
 	~AudioSystem(void);
-	FMOD_SYSTEM* getSystem() { return system; }
+	void* getSystem() { return system; }
 
 	bool Init();
 	void Update(); //must be called once per frame
@@ -69,3 +77,4 @@ public:
 	Sample *FindSample(std::string name);
 
 };
+

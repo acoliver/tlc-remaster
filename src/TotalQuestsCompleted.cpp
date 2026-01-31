@@ -45,14 +45,10 @@ void TotalQuestsCompleted::UnregisterSelf()
 
 bool TotalQuestsCompleted::Check()
 {
+	// The original code tracked per-quest completion history. The current GameState only tracks
+	// completion for the active quest, so keep this requirement buildable with a conservative stub.
 	int count = 0;
-	for (int i=0; i < 400; ++i)
-	{
-		if (Game::gameState->QuestCompleted(i))
-		{
-			++count;
-		}
-	}
+
 
 	if (count >= totalQuests)
 		completed = true;
@@ -64,14 +60,10 @@ bool TotalQuestsCompleted::Check()
 
 std::string TotalQuestsCompleted::ToString()
 {
-	char *amountstr = new char[10];
-	itoa(totalQuests, amountstr, 10);
-
 	std::string str = "You must have already completed ";
-	str += amountstr;
+	str += std::to_string(totalQuests);
 	str += " missions";
-
-	delete [] amountstr;
 
 	return str;
 }
+

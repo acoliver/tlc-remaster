@@ -5,7 +5,6 @@
 	Date: January, 2007
 */
 
-#pragma region HEADER
 
 #include <sstream>
 #include <string>
@@ -47,9 +46,7 @@ const int FlyingHoursBeforeSkillUp = 168;
 ModuleSolarSystem::ModuleSolarSystem(void){}
 ModuleSolarSystem::~ModuleSolarSystem(void){}
 
-#pragma endregion
 
-#pragma region INPUT
 
 void ModuleSolarSystem::OnKeyPress(int keyCode)
 {
@@ -209,7 +206,6 @@ void ModuleSolarSystem::OnMouseWheelDown(int x, int y)
 	text->OnMouseWheelDown(x,y);
 }
 
-#pragma endregion
 
 void ModuleSolarSystem::OnEvent(Event * event)
 {
@@ -218,14 +214,14 @@ void ModuleSolarSystem::OnEvent(Event * event)
 
 	int evtype = event->getEventType();
 	switch(evtype) {
-		case 0xDEADBEEF + 2: //save game
+		case (int)(0xDEADBEEF + 2): //save game
 			g_game->gameState->AutoSave();
 			g_game->printout(text, "<Game Saved>", WHITE, 5000);
 			break;
-		case 0xDEADBEEF + 3: //load game
+		case (int)(0xDEADBEEF + 3): //load game
 			g_game->gameState->AutoLoad();
 			break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
 			g_game->setVibration(0);
 			escape = g_game->getGlobalString("ESCAPEMODULE");
 			g_game->modeMgr->LoadModule(escape);
@@ -264,7 +260,6 @@ void ModuleSolarSystem::OnEvent(Event * event)
 	}
 }
 
-#pragma region INIT_CLOSE
 
 void ModuleSolarSystem::Close()
 {
@@ -400,7 +395,6 @@ bool ModuleSolarSystem::Init()
 	return true;
 }
 
-#pragma endregion
 
 bool ModuleSolarSystem::checkSystemBoundary(int x,int y)
 {

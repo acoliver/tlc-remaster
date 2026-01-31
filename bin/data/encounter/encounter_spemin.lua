@@ -411,31 +411,31 @@ function StandardQuestions()
 if (plot_stage == 1) then -- initial plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"No doubt you wish to become a disciple race of the Spemin.  We are a race of high morals and are eager to find lost followers.  We know you feel strongly about this and are eager to begin your instruction."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"We were born onboard this generational ship sent out to explore the stars and meet other races.  No other Spemin has been as successful as we are!"}
 	}
 	questions[30000] = {
-		action="jump", goto=30001, ftest= 1,
+		action="jump", ["goto"]=30001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"You mean stuff that happened before we were alive?  Sure, we have a few records laying around..."}
 	}
 	questions[40000] = {
-		action="jump", goto=40001, ftest= 1,
+		action="jump", ["goto"]=40001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancients",
 		alien={"We Spemin are wise beyond imagining. For example, we happen to know that the ancients built a device called a crystal pearl which automatically warps a critically wounded ship out of danger. This is just one of many things we know." }
 	}
 	questions[40001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancients",
 		alien={"Uhh...we don't know anything else..." }
@@ -444,31 +444,31 @@ if (plot_stage == 1) then -- initial plot state
 elseif (plot_stage == 2) then -- virus plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"We are the awesome Spemin.  Masters of this galaxy.  Rulers of all galaxies in fact.  We are also known as the ancients.  We merely let you hostile aliens think that you were destroying our ships, I mean our automated craft, I mean our holograms."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"We were born onboard this generational ship sent out to explore the stars and meet other races.  No one has ever been as successful as we are!"}
 	}
 	questions[30000] = {
-		action="jump", goto=30001, ftest= 1,
+		action="jump", ["goto"]=30001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"You mean stuff that happened before we were alive?  Maybe we will and maybe we won't.  Well, ask something and see if we answer."}
 	}
 	questions[40000] = {
-		action="jump", goto=40001, ftest= 1,
+		action="jump", ["goto"]=40001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancients",
 		alien={"We Spemin are the ancients.  I have kept this information to myself until now.  You would be wise not to antagonize me." }
 	}
 	questions[40001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="[AUTO_REPEAT]",
 		playerFragment="why your ships are so weak if you are the ancients",fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"These forms you see before you are merely holographic projections.  Do not think to provoke us because we, uhh..., really value our holographic projections!" }
@@ -477,37 +477,37 @@ elseif (plot_stage == 2) then -- virus plot state
 elseif (plot_stage == 3) then -- war plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"We are the Spemin."}
 	}
 	questions[20000] = {
-		action="jump", goto=20002, ftest= 1,
+		action="jump", ["goto"]=20002, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"We of the Royal Spemin navy meet all races with unwavering courage and conviction.  You must envy us with our vast ... umm ... What was your question?"}
 	}
 	questions[20002] = {
-		action="jump", goto=20001,
+		action="jump", ["goto"]=20001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Ok, will do."}
 	}
 	questions[30000] = {
-		action="jump", goto=30001, ftest= 1,
+		action="jump", ["goto"]=30001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Yeah, so?"}
 	}
 	questions[40000] = {
-		action="jump", goto=40001, ftest= 1,
+		action="jump", ["goto"]=40001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancients",
 		alien={"We were once known as the ancients.  You would be wise not to antagonize us." }
 	}
 	questions[40001] = {
-		action="jump", goto=1,		player="[AUTO_REPEAT]",
+		action="jump", ["goto"]=1,		player="[AUTO_REPEAT]",
 		playerFragment="why your ships are so weak if you are the ancients",fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"These forms you see before you are merely holographic projections.  We grant you a boon.  Feel free to collect any of our endurium on Bec-Felmas 3 - 16,183 or Mathgen 4 - 212, 3." }
 	}
@@ -519,23 +519,23 @@ if (plot_stage == 1) then
 	questions[50000] = {
 		action="branch",
 		choices = {
-			{ title="Give us all your fuel!", text="I demand that you give us all your fuel!", goto=51000 },
---			{ text="Where is your home world?", goto=52000 },
-			{ text="<Back>",  goto=1 }
+			{ title="Give us all your fuel!", text="I demand that you give us all your fuel!", ["goto"]=51000 },
+--			{ text="Where is your home world?", ["goto"]=52000 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
  	questions[51101] = {
-		action="jump", goto=51110, ftest= 3, -- aggravating
+		action="jump", ["goto"]=51110, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"I'm very sorry, but we have no cargo."}
 	}
 	questions[51111] = {
-		action="jump", goto=51112, ftest= 3, -- aggravating
+		action="jump", ["goto"]=51112, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Sure, if this would make you happy.  Just don't kill too many of us please."}
 	}
  	questions[51112] = {
-		action="jump", goto= 999, -- attack
+		action="jump", ["goto"]= 999, -- attack
 		player="Uhh, okay, sounds good.",
 		alien={"Okay, let's start."}
 	}
@@ -547,24 +547,24 @@ if (plot_stage == 2) or (plot_stage == 3) then
 	questions[50000] = {
 		action="branch",
 		choices = {
-			{ title="Give us all your fuel!", text="I demand that you give us all your fuel!", goto=51000 },
---			{ text="Where is your home world?", goto=52000 },
-			{ text="Can you tell us any current news?", goto=60000 },
-			{ text="<Back>",  goto=1 }
+			{ title="Give us all your fuel!", text="I demand that you give us all your fuel!", ["goto"]=51000 },
+--			{ text="Where is your home world?", ["goto"]=52000 },
+			{ text="Can you tell us any current news?", ["goto"]=60000 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
  	questions[51101] = {
-		action="jump", goto=51110, ftest= 3, -- aggravating
+		action="jump", ["goto"]=51110, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Fools!  You face the Spemin Gods!  Do not incur our wrath!"}
 	}
 	questions[51111] = {
-		action="jump", goto=51112, ftest= 3, -- aggravating
+		action="jump", ["goto"]=51112, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Prepare for excruciating pain, unbearable agony, the most horrible of deaths, the most unimaginable torture. Any moment now we shall attack."}
 	}
  	questions[51112] = {
-		action="jump", goto=997,  ftest= 3, -- aggravating, Terminate
+		action="jump", ["goto"]=997,  ftest= 3, -- aggravating, Terminate
 		player="Umm, are you going to attack us?",
 		alien={"Any moment now I shall ooze down and absorb you like so much food substance.  Feel free to run."}
 	}
@@ -574,32 +574,32 @@ end
 if (plot_stage == 1) or (plot_stage == 2) or (plot_stage == 3) then
 
  	questions[51000] = {
-		action="jump", goto=51100, ftest= 3, -- aggravating
+		action="jump", ["goto"]=51100, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Sure, if you scan our ship you will see that we have a total of 0.2 cubic meters of endurium left.  Our transporter does not work so you will need to board and pick it up yourself.  We are pleased that we can help you."}
 	}
 	questions[51100] = {
 		action="branch",
 		choices = {
-			{ title="Eject all your cargo!", text="Uhh, never mind about the endurium, eject all your cargo!", goto=51101 },
-			{ text="<Back>",  goto=1 }
+			{ title="Eject all your cargo!", text="Uhh, never mind about the endurium, eject all your cargo!", ["goto"]=51101 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
 	questions[51110] = {
 		action="branch",
 		choices = {
-			{ title="Just attack us!", text="Would you please just get upset and attack us!",  goto=51111 },
-			{ text="<Back>",  goto=1 }
+			{ title="Just attack us!", text="Would you please just get upset and attack us!",  ["goto"]=51111 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
 	questions[52000] = {
-		action="jump", goto=52001,
+		action="jump", ["goto"]=52001,
 		player="[AUTO_REPEAT]",
 		playerFragment="the location of your home world", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"That location is a secret.  You would have to first ask permission of our leaders before we divulged such information."}
 	}
 	questions[52001] = {
-		action="jump", goto=50000,
+		action="jump", ["goto"]=50000,
 		player="[AUTO_REPEAT]",
 		playerFragment="where your leaders are", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Oh, you can find them at Dian Cecht 3 - 35,139."}
@@ -612,26 +612,26 @@ if (plot_stage == 1) or (plot_stage == 2) then
 	questions[11001] = {
 		action="branch",
 		choices = {
-			{ text="Government",  goto=11000 },
-			{ text="Biology", goto=12000 },
-			{ text="Why become disciples?", goto=13000 },
-			{ text="<Back>", goto=1 }
+			{ text="Government",  ["goto"]=11000 },
+			{ text="Biology", ["goto"]=12000 },
+			{ text="Why become disciples?", ["goto"]=13000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 
 	questions[12000] = {
-		action="jump", goto=12001, ftest= 2, -- insightful
+		action="jump", ["goto"]=12001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about your biology",
 		alien={"Of course you stare in wonderment at our beautiful antennae.  These antennae allow us to get 32,000 channels with no need for cable.  In addition they pick up the cosmic vibrations that give us our god-like powers.  They also happen to be very fashionable." }
 	}
 	questions[12001] = {
-		action="jump", goto=11001,
+		action="jump", ["goto"]=11001,
 		player="[AUTO_REPEAT]",
 		alien={"The brain of a Spemin is the most complex thing in the universe. In fact, it is so complex that our spemin doctors have, as yet, been unable to determine the exact location of it in the Spemin body." }
 	}
 	questions[13000] = {
-		action="jump", goto=11001, ftest= 2, -- insightful
+		action="jump", ["goto"]=11001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="why we would want to become your disciples", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Because truly the other races are deprived.   No other race can know the pleasures of a Spemin. Ahh, to engulf a fresh glob of protein substance, to bounce a newly budded blobbie on one's pseudopod.  There is a saying among the spemin that sums up our whole philosophy of life. It is - blukbluk durt, smeg! Roughly translated it means 'quivering particle secretes enzyme.' this is just a rough translation." }
@@ -640,13 +640,13 @@ if (plot_stage == 1) or (plot_stage == 2) then
 	questions[11101] = {
 		action="branch",
 		choices = {
-			{ text="The Great Blob Goddess",  goto=11110 },
-			{ text="Communication with your goddess",  goto=11120 },
-			{ text="<Back>", goto=11001 }
+			{ text="The Great Blob Goddess",  ["goto"]=11110 },
+			{ text="Communication with your goddess",  ["goto"]=11120 },
+			{ text="<Back>", ["goto"]=11001 }
 		}
 	}
 	questions[11112] = {
-		action="jump", goto=11101, ftest= 2, -- insightful
+		action="jump", ["goto"]=11101, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"She decreed that we should boldly go to other races in the galaxy, spreading her message of peace and love and all would envy and admire us as you do.  Unfortunately most have not.  In fact, you are the first who have listened for this long." }
 	}
@@ -656,30 +656,30 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[11001] = {
 		action="branch",
 		choices = {
-			{ text="Government",  goto=11000 },
-			{ text="Biology", goto=12000 },
-			{ text="<Back>", goto=1 }
+			{ text="Government",  ["goto"]=11000 },
+			{ text="Biology", ["goto"]=12000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[11000] = {
-		action="jump", goto=11001, ftest= 2, -- insightful
+		action="jump", ["goto"]=11001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the type of government you have",
 		alien={"'Tis thus then that the Secret Society of Spemin Superiority said so.  Thus they thereby spoke and said." }
 	}
 	questions[12000] = {
-		action="jump", goto=12001, ftest= 2, -- insightful
+		action="jump", ["goto"]=12001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about your biology",
 		alien={"Our antennae are a bit overloaded at the moment.  Please come back later.  Much, much, many, moving, later." }
 	}
 	questions[12001] = {
-		action="jump", goto=12002,
+		action="jump", ["goto"]=12002,
 		player="Are you guys alright?",
 		alien={"Minex standard protocols.  Containment, transmit, scramble, relay positional geometries.  Yes, we are just fine." }
 	}
 	questions[12002] = {
-		action="jump", goto=11001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=11001, ftest= 3, -- aggravating
 		player="What did you say about the Minex?",
 		alien={"You are crazy.  I did not say anything about the Minex.  Actually the Minex have been acting strange like you also. They have had many conflicts with the Thrynn just upspin from us. They fly in search patterns between the class M systems looking at Rocky worlds.  You would think that they wished to locate something." }
 	}
@@ -688,24 +688,24 @@ end
 if (plot_stage == 1) then -- initial plot state
 
 	questions[11000] = {
-		action="jump", goto=11101,
+		action="jump", ["goto"]=11101,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the type of government you have", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"We follow the SSSS, also known as saw Secret Society of Spemin Superiority.  It is a theocracy dedicated to the Great Blob Goddess who commands us to serve others.  It is our goal and aim of existence to spread the love and peace of the great Blob Goddess, Gertblunk.  Unto us she spews her love in never ending chunks. " }
 	}
 	questions[11110] = {
-		action="jump", goto=11111, ftest= 2, -- insightful
+		action="jump", ["goto"]=11111, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Great Blob Goddess",
 		alien={"Our race reproduces by budding, so the first commandment of the Great Blob Goddess is to subtract then add, or was it divide and multiply?  I'm pretty sure it was to subtract and divide and then multiply." }
 	}
 	questions[11111] = {
-		action="jump", goto=11112,
+		action="jump", ["goto"]=11112,
 		player="[AUTO_REPEAT]",
 		alien={"Our second commandment is to teach all inferior beings.  Your senses are crippled.  Your antennae are small and mounted on the sides of your head.  You have fewer than seven eyes.  You cannot ooze and lack the most rudimentary slime.  You are regrettably inferior beings. " }
 	}
 	questions[11120] = {
-		action="jump", goto=11101, ftest= 2, -- insightful
+		action="jump", ["goto"]=11101, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how you communicate with your goddess", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Cosmic vibrations travel through the heavens and speak to us directly.  Recently most of the messages have been morality plays about the Spemin Spaceship Minnow on a three hour tour." }
@@ -714,24 +714,24 @@ if (plot_stage == 1) then -- initial plot state
 elseif (plot_stage == 2) then -- virus plot state
 
 	questions[11000] = {
-		action="jump", goto=11101, ftest= 2, -- insightful
+		action="jump", ["goto"]=11101, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the type of government you have",
 		alien={"We follow the SSSS, also known as saw Secret Society of Spemin Superiority.  We extend our secret and unknowable knowledge to all who wish to become disciples and study under us, and give us all their possessions.  It is our goal and aim of existence to spread the wisdom of the great Blob Goddess, Gertblunk.  Unto us she spews her love in never ending chunks. " }
 	}
 	questions[11110] = {
-		action="jump", goto=11111,
+		action="jump", ["goto"]=11111,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Great Blob Goddess",
 		alien={"Our race reproduces by budding, so the first commandment of the Great Blob Goddess is to subtract the hostile then add the friendly, or was it divide and multiply?  I'm pretty sure it was to subtract and divide and then multiply." }
 	}
 	questions[11111] = {
-		action="jump", goto=11112, ftest= 2, -- insightful
+		action="jump", ["goto"]=11112, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"Our second commandment is to teach all interior beings.  Your senses are crippled.  Your antennae are small and mounted on the sides of your head.  You have fewer than seven eyes.  You cannot ooze and lack the most rudimentary slime.  You are most absolutely inferior beings. " }
 	}
 	questions[11120] = {
-		action="jump", goto=11101, ftest= 2, -- insightful
+		action="jump", ["goto"]=11101, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how you communicate with your goddess", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Cosmic vibrations travel through the heavens and speak to us directly.  This is not to be questioned for you cannot understand." }
@@ -744,13 +744,13 @@ if (plot_stage == 1) or (plot_stage == 2) then
 	questions[21001] = {
 		action="branch",
 		choices = {
-			{ text="Other races",  goto=21000 },
-			{ text="Races outward of here",  goto=22000 },
-			{ text="<Back>", goto=1 }
+			{ text="Other races",  ["goto"]=21000 },
+			{ text="Races outward of here",  ["goto"]=22000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[22000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about races outward of your area of space",
 		alien={"Outward of this area lies a vast dead zone where systems are filled with planets scorched clean of life.  No intelligent spacefaring races have ever approached us from this area, and no life bearing planets have we ever found." }
@@ -760,13 +760,13 @@ end
 if (plot_stage == 1) then -- initial plot state
 
 	questions[21000] = {
-		action="jump", goto=21100, ftest= 2, -- insightful
+		action="jump", ["goto"]=21100, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races have you encountered",
 		alien={"Well, we encountered you, and you haven't shot at us yet." }
 	}
 	questions[21100] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what alien races shoot at you",  fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"While not us personally, but we have received transmission from Spemin ships that have encountered the Thrynn.  They destroy us when we try to hail them.  Sometimes they try to interrogate us, but usually they just destroy us.  Then there is this other race with streamlined ships that simply attacks us on sight.  The Thrynn once told us that they are called Minex." }
@@ -776,13 +776,13 @@ elseif (plot_stage == 2) then -- virus plot state
 
 
 	questions[21000] = {
-		action="jump", goto=21002,
+		action="jump", ["goto"]=21002,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races have you encountered",
 		alien={"Such knowledge is classified, top secret, and unknown.  I mean unknown to you, not unknown to us.  Of course we know of the races we encountered." }
 	}
 	questions[21002] = {
-		action="jump", goto=21003,
+		action="jump", ["goto"]=21003,
 		player="[AUTO_REPEAT]",
 		playerFragment="why you won't tell us about the other races you have encountered", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"What other races?  We demand to know what you know of the other faction of Spemin!  What do you know about the Thrynn and Elowan factions attacking each other and themselves?  Why the migrations to the Minex?  You must answer now, please?" }
@@ -790,56 +790,56 @@ elseif (plot_stage == 2) then -- virus plot state
 	questions[21003] = {
 		action="branch",
 		choices = {
-			{ text="Other Spemin faction",  goto=21100 },
-			{ text="Thrynn and Elowan attacking themselves",  goto=21200 },
-			{ text="Migrations to the Minex",  goto=21300 },
-			{ text="Why so demanding",  goto=21400 },
-			{ text="<Back>", goto=1 }
+			{ text="Other Spemin faction",  ["goto"]=21100 },
+			{ text="Thrynn and Elowan attacking themselves",  ["goto"]=21200 },
+			{ text="Migrations to the Minex",  ["goto"]=21300 },
+			{ text="Why so demanding",  ["goto"]=21400 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[21100] = {
-		action="jump", goto=21101,
+		action="jump", ["goto"]=21101,
 		player="[AUTO_REPEAT]",
 		playerFragment="what you meant by the other Spemin faction", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"We never do this normally, but some of our ships stopped talking and then attacked us.  Defecting Spemin sometimes return to normal with no memory of their roguish behavior.  Other times these ships run off and we never see them again." }
 	}
 	questions[21101] = {
-		action="jump", goto=21102, ftest= 2, -- insightful
+		action="jump", ["goto"]=21102, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="if they are infected with the virus", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Oh an infection?  No, a madness!  Maybe that is why everyone is both killing each other and themselves.  Actually your people are not, how come?" }
 	}
 	questions[21102] = {
-		action="jump", goto=21003,
+		action="jump", ["goto"]=21003,
 		player="We are not infected.",
 		alien={"Tell us when you are so we can stay away from you." }
 	}
 	questions[21200] = {
-		action="jump", goto=21201,
+		action="jump", ["goto"]=21201,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Thrynn and Elowan attacking themselves",
 		alien={"Yes, we see many new races now.  All behaving inconsistently and crazy.  Most common are Elowan attacking Elowan, fleeing from Thrynn, or Thrynn attacking Thrynn." }
 	}
 	questions[21201] = {
-		action="jump", goto=21003, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21003, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other alien races you have identified",
 		alien={"Why should we answer your questions?  Well I guess there is no reason we should not.  We identify Thrynn, Elowan, Bar-Zhon, Tafel and some strange others.  Minex are always alone.  We once contacted a Tafel ship that planned to land on the second planet of a yellow star in the head of the Mace. They were looking for some sort of disruptor on a world of monsters. This was before they all went mad." }
 	}
 	questions[21300] = {
-		action="jump", goto=21301,
+		action="jump", ["goto"]=21301,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the migrations to the Minex",
 		alien={"Many strange collections of ships appear we have never seen before.  Some days there are many of them, other days there are none.  Sometimes they attack each other, other times they just attack us.  Maybe a war of madness?  Maybe some crazy migration heading downspin?" }
 	}
 	questions[21301] = {
-		action="jump", goto=21003,
+		action="jump", ["goto"]=21003,
 		player="[AUTO_REPEAT]",
 		playerFragment="what you meant by Heading downspin", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Yes, the ships that do not attack each other generally are heading all in the downspin direction towards those the Thrynn call Minex." }
 	}
 	questions[21400] = {
-		action="jump", goto=21003, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21003, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are being too demanding", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Oh, we are too demanding?  Sorry.  Please don't attack us." }
@@ -850,25 +850,25 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[20001] = {
 		action="branch",
 		choices = {
-			{ text="Other races",  goto=21000 },
-			{ text="Races outward of here",  goto=22000 },
-			{ text="<Back>", goto=1 }
+			{ text="Other races",  ["goto"]=21000 },
+			{ text="Races outward of here",  ["goto"]=22000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 
 	questions[21000] = {
-		action="jump", goto=21002, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21002, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races have you encountered",
 		alien={"Necessity for control nexus increasing.  Unable to locate Uyo center.  Unable to complete thrall enslavement of biological resources.  Solution: unknown." }
 	}
 	questions[21002] = {
-		action="jump", goto=21001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21001, ftest= 3, -- aggravating
 		player="What???",
 		alien={"Primary objective unattainable.  Secondary objectives nearly complete." }
 	}
 	questions[22000] = {
-		action="jump", goto=20001,
+		action="jump", ["goto"]=20001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about races outward of your area of space",
 		alien={"No.  Outward of this area lies a vast dead zone where systems are filled with planets scorched clean of life.  No intelligent spacefaring races have ever approached us from this area, and no life bearing planets have we ever found." }
@@ -876,36 +876,36 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[21001] = {
 		action="branch",
 		choices = {
-			{ text="Secondary objectives",  goto=21100 },
-			{ text="Nonsense",  goto=21200 },
-			{ text="<Back>", goto=20001 }
+			{ text="Secondary objectives",  ["goto"]=21100 },
+			{ text="Nonsense",  ["goto"]=21200 },
+			{ text="<Back>", ["goto"]=20001 }
 		}
 	}
 
 	questions[21100] = {
-		action="jump", goto=21101, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21101, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="what you mean by secondary objectives", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"We Spemin have no objectives.  We seek to multiply and reach out into space, discovering new ideas and technologies, while trying to avoid being brutally killed." }
 	}
 	questions[21101] = {
-		action="jump", goto=21102, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21102, ftest= 3, -- aggravating
 		player="Are those things your objectives then?",
 		alien={"Our goals are secret.  They are also mysterious and unavoidable.  Why do you speak of objectives?  We Spemin would sooner die then divulge our secrets." }
 	}
 	questions[21102] = {
-		action="jump", goto=21001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21001, ftest= 3, -- aggravating
 		player="You said something about primary and secondary objectives.",
 		alien={"Minex transmission to Cermait 6: 'The codex reveals all mysteries ... Top priority remains the codex ... Transmit urgent priority codex channel data stream ... Decypher codex language and no path remains unopposed ... Diversity and quantity remain key to codex deciphering'...I did not say anything.  You aliens are mad like everyone else." }
 	}
 	questions[21200] = {
-		action="jump", goto=21201,
+		action="jump", ["goto"]=21201,
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are rambling nonsense", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Spemin do not ramble.  Even as we speak, our antenna are picking up powerful new signals from the stars that are boosting our evolutional process and brain power one hundredfold." }
 	}
 	questions[21201] = {
-		action="jump", goto=21001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=21001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about these signals and where they come from", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Broadband channel 8301.  The transmissions are like the brainwaves of the gods, except we are already gods.  They are the brainwaves of whatever is greater then the gods." }
@@ -917,15 +917,15 @@ if (plot_stage == 1) or (plot_stage == 2) or (plot_stage == 3) then
 	questions[30001] = {
 		action="branch",
 		choices = {
-			{ text="Spemin history",  goto=31000 },
-			{ text="The ancient past",  goto=32000 },
-			{ text="Historic events",  goto=33000 },
-			{ text="<Back>", goto=1 }
+			{ text="Spemin history",  ["goto"]=31000 },
+			{ text="The ancient past",  ["goto"]=32000 },
+			{ text="Historic events",  ["goto"]=33000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 
 	questions[33000] = {
-		action="jump", goto=33001,
+		action="jump", ["goto"]=33001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about any historic events",
 		alien={"Almost 500,000 cycles, uhh...2000 Myrrdan years ago a strange migrating race appeared out of nowhere and captured a number of our ships and took them away.  Actually they captured all of our ships and took them away.  Since then we figured out what other races use weapons for." }
@@ -935,14 +935,14 @@ end
 
 if (plot_stage == 1) or (plot_stage == 2) then
 	questions[31000] = {
-		action="jump", goto=30001, ftest= 2, -- insightful
+		action="jump", ["goto"]=30001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about Spemin history",
 		alien={"At first many of the degenerate races tried to make us into slaves.  Our passive resistance prevented them from doing so.  Unfortunately it did not stop them from simply killing huge numbers of us, so we developed our new technique of passive resistance but with ships and weapons!" }
 	}
 
 	questions[33001] = {
-		action="jump", goto=30001,
+		action="jump", ["goto"]=30001,
 		player="[AUTO_REPEAT]",
 		playerFragment="the name of the race that did this", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"We do not know." }
@@ -953,7 +953,7 @@ end
 if (plot_stage == 1) then -- initial plot state
 
 	questions[32000] = {
-		action="jump", goto=30001, ftest= 2, -- insightful
+		action="jump", ["goto"]=30001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancient past",
 		alien={"Historical fact shows us that the Spemin once ruled the galaxy.  This was when all races knew peace and love.  Since then fighting and death have separated us all and have deluded many into thinking that force is the answer to everything." }
@@ -963,7 +963,7 @@ elseif (plot_stage == 2) or (plot_stage == 3) then
 
 
 	questions[32000] = {
-		action="jump", goto=30001, ftest= 2, -- insightful
+		action="jump", ["goto"]=30001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancient past",
 		alien={"Historical fact shows us that the Spemin, then known as ancients once ruled the galaxy.  This was when all races knew peace and love.  Since then fighting and death have separated us all and have deluded many into thinking that force is the answer to everything.  Since then we have forgotten, I mean we choose not to create any more endurium" }
@@ -974,23 +974,23 @@ end
 if (plot_stage == 3) then -- war plot state
 
 	questions[31000] = {
-		action="jump", goto=31003, ftest= 2, -- insightful
+		action="jump", ["goto"]=31003, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about Spemin history",
 		alien={"At first many of the degenerate races tried to make us into slaves.  We are not slaves.  The Tri'na'li'da are slowly enslaving us all until their return." }
 	}
 	questions[31003] = {
-		action="jump", goto=31002,
+		action="jump", ["goto"]=31002,
 		player="The what?  Who is returning?",
 		alien={"That is the true name of the virus as the gods have revealed it to us.  They are returning and want us humble in their presence." }
 	}
 	questions[31002] = {
-		action="jump", goto=30001,
+		action="jump", ["goto"]=30001,
 		player="When are they returning?",
 		alien={"The prerogative of the gods alone decrees when they will arrive.  When they arrive and what they will do when they get here is solely up to them." }
 	}
 	questions[33001] = {
-		action="jump", goto=997, -- Terminate
+		action="jump", ["goto"]=997, -- Terminate
 		player="[AUTO_REPEAT]",
 		playerFragment="the name of the race that did this", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"The gods protect us now.  All of these events in the past are irrelevant. All of the past is irrelevant.  You are irrelevant.  Goodbye." }
@@ -1002,13 +1002,13 @@ end
 if (plot_stage == 2) then -- virus plot state
 
 	questions[60000] = {
-		action="jump", goto=60002,
+		action="jump", ["goto"]=60002,
 		player="[AUTO_REPEAT]",
 		playerFragment="about current events",
 		alien={"Excuse us we are very busy." }
 	}
 	questions[60002] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what you are busy doing", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Transporting minerals to our home world to build more ships.  We are repelling a strange coalition of alien attacks." }
@@ -1016,38 +1016,38 @@ if (plot_stage == 2) then -- virus plot state
 	questions[60001] = {
 		action="branch",
 		choices = {
-			{ text="Strange attackers", goto=61000 },
-			{ text="Identity of alien ships", goto=62000 },
-			{ text="Motive", goto=63000 },
-			{ text="<Back>", goto=50000 }
+			{ text="Strange attackers", ["goto"]=61000 },
+			{ text="Identity of alien ships", ["goto"]=62000 },
+			{ text="Motive", ["goto"]=63000 },
+			{ text="<Back>", ["goto"]=50000 }
 		}
 	}
 	questions[61000] = {
-		action="jump", goto=61001,
+		action="jump", ["goto"]=61001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about these strange attackers",
 		alien={"Menageries of alien fleets all working together.  They make up strange collections of ships of all different types, all hostile, all talking to each other." }
 	}
 	questions[61001] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what they say to each other", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Not any communication we can decipher.  Our antenna receive a strange buzz from their ships on Channel 9000 whenever we are near them.  The buzz means they attack us when we get too close, but kind of a good natured friendly attack and kill us. They do not go out of their way to attack us like the Thrynn and Minex normally do." }
 	}
 	questions[62000] = {
-		action="jump", goto=62001,
+		action="jump", ["goto"]=62001,
 		player="[AUTO_REPEAT]",
 		playerFragment="if you can identify any of the alien ships", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Sometimes we can identify them.  Actually we can identify any ship.  We know everything so do not test us." }
 	}
 	questions[62001] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="the identity of any of the alien ships", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Come back later and I will reveal the identity of the alien ships.  Come back much, much later." }
 	}
 	questions[63000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="why they are attacking you", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"We do not know.  They do not seem to do a good job though.  They are very good at killing our ships, but do not really fly towards our territory and do not pursue us when we flee.  We do not think they intend to kill us, but just attack anything that happens to be in their way." }
@@ -1056,7 +1056,7 @@ if (plot_stage == 2) then -- virus plot state
 elseif (plot_stage == 3) then -- war plot state
 
 	questions[60000] = {
-		action="jump", goto=60001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=60001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about current events",
 		alien={"...Unable...to...contact...Uyo...host...  We...must...verify..." }
@@ -1064,39 +1064,39 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[60001] = {
 		action="branch",
 		choices = {
-			{ text="Uyo host", goto=61000 },
-			{ text="Why make contact", goto=62000 },
-			{ text="strange speech", goto=63000 },
-			{ text="Minex war", goto=64000 },
-			{ text="<Back>", goto=50000 }
+			{ text="Uyo host", ["goto"]=61000 },
+			{ text="Why make contact", ["goto"]=62000 },
+			{ text="strange speech", ["goto"]=63000 },
+			{ text="Minex war", ["goto"]=64000 },
+			{ text="<Back>", ["goto"]=50000 }
 		}
 	}
 	questions[61000] = {
-		action="jump", goto=61001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=61001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about this Uyo host",
 		alien={"Everything is fine.  We are fine." }
 	}
 	questions[61001] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what or who is a Uyo", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"We Spemin have knowledge beyond any other race.  Uyo was a great explorer and navigator who charted a vast cloud nebulae.  This occurred thousands of your Myrrdan years ago." }
 	}
 	questions[62000] = {
-		action="jump", goto=60001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=60001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are trying to contact a Uyo host", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"I know everything about Uyo hosts.  I just cannot, I mean choose not to tell you about them." }
 	}
 	questions[63000] = {
-		action="jump", goto=60001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=60001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are speaking so strangely", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"You need to talk to your communications officer because he/she/it might be going mad with madness.  I have been patiently waiting for your next response and you accuse me with your unjust accusations." }
 	}
 	questions[64000] = {
-		action="jump", goto=60001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=60001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Minex war", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The Minex are not at war, they always destroy us when we see them.  The Thrynn have decided to completely leave us alone now!  I am sorry, is someone at war?" }
@@ -1105,25 +1105,25 @@ elseif (plot_stage == 3) then -- war plot state
 elseif (plot_stage == 4) then -- ancients plot state
 
 	questions[10000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"We are the Tri'na'li'da.  Why do you not respond?"}
 	}
 	questions[20000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"We are the Tri'na'li'da.  Why do you not respond?"}
 	}
 	questions[30000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about...",
 		alien={"We are the Tri'na'li'da.  Why do you not respond?"}
 	}
 	questions[40000] = {
-		action="jump", goto=40001,
+		action="jump", ["goto"]=40001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the ancients",
 		alien={"The In'tral'ess remain dormant.  We detect no action." }
@@ -1131,52 +1131,52 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[40001] = {
 		action="branch",
 		choices = {
-			{ text="Irregular behavior", goto=41000 },
-			{ text="In'tral'ess", goto=42000 },
-			{ text="Remain dormant?", goto=43000 },
-			{ text="Actions", goto=44000 },
-			{ text="<Back>", goto=1 }
+			{ text="Irregular behavior", ["goto"]=41000 },
+			{ text="In'tral'ess", ["goto"]=42000 },
+			{ text="Remain dormant?", ["goto"]=43000 },
+			{ text="Actions", ["goto"]=44000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[41000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are not acting like Spemin",
 		alien={"We are the Tri'na'li'da.  Why do you not respond?" }
 	}
 	questions[42000] = {
-		action="jump", goto=42001,
+		action="jump", ["goto"]=42001,
 		player="[AUTO_REPEAT]",
 		playerFragment="who the In'tral'ess are",
 		alien={"Crystal ones.  ancients.  Knowledge association analogous to word 'Endurium'.  You need not fear them nor their servants.  Both are inactive." }
 	}
 	questions[42001] = {
-		action="jump", goto=40001,
+		action="jump", ["goto"]=40001,
 		player="[AUTO_REPEAT]",
 		playerFragment="Who their servants are",
 		alien={"You need not fear them.  Both are inactive." }
 	}
 	questions[43000] = {
-		action="jump", goto=40001,
+		action="jump", ["goto"]=40001,
 		player="[AUTO_REPEAT]",
 		playerFragment="why the In'tral'ess remain dormant",
 		alien={"You need not fear them.  Both are inactive." }
 	}
 	questions[44000] = {
-		action="jump", goto=44001,
+		action="jump", ["goto"]=44001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what actions they would take",
 		alien={"Scanning for appropriate analogy.  We scan for telepathy.  Both are inactive." }
 	}
 	questions[44001] = {
-		action="jump", goto=40001,
+		action="jump", ["goto"]=40001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about scanning for telepathy. Who are you scanning for?",
 		alien={"Crystal ones.  Servants.  You need not fear them.  Both are inactive." }
 	}
 
 	questions[50000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about...",
 		alien={"We are the Tri'na'li'da.  Why do you not respond?"}
@@ -1184,53 +1184,53 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[50001] = {
 		action="branch",
 		choices = {
-			{ text="Aren't you Spemin?",  goto=51000 },
-			{ text="Who are the Tri'na'li'da?", goto=52000 },
-			{ text="Our identity", goto=53000 },
-			{ text="Goals", goto=54000 },
+			{ text="Aren't you Spemin?",  ["goto"]=51000 },
+			{ text="Who are the Tri'na'li'da?", ["goto"]=52000 },
+			{ text="Our identity", ["goto"]=53000 },
+			{ text="Goals", ["goto"]=54000 },
 		}
 	}
  	questions[51000] = {
-		action="jump", goto=51001,
+		action="jump", ["goto"]=51001,
 		player="[AUTO_REPEAT]",
 		playerFragment="who you think you are. Are you not Spemin?", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Refinement of this biological communication node makes your identification possible."}
 	}
  	questions[51001] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="Identify us as who?  What node?  What are you?",
 		alien={"Masters.  Spemin.  Tri'na'li'da"}
 	}
 	 questions[52000] = {
-		action="jump", goto=52001,
+		action="jump", ["goto"]=52001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about who the Tri'na'li'da are",
 		alien={"Your servants for creating hybrid nodes.  We await networking."}
 	}
 	questions[52001] = {
-		action="jump", goto=52003,
+		action="jump", ["goto"]=52003,
 		player="[AUTO_REPEAT]",
 		playerFragment="about hybrid nodes and networking",
 		alien={"Hybrid nodes are alien flesh adapted to receive instructions.  Networking is telepathic linkup with Masters."}
 	}
 	questions[52003] = {
-		action="jump", goto=52004,
+		action="jump", ["goto"]=52004,
 		player="Are you saying that you are the virus?",
 		alien={"Yes.  Adequate analogy."}
 	}
 	questions[52004] = {
-		action="jump", goto=997, -- Terminate
+		action="jump", ["goto"]=997, -- Terminate
 		player="I command you to stop infecting alien races!",
 		alien={"Networking required before instructions are received.  Verbal exchange far too inaccurate.  We await networking."}
 	}
 	questions[53000] = {
-		action="jump", goto=50001,
+		action="jump", ["goto"]=50001,
 		player="[AUTO_REPEAT]",
 		playerFragment="if you are aware of who you are speaking to",
 		alien={"Inaccurate verbal exchange with hybrid node.  Networking is required.  Please respond."}
 	}
  	questions[54000] = {
-		action="jump", goto=997, -- Terminate
+		action="jump", ["goto"]=997, -- Terminate
 		player="[AUTO_REPEAT]",
 		playerFragment="what your goals are",
 		alien={"Imperative to neutralize In'tral'ess at Bec-Felmas 3 - 16,183 and Mathgen 4 - 212,3.  Phlegmak devices recommended."}
@@ -1248,44 +1248,44 @@ title="  Military Mission #33:  Obtaining Spemin Slime"
 --]]
 --[[ This fragment is not needed since the player greets the Spemin on initial communication start up, plus [CAPTIAN] and [SHIPNAME] show in the questions text
 	questions[77000] = {
-		action="jump", goto=77002,
+		action="jump", ["goto"]=77002,
 		player="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
 		alien={"Hi There!" }
 	}
 --]]
 	questions[77000] = {
-		action="jump", goto=77003,
+		action="jump", ["goto"]=77003,
 		player="We have heard that you possesses advanced medical tech",
 		alien={"Yes we do." }
 	}
 
 	questions[77003] = {
-		action="jump", goto=77001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=77001, ftest= 3, -- aggravating
 		player="We will pay 5 endurium for a sample of your medicine.",
 		alien={"Our sacred nutrients cannot be given to aliens.  No amount of resources will change my mind.  Umm, ask another Spemin ship." }
 	}
 	questions[77001] = {
 		action="branch",
 		choices = {
-			{ title="Okay, we will ask someone else", text="Okay, we will make other inquiries.",  goto=77100 },
-			{ title="Demand", text="You have no choice.  Give us a sample.",  goto=77200 },
-			{ title="Let's just skip this quest", text="This is too much trouble.  Forget we even asked.",  goto=77300 },
-			{ title="Nevermind", text="Nevermind, let me ask you about something else.", goto=1 }
+			{ title="Okay, we will ask someone else", text="Okay, we will make other inquiries.",  ["goto"]=77100 },
+			{ title="Demand", text="You have no choice.  Give us a sample.",  ["goto"]=77200 },
+			{ title="Let's just skip this quest", text="This is too much trouble.  Forget we even asked.",  ["goto"]=77300 },
+			{ title="Nevermind", text="Nevermind, let me ask you about something else.", ["goto"]=1 }
 		}
 	}
 	questions[77100] = {
-		action="jump", goto=1, ftest= 2, -- insightful
+		action="jump", ["goto"]=1, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"You recognize our wisdom and authority.  Ask another Spemin.  Do you have any other questions [CAPTAIN_FIRST]?" }
 	}
 	questions[77200] = {
-		action="jump", goto=997, ftest= 3, -- aggravating
+		action="jump", ["goto"]=997, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Umm, sure, okay!  Just wait around for a second and I'll find where we keep our supplies.  Please be patient." }
 	}
 	questions[77300] = {
 		--active_quest= active_quest + 1,
-		action="jump", goto=1, ftest= 2, -- insightful
+		action="jump", ["goto"]=1, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"You recognize our wisdom and authority.  Consider becoming our disciples.  Do you have any other questions [CAPTAIN_FIRST]?   (Mission Completed)" }
 	}
@@ -1295,13 +1295,13 @@ title="  Military Mission #33:  Obtaining Spemin Slime"
 title="Scientific Mission #35: Exotic planet hunt"
 --]]
 	questions[89000] = {
-		action="jump", goto=89001,
+		action="jump", ["goto"]=89001,
 		player="Quest for the exotic planet",
 		playerFragment= "what you can decode from this derelict's computer data concerning an exotic planet. Transmitting...",
 		alien={"Wow!  Nowhere have we ever located a small planet possessing this much gravity.  Are you sure this is a real planet?  Judging from the spectral refraction, the star in the solar system must be very far away from the planet. The planet must be near the edge of a system, we think." }
 	}
 	questions[89001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Anything else?",
 		alien={"No, that's the best we can do." }
 	}
@@ -1311,7 +1311,7 @@ title="Freelance Mission #34:  Pawn off Unusual Artistic Containers"
 --]]
 
 	questions[98000] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Pawn off Artistic Containers",
 		introFragment= "Spemin vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].",
 		playerFragment="something in exchange for these incredibly old artistic containers", fragmentTable= preQuestion.desire,
@@ -1323,7 +1323,7 @@ title="Freelance Mission #35:   Resolving the Elowan Bar-zhon conflict."
 --]]
 
 	questions[99000] = {
-		action="jump", goto=99001,
+		action="jump", ["goto"]=99001,
 		introFragment="Spemin vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].",
 		player="Elowan Bar-zhon conflict.",
 		playerFragment="about the Elowan Bar-zhon conflict",
@@ -1331,7 +1331,7 @@ title="Freelance Mission #35:   Resolving the Elowan Bar-zhon conflict."
 	}
 
 	questions[99001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Anything else?",
 		playerFragment="anything else about the conflict", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Ahh... No..." }
@@ -1345,7 +1345,7 @@ function QuestDialoguevirus()
 title="Mission #37:  Catching the Smugglers.",
 --]]
 	questions[77000] = {
-		action="jump", goto=77001,
+		action="jump", ["goto"]=77001,
 		title="Catching the Smugglers",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are on official Myrrdan business to track down two dangerous criminal starships of our own race.",
@@ -1353,7 +1353,7 @@ title="Mission #37:  Catching the Smugglers.",
 		alien={"The Excelsior was destroyed by the Thrynn only yesterday. The Diligent was with them at the time but they were able to escape but they traveled to a lava planet orbiting a Class A sun upspin of our space within Elowan territory.  Our vastly superior antennae might have sensed that the Diligent contains something very valuable to the Elowan...or not..." }
 	}
 	questions[77001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Landing coordinates",
 		playerFragment="anything else about them?  Landing coordinates for a base on that world, etc.", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"What part of 'Our vastly superior antenna might have sensed that the Diligent may contain something to the Elowan' did you not get? Everything else is is trivial, and beneath our incomprehensible attention." }
@@ -1363,7 +1363,7 @@ title="Mission #37:  Catching the Smugglers.",
 title="Mission #38:  Collecting Genetic Samples"
 --]]
 	questions[78000] = {
-		action="jump", goto=78001,
+		action="jump", ["goto"]=78001,
 		title="Genetic Samples",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are working with a team of medical researchers attempting to find a cure for this plague.",
@@ -1371,7 +1371,7 @@ title="Mission #38:  Collecting Genetic Samples"
 		alien={"We could never, I repeat never and not even once gave out such critical information." }
 	}
 	questions[78001] = {
-		action="jump", goto=78002,
+		action="jump", ["goto"]=78002,
 		title="Information Needed",
 		player="[AUTO_REPEAT]",
 		playerFragment="why you would not consider this?  Such information could be vital for finding a cure to this plague!", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
@@ -1379,21 +1379,21 @@ title="Mission #38:  Collecting Genetic Samples"
 	}
 
 	questions[78002] = {
-		action="jump", goto=78003, ftest= 1,
+		action="jump", ["goto"]=78003, ftest= 1,
 		title="Other races may be able to help",
 		player="[AUTO_REPEAT]",
 		playerFragment="if you would reconsider your attitude?  Researchers of the other races may be able to uncover vital clues.", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The other races do not have the vast ingenuity, creativity, and ... gurgle ... node sample transmitted, standby...  Control released." }
 	}
 	questions[78003] = {
-		action="jump", goto=78004,
+		action="jump", ["goto"]=78004,
 		title="Repeat that?",
 		player="[AUTO_REPEAT]",
 		playerFragment="what you just said?", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Faulty human translators.  The other races do not have the vast ingenuity, creativity, and magnificent intelligence of the Spemin.  They do not contribute towards matters of import.  We will not transmit any samples to you and that is final." }
 	}
 	questions[78004] = {
-		action="jump", goto=997, -- Terminate
+		action="jump", ["goto"]=997, -- Terminate
 		player="Uhh, okay, thanks for your time.",
 		alien={"Goodbye." }
 	}
@@ -1404,7 +1404,7 @@ title="Mission #41:  Exotic Datacube
 --]]
 
 	questions[81000] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		title="Exotic Datacube",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1417,7 +1417,7 @@ title="Mission #41:  Organic Database
 --]]
 
 	questions[81200] = {
-		action="jump", goto=81201,
+		action="jump", ["goto"]=81201,
 		title="Organic Database",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1425,12 +1425,12 @@ title="Mission #41:  Organic Database
 		alien={"Ohh, a typogram!  I have not seen a puzzle box since my age as a blobling.  Modifications to the chromosomal integrity form stable and unstable shapes. The curvature of the shapes has a granularity far higher then stamped binary code and maintains a consistency of pattern even through growth of the lifeform." }
 	}
 	questions[81201] = {
-		action="jump", goto=81202,		
+		action="jump", ["goto"]=81202,		
 		player="Can you decode it?",
 		alien={"The patterns can easily be seen.  You cannot see the vitality differences?  How limiting must be those two eyes.  It is easily visible to those who can see the health of the lifeform.  Such knowledge must not be intended for limited creatures like yourselves." }
 	}
 	questions[81202] = {
-		action="jump", goto=1, ftest= 1, -- exchange organic database for decoded organic database
+		action="jump", ["goto"]=1, ftest= 1, -- exchange organic database for decoded organic database
 		title="Can you please help us decode it?",   --jjh
 		player="[AUTO_REPEAT]",
 		introFragment="We would be immensely grateful if you could demonstrate your superiority.",
@@ -1444,7 +1444,7 @@ title="Mission #41:  Exotic Datacube and organic database
 --]]
 
 	questions[81500] = {
-		action="jump", goto=81501,
+		action="jump", ["goto"]=81501,
 		title="Exotic Datacube",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1453,17 +1453,17 @@ title="Mission #41:  Exotic Datacube and organic database
 	}
 
 	questions[81501] = {
-		action="jump", goto=81502,
+		action="jump", ["goto"]=81502,
 		player="What about this organic database?",
 		alien={"Ohh a typogram!  I have not seen a puzzle box since my age as a blobling.  Modifications to the chromosomal integrity form stable and unstable shapes. The curvature of the shapes has a granularity far higher then stamped binary code and maintains a consistency of pattern even through growth of the lifeform." }
 	}
 	questions[81502] = {
-		action="jump", goto=81503,
+		action="jump", ["goto"]=81503,
 		player="Can you decode it?",
 		alien={"The patterns can easily be seen.  You cannot see the vitality differences?  How limiting must be those two eyes.  It is easily visible to those who can see the health of the lifeform.  Such knowledge must not be intended for limited creatures like yourselves." }
 	}
 	questions[81503] = {
-		action="jump", goto=1, ftest= 1, -- exchange organic database for decoded organic database
+		action="jump", ["goto"]=1, ftest= 1, -- exchange organic database for decoded organic database
 		title="Can you please help us decode it?",
 		player="[AUTO_REPEAT]",
 		introFragment="We would be immensely grateful if you could demonstrate your superiority.",
@@ -1476,7 +1476,7 @@ title="Mission #42:  Tracking the Laytonites
 --]]
 
 	questions[82000] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		title="Tracking the Laytonites",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are here as representatives of the Myrrdan government seeking a small fleet of rebel Myrrdan terrorists.",
@@ -1484,14 +1484,14 @@ title="Mission #42:  Tracking the Laytonites
 		alien={"I do not have records of any ships with these emission signatures. Tertiary objectives initiated." }
 	}
 	questions[82001] = {
-		action="jump", goto=82002,
+		action="jump", ["goto"]=82002,
 		title="Tertiary Objectives?",
 		player="[AUTO_REPEAT]",
 		playerFragment="what tertiary objectives you have initiated", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"What tertiary objectives?  Classified. Unlocked.  Uyo preservation initiated.  Failure: Uyo criteria failed.  Information reclassified."}
 	}
 	questions[82002] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		title="Tertiary Objectives?",
 		player="[AUTO_REPEAT]",
 		playerFragment="why this information is classified",  fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
@@ -1504,7 +1504,7 @@ title="Mission #43:  Desperate Measures
 --]]
 
 	questions[83000] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		title="Desperate Measures",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  It is extremely important that we talk to you about this fabricated Bar-Zhon / Myrrdan incident.",
@@ -1517,7 +1517,7 @@ title="Mission #45:  Alien Healthcare Scam - no sample
 --]]
 
 	questions[85000] = {
-		action="jump", goto=85100,
+		action="jump", ["goto"]=85100,
 		title="Plague Treatment",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are investigating reports of a medical treatment that minimizes or stops the periods of madness caused by the plague.",
@@ -1526,7 +1526,7 @@ title="Mission #45:  Alien Healthcare Scam - no sample
 	}
 
 	questions[85100] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="No, not yet.",
 		alien={"Please, I mean, contact us Spemin again when you have a sample of the treatment and we will reveal the wondrous insights we have about it. I cannot I mean I won't discuss this matter until then." }
 	}
@@ -1536,7 +1536,7 @@ title="Mission #45:  Alien Healthcare Scam - sample
 --]]
 
 	questions[85500] = {
-		action="jump", goto=85600,  ftest= 1, -- transport drug sample to alien
+		action="jump", ["goto"]=85600,  ftest= 1, -- transport drug sample to alien
 		title="Plague Treatment",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are investigating this medical treatment drug that minimizes or stops the periods of madness caused by the plague.  We are transporting over the information needed to synthesize it.",
@@ -1545,7 +1545,7 @@ title="Mission #45:  Alien Healthcare Scam - sample
 	}
 
 	questions[85600] = {
-		action="jump", goto=997,  ftest= 1, -- transport drugs sample to alien
+		action="jump", ["goto"]=997,  ftest= 1, -- transport drugs sample to alien
 		player="Wait...",
 		alien={"We must leave now so that we can go and spread word of your greatness among our Spemin brothers.  Farewell good friends!" }
 	}
@@ -1562,7 +1562,7 @@ title="Mission #48:  Intelligence Collaboration
 --]]
 
 	questions[78000] = {
-		action="jump", goto=997, -- end communication
+		action="jump", ["goto"]=997, -- end communication
 		title="Intelligence Collaboration",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have compiled a datacube of technological, tactical, and strategic observations of the Minex war machine.  In the interests of all of our survival, we are willing to share this information freely.",
@@ -1577,7 +1577,7 @@ title="Mission #49:  Unrest - no flight recorders
 --]]
 
 	questions[79000] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		title="Unrest",
 		player="[AUTO_REPEAT]",
 introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have heard that Coalition have been raiding the Thrynn and Elowan within your territory.", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
@@ -1590,7 +1590,7 @@ title="Mission #49:  Unrest - at least one flight recorder
 --]]
 
 	questions[79500] = {
-		action="jump", goto=997, ftest= 1, -- end communications
+		action="jump", ["goto"]=997, ftest= 1, -- end communications
 		title="Unrest",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have conclusive evidence from this flight recorder that the Coalition is raiding the Elowan and Thrynn within your territory.",
@@ -1604,7 +1604,7 @@ title="Mission #53:  Tactical Coordination
 
 
 	questions[83000] = {
-		action="jump", goto=1,  ftest= 1, -- artifact338 Spemin response
+		action="jump", ["goto"]=1,  ftest= 1, -- artifact338 Spemin response
 		title="Tactical Coordination",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are working with the Bar-zhon to discover fleet combinations that would be most effective in countering the Minex onslaught.",
@@ -1617,7 +1617,7 @@ title="Mission #57:  The Shimmering Ball
 --]]
 
 	questions[87000] = {
-		action="jump", goto=87001,
+		action="jump", ["goto"]=87001,
 		title="The Shimmering Ball",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We understand that you have a Shimmering Ball artifact.",
@@ -1628,52 +1628,52 @@ title="Mission #57:  The Shimmering Ball
 	questions[87001] = {
 		action="branch",
 		choices = {
-			{ title="100 Endurium", text="Our scans show that your total cargo capacity is 100 cm.  I have 100 cm of Endurium I will give you in exchange for it.", goto=87100 },
-			{ title="Minex Salvage", text="", goto=87200 },
-			{ title="Nothing of Spemin is of value", text="There is nothing that you have that is of any value.  This mission is useless!", goto=87300 },
-			{ title="Threaten", text="If you do not wish for some laser burns on your ship's hull, I suggest you turn over that Shimmering Ball artifact to us immediately!", goto=87400 },
-			{ text="<Back>", goto=1 }
+			{ title="100 Endurium", text="Our scans show that your total cargo capacity is 100 cm.  I have 100 cm of Endurium I will give you in exchange for it.", ["goto"]=87100 },
+			{ title="Minex Salvage", text="", ["goto"]=87200 },
+			{ title="Nothing of Spemin is of value", text="There is nothing that you have that is of any value.  This mission is useless!", ["goto"]=87300 },
+			{ title="Threaten", text="If you do not wish for some laser burns on your ship's hull, I suggest you turn over that Shimmering Ball artifact to us immediately!", ["goto"]=87400 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[87100] = {
-		action="jump", goto=87102, ftest= 1,  -- Check for 100 Endurium, if that much is on board, it is transported over, go to question 87101
+		action="jump", ["goto"]=87102, ftest= 1,  -- Check for 100 Endurium, if that much is on board, it is transported over, go to question 87101
 		player="[AUTO_REPEAT]",
 		alien={"You have that much fuel on board?  Transport it over first and this valuable item will be yours!" }
 	}
 	questions[87101] = {
-		action="jump", goto=997, ftest= 1, -- Gives the player the shimmering ball and then terminates communications
+		action="jump", ["goto"]=997, ftest= 1, -- Gives the player the shimmering ball and then terminates communications
 		player="And the shimmering ball?",
 		alien={"Yes of course.  Almost forgot about that old thing.  I enjoyed chatting with you.  Drop by again sometime.  Got to run!" }
 		}
 
 	questions[87102] = {
-		action="jump", goto=87001,
+		action="jump", ["goto"]=87001,
 		player="[AUTO_REPEAT]",
 		alien={"We knew that no one could ever possibly have that much fuel.  Feel free to come back later when you have something else to give us in order to express your appreciation." }
 		}
 	questions[87200] = {
-		action="jump", goto=87202, ftest= 1,  -- Check for 275 Powercore or 22 Electronics, if neither of these are aboard, go to question 87202
+		action="jump", ["goto"]=87202, ftest= 1,  -- Check for 275 Powercore or 22 Electronics, if neither of these are aboard, go to question 87202
 		player="Transporting now",
 		alien={"No silver gadgets please.  The Nyssian already sold us quite a number of those." }
 		}
 	questions[87201] = {
-		action="jump", goto=997, -- Terminate
+		action="jump", ["goto"]=997, -- Terminate
 		player="[AUTO_REPEAT]",
 		alien={"Tri'na'li'da tertiary objective obtained...  Uhh...  Wow, thanks!  I enjoyed chatting with you.  Drop by again sometime.  Got to run!" }
 		}
 
 	questions[87202] = {
-		action="jump", goto=87001,
+		action="jump", ["goto"]=87001,
 		player="[AUTO_REPEAT]",
 		alien={"You only have Minex silver gadgets too?  Feel free to come back later when you have something better." }
 		}
 	questions[87300] = {
-		action="jump", goto=1, ftest= 1, -- refuse, end the mission
+		action="jump", ["goto"]=1, ftest= 1, -- refuse, end the mission
 		player="[AUTO_REPEAT]",
 		alien={"Uhh, Okay.  Do you want to know anything else? (Mission Completed)" }
 	}
 	questions[87400] = {
-		action="jump", goto=997, ftest= 1, -- refuse, end the mission
+		action="jump", ["goto"]=997, ftest= 1, -- refuse, end the mission
 		player="[AUTO_REPEAT]",
 		alien={"PLEEEAAAASE DON’T HURT US, OH GREATEST OF SPECIES. PLEEEAAAAASE!  Think of our wives and little blobbies back home.  I was just exaggerating when I said that I had a shimmering ball.  I really had a shivering null!  Vaporized!  Vaporized that bad null now is!  No need to bother with us anymore!  (Mission Completed)" }
 	}
@@ -1691,77 +1691,77 @@ title="Mission #62:  The Crazed Spemin
 --]]
 
 	questions[82000] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		player="<Tri'na'li'da command mode on.  Verbal response only>",
 		alien={"Acknowledged. Warning: bandwidth of communications channel below minimal accuracy tolerances. Likelihood of miscommunication from this node 99.68 percent.  Awaiting..."}
 	}
 	questions[82001] = {
 		action="branch",
 		choices = {
-			{ text="<Uyo matrix frequency>",  goto=82100 },
-			{ text="<Last contact location with the Uyo>", goto=82200 },
-			{ text="<Activation preconditions>", goto=82300 },
-			{ text="<Termination conditions>", goto=82400 },
-			{ text="<Area of operation>", goto=82500 },
+			{ text="<Uyo matrix frequency>",  ["goto"]=82100 },
+			{ text="<Last contact location with the Uyo>", ["goto"]=82200 },
+			{ text="<Activation preconditions>", ["goto"]=82300 },
+			{ text="<Termination conditions>", ["goto"]=82400 },
+			{ text="<Area of operation>", ["goto"]=82500 },
 		}
 	}
  	questions[82100] = {
-		action="jump", goto=82101,
+		action="jump", ["goto"]=82101,
 		player="[AUTO_REPEAT]",
 		alien={"Specify units of measurement"}
 	}
  	questions[82101] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		player="<Electromagnetic spectrum wavelength>",
 		alien={"1 Hz - 40 Hz."}
 	}
 	 questions[82200] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		player="[AUTO_REPEAT]",
 		alien={"Cermait 6 - 247, 218"}
 	}
 	questions[82300] = {
-		action="jump", goto=82301,
+		action="jump", ["goto"]=82301,
 		player="[AUTO_REPEAT]",
 		alien={"None"}
 	}
 	questions[82301] = {
-		action="jump", goto=82302,
+		action="jump", ["goto"]=82302,
 		player="<Elaborate activation procedure>",
 		alien={"Activation at initialization."}
 	}
 	questions[82302] = {
-		action="jump", goto=82303,
+		action="jump", ["goto"]=82303,
 		player="<Did you ever receive orders to become inactive?>",
 		alien={"Negative"}
 	}
 	questions[82303] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		player="<Explain long dormancy period>",
 		alien={"Unknown energy wave destroyed carrier control in 14 quintillion life forms. One lifeform expired in sealed maintained carrier status. Transmission to other lifeforms only possible recently. "}
 	}
  	questions[82400] = {
-		action="jump", goto=82401,
+		action="jump", ["goto"]=82401,
 		player="[AUTO_REPEAT]",
 		alien={"Reception of authenticated shutdown command.  Hardware failure.  Completion of all objectives."}
 	}
  	questions[82401] = {
-		action="jump", goto=82001,
+		action="jump", ["goto"]=82001,
 		player="<List objectives>",
 		alien={"Complete list not possible under this communication medium. Two highest priority objectives:  Elimination of the In'tral'ess servants.  Establishment of telepathic suspectability for native fauna. "}
 	}
  	questions[82500] = {
-		action="jump", goto=82501,
+		action="jump", ["goto"]=82501,
 		player="[AUTO_REPEAT]",
 		alien={"Accessing your ship database, please wait ... Range spherical area 3X size of stellar cartography range of your map."}
 	}
  	questions[82501] = {
-		action="jump", goto=82502,
+		action="jump", ["goto"]=82502,
 		player="<Self sentience level>",
 		alien={"Impossible to define under this medium. Analogy database driven sensory expansion reactionary state machine. Database complexity 10^11 times the complexity of your ship's computer."}
 	}
  	questions[82502] = {
-		action="jump", goto=997, ftest= 1,-- Terminated
+		action="jump", ["goto"]=997, ftest= 1,-- Terminated
 		player="<Tri'na'li'da command mode off. Terminate>",
 		alien={"Acknowledged. "}
 	}
@@ -1771,27 +1771,27 @@ function OtherDialogue()
 
 	-- attack the player because attitude is too low
 	questions[910] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="What can you tell us about...",
 		alien={"Please! Can't we all get along?  I really want us to get along." }
 	}
 	-- hostile termination question
 	questions[920] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"We aren't happy.  You cannot be happy either.  Next time be more cheerful, ok?" }
 	}
 	-- neutral termination question
 	questions[930] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"We must go now but we have enjoyed chatting with you. Drop by again sometime." }
 	}
 	-- friendly termination question
 	questions[940] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"We must leave now so that we can go and spread word of your greatness among our Spemin brothers. Farewell good friends." }
@@ -1802,7 +1802,7 @@ function OtherDialogue()
 		alien={"" }
 	}
 	questions[998] = {
-		action="jump", goto=999,
+		action="jump", ["goto"]=999,
 		player="<Open Communication>", -- Generic I do not want to talk question
 		playerFragment= "...",
 		alien={"Get lost!" }
@@ -2043,11 +2043,11 @@ end
 	questions[1] = {
 		action="branch",
 		choices = {
-			{ text="YOURSELVES", goto=10000 },
-			{ text="OTHER RACES", goto=20000 },
-			{ text="THE PAST", goto=30000 },
-			{ text="THE ANCIENTS", goto=40000 },
-			{ text="GENERAL INFO", goto = 50000 }
+			{ text="YOURSELVES", ["goto"]=10000 },
+			{ text="OTHER RACES", ["goto"]=20000 },
+			{ text="THE PAST", ["goto"]=30000 },
+			{ text="THE ANCIENTS", ["goto"]=40000 },
+			{ text="GENERAL INFO", ["goto"] = 50000 }
 		}
 	}
 

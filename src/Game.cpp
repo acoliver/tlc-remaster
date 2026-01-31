@@ -9,16 +9,15 @@
 
 */
 
-#pragma region HEADER
 
 #include "env.h"
 #include <allegro.h>
 #include <alfont.h>
-#include <fmod.hpp>
 #include <memory.h>
 #include <cstdio>
 #include <sstream>
 #include "LogFile.h"
+
 
 #include "Game.h"
 #include "GameState.h"
@@ -67,7 +66,6 @@ DataMgr		*Game::dataMgr = NULL;
 AudioSystem *Game::audioSystem = NULL;
 QuestMgr	*Game::questMgr = NULL;
 
-#pragma endregion
 
 
 void trace(std::string t)
@@ -160,7 +158,6 @@ Game::~Game()
 
 }
 
-#pragma region UTILITY_FUNCS
 
 void Game::message(std::string msg)
 {
@@ -273,9 +270,7 @@ void Game::TogglePauseMenu()
 	}
 }
 
-#pragma endregion
 
-#pragma region "Lua script validation and globals"
 
 //these three are identical to Script class methods but are more convenient within g_game
 void Game::runGlobalFunction(std::string name)
@@ -617,7 +612,6 @@ bool ValidatePortraits()
 	return retval;
 }
 
-#pragma endregion
 
 
 void Game::Run()
@@ -757,13 +751,20 @@ bool Game::Initialize_Graphics()
 
     //try to get user-selected fullscreen toggle from settings screen
     bool fullscreen = g_game->getGlobalBoolean("FULLSCREEN");
+
+#ifdef TLC_PLATFORM_WINDOWS
     if (fullscreen) {
-        gfxmode = GFX_DIRECTX_ACCEL; 
+        gfxmode = GFX_DIRECTX_ACCEL;
     }
     else {
-        gfxmode = GFX_DIRECTX_WIN; 
+        gfxmode = GFX_DIRECTX_WIN;
         //width=SCREEN_WIDTH; height=SCREEN_HEIGHT;
     }
+#else
+    // DirectX modes are Windows-only. Use Allegro's cross-platform autodetect.
+    (void)fullscreen;
+    gfxmode = GFX_AUTODETECT;
+#endif
     
     //set text mode to reset graphics
     set_gfx_mode(GFX_TEXT,0,0,0,0);
@@ -811,6 +812,7 @@ bool Game::Initialize_Graphics()
      */
     if (videomodes.size() == 0)
     {
+#ifdef TLC_PLATFORM_WINDOWS
         GFX_MODE_LIST *list = NULL;
         list = get_gfx_mode_list(GFX_DIRECTX_ACCEL);
         for (int i = list->num_modes; i >= 0; i--)
@@ -833,6 +835,15 @@ bool Game::Initialize_Graphics()
 	    {
             debug << mode->bpp << "," << mode->width << "," << mode->height << endl;
         }
+#else
+        // Allegro's gfx mode list is driver-specific; DirectX is Windows-only.
+        // Provide a reasonable minimal list so the Settings UI has options.
+        VideoMode mode;
+        mode.bpp = desktop_colordepth;
+        mode.width = desktop_width;
+        mode.height = desktop_height;
+        videomodes.push_back(mode);
+#endif
     }
 
     return true;
@@ -1230,7 +1241,6 @@ void Game::RunGame()
 }
 
 
-#pragma region "UI events"
 
 void Game::UpdateKeyboard()
 {
@@ -1440,7 +1450,6 @@ void Game::OnMouseWheelDown(int x, int y)
 	}
 }
 
-#pragma endregion
 
 
 bool Game::InitializeModules()
@@ -1584,7 +1593,6 @@ bool Game::InitializeModules()
 }
 
 
-#pragma region "Text output"
 
 void Game::PrintDefault(BITMAP *dest,int x,int y, std::string text,int color)
 {
@@ -1718,5 +1726,4 @@ void Game::PrintMsg(MsgType msgtype, OfficerType officertype, std::string msg, i
 
 	printout(g_scrollbox, s, color, delay);
 }
-#pragma endregion
 

@@ -8,9 +8,9 @@
  
 
 #include "env.h"
-#include <fmod.hpp>
 #include <allegro.h>
 #include "Module.h"
+
 
 class ModuleStartup : public Module
 {

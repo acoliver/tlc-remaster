@@ -287,15 +287,12 @@ void ModuleEngineer::Draw()
 		//masked_blit(img_ship, g_game->GetBackBuffer(), 0, 0, 342+X_OFFSET, 95+viewer_offset_y, img_ship->w, img_ship->h);
 		draw_trans_sprite(g_game->GetBackBuffer(), img_ship, 342+X_OFFSET, 95+viewer_offset_y);
 
-#pragma region Bars Base
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, img_bar_base->w, img_bar_base->h); //laser
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, img_bar_base->w, img_bar_base->h); //missile
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, img_bar_base->w, img_bar_base->h); //hull
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, img_bar_base->w, img_bar_base->h); //Armor
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, img_bar_base->w, img_bar_base->h); //shields
 		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, img_bar_base->w, img_bar_base->h); //engines
-#pragma endregion
-#pragma region Bars Actual
 		float percentage = 0;
 		percentage = g_game->gameState->getShip().getLaserIntegrity() / 100.0f;
 		masked_blit(img_bar_laser, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, img_bar_laser->w * percentage, img_bar_base->h); //laser
@@ -318,8 +315,6 @@ void ModuleEngineer::Draw()
 		
 		percentage =  g_game->gameState->getShip().getEngineIntegrity() / 100.0f;
 		masked_blit(img_bar_engine, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, img_bar_engine->w * percentage, img_bar_base->h); //engines
-#pragma endregion
-#pragma region Lines
 		line(g_game->GetBackBuffer(), 407+X_OFFSET, 104+viewer_offset_y, 560+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
 		line(g_game->GetBackBuffer(), 560+X_OFFSET, 130+viewer_offset_y, 690+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
 
@@ -335,8 +330,6 @@ void ModuleEngineer::Draw()
 
 		line(g_game->GetBackBuffer(), 408+X_OFFSET, 355+viewer_offset_y, 275+X_OFFSET, 380+viewer_offset_y, GREEN); //engine line
 		line(g_game->GetBackBuffer(), 275+X_OFFSET, 380+viewer_offset_y, 170+X_OFFSET, 380+viewer_offset_y, GREEN); //engine line
-#pragma endregion
-#pragma region Buttons
 		button[0]->SetY(135 + viewer_offset_y);
 		button[1]->SetY(180 + viewer_offset_y);
 		button[2]->SetY(230 + viewer_offset_y);
@@ -345,10 +338,8 @@ void ModuleEngineer::Draw()
 		for(int i=0; i<5; i++){
 			button[i]->Run(g_game->GetBackBuffer());
 		}
-#pragma endregion
 	}
 
-#pragma region Text
 	Officer *currentEngineer = g_game->gameState->getCurrentEng();
 	std::string eng = currentEngineer->getLastName() + "-> ";
 	Ship ship = g_game->gameState->getShip();
@@ -472,7 +463,6 @@ void ModuleEngineer::Draw()
 	}
 	g_game->gameState->setShip(ship);
 	masked_blit(text, g_game->GetBackBuffer(), 0, 0, X_OFFSET, viewer_offset_y, VIEWER_WIDTH, VIEWER_HEIGHT);
-#pragma endregion
 
 	if(module_active){
 		if(viewer_offset_y < -30)

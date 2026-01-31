@@ -3,7 +3,7 @@
 
 #include "env.h"
 #include <map>
-#include <math.h>
+#include <cmath>
 
 class Point2D;
 struct BITMAP;

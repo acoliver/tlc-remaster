@@ -3,8 +3,10 @@
 #include "CargoSize.h"
 #include "Game.h"
 
+#include <string>
 
 using namespace std;
+
 
 CargoSize::CargoSize(): Requirement(),
 	size(0)
@@ -44,10 +46,11 @@ void CargoSize::UnregisterSelf()
 
 bool CargoSize::Check()
 {
-	if (Game::gameState->CalculateCargoStacks() < size)
+	if (Game::gameState->m_ship.getCargoPodCount() < size)
 		completed = false;
 	else
 		completed = true;
+
 
 	return completed;
 }
@@ -55,11 +58,9 @@ bool CargoSize::Check()
 std::string CargoSize::ToString()
 {
 	std::string str = "You must have ";
-	char *sizeStr = new char[10];
-	_itoa(size, sizeStr, 10);
-	str += sizeStr;
+	str += std::to_string(size);
 	str += " Cargo Pods";
-	delete [] sizeStr;
 
 	return str;
 }
+

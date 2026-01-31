@@ -114,7 +114,6 @@ void PlayerShipSprite::Draw(BITMAP *dest)
 
 
 
-#pragma region MOVEMENT
 
 void PlayerShipSprite::TurnLeft()
 {
@@ -386,7 +385,6 @@ double PlayerShipSprite::GetCurrentSpeed()
 	return speed;
 }
 
-#pragma endregion
 
 
 

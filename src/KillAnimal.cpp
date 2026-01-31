@@ -82,22 +82,19 @@ void KillAnimal::OnKillAnimal(int animalid)
 std::string KillAnimal::ToString()
 {
 	Item *item = g_game->dataMgr->GetItemByID(animalid);
-	char *amountstr = new char[10];
-	itoa(amount, amountstr, 10);
-	char *countstr = new char[10];
-	itoa(count, countstr, 10);
+
+	const std::string amountStr = std::to_string(amount);
+	const std::string countStr = std::to_string(count);
 
 	std::string str = "Exterminate ";
-	str += amountstr;
+	str += amountStr;
 	str += " ";
 	str += item->name;
 	str += " - ";
-	str += countstr;
+	str += countStr;
 	str += "/";
-	str += amountstr;
+	str += amountStr;
 
-	delete [] amountstr;
-	delete [] countstr;
 
 	return str;
 }

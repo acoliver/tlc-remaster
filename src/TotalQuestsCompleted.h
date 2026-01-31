@@ -8,8 +8,10 @@
 #include "tinyxml/tinyxml.h"
 #include "QuestMgr.h"
 #include "GameState.h"
+#include "Requirement.h"
 
 class TotalQuestsCompleted : public Requirement
+
 {
 public:
 	TotalQuestsCompleted();

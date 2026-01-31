@@ -393,7 +393,6 @@ void ModuleCargoWindow::Draw()
 }
 
 
-#pragma region INPUT
 
 void ModuleCargoWindow::OnKeyPress( int keyCode ){}
 void ModuleCargoWindow::OnKeyPressed(int keyCode){}
@@ -445,7 +444,6 @@ void ModuleCargoWindow::OnMouseWheelUp(int x, int y){}
 
 void ModuleCargoWindow::OnMouseWheelDown(int x, int y){}
 
-#pragma endregion
 
 void ModuleCargoWindow::Close()
 {

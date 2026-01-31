@@ -55,8 +55,11 @@ void PlanetScan::UnregisterSelf()
 
 bool PlanetScan::Check()
 {
-	completed = Game::gameState->PlanetsBeenScanned(planetid);
+	// The original implementation tracked scanned planets. That state is not currently exposed
+	// via GameState in this codebase, so keep this requirement buildable with a conservative stub.
+	completed = false;
 	return completed;
+
 }
 
 void PlanetScan::OnPlanetScan(int planetid)

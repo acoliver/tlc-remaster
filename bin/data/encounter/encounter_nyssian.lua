@@ -457,9 +457,9 @@ if (plot_stage == 1) then -- initial plot state
 	questions[50000] = {
 		action="branch",
 		choices = {
-			{ text="What type of freak are you?",  goto=51000 },
-			{ text="Home world location", goto=52000 },
-			{ text="<Back>",  goto=1 }
+			{ text="What type of freak are you?",  ["goto"]=51000 },
+			{ text="Home world location", ["goto"]=52000 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
 
@@ -468,22 +468,22 @@ elseif (plot_stage == 2) or (plot_stage == 3) or (plot_stage == 4) then -- other
 	questions[50000] = {
 		action="branch",
 		choices = {
-			{ text="Current news", goto=60000 },
-			{ text="What type of freak are you?",  goto=51000 },
-			{ text="Home world location", goto=52000 },
-			{ text="<Back>",  goto=1 }
+			{ text="Current news", ["goto"]=60000 },
+			{ text="What type of freak are you?",  ["goto"]=51000 },
+			{ text="Home world location", ["goto"]=52000 },
+			{ text="<Back>",  ["goto"]=1 }
 		}
 	}
 
 end
 	questions[51000] = {
-		action="jump", goto=51001, ftest= 6, -- very aggravating
+		action="jump", ["goto"]=51001, ftest= 6, -- very aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about what type of freak you are",
 		alien={"Wisdom drifts on endless winds, pausing, and is gone."}
 	}
 	questions[51001] = {
-		action="jump", goto=997, -- terminate
+		action="jump", ["goto"]=997, -- terminate
 		player="What does that mean?",
 		alien={"<Silence>"}
 	}
@@ -492,19 +492,19 @@ end
 if (plot_stage == 1) then -- initial plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"Impertinent question, yet allowances must be made.  I am an ambassador piloting this grand Nyssian explorer vessel.   The mysteries of the universe may be disclosed, or a curse of ignorance placed upon you at my whim.  Choose your next inquiry carefully."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Many aspects of the all can be seen in the other fragments of all.  I learn from others in the same way that I learn from you and your race: by every action you take, your every gesture and motion, your questions, your desires and hidden motives.  Observers of ours monitor most worlds and we share this information with you freely."}
 	}
 	questions[30000] = {
-		action="jump", goto=31001, ftest= 1,
+		action="jump", ["goto"]=31001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Many things do we know, seeker of the wastes, and many things I will reveal for the asking.  Are you interested in the Great War, the Golden Ages, the Ancients, Ourselves, or perhaps more about the history of your own people of the Empire?"}
@@ -514,19 +514,19 @@ if (plot_stage == 1) then -- initial plot state
 elseif (plot_stage == 2) then -- virus plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"Impertinent question, yet allowances must be made during this deadly era.  I am an ambassador piloting this grand Nyssian explorer vessel.  I do have some general information about the infection plaguing the sector, but I am willing to repeat information about ourselves."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Many aspects of the all can be seen in the other fragments of all.  I learn from others in the same way that I learn from you and your race: by every action you take, your every gesture and motion, your questions, your desires and hidden motives.  If you wish current news on this infection instead please address this as a general inquiry."}
 	}
 	questions[30000] = {
-		action="jump", goto=31001, ftest= 1,
+		action="jump", ["goto"]=31001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Many things do we know about the events prior to this current infection, and many things I will reveal for the asking.  Are you interested in the Great War, the Golden Ages, the Ancients, Ourselves, or perhaps more about the history of your own people of the Empire?"}
@@ -536,19 +536,19 @@ elseif (plot_stage == 2) then -- virus plot state
 elseif (plot_stage == 3) then -- war plot state
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"Impertinent question, yet allowances must be made during this deadly era.  I am an ambassador piloting this grand Nyssian explorer vessel.  I do have some general information about the Minex War, but I am willing to repeat information about ourselves."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Many aspects of the all can be seen in the other fragments of all.  I learn from others in the same way that I learn from you and your race: by every action you take, your every gesture and motion, your questions, your desires and hidden motives.  If you wish current news about the warfare instead, please address this as a general inquiry."}
 	}
 	questions[30000] = {
-		action="jump", goto=31001, ftest= 1,
+		action="jump", ["goto"]=31001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Many things do we know, brave warrior and seeker.  Are you interested in the previous Great War, the Golden Ages, the Ancients, Ourselves, or perhaps more about the history of your own people of the Empire?"}
@@ -558,19 +558,19 @@ elseif (plot_stage == 4) then -- ancients plot state
 
 
 	questions[10000] = {
-		action="jump", goto=11001, ftest= 1,
+		action="jump", ["goto"]=11001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"I am a formally represented ambassador of this grand Nyssian explorer vessel.  My databanks are at your disposal, and I do have some new general information about this new dark age and the repercussions of the war, but I am willing to repeat general information about ourselves."}
 	}
 	questions[20000] = {
-		action="jump", goto=21001, ftest= 1,
+		action="jump", ["goto"]=21001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the other races in the galaxy",
 		alien={"Many aspects of the all can be seen in the other fragments of all.  I learn from others in the same way that I learn from you and your race: by every action you take, your every gesture and motion, your questions, your desires and hidden motives.  If you wish current news in this post-war period instead, please address this as a general inquiry."}
 	}
 	questions[30000] = {
-		action="jump", goto=31001, ftest= 1,
+		action="jump", ["goto"]=31001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the past",
 		alien={"Many things do we know, mighty diplomatic and ender of wars.  Are you interested in the Great War, the Golden Ages, the Ancients, Ourselves, or perhaps more about the history of your own people of the Empire?"}
@@ -579,7 +579,7 @@ elseif (plot_stage == 4) then -- ancients plot state
 end
 
 	questions[52000] = {
-		action="jump", goto=50000, ftest= 3, -- aggravating
+		action="jump", ["goto"]=50000, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="the location of your home world", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Our colony worlds are legion.  Those who lack the material wealth to achieve this material utopia as seen in this vessel continue to strive materialistically on them to this day.  I do not bother with them, neither should you."}
@@ -588,26 +588,26 @@ end
 	questions[21001] = {
 		action="branch",
 		choices = {
-			{ text="The Tafel",  goto=21000 },
-			{ text="The Minex",  goto=22000 },
-			{ text="The Bar-zhon",  goto=23000 },
-			{ text="<More>",  goto=21002 },
-			{ text="<Back>", goto=1 }
+			{ text="The Tafel",  ["goto"]=21000 },
+			{ text="The Minex",  ["goto"]=22000 },
+			{ text="The Bar-zhon",  ["goto"]=23000 },
+			{ text="<More>",  ["goto"]=21002 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[21002] = {
 		action="branch",
 		choices = {
-			{ text="The Spemin",  goto=24000 },
-			{ text="The Thrynn and Elowan",  goto=25000 },
-			{ text="The Thrynn and Elowan conflict",  goto=26000 },
-			{ text="<Back>", goto=1 }
+			{ text="The Spemin",  ["goto"]=24000 },
+			{ text="The Thrynn and Elowan",  ["goto"]=25000 },
+			{ text="The Thrynn and Elowan conflict",  ["goto"]=26000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 if (plot_stage == 1) then
 
 	questions[21000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Tafel",
 		alien={"The Tafel balance on the knife's edge of good and evil.  Much twisted by greed and control are they, yet they still maintain the openness of children and accept teaching.  As difficult as they are to reach, I still try to instruct them. Through their cybernetics the Tafel achieve a degree of information sharing and insightful deduction unmatched by anyone, yet their embrace of the machine mind hath left them blind spots to numerous to count."}
@@ -616,7 +616,7 @@ if (plot_stage == 1) then
 elseif (plot_stage == 2) or (plot_stage == 3) or (plot_stage == 4) then
 
 	questions[21000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Tafel",
 		alien={"The Tafel balanced on the knife's edge of good and evil.  Their embrace of the machine mind hath left them blind spots that were exploited.  They have lost the racial battle for sanity and sunk into a permanent state of unreasonable aggression. I mourn for them."}
@@ -627,7 +627,7 @@ end
 if (plot_stage == 1) or (plot_stage == 2) then
 
 	questions[22000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Minex",
 		alien={"The Minex are a race almost as ancient as our own.  Great strain have they endured in the conflaguration of species, the great war of ancient times.  I worry about our brothers as they have fallen into fear and have decided not to interact with others.  The day will arrive when the Minex conquer their fear and on this day the eighth Golden age will arrive and the entire sector will unite in peace and prosperity."}
@@ -636,7 +636,7 @@ if (plot_stage == 1) or (plot_stage == 2) then
 elseif  (plot_stage == 3)  then
 
 	questions[22000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Minex",
 		alien={"The Minex are an ancient race driven mad by Vissah, the black wind of death.  Great strain have they endured in the conflaguration of species, the great war of ancient times.  They turned inward and build a tremendous military machine.  Now Vissah twists their paranoia in a foolhardy attempt to militarily defeat everyone simultaneously which will sooner or later exhaust the number of ships they have built"}
@@ -647,7 +647,7 @@ end
 if (plot_stage == 4) then
 
 	questions[22000] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Minex",
 		alien={"The Minex are an ancient race which were mad by Vissah. Now that you have reached them, they may be this sector's only hope in containing the growing number of infected ones.  Time is short."}
@@ -658,41 +658,41 @@ end
 
 
 	questions[23000] = {
-		action="jump", goto=23001,
+		action="jump", ["goto"]=23001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Bar-zhon",
 		alien={"The Bar-zhon are a courageous and warlike race undergoing a minimal civil war of their own.  Great strength and cunning are seen from them and they treat other races with honor and respect.  Their opposition does not share their morals however."}
 	}
 	questions[23001] = {
-		action="jump", goto=21001,
+		action="jump", ["goto"]=21001,
 		player="[AUTO_REPEAT]",
 		alien={"A good number of the Barzhon population simply rebelled 40 years ago and have survived to this day in hiding.  Many privateers of other races have joined them and a menace they are to those who they perceive as new or weak.  This opposition is known as The Coalition and their once high-minded principles have degraded into open piracy to obtain the technologies and resources they need to continue.  The Nyssian have trained them to think otherwise, yet you may also have to do the same."}
 	}
 	questions[24000] = {
-		action="jump", goto=21002,
+		action="jump", ["goto"]=21002,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Spemin",
 		alien={"The Spemin are an overly friendly childlike race who wishes the acceptance of all.  Their misfortune of isolation between Minex and Thrynn space has not dampened their zeal for exploration.  Their immaturity is obvious, yet surprising knowledge have they uncovered at times."}
 	}
 	questions[25000] = {
-		action="jump", goto=25001,
+		action="jump", ["goto"]=25001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Thrynn and Elowan",
 		alien={"The Thrynn are disdainful of others, until you prove to them your militaristic strength.  Their race and the Elowan appeared only a millennia ago yet during their entire space faring history both have been locked in an eternal conflict with each other." }
 	}
 	questions[25001] = {
-		action="jump", goto=21002,
+		action="jump", ["goto"]=21002,
 		player="[AUTO_REPEAT]",
 		alien={"Neither the Thrynn and Elowan has much concern for anything other than the conflict between themselves anymore.   Neither has either side been capable of making progress against the other." }
 	}
 	questions[26000] = {
-		action="jump", goto=26001,
+		action="jump", ["goto"]=26001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Thrynn and Elowan conflict",
 		alien={"The Thrynn militaristic code values technology and industry, while the Elowan value secrecy and defense.  The majority of skirmishes begin with the Thrynn launching barely adequate offensive forces effectively too small to accomplish anything against the isolationist Elowan.  The pace of these attacks has been frantic and endless." }
 	}
 	questions[26001] = {
-		action="jump", goto=21002,
+		action="jump", ["goto"]=21002,
 		player="[AUTO_REPEAT]",
 		alien={"The feud between the Thrynn and Elowan has spanned an almost infinite number of skirmishes plus several major battles.  At several times both races have driven each other to the brink of extinction yet somehow both continue to survive.  The powerful defenses and tightly concentrated fleets of the Elowan eventually win through concentration of firepower in their battles." }
 	}
@@ -700,33 +700,33 @@ end
 	questions[11001] = {
 		action="branch",
 		choices = {
-			{ text="Nyssian history",  goto=11000 },
-			{ text="Nyssian biology", goto=12000 },
-			{ text="Your agenda", goto=13000 },
-			{ text="Your technology", goto=14000 },
-			{ text="<Back>", goto=1 }
+			{ text="Nyssian history",  ["goto"]=11000 },
+			{ text="Nyssian biology", ["goto"]=12000 },
+			{ text="Your agenda", ["goto"]=13000 },
+			{ text="Your technology", ["goto"]=14000 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[11000] = {
-		action="jump", goto=11001,
+		action="jump", ["goto"]=11001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about Nyssian history",
 		alien={"As the universe exists, so have the Nyssian existed, drifting along infinite paths towards the continual, twisting, changing future." }
 	}
 	questions[12000] = {
-		action="jump", goto=11001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=11001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about Nyssian biology",
 		alien={"Nothing other than what your own eyes reveal.  More inspiring inquiries lie elsewhere." }
 	}
 	questions[13000] = {
-		action="jump", goto=13101, ftest= 2, -- insightful
+		action="jump", ["goto"]=13101, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about your agenda",
 		alien={"I drift through the stars for the winds pull me, acquiring knowledge and wisdom as I go.  Our oracle directs the paths to the infinite the achievable impossibility.  Those of us who remain in this mortal realm are those who are still seeking.  I only trade in wisdom.  For material concerns, seek out others." }
 	}
 	questions[14000] = {
-		action="jump", goto=11001,
+		action="jump", ["goto"]=11001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about your technology",
 		alien={"Our technology for dealing with the physical world was perfected as far as we wish it to be back in the ancient past in the third golden age.  Once material desires are met, it is foolishness to continue to pursue that beyond what what you as an individual need and want." }
@@ -735,31 +735,31 @@ end
 	questions[13101] = {
 		action="branch",
 		choices = {
-			{ title="You are a mystic?", text="So you consider yourself some type of mystic?", goto=13110 },
-			{ text="<Back>", goto=11001 }
+			{ title="You are a mystic?", text="So you consider yourself some type of mystic?", ["goto"]=13110 },
+			{ text="<Back>", ["goto"]=11001 }
 		}
 	}
 	questions[13110] = {
-		action="jump", goto=13112, ftest= 2, -- insightful
+		action="jump", ["goto"]=13112, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"Yes." }
 	}
 	questions[13112] = {
 		action="branch",
 		choices = {
-			{ title="Mystics are self-deluded.", text="Mystics are self-deluded individuals who do not accept the objective reality of physical laws in a physical universe.", goto=13113 },
-			{ title="Reality is harsh.", text="Reality is harsh.  Mystics die when others make demands on them.", goto=13114 },
-			{ text="<Back>", goto=11001 }
+			{ title="Mystics are self-deluded.", text="Mystics are self-deluded individuals who do not accept the objective reality of physical laws in a physical universe.", ["goto"]=13113 },
+			{ title="Reality is harsh.", text="Reality is harsh.  Mystics die when others make demands on them.", ["goto"]=13114 },
+			{ text="<Back>", ["goto"]=11001 }
 		}
 	}
 	questions[13113] = {
-		action="jump", goto=997, ftest= 6, -- very aggregating
+		action="jump", ["goto"]=997, ftest= 6, -- very aggregating
 		player="[AUTO_REPEAT]",
 		alien={"Acceptance of physical laws is a requirement, however acceptance of those close minded to possibility is not.  Return when your opaqueness of vision has changed." }
 	}
 
 	questions[13114] = {
-		action="jump", goto=13115, ftest= 6, -- very aggravating
+		action="jump", ["goto"]=13115, ftest= 6, -- very aggravating
 		player="[AUTO_REPEAT]",
 		alien={"<Silence>" }
 	}
@@ -771,48 +771,48 @@ end
 	questions[31001] = {
 		action="branch",
 		choices = {
-			{ text="The Great War",  goto=31100 },
-			{ text="The Golden Ages",  goto=31200 },
-			{ text="<More>",  goto=31002 },
-			{ text="<Back>", goto=1 }
+			{ text="The Great War",  ["goto"]=31100 },
+			{ text="The Golden Ages",  ["goto"]=31200 },
+			{ text="<More>",  ["goto"]=31002 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 	questions[31002] = {
 		action="branch",
 		choices = {
-			{ text="The Ancients",  goto=40000 },
-			{ text="Yourselves",  goto=31400 },
-			{ text="The Empire",  goto=31500 },
-			{ text="<Back>", goto=1 }
+			{ text="The Ancients",  ["goto"]=40000 },
+			{ text="Yourselves",  ["goto"]=31400 },
+			{ text="The Empire",  ["goto"]=31500 },
+			{ text="<Back>", ["goto"]=1 }
 		}
 	}
 
 	questions[31100] = {
-		action="jump", goto=31101,
+		action="jump", ["goto"]=31101,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Great War",
 		alien={"The great war began many thousands of cycles ago, ending the seventh golden age. Ill winds of psychic energy poured in from coreward and drove madness into all the races.  We of course were immune but were unable to stop the downfall of many civilizations." }
 	}
 	questions[31200] = {
-		action="jump", goto=31001,
+		action="jump", ["goto"]=31001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Golden Ages",
 		alien={"The study of these periods is extensive and long does not have relevance to activities today other than the demonstratable rise and fall of high civilization among the stars followed by a grand collapse time and time again. Another collapse draws nigh, or maybe a golden age?" }
 	}
 	questions[40000] = {
-		action="jump", goto=31301,  ftest= 1,
+		action="jump", ["goto"]=31301,  ftest= 1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Ancients",
 		alien={"The ancient ones permeated this area billions upon billions of years ago before all of the races.  They obtained mental, physical and technological perfection in all forms until they simply existed, needing nothing, occupying the simple uniform ruins we find across the galaxy to this day." }
 	}
 	questions[31400] = {
-		action="jump", goto=31401, ftest= 2, -- insightful
+		action="jump", ["goto"]=31401, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about yourselves",
 		alien={"I am as all spacefaring Nyssian are, watchers of the grand dance.  How could there not be an audience for the greatest of all tragedies?" }
 	}
 	questions[31500] = {
-		action="jump", goto=31501,
+		action="jump", ["goto"]=31501,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Empire",
 		alien={"I am actually surprised to encounter one of your race, but we have knowledge of your people and your history.  You empirians formed an alliance of spacefaring races that survived little over a millennium." }
@@ -821,80 +821,80 @@ end
 	questions[31101] = {
 		action="branch",
 		choices = {
-			{ text="Downfall of the civilizations?",  goto=31110 },
-			{ text="Start of the war", goto=31120 },
-			{ text="What civilizations collapsed?", goto=31130 },
-			{ title="Why is this relevant?", text="What does any of that have to do with today?",goto=31140 },
-			{ text="<Back>", goto=31001 }
+			{ text="Downfall of the civilizations?",  ["goto"]=31110 },
+			{ text="Start of the war", ["goto"]=31120 },
+			{ text="What civilizations collapsed?", ["goto"]=31130 },
+			{ title="Why is this relevant?", text="What does any of that have to do with today?",["goto"]=31140 },
+			{ text="<Back>", ["goto"]=31001 }
 		}
 	}
 	questions[31110] = {
-		action="jump", goto=31101,
+		action="jump", ["goto"]=31101,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the downfall of the civilizations",
 		alien={"Before this time great trading convoys filled the stars between the six great races.  These races were ourselves, the Minex, the Barzhon, the Sabion, the Bx, and the Transmodra." }
 	}
 	questions[31120] = {
-		action="jump", goto=31101,
+		action="jump", ["goto"]=31101,
 		player="[AUTO_REPEAT]",
 		playerFragment="how the war started", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Peaceful neighbors suddenly attacked each other for no reason, and the fighting escalated to levels which threaten to blot out stars.  When the great shift occurred, and reason and understanding flowed back into the minds of sentients, three races were gone." }
 	}
 	questions[31130] = {
-		action="jump", goto=31101,
+		action="jump", ["goto"]=31101,
 		player="[AUTO_REPEAT]",
 		playerFragment="what civilizations collapsed",  fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"These three races were the Sabion, the Bx, and the Transmodra were discovered to have been brought past the point of extinction, never to be heard from again.  Only we exist untouched by the consequences of this insanity." }
 	}
 	questions[31140] = {
-		action="jump", goto=31101, ftest= 3, -- aggravating
+		action="jump", ["goto"]=31101, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Learn from history, don't just listen.  The Barzhon still to this day fear open war and despite their warlike outlook, have yet to find the nerve to squash the open rebellion under their chins.  The Minex retreated inwards to themselves and have yet to look outward again." }
 	}
 	questions[31301] = {
 		action="branch",
 		choices = {
-			{ text="Origins of the ancients",  goto=31310 },
-			{ text="Where did they go?",  goto=31320 },
-			{ text="<More>",  goto=31302 },
-			{ text="<Back>", goto=31002 }
+			{ text="Origins of the ancients",  ["goto"]=31310 },
+			{ text="Where did they go?",  ["goto"]=31320 },
+			{ text="<More>",  ["goto"]=31302 },
+			{ text="<Back>", ["goto"]=31002 }
 		}
 	}
 	questions[31302] = {
 		action="branch",
 		choices = {
-			{ text="Perfection",  goto=31330 },
-			{ text="Endurium",  goto=31340 },
-			{ text="Personality of the ancients",  goto=31350 },
-			{ text="<Back>", goto=31002 }
+			{ text="Perfection",  ["goto"]=31330 },
+			{ text="Endurium",  ["goto"]=31340 },
+			{ text="Personality of the ancients",  ["goto"]=31350 },
+			{ text="<Back>", ["goto"]=31002 }
 		}
 	}
 	questions[31310] = {
-		action="jump", goto=31301,
+		action="jump", ["goto"]=31301,
 		player="[AUTO_REPEAT]",
 		playerFragment="where the ancients came from", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"From a galaxy far far away, a long long time ago.  Already the ancients were near their peak before they entered our galaxy.  The absolute uniformity of their ruins demonstrates this." }
 	}
 	questions[31320] = {
-		action="jump", goto=31301, ftest= 2, -- insightful
+		action="jump", ["goto"]=31301, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="where the ancients went", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"They obtained perfection and jumped into a higher dimension, or else they became pure energy, or else they transcended time and space.  All answers are equally valid as finite beings cannot comprehend infinity." }
 	}
 	questions[31330] = {
-		action="jump", goto=31302, ftest= 2, -- insightful
+		action="jump", ["goto"]=31302, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how the ancients achieved perfection",
 		alien={"No mortal being has this knowledge but the Nyssian have many insights.  Primarily they developed incredible prophetic powers even to the point of being able to follow our existence in their distant future.  Proof of this is their decision to seed the galaxy with endurium." }
 	}
 	questions[31340] = {
-		action="jump", goto=31302,
+		action="jump", ["goto"]=31302,
 		player="[AUTO_REPEAT]",
 		playerFragment="why they left endurium behind", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"To jumpstart our own development by making it possible to develop interstellar spaceflight by lesser beings such as ourselves.  It is the goal of each of us to develop our own prophetic abilities and to one day obtain a similar state of perfection." }
 	}
 	questions[31350] = {
-		action="jump", goto=31302,
+		action="jump", ["goto"]=31302,
 		player="[AUTO_REPEAT]",
 		playerFragment="about what the ancients were like",
 		alien={"No race has the answer to this question, as even in the chronicles of the ancient Leghk vague to the point of mirroring the observations of races today.  We know they were once threatened by a demonic entity or race, and that they developed incredible mental powers to survive." }
@@ -903,33 +903,33 @@ end
 	questions[31401] = {
 		action="branch",
 		choices = {
-			{ text="Nyssian people",  goto=31410 },
-			{ text="Crew on board",  goto=31420 },
-			{ text="Trade",  goto=31430 },
-			{ text="Type of government",  goto=31440 },
-			{ text="<Back>", goto=31002 }
+			{ text="Nyssian people",  ["goto"]=31410 },
+			{ text="Crew on board",  ["goto"]=31420 },
+			{ text="Trade",  ["goto"]=31430 },
+			{ text="Type of government",  ["goto"]=31440 },
+			{ text="<Back>", ["goto"]=31002 }
 		}
 	}
 	questions[31410] = {
-		action="jump", goto=31401, ftest= 3, -- aggravating
+		action="jump", ["goto"]=31401, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Nyssian people, not just you",
 		alien={"Dirt grubbing money pinchers, the lot of us.  In early times our race attempted to build huge commercial interstellar enterprises, great concordances of sentients.  Each time war tore down what was built.  Finally some of us learned and traveled solely to develop the mind." }
 	}
 	questions[31420] = {
-		action="jump", goto=31401,
+		action="jump", ["goto"]=31401,
 		player="[AUTO_REPEAT]",
 		playerFragment="the number of crew members aboard your ship", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Unlike your primitive vessel, one.  The progression of all societies is to concentrate more and more power in fewer and fewer individuals until each individual is all-powerful.  The only next step which our people pursue in all humility is godhood." }
 	}
 	questions[31430] = {
-		action="jump", goto=31401,
+		action="jump", ["goto"]=31401,
 		player="[AUTO_REPEAT]",
 		playerFragment="what your people trade",
 		alien={"Information in the form of knowledge or wisdom.  We are trading now.  Do not bother asking of crass physical possessions.  You do not have what I want and nothing of mine would be understandable by you.  I will grant you as a boon one valuable insight into this sector.  Many will refer to the ancient Hyperspace constellations: The Bow = 60,110, The Pearl Cluster = 20,210, The Wee Dipper = 115,180, The Mace = 200, 105, and the Ruby Tower = 10,90." }
 	}
 	questions[31440] = {
-		action="jump", goto=31401,
+		action="jump", ["goto"]=31401,
 		player="[AUTO_REPEAT]",
 		playerFragment="about what kind of government your people have",
 		alien={"Right before my personal ascension to space, my people followed a type of technological feudalism.  Since then who knows and who cares?  Dwellers of the heavens do not concern themselves with dirt-bound slaves." }
@@ -937,52 +937,52 @@ end
 	questions[31501] = {
 		action="branch",
 		choices = {
-			{ title="Survived?  Past tense?", text="Survived?  Past tense?  Do you know that all other humans are extinct?", goto=31510 },
-			{ title="Human alliance",  text="You mentioned that my race formed an alliance?", goto=31520 },
-			{ text="Where was this empire?",  goto=31530 },
-			{ text="<More>",  goto=31502 },
-			{ text="<Back>", goto=31002 }
+			{ title="Survived?  Past tense?", text="Survived?  Past tense?  Do you know that all other humans are extinct?", ["goto"]=31510 },
+			{ title="Human alliance",  text="You mentioned that my race formed an alliance?", ["goto"]=31520 },
+			{ text="Where was this empire?",  ["goto"]=31530 },
+			{ text="<More>",  ["goto"]=31502 },
+			{ text="<Back>", ["goto"]=31002 }
 		}
 	}
 	questions[31502] = {
 		action="branch",
 		choices = {
-			{ text="Empire humanity",  goto=31540 },
-			{ text="The future",  goto=31550 },
-			{ text="Do you have any advice?",  goto=31560 },
-			{ text="<Back>", goto=31002 }
+			{ text="Empire humanity",  ["goto"]=31540 },
+			{ text="The future",  ["goto"]=31550 },
+			{ text="Do you have any advice?",  ["goto"]=31560 },
+			{ text="<Back>", ["goto"]=31002 }
 		}
 	}
 	questions[31510] = {
-		action="jump", goto=31501,
+		action="jump", ["goto"]=31501,
 		player="[AUTO_REPEAT]",
 		alien={"Certainty?  No.  But I know that your race developed in a distant sector that was scouted by one of our ships 200 years ago and neither did he find any living humans nor had any indigenous alien race seen any of your race in the prior 900 years." }
 	}
 	questions[31520] = {
-		action="jump", goto=31501,
+		action="jump", ["goto"]=31501,
 		player="[AUTO_REPEAT]",
 		alien={"Yes, a group of Thrynn, Elowan, some insectoid race and a slave race of synthetic mechanicals cooperated in a limited fashion over that period of time.  A moralistic crusade of anti-slavers destroyed your corrupt people, aided by a holy vanguard.  This is all we know." }
 	}
 	questions[31530] = {
-		action="jump", goto=31501,
+		action="jump", ["goto"]=31501,
 		player="[AUTO_REPEAT]",
 		playerFragment="where this entire existed", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"The ruins of your home world live in a dead region of space, too far a distance for one of your ships to travel without at least 12 times as much fuel as your maximum cargo capacity.  Fate transported your race here.  Your people must be satisfied with the here." }
 	}
 	questions[31540] = {
-		action="jump", goto=31502,
+		action="jump", ["goto"]=31502,
 		player="[AUTO_REPEAT]",
 		playerFragment="about what Empire humans are like",
 		alien={"Your provincial nature never attracted our attention in the past.  Our secondhand reports indicate that your people have remained static and refused to learn to travel great distances to learn and grow.  Lest you misunderstand, travel in the mind, not physical distance." }
 	}
 	questions[31550] = {
-		action="jump", goto=31502, ftest= 2, -- insightful
+		action="jump", ["goto"]=31502, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="what the future holds", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1}},
 		alien={"Only your future and none other may be revealed to one.  A great future awaits you.  Audacious and precipitous action will be needed by you soon.  The great races gradually settle and peace and prosperity will resume based upon your actions." }
 	}
 	questions[31560] = {
-		action="jump", goto=31502, ftest= 2, -- insightful
+		action="jump", ["goto"]=31502, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		alien={"An individual sentient is a moat, a flick of dust in this great universe.  Only by accepting your insignificance and inability to affect anything will you and your people begin to learn from others." }
 	}
@@ -991,7 +991,7 @@ if (plot_stage == 2) then -- virus plot state
 
 
 	questions[60000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about current events",
 		alien={"A dark age is now upon us all.  A hell-borne infection has appeared everywhere and threatens the existence of all life. Benefit from my wisdom quickly as I plan to depart this area." }
@@ -1000,33 +1000,33 @@ if (plot_stage == 2) then -- virus plot state
 	questions[60001] = {
 		action="branch",
 		choices = {
-			{ text="Infection", goto=61000 },
-			{ text="Dark Age", goto=62000 },
-			{ text="Curing this infection", goto=63000 },
-			{ text="Specifics", goto=64000 },
-			{ text="<Back>", goto=50000 }
+			{ text="Infection", ["goto"]=61000 },
+			{ text="Dark Age", ["goto"]=62000 },
+			{ text="Curing this infection", ["goto"]=63000 },
+			{ text="Specifics", ["goto"]=64000 },
+			{ text="<Back>", ["goto"]=50000 }
 		}
 	}
 	questions[61000] = {
-		action="jump", goto=61001,
+		action="jump", ["goto"]=61001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about this infection",
 		alien={"It is death, simultaneously destroying all without reservation.  The Tafel woke this blight shortly after they landed on a monstrous world, the second planet of a yellow star in the head of the Mace." }
 	}
 	questions[62000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="what brought about this dark age", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"A mystic darkness now contaminates this region of space.  This is all that can be said.  No causes, no solutions, only hope that it will pass." }
 	}
 	questions[63000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="how this infection could be stopped", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The virus which infects us all mutates drastically and is nearly immune to any types of radiation.  It is supernatural and could not have been created by any science nor evolved from any other form." }
 	}
 	questions[64000] = {
-		action="jump", goto=60001, ftest= 2, -- insightful
+		action="jump", ["goto"]=60001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="any other specific details about the infection", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Those who being spared death enter madness.  During these mad phases those near the Minex border go out of their way to attack the Minex.  We do not know the reason for this." }
@@ -1034,26 +1034,26 @@ if (plot_stage == 2) then -- virus plot state
 	questions[61001] = {
 		action="branch",
 		choices = {
-			{ text="Rapid transmission of the virus", goto=61100 },
-			{ text="The virus causes death?", goto=61200 },
-			{ text="Progress towards a cure", goto=61300 },
-			{ text="<Back>", goto=60001 }
+			{ text="Rapid transmission of the virus", ["goto"]=61100 },
+			{ text="The virus causes death?", ["goto"]=61200 },
+			{ text="Progress towards a cure", ["goto"]=61300 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[61100] = {
-		action="jump", goto=61001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=61001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="how the virus could have spread so widely so quickly.  What type of incubation period would have allowed it to spread everywhere before anyone noticed?", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Incubation period?   Nothing can contain Vissah, the black wind of death that follows prosperity.  Sometimes she is war and other times she is madness.  This time she is pure death." }
 	}
 	questions[61200] = {
-		action="jump", goto=61001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=61001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="how the infection spreads if it causes death to all. Wouldn't everyone now be dead?", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The touch of Vissah does not kill all.  Some live but endure periods of madness, others are instantly destroyed.  Those aboard ships are usually spared.  Over three quarters of planet-bound infected simply die within hours." }
 	}
 	questions[61300] = {
-		action="jump", goto=61001,
+		action="jump", ["goto"]=61001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about your scientist's progress towards a cure",
 		alien={"Science will not stop this.  Vissah will not be denied.  Maybe in time the madness will pass.  The few survivors, if we have been chosen to survive, will rebuild civilization.  Nothing can stop fate.  It may be simply that we have been chosen to vacate reality to make room for new forms." }
@@ -1064,7 +1064,7 @@ elseif (plot_stage == 3) then -- war plot state
 
 
 	questions[60000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about current events",
 		alien={"Ill winds blow again through the sector.  The Minex are given death's chariot and dominion to destroy all others.  Madness strikes all, but strikes the Minex most severely." }
@@ -1072,26 +1072,26 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[60001] = {
 		action="branch",
 		choices = {
-			{ text="Why the Minex are going to war", goto=61000 },
-			{ text="Stopping the Minex", goto=62000 },
-			{ text="How great wars been resolved previously", goto=63000 },
-			{ text="<Back>", goto=50000 }
+			{ text="Why the Minex are going to war", ["goto"]=61000 },
+			{ text="Stopping the Minex", ["goto"]=62000 },
+			{ text="How great wars been resolved previously", ["goto"]=63000 },
+			{ text="<Back>", ["goto"]=50000 }
 		}
 	}
 	questions[61000] = {
-		action="jump", goto=61001,
+		action="jump", ["goto"]=61001,
 		player="[AUTO_REPEAT]",
 		playerFragment="why the Minex are attacking everyone", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The finger of Vissah is mysterious.  Mad ones infected by her touch have been uniting and attacking the Minex.  The Minex misguided or preemptive wave of destructive retaliation has been unusually successful.  Again a balanced conflagration ensures its continuity, since an imbalance would burn itself out quickly." }
 	}
 	questions[62000] = {
-		action="jump", goto=62001, ftest= 2, -- insightful
+		action="jump", ["goto"]=62001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how we can stop the Minex", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Your part is not predetermined.  Wisdom and earnest effort may yet minimize the destruction.  The chaotic patterns best suited to unravel even the slightest part of this conflagration are impossible to foresee." }
 	}
 	questions[63000] = {
-		action="jump", goto=63001, ftest= 2, -- insightful
+		action="jump", ["goto"]=63001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how these sector-wide wars been resolved in the past", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Waves of genocide and extinction are the rule in existence.  Chaos and war cleanse the stars in an unending tragic pattern.  So it always has it been even in ancient times and so it will always be.  They are burned out in time, not stopped." }
@@ -1099,31 +1099,31 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[61001] = {
 		action="branch",
 		choices = {
-			{ text="Infected attacking the Minex", goto=61100 },
-			{ text="Balanced conflagration", goto=61200 },
-			{ text="Vissah", goto=61300 },
-			{ text="<Back>", goto=60001 }
+			{ text="Infected attacking the Minex", ["goto"]=61100 },
+			{ text="Balanced conflagration", ["goto"]=61200 },
+			{ text="Vissah", ["goto"]=61300 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[61100] = {
-		action="jump", goto=61001,
+		action="jump", ["goto"]=61001,
 		player="[AUTO_REPEAT]",
 		playerFragment="why those who are infected go out of their way to attack the Minex", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Isolation has frustrated Vissah's influence, or perhaps revealed the next stage of her design.  If the virus cannot infect and kill the Minex, perhaps the virus-infected can.  Will you deny that glimpse of death's supernatural origin?" }
 	}
 	questions[61200] = {
-		action="jump", goto=61201,
+		action="jump", ["goto"]=61201,
 		player="[AUTO_REPEAT]",
 		playerFragment="the meaning of a balanced conflagration", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"I perceive simplification is necessary.  In warfare equal forces will grind themselves down ensuring maximum destruction.  Unequal forces result in swift and decisive conclusions.  The force and technology of the Minex has now been demonstrated to equal that of every other race combined." }
 	}
 	questions[61201] = {
-		action="jump", goto=61001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=61001, ftest= 3, -- aggravating
 		player="So no one will win?",
 		alien={"Your mind continues to cloud.  Inevitably one side will win, however the goal is maximum destruction.  No one wishes to obtain total destruction, yet the universe is mostly dead space.  Destructive forces are more than capable at halting life's offenses." }
 	}
 	questions[61300] = {
-		action="jump", goto=61001, ftest= 2, -- insightful
+		action="jump", ["goto"]=61001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about who or what is Vissah",
 		alien={"The personified force of death or anti-life.  Life is constantly divisive, countless goals all being pursued.  Anti-life is united at a single goal of entropy and clean destruction.  She always draws closest to areas where life has been the most successful, moving off once maximum energies are dissipated." }
@@ -1131,63 +1131,63 @@ elseif (plot_stage == 3) then -- war plot state
 	questions[62001] = {
 		action="branch",
 		choices = {
-			{ text="Stopping the the Minex War", goto=62100 },
-			{ text="Convincing the Minex to stop fighting", goto=62200 },
-			{ text="Talking to the Minex", goto=62300 },
-			{ text="<Back>", goto=60001 }
+			{ text="Stopping the the Minex War", ["goto"]=62100 },
+			{ text="Convincing the Minex to stop fighting", ["goto"]=62200 },
+			{ text="Talking to the Minex", ["goto"]=62300 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[62100] = {
-		action="jump", goto=62001,
+		action="jump", ["goto"]=62001,
 		player="[AUTO_REPEAT]",
 		playerFragment="how to stop the Minex War", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"My knowledge on this matter is yet imperfect, but the answer lies most assuredly with the Minex themselves.  A stubborn people they are and unlikely it is that they will be stopped, but with proper convincing they may stop themselves." }
 	}
 	questions[62200] = {
-		action="jump", goto=62201, ftest= 2, -- insightful
+		action="jump", ["goto"]=62201, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about how to convince the Minex to stop their warfare",
 		alien={"The Minex people do not have any interest in words, only truth.  Evidence that shows that both their actions are unproductive and that a cure is possible must be presented by a supplicant." }
 	}
 	questions[62201] = {
-		action="jump", goto=62001, ftest= 2, -- insightful
+		action="jump", ["goto"]=62001, ftest= 2, -- insightful
 		player="Where is this evidence?",
 		alien={"Death's minions bar our Oracle, but impressions point us in the direction of the Tafel.  They succumbed to this madness almost instantly while other races still struggle and survive.  Nothing else do we know." }
 	}
 	questions[62300] = {
-		action="jump", goto=62001, ftest= 2, -- insightful
+		action="jump", ["goto"]=62001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how to talk to the Minex", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The Minex people do not listen to outsiders, however they have perceptions beyond the natural.  A message must be composed before it is sent.  Grasp the strongest and simplest truth at all times when dealing with them." }
 	}
 	questions[63001] = {
-		action="jump", goto=63002,
+		action="jump", ["goto"]=63002,
 		player="This occurred in ancient times as well?",
 		alien={"Millennia ago an ancient race of withered beings perpetually fought a war against time itself. They extinguished all other living beings for countless ages until the ancients arrived and put a stop to their folly. We have several clues to their existence, a deserted city, the Minex, and yourselves." }
 	}
 	questions[63002] = {
 		action="branch",
 		choices = {
-			{ text="A deserted city", goto=63100 },
-			{ text="The Minex", goto=63200 },
-			{ text="Ourselves?  You mean humans?", goto=63300 },
-			{ text="<Back>", goto=60001 }
+			{ text="A deserted city", ["goto"]=63100 },
+			{ text="The Minex", ["goto"]=63200 },
+			{ text="Ourselves?  You mean humans?", ["goto"]=63300 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[63100] = {
-		action="jump", goto=63002,
+		action="jump", ["goto"]=63002,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the deserted city",
 		alien={"Back in the age of the ancients war, planetary surfaces were wiped clean by unimaginable forces.  A single city was once discovered in the Dagda system, but its location has been lost with time.  Those responsible for extinguishing the imperialists, The Bar-zhon, may retain further information." }
 	}
 	questions[63200] = {
-		action="jump", goto=63002,
+		action="jump", ["goto"]=63002,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the relationship between the Minex and these withered beings", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Our people have insights into the activities of all races, with the only exception of yours and the Minex.  The Minex appear conventional, but have an energy and form which we cannot emulate or fully understand.  Their biology is quite unique and follows patterns quite foreign to all others.  It is almost as if their life form was possibly, we dare say, designed." }
 	}
 	questions[63300] = {
-		action="jump", goto=63002, ftest= 2, -- insightful
+		action="jump", ["goto"]=63002, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how humanity might be related to these withered beings", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Yes, yourselves. Descriptions from ancient texts describe the slaves of this homicidal race to closely manage the physical description of humans. Unfortunately the slaves were described as deaf, mute, and dumb, only needed for menial physical labor.  The arrival of humanity at this darkest hour may not be coincidence." }
@@ -1197,7 +1197,7 @@ elseif (plot_stage == 4) then -- ancients plot state
 
 
 	questions[60000] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about current events",
 		alien={"Many races have now isolated individual biological virus strains actively being created and controlled by infernal nanomachines.  You have halted the Minex War machine and much more is known about the super virus strains, yet there is still no progress towards a cure." }
@@ -1205,38 +1205,38 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[60001] = {
 		action="branch",
 		choices = {
-			{ title="<Reveal Minex Secret>", text="The Minex revealed that the Ancients may have a base located at Lir IV.", goto=61000 },
-			{ text="Nano-machines?", goto=62000 },
-			{ text="Galactic Situation", goto=63000 },
-			{ text="Ancients might be causing the problems", goto=64000 },
-			{ text="<Back>", goto=6 }
+			{ title="<Reveal Minex Secret>", text="The Minex revealed that the Ancients may have a base located at Lir IV.", ["goto"]=61000 },
+			{ text="Nano-machines?", ["goto"]=62000 },
+			{ text="Galactic Situation", ["goto"]=63000 },
+			{ text="Ancients might be causing the problems", ["goto"]=64000 },
+			{ text="<Back>", ["goto"]=6 }
 		}
 	}
 	questions[61000] = {
-		action="jump", goto=61001, ftest= 2, -- insightful jjh
+		action="jump", ["goto"]=61001, ftest= 2, -- insightful jjh
 		--player="[AUTO_REPEAT]",
 		player="...and the second?",
 		alien={"I do not know anything about that particular planet, but our most prized lore concerning the Ancients reveals two clues that may be of use to locate information about them.  The first is that the largest and most densely concentrated ancient ruins are always found on the oldest m-class stars." }
 	}
 	questions[61001] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		player="[AUTO_REPEAT]",
 		alien={"The other clue is this: Interpolating patterns of ancient ruins show a particular focus and symmetry around the planetary coordinates of 47N X 74W and 37N X 8W.  Significant finds on many ancient worlds are often found at these coordinates.  I am not equipped for planetary expeditions. You will have to investigate yourself." }
 	}
 	questions[62000] = {
-		action="jump", goto=62001, ftest= 2, -- insightful
+		action="jump", ["goto"]=62001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about nanomachines",
 		alien={"An extremely advanced technology which is somehow sampling genetic material and creating organic control mechanisms to override default behaviors of individual sentients.  Death appears to be a side effect of multiple created strains interfering with each other.  Strict isolation protocols have curtailed the rate of death but not the madness the biological strains create." }
 	}
 	questions[63000] = {
-		action="jump", goto=63001,
+		action="jump", ["goto"]=63001,
 		player="[AUTO_REPEAT]",
 		playerFragment="anything new about the galactic situation", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The Tafel have suffered devastating losses and seem most susceptible to the control of the nanovirus.  The Coalition has overplayed their hand and has suffered serious setbacks by the Minex and Bar-zhon.  The Bar-zhon with the easing of military pressures has grounded most of their fleet.  Thrynn and Elowan unity and their natural biological resistance have reversed many of their losses.  The Spemin just keep reproducing." }
 	}
 	questions[64000] = {
-		action="jump", goto=64001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=64001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="if the Ancients could have possibly created this nano virus",
 		alien={"From what is known about the Ancients it seems unlikely but not beyond their capacity to create or stop this nano virus.  A race known as the 'enemy of all life' seems to be a more likely candidate." }
@@ -1244,38 +1244,38 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[62001] = {
 		action="branch",
 		choices = {
-			{ text="Races that possess the technology", goto=62100 },
-			{ text="Races with advanced knowledge", goto=62200 },
-			{ text="Alternative sources of advanced technology", goto=62300 },
-			{ text="Supernatural source", goto=62400 },
-			{ text="<Back>", goto=60001 }
+			{ text="Races that possess the technology", ["goto"]=62100 },
+			{ text="Races with advanced knowledge", ["goto"]=62200 },
+			{ text="Alternative sources of advanced technology", ["goto"]=62300 },
+			{ text="Supernatural source", ["goto"]=62400 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[62100] = {
-		action="jump", goto=62001,
+		action="jump", ["goto"]=62001,
 		player="[AUTO_REPEAT]",
 		playerFragment="which alien races possess the nanomachine technology that could have created the virus", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The ability to create self-replicating nanomachines that use stealth technology to mask their presence, know enough about genetics to rewrite any known species consciousness, establish control mechanisms to coordinate the actions of the controlled, and continue to perfect their control is inconceivably advanced.  It would be easier to simply devise nanomachines to dismantle and rebuild the entire cosmos.  None of the known races could be this advanced" }
 	}
 	questions[62200] = {
-		action="jump", goto=62201, ftest= 2, -- insightful
+		action="jump", ["goto"]=62201, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the alien races possessing any level of knowledge about nanotechnology",
 		alien={"Several, but only on a extremely simple level, such as for constructing superconductive microprocessors or for matter duplication.  Straightforward preprogramming tasks cannot compare to this technology." }
 	}
 	questions[62201] = {
-		action="jump", goto=62001,
+		action="jump", ["goto"]=62001,
 		player="So which races use nanotechnology?",
 		alien={"Ourselves and the Bar-zhon.  The Coalition doubtless has most Bar-Zhon technology as well.  All of it is light years behind anything like this nanovirus." }
 	}
 	questions[62300] = {
-		action="jump", goto=62001, ftest= 2, -- insightful
+		action="jump", ["goto"]=62001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about any other possible source for this virus",
 		alien={"Possibly the inaccessible rock planet of Cermait 6.  Shielding technology of incredible potency has prevented all known explorers from landing.  No one has any clue to the source of the shielding nor have observed any activity on the planet's surface to indicate habitation." }
 	}
 	questions[62400] = {
-		action="jump", goto=62001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=62001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		playerFragment="why you are no longer claiming a supernatural source for this virus", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The machinations of death are obviously benefiting from this new dark age.  Unlike previous dark ages, a technological influence appears to be behind these actions and dealing with the technological problem may be possible.  Successfully opposing Vissah in her pure form is suicide and if she is directly controlling events then there is no hope.  Your past successes suggest however that Vissah may not be directly responsible." }
@@ -1283,38 +1283,38 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[63001] = {
 		action="branch",
 		choices = {
-			{ text="Source of information", goto=63100 },
-			{ text="Technology and ruins", goto=63200 },
-			{ text="Telepathy", goto=63300 },
-			{ text="Races most affected", goto=63400 },
-			{ text="<Back>", goto=60001 }
+			{ text="Source of information", ["goto"]=63100 },
+			{ text="Technology and ruins", ["goto"]=63200 },
+			{ text="Telepathy", ["goto"]=63300 },
+			{ text="Races most affected", ["goto"]=63400 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[63100] = {
-		action="jump", goto=63101,
+		action="jump", ["goto"]=63101,
 		player="[AUTO_REPEAT]",
 		playerFragment="how you know so much about so many alien races", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"I like others of my kind have achieved perfection of form.  Our race can constantly renew our cells and change ourselves to any form, effectively making us immortal and allowing us to assume any shape or appearance.  Only mental and technological perfection remain to be achieved.  Be very honored, as none have merited this knowledge until now." }
 	}
 	questions[63101] = {
-		action="jump", goto=63001,
+		action="jump", ["goto"]=63001,
 		player="Do you have any spies among humans?", ftest= 3, -- aggravating
 		alien={"Truly we do not.  At first we dismissed your race as recent upstarts.  More recently the plague has curtailed all physical contact and we dare not leave the isolation of vacuum until this crisis has passed." }
 	}
 	questions[63200] = {
-		action="jump", goto=63001, ftest= 2, -- insightful
+		action="jump", ["goto"]=63001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="where you would recommend us to start looking for ancient technology and ruins", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The Coalition and Bar-zhon share the secret home world locations of the extinct Transmodra, Bx, and Sabion.   Many older civilization ruins are located near the landmark constellations:  The Bow = 60,110, The Pearl Cluster = 20,210, The Wee Dipper = 115,180, and The Ruby Tower = 10,90." }
 	}
 	questions[63300] = {
-		action="jump", goto=63301,
+		action="jump", ["goto"]=63301,
 		player="[AUTO_REPEAT]",
 		playerFragment="on what you know about telepathy among the races", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The Tafel used cybernetic mind to mind communication on a very limited sense, but they can not be consulted now.  The Spemin can barely be described as self-aware, but appear to have senses beyond the normal.  The Minex appear to have a form of telepathy which resembles a highly refined form of empathy and truth sense.  Only the hostile Uhlek and precursor races appear to be truly telepathic." }
 	}
 	questions[63400] = {
-		action="jump", goto=63001,
+		action="jump", ["goto"]=63001,
 		player="[AUTO_REPEAT]",
 		playerFragment="about which races have been affected the most by the infection",
 		alien={"The Minex and the Tafel share one common trait that has caused them the most difficulty: the conformity and unity of their societies.  This disaster has disrupted the unity of all races and to them have been forced to undergo the greatest change, the greatest upheaval is created." }
@@ -1322,19 +1322,19 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[63301] = {
 		action="branch",
 		choices = {
-			{ text="The precursor races", goto=63310 },
-			{ text="The Uhlek", goto=63320 },
-			{ text="<Back>", goto=63001 }
+			{ text="The precursor races", ["goto"]=63310 },
+			{ text="The Uhlek", ["goto"]=63320 },
+			{ text="<Back>", ["goto"]=63001 }
 		}
 	}
 	questions[63310] = {
-		action="jump", goto=63301,
+		action="jump", ["goto"]=63301,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the precursor races",
 		alien={"The Ancients and their contemporaries.  Very little definitive information is known about their telepathic abilities." }
 	}
 	questions[63320] = {
-		action="jump", goto=63301,
+		action="jump", ["goto"]=63301,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the Uhlek",
 		alien={"An extremely hostile and xenophobic race far outward from here.  They have the ability to perfectly track alien vessels in their territory by tracing mental thought patterns alone instead of depending on technology or electromagnetic emission. Unfortunately their only concern is the complete destruction of any trespassing vessel." }
@@ -1343,31 +1343,31 @@ elseif (plot_stage == 4) then -- ancients plot state
 	questions[64001] = {
 		action="branch",
 		choices = {
-			{ text="The Ancients abilities", goto=64100 },
-			{ text="The Enemy of the Ancients", goto=64200 },
-			{ text="How the enemy was defeated", goto=64300 },
-			{ text="<Back>", goto=60001 }
+			{ text="The Ancients abilities", ["goto"]=64100 },
+			{ text="The Enemy of the Ancients", ["goto"]=64200 },
+			{ text="How the enemy was defeated", ["goto"]=64300 },
+			{ text="<Back>", ["goto"]=60001 }
 		}
 	}
 	questions[64100] = {
-		action="jump", goto=64101,
+		action="jump", ["goto"]=64101,
 		player="[AUTO_REPEAT]",
 		playerFragment="about the abilities of the ancients",
 		alien={"The Ancients were reported to have matter and energy manipulation abilities but they typically worked on massive projects, building entire planets or solar systems.  They also had capabilities of stellar manipulation, galactic transportation, prescience, and most agree have completely transcended the organic world." }
 	}
 	questions[64101] = {
-		action="jump", goto=64001, ftest= 3, -- aggravating
+		action="jump", ["goto"]=64001, ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"It seems unlikely that a race benevolent enough to seed the galaxy with endurium would want to manipulate, kill, or control carbon-based life during this latter age.  If the description of their abilities were accurate, they could just as easily detonate entire solar systems to destroy us all if they wanted to." }
 	}
 	questions[64200] = {
-		action="jump", goto=64001, ftest= 2, -- insightful
+		action="jump", ["goto"]=64001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="about the enemy of the Ancients",
 		alien={"Often described as a race of demons, this enemy labeled by the Minex as the Uyo were vampires, draining life and stealing technology from other races.  They were ascribed tremendous mental powers and reputed to have made slaves of many other races.  Technology such as this nano virus does fit their modus operandi but we have seen no other clue to their return." }
 	}
 	questions[64300] = {
-		action="jump", goto=64001, ftest= 2, -- insightful
+		action="jump", ["goto"]=64001, ftest= 2, -- insightful
 		player="[AUTO_REPEAT]",
 		playerFragment="how the Ancients defeated this enemy", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Only one account of dubious authority tells this story.  The Ancients constructed a brown dwarf star capable of banishing 'the demons' from reality itself.  Countless brown dwarf stars has been located and studied but none of them have shown any unusual traits beyond their slight radiation and their conventional lithium and methane signatures." }
@@ -1388,19 +1388,19 @@ title="Scientific Mission #31:  Whining Orb",
 
 
 	questions[85000] = {
-		action="jump", goto=85001,
+		action="jump", ["goto"]=85001,
 		player="Seeking the Whining Orb",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have widely heard of your wisdom and knowledge.",
 		playerFragment="about the location of the planet Lazerarp",
 		alien={"Yes I am familiar with this planet. In order to correlate the location I will need your navigational computer data.  Will you be willing to transmit that data to me?" }
 	}
 	questions[85001] = {
-		action="jump", goto=85002,
+		action="jump", ["goto"]=85002,
 		player="Yes, transmitting now.",
 		alien={"Lazerarp is known to you as Alastir, the first planet of the system Tat. (132,125)  What is the significance of this world?" }
 	}
 	questions[85002] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Lazerarp has been used by pirates we are tracking.",
 		alien={"Ahh.  Such mundane issues are beneath my attention.  You are welcome to pursue whatever revenge or vanity you wish.  This topic no longer is of interest." }
 	}
@@ -1410,7 +1410,7 @@ title="Freelance Mission #27:  sell artifact from archaeological dig - ticking s
 --]]
 
 	questions[91000] = {
-		action="jump", goto=91001,
+		action="jump", ["goto"]=91001,
 		player="Can you tell us about...",
 		playerFragment="...",
 		alien={"Do you by random chance happen to have a ticking cylinder on board?  If so, I can give you 9 units of endurium for it." }
@@ -1418,27 +1418,27 @@ title="Freelance Mission #27:  sell artifact from archaeological dig - ticking s
 	questions[91001] = {
 		action="branch",
 		choices = {
-			{ text="Yes, we have that artifact and are willing to trade.",  goto=91100 },
-			{ text="I could not let it go for less than 12 endurium.",  goto=91200 },
-			{ text="No, we don't have that artifact.",  goto=91300 },
-			{ text="I'm not willing to part with it right now.", goto=1 }
+			{ text="Yes, we have that artifact and are willing to trade.",  ["goto"]=91100 },
+			{ text="I could not let it go for less than 12 endurium.",  ["goto"]=91200 },
+			{ text="No, we don't have that artifact.",  ["goto"]=91300 },
+			{ text="I'm not willing to part with it right now.", ["goto"]=1 }
 		}
 	}
 	questions[91100] = {
 --		active_quest = active_quest + 1
 --		artifact25 = 0
 --		endurium = endurium + 9
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		alien={"Very Good.  (Mission Completed)" }
 	}
 	questions[91200] = {
-		action="jump", goto=91001,
+		action="jump", ["goto"]=91001,
 		player="[AUTO_REPEAT]",
 		alien={"I am not an individual subject to vagaries of negotiation.  I have only one offer and one offer alone.  Please accept it or reject it." }
 	}
 	questions[91300] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="[AUTO_REPEAT]",
 		alien={"No subterfuge is necessary.  If you wish to keep the artifact, I will no longer bother you about this matter." }
 	}
@@ -1448,7 +1448,7 @@ title="Freelance Mission #28:  Obtain Data Crystals - no reaper
 --]]
 
 	questions[92000] = {
-		action="jump", goto=92001,
+		action="jump", ["goto"]=92001,
 		player="Acquiring Nyssian Data Crystals.",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have widely heard of your wisdom and knowledge.",
 		playerFragment="your computer library of data crystals", fragmentTable= preQuestion.desire,
@@ -1457,31 +1457,31 @@ title="Freelance Mission #28:  Obtain Data Crystals - no reaper
 	questions[92001] = {
 		action="branch",
 		choices = {
-			{ title="Thrynn reaper", text="what a Thrynn reaper is",  goto=92100 },
-			{ title="Bribe", text="What about in exchange for 20 endurium crystals?",  goto=92200 },
-			{ text="You will turn over your data crystals, Now! ",  goto=92300 },
-			{ text="Forget this.  I'm not going to bother.", goto=92400 }
+			{ title="Thrynn reaper", text="what a Thrynn reaper is",  ["goto"]=92100 },
+			{ title="Bribe", text="What about in exchange for 20 endurium crystals?",  ["goto"]=92200 },
+			{ text="You will turn over your data crystals, Now! ",  ["goto"]=92300 },
+			{ text="Forget this.  I'm not going to bother.", ["goto"]=92400 }
 		}
 	}
 	questions[92100] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="[AUTO_REPEAT]",
 		playerFragment="what a Thrynn reaper is",
 		alien={"A Thrynn reaper is a very bulky, impractical hand combat device. It's atomic energy pack and high energy output make it too dangerous to use onboard spacecraft, but on a planet against unshielded targets it would be devastating.  It could clear an entire forest within minutes if you want to understand its purpose.  Seek one out and bring it back." }
 	}
 	questions[92200] = {
-		action="jump", goto=92001,
+		action="jump", ["goto"]=92001,
 		player="[AUTO_REPEAT]",
 		alien={"Normally I would be interested in your generous offer.  I will unfortunately not compromise this time." }
 	}
 	questions[92300] = {
-		action="jump", goto=999,  -- attack
+		action="jump", ["goto"]=999,  -- attack
 		player="[AUTO_REPEAT]",
 		alien={"Regrettably, I must decline your forceful persuasion.  Nyssians will never concede to forceful influence or threats of that nature." }
 	}
 	questions[92400] = {
 --		active_quest = active_quest + 1
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		alien={"Wise choice.  You would be unlikely to profit from this.  Perform other tasks and do not inquire again.  (Mission Completed)" }
 	}
@@ -1490,7 +1490,7 @@ title="Freelance Mission #28:  Obtain Data Crystals - player possesses a reaper
 --]]
 
 	questions[92500] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="Acquiring Nyssian Data Crystals.",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have obtained a Thrynn Reaper.",
 		playerFragment="your computer library of data crystals", fragmentTable= preQuestion.desire,
@@ -1502,19 +1502,19 @@ title="Freelance Mission #29:  Locate the whining orb
 --]]
 
 	questions[93000] = {
-		action="jump", goto=93001,
+		action="jump", ["goto"]=93001,
 		player="Seeking the Whining Orb",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have widely heard of your wisdom and knowledge.",
 		playerFragment="the location of the planet Lazerarp", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Yes, but in order to correlate the location I will need your navigational computer data.  Will you be willing to transmit that data to me?" }
 	}
 	questions[93001] = {
-		action="jump", goto=93002,
+		action="jump", ["goto"]=93002,
 		player="Yes, transmitting now.",
 		alien={"Lazerarp is known to you as Alastir, the first planet of the system Tat. (132,125)  What is the significance of this world?" }
 	}
 	questions[93002] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Lazerarp has been used by pirates we are tracking.",
 		alien={"Ahh.  Such mundane issues are beneath my attention.  You are welcome to pursue whatever revenge or vanity you wish.  This topic no longer is of interest. " }
 	}
@@ -1524,14 +1524,14 @@ title="Freelance Mission #30:   Obtaining The Amazing Artifact - initial"
 --]]
 
 	questions[94000] = {
-		action="jump", goto=94001,
+		action="jump", ["goto"]=94001,
 		player="Acquiring The Amazing Artifact.",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].  Rumors have reached us.",
 		playerFragment="The Amazing Artifact", fragmentTable= preQuestion.desire,
 		alien={"You would indeed!  This device is of ancient manufacture and is truly unique and will inspire countless technological discoveries." }
 	}
 	questions[94001] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="What do you want for it?",
 		playerFragment="what you want in exchange for The Amazing Artifact", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"Only one item and one item alone are we willing to accept.  Return with a Minex silver gadget and nothing else.  You may obtain such a device from destroying Minex warships but an easier alternative is possible.  I know that the Coalition has recently salvaged such a device on their own and may be willing to part with it." }
@@ -1544,7 +1544,7 @@ title="Freelance Mission #30:   Obtaining the amazing artifact -  final trade"
 	questions[94500] = {
 --		artifact26 = 1
 --		artifact23 = 0
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="I have a Minex silver gadget for you.",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].",
 
@@ -1557,7 +1557,7 @@ title="Freelance Mission #34:  Pawn off Unusual Artistic Containers
 --]]
 
 	questions[98000] = {
-		action="jump", goto=999, -- attack the player
+		action="jump", ["goto"]=999, -- attack the player
 		player="Pawn off Artistic Containers",
 		introFragment= "Nyssian vessel.  This is Captain [CAPTAIN] of the starship [SHIPNAME].",
 
@@ -1570,21 +1570,21 @@ title="Freelance Mission #35:  Diplomacy mission"
 --]]
 
 	questions[99000] = {
-		action="jump", goto=99001,
+		action="jump", ["goto"]=99001,
 		player="Tell us about the Elowan Bar-zhon conflict",
 		introFragment= "Nyssian Scout.  This is Captain [CAPTAIN].  We have heard of the recent conflict between the Elowan and the Bar-zhon.",
 		playerFragment="about the situation",
 		alien={"A most regrettable and unnecessary conflict.  An observation by one of our scouts leads me to think that the conflict might be instigated by the Thrynn." }
 	}
 	questions[99001] = {
-		action="jump", goto=99002,
+		action="jump", ["goto"]=99002,
 		player="Tell us about that report.",
 		playerFragment="about that report",
 		alien={"One of our ships observed a Thrynn vessel approaching the Aircthech system a few months ago.  The Thrynn ship launched a probe of some sort from extreme range before fleeing back into hyperspace.  The curious captain decided to enter the system and follow the drone.  His scans showed no high energy sources nor biologicals on board the drone so no action was taken." }
 	}
 
 	questions[99002] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="What happened to the probe?",
 		playerFragment="what happened to the probe", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
 		alien={"The probe entered the atmosphere of the third planet briefly but then skipped off and headed on a trajectory that would cause it to land on the second planet.  Detecting multiple ships in the system, the captain declined to pursue.  A representative told the Elowan this but they want evidence." }
@@ -1598,7 +1598,7 @@ function QuestDialoguevirus()
 title="Mission #37:  Catching the Smugglers.",
 --]]
 	questions[77000] = {
-		action="jump", goto=77001,
+		action="jump", ["goto"]=77001,
 		title="Catching the Smugglers",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are on official Myrrdan business to track down two dangerous criminal starships of our own race.",
@@ -1608,40 +1608,40 @@ title="Mission #37:  Catching the Smugglers.",
 	questions[77001] = {
 		action="branch",
 		choices = {
-			{ title="Pressing Matters?", text="What pressing matters are you referring to?",  goto=77100 },
-			{ title="Bribe", text="Perhaps five units of fuel may assist in your pressing matters.",  goto=77200 },
-			{ title="Threaten", text="This is urgent! We demand that you tell us any information you may have concerning these criminals!",  goto=77300 },
-			{ text="Nevermind, let me ask you about something else.", goto=1 }
+			{ title="Pressing Matters?", text="What pressing matters are you referring to?",  ["goto"]=77100 },
+			{ title="Bribe", text="Perhaps five units of fuel may assist in your pressing matters.",  ["goto"]=77200 },
+			{ title="Threaten", text="This is urgent! We demand that you tell us any information you may have concerning these criminals!",  ["goto"]=77300 },
+			{ text="Nevermind, let me ask you about something else.", ["goto"]=1 }
 		}
 	}
 	questions[77100] = {
-		action="jump", goto=77001, ftest= 1,
+		action="jump", ["goto"]=77001, ftest= 1,
 		player="[AUTO_REPEAT]",
 		alien={"Oh supplies and of the sort, the basest of crass materialism.  I would hardly wish to drag your attention down to it.  Forget I mentioned anything." }
 	}
 	questions[77200] = {
-		action="jump", goto=1,  ftest= 1,
+		action="jump", ["goto"]=1,  ftest= 1,
 		player="[AUTO_REPEAT]",
 		alien={"Such generosity is quite unnecessary but I will accept your offer regardless.  My hesitancy is based on repeating uncomfortable rumors on a subject which your people have firsthand knowledge." }
 	}
 	questions[77205] = {
-		action="jump", goto=997,  ftest= 3, -- aggravating
+		action="jump", ["goto"]=997,  ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Your fuel tanks are in greater need of your attention then mine.  Perhaps you should attend to materialistic concerns of your own first." }
 	}
 	questions[77206] = {
-		action="jump", goto=77207,
+		action="jump", ["goto"]=77207,
 		player="[AUTO_REPEAT]",
 		alien={"Your generosity is much appreciated and my knowledge most limited. A number of weeks ago the Spemin observed a pair of Myrrdan ships conducting multiple raids upon Thrynn territory and fleeing into Elowan space. I understand that this provoked a major diplomatic issue between the Thrynn and your race." }
 	}
 	questions[77207] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="[AUTO_REPEAT]",
 		playerFragment="about their location now",
 		alien={"My apologies, this is the extent of my knowledge of the matter." }
 	}
 	questions[77300] = {
-		action="jump", goto=997,  ftest= 3, -- aggravating
+		action="jump", ["goto"]=997,  ftest= 3, -- aggravating
 		player="[AUTO_REPEAT]",
 		alien={"Your urgency is none of my concern.  All of our societies are approaching their end and your focus is upon trivial matters.  We have nothing more to say." }
 	}
@@ -1650,7 +1650,7 @@ title="Mission #37:  Catching the Smugglers.",
 title="Mission #38:  Collecting Genetic Samples"
 --]]
 	questions[78000] = {
-		action="jump", goto=78001,
+		action="jump", ["goto"]=78001,
 		title="Genetic Samples",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are working with a team of medical researchers attempting to find a cure for this plague.",
@@ -1660,12 +1660,12 @@ title="Mission #38:  Collecting Genetic Samples"
 	questions[78001] = {
 		action="branch",
 		choices = {
-			{ title="Yes", text="Yes, transmitting hypercube scanning data to you now.", goto=78002 },
-			{ text="No",  goto=1 },
+			{ title="Yes", text="Yes, transmitting hypercube scanning data to you now.", ["goto"]=78002 },
+			{ text="No",  ["goto"]=1 },
 		}
 	}
 	questions[78002] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="[AUTO_REPEAT]",
 		alien={"Transporting samples now." }
 	}
@@ -1676,7 +1676,7 @@ title="Mission #41:  Exotic Datacube
 --]]
 
 	questions[81000] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		title="Exotic Datacube",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1689,7 +1689,7 @@ title="Mission #41:  Organic Database
 --]]
 
 	questions[81200] = {
-		action="jump", goto=81201,
+		action="jump", ["goto"]=81201,
 		title="Organic Database",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1697,7 +1697,7 @@ title="Mission #41:  Organic Database
 		alien={"This is exquisite. What a breathtaking construction of primitive genius!  Such simplistic yet marvelous ingenuity created such a wonder!  And both of these artifacts at the site of an extinguished expedition?" }
 	}
 	questions[81201] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Can you decode it?",
 		alien={"Decode it?  This is not a database of words and language. It is a genetic piece of art!  Sublime in it's majesty and message of hope.  Does a sunset speak in words?  Yes, but not in words that a computer might understand and translate.  There is no secret decodable message here!" }
 	}
@@ -1708,7 +1708,7 @@ title="Mission #41:  Exotic Datacube and organic database
 --]]
 
 	questions[81500] = {
-		action="jump", goto=81501,
+		action="jump", ["goto"]=81501,
 		title="Exotic Datacube",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1717,12 +1717,12 @@ title="Mission #41:  Exotic Datacube and organic database
 	}
 
 	questions[81501] = {
-		action="jump", goto=81502,
+		action="jump", ["goto"]=81502,
 		player="What about this organic database?",
 		alien={"This is exquisite. What a breathtaking construction of primitive genius!  Such simplistic yet marvelous ingenuity created such a wonder!  And both of these artifacts at the site of an extinguished expedition?" }
 	}
 	questions[81502] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Can you decode it?",
 		alien={"Decode it?  This is not a database of words and language. It is a genetic piece of art!  Sublime in it's majesty and message of hope.  Does a sunset speak in words?  Yes, but not in words that a computer might understand and translate.  There is no secret decodable message here!" }
 	}
@@ -1732,7 +1732,7 @@ title="Mission #42:  Tracking the Laytonites
 --]]
 
 	questions[82000] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		title="Tracking the Laytonites",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are here as representatives of the Myrrdan government seeking a small fleet of rebel Myrrdan terrorists.",
@@ -1746,7 +1746,7 @@ title="Mission #43:  Desperate Measures
 --]]
 
 	questions[83000] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		title="Desperate Measures",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  It is extremely important that we talk to you about this fabricated Bar-Zhon / Myrrdan incident.",
@@ -1759,7 +1759,7 @@ title="Mission #45:  Alien Healthcare Scam - no sample
 --]]
 
 	questions[85000] = {
-		action="jump", goto=85100,
+		action="jump", ["goto"]=85100,
 		title="Plague Treatment",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are investigating reports of a medical treatment that minimizes or stops the periods of madness caused by the plague.",
@@ -1768,7 +1768,7 @@ title="Mission #45:  Alien Healthcare Scam - no sample
 	}
 
 	questions[85100] = {
-		action="jump", goto=1,
+		action="jump", ["goto"]=1,
 		player="Bar-zhon Envoy?",
 		alien={"Yes, a sole cruiser was sent to contact the group and obtain the treatment.  I have recently learned that shortly afterwards their ship crashed upon Lusmore I (227, 73) at 99N X 115E.  The hand of the black wind is very long." }
 	}
@@ -1778,7 +1778,7 @@ title="Mission #45:  Alien Healthcare Scam - sample
 --]]
 
 	questions[85500] = {
-		action="jump", goto=997,  ftest= 1, -- transport drugs sample to alien
+		action="jump", ["goto"]=997,  ftest= 1, -- transport drugs sample to alien
 		title="Plague Treatment",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are investigating this medical treatment drug that minimizes or stops the periods of madness caused by the plague.  We are transporting over the information needed to synthesize it.",
@@ -1791,7 +1791,7 @@ title="Mission #46:  Shield phase synchronizer
 --]]
 
 	questions[86000] = {
-		action="jump", goto=86001,
+		action="jump", ["goto"]=86001,
 		title="Shield phase synchronizer",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have been told that you have a special artifact for us.",
@@ -1801,62 +1801,62 @@ title="Mission #46:  Shield phase synchronizer
 	questions[86001] = {
 		action="branch",
 		choices = {
-			{ text="25 radioactives", goto=86100 },
-			{ text="120 endurium", goto=86200 },
-			{ title="Barter", text="We don't quite have that many resources available. What about in exchange for 60 endurium?", goto=86300 },
-			{ title="Request Further Details", text="Could you describe exactly what the Na'tash generator does?", goto=86400 },
-			{ text="<New subject>", goto=1 }
+			{ text="25 radioactives", ["goto"]=86100 },
+			{ text="120 endurium", ["goto"]=86200 },
+			{ title="Barter", text="We don't quite have that many resources available. What about in exchange for 60 endurium?", ["goto"]=86300 },
+			{ title="Request Further Details", text="Could you describe exactly what the Na'tash generator does?", ["goto"]=86400 },
+			{ text="<New subject>", ["goto"]=1 }
 		}
 	}
 	questions[86100] = {
-		action="jump", goto=1, ftest= 1, -- artifact267 Na'tash generator
+		action="jump", ["goto"]=1, ftest= 1, -- artifact267 Na'tash generator
 		player="[AUTO_REPEAT]",
 		playerFragment="the device for 25 radioactives",  fragmentTable=preQuestion.desire,
 		alien={"Indeed we are ready to receive your transport." }
 	}
 	questions[86110] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		player="[AUTO_REPEAT]",
 		alien={"Good exchange.  May you be ever pleased with your purchase." }
 	}
 	questions[86120] = {
-		action="jump", goto=86001,
+		action="jump", ["goto"]=86001,
 		player="[AUTO_REPEAT]",
 		alien={"Our sensors indicate you do not have sufficient quantity of radioactive available. Perhaps you may wish to utilize an alternative payment method?" }
 	}
 	questions[86200] = {
-		action="jump", goto=1, ftest= 1, -- artifact267 Na'tash generator
+		action="jump", ["goto"]=1, ftest= 1, -- artifact267 Na'tash generator
 		player="[AUTO_REPEAT]",
 		playerFragment="the device for 120 endurium",  fragmentTable=preQuestion.desire,
 		alien={"Indeed we are ready to receive your transport." }
 	}
 	questions[86210] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		player="[AUTO_REPEAT]",
 		alien={"Good exchange.  May you be ever pleased with your purchase." }
 	}
 	questions[86220] = {
-		action="jump", goto=86001,
+		action="jump", ["goto"]=86001,
 		player="[AUTO_REPEAT]",
 		alien={"Our sensors indicate you do not have sufficient quantity of fuel available. Perhaps you may wish to utilize an alternative payment method?" }
 	}
 	questions[86300] = {
-		action="jump", goto=86001,
+		action="jump", ["goto"]=86001,
 		player="[AUTO_REPEAT]",
 		alien={"" }
 	}
 	questions[86400] = {
-		action="jump", goto=86401,
+		action="jump", ["goto"]=86401,
 		player="[AUTO_REPEAT]",
 		alien={"The Na'tash generator creates a white noise jamming field that disrupts many long range devices." }
 	}
 	questions[86401] = {
-		action="jump", goto=86402,
+		action="jump", ["goto"]=86402,
 		player="Does it disrupt shields?",
 		alien={"No, that is another unique artifact I have available: The Krang. A wondrous Shield phase synchronizer capable of allowing a ship to pass through most force shields.  Same price." }
 	}
 	questions[86402] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		player="Why did you offer us the Na'tash first?",
 		alien={"Because I have one.  So are you ready to purchase The Krang?" }
 	}
@@ -1865,7 +1865,7 @@ title="Mission #46:  Shield phase synchronizer - player previously fooled into p
 --]]
 
 	questions[86500] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		title="Shield phase synchronizer",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  This Na'tash generator doesn't work. It fails to penetrate any of our test forcefields.",
@@ -1875,52 +1875,52 @@ title="Mission #46:  Shield phase synchronizer - player previously fooled into p
 	questions[86501] = {
 		action="branch",
 		choices = {
-			{ text="25 radioactives", goto=86600 },
-			{ text="120 endurium", goto=86700 },
-			{ title="Why the Na'tash?", text="Why did you offer us the Na'tash first?", goto=86800 },
-			{ title="Does it work?", text="Does this Krang device actually work to penetrate shields?", goto=86900 },
-			{ text="<New subject>", goto=1 }
+			{ text="25 radioactives", ["goto"]=86600 },
+			{ text="120 endurium", ["goto"]=86700 },
+			{ title="Why the Na'tash?", text="Why did you offer us the Na'tash first?", ["goto"]=86800 },
+			{ title="Does it work?", text="Does this Krang device actually work to penetrate shields?", ["goto"]=86900 },
+			{ text="<New subject>", ["goto"]=1 }
 		}
 	}
 	questions[86600] = {
-		action="jump", goto=1, ftest= 1, -- artifact268 The Krang
+		action="jump", ["goto"]=1, ftest= 1, -- artifact268 The Krang
 		player="[AUTO_REPEAT]",
 		playerFragment="the device for 25 radioactives",  fragmentTable=preQuestion.desire,
 		alien={"Indeed we are ready to receive your transport." }
 	}
 	questions[86610] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		player="[AUTO_REPEAT]",
 		alien={"Good exchange.  May you be ever pleased with your purchase." }
 	}
 	questions[86620] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		player="[AUTO_REPEAT]",
 		alien={"Our sensors indicate you do not have sufficient quantity of radioactives available. Perhaps you may wish to utilize an alternative payment method?" }
 	}
 	questions[86700] = {
-		action="jump", goto=1, ftest= 1, -- artifact268 The Krang
+		action="jump", ["goto"]=1, ftest= 1, -- artifact268 The Krang
 		player="[AUTO_REPEAT]",
 		playerFragment="the device for 120 endurium",  fragmentTable=preQuestion.desire,
 		alien={"Indeed we are ready to receive your transport." }
 	}
 	questions[86710] = {
-		action="jump", goto=997, -- terminate communications
+		action="jump", ["goto"]=997, -- terminate communications
 		player="[AUTO_REPEAT]",
 		alien={"Good exchange.  May you be ever pleased with your purchase." }
 	}
 	questions[86720] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		player="[AUTO_REPEAT]",
 		alien={"Our sensors indicate you do not have sufficient quantity of fuel available. Perhaps you may wish to utilize an alternative payment method?" }
 	}
 	questions[86800] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		player="[AUTO_REPEAT]",
 		alien={"Because I have one.  So are you ready to purchase The Krang?" }
 	}
 	questions[86900] = {
-		action="jump", goto=86501,
+		action="jump", ["goto"]=86501,
 		player="[AUTO_REPEAT]",
 		alien={"Yes, I guarantee it will penetrate most shielding. It is a unique device that has changed hands throughout the ages but no modern science has yet to reverse engineer." }
 	}
@@ -1934,7 +1934,7 @@ title="Mission #48:  Intelligence Collaboration
 --]]
 
 	questions[78000] = {
-		action="jump", goto=78001,
+		action="jump", ["goto"]=78001,
 		title="Intelligence Collaboration",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We have compiled a datacube of technological, tactical, and strategic observations of the Minex war machine.  In the interests of all of our survival, we are willing to share this information freely.",
@@ -1942,7 +1942,7 @@ title="Mission #48:  Intelligence Collaboration
 		alien={"Fleet combat is not my forte. I have no tactical information on Minex warships since I have been completely successful at avoiding them. These things I have long known about the Minex psyche: they are sensitive to losses. If you overwhelm them with overwhelming opposition they will instantly change tactics from seeking the largest numbers of ships of yours to destroy to preserving the greatest number of their ships. They have absolutely no strategic goals." }
 	}
 	questions[78001] = {
-		action="jump", goto=60001,
+		action="jump", ["goto"]=60001,
 		title="Intelligence Collaboration",
 		player="[AUTO_REPEAT]",
 		playerFragment="why they have no strategic goals", fragmentVeto= {o= {1,2}, f= {1,2,3,4}, h={1,4}},
@@ -1954,7 +1954,7 @@ title="Mission #53:  Tactical Coordination
 --]]
 
 	questions[83000] = {
-		action="jump", goto=1,  ftest= 1, -- artifact339 Nyssian response
+		action="jump", ["goto"]=1,  ftest= 1, -- artifact339 Nyssian response
 		title="Tactical Coordination",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].  We are working with the Bar-zhon to discover fleet combinations that would be most effective in countering the Minex onslaught.",
@@ -1968,7 +1968,7 @@ title="Mission #56:  Scavenger Hunt - 362 Bar-zhon Analyzed Organic Monstrosity
 --]]
 
 	questions[86000] = {
-		action="jump", goto=86001, ftest= 1, -- remove and replace artifact362 Bar-zhon Analyzed Organic Monstrosity
+		action="jump", ["goto"]=86001, ftest= 1, -- remove and replace artifact362 Bar-zhon Analyzed Organic Monstrosity
 		title="Scavenger Hunt",
 		player="[AUTO_REPEAT]",
 		introFragment="This is Captain [CAPTAIN] of the starship [SHIPNAME].",
@@ -1976,7 +1976,7 @@ title="Mission #56:  Scavenger Hunt - 362 Bar-zhon Analyzed Organic Monstrosity
 		alien={"You did not find this at an archaeological site, this is a ship fragment of an Gazurtoid vessel shot down a thousand years ago by the Sabion and kept at a secret underground lab. For decades this was their secret doomsday project.  If they were successful in deciphering its technology, they could have grown an organic ship with complete immunity to all projectile weaponry." }
 	}
 	questions[86001] = {
-		action="jump", goto=1, ftest= 1,
+		action="jump", ["goto"]=1, ftest= 1,
 		player="<More>",
 		alien={"The Gazurtoid are very unorthodox and creative thinkers that few can ever hope to understand. They suffer a high level of insanity and counterbalance that with rigid laws and a rigid belief system in order to give their civilization a modicum of stability.  I tell you this knowing that Myrrdan engineers are still going to try to waste their time deciphering the secrets of this artifact. I wish them luck." }
 	}
@@ -1993,27 +1993,27 @@ function OtherDialogue()
 
 	-- attack the player because attitude is too low
 	questions[910] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="What can you tell us about...",
 		alien={"'Tis a rare event indeed to find one so disreputable.  Be thankful that vengeance is not in my nature. Leave me now." }
 	}
 	-- hostile termination question
 	questions[920] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"You should depart.  My patience is at an end." }
 	}
 	-- neutral termination question
 	questions[930] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"'Tyana via arrdis.  From the connectives of facts doth wisdom grow.  I leave you to form such connectives." }
 	}
 	-- friendly termination question
 	questions[940] = {
-		action="jump", goto=997,
+		action="jump", ["goto"]=997,
 		player="[AUTO_REPEAT]",
 		playerFragment="...",
 		alien={"'Twas a pleasure [CAPTAIN] discoursing infinity.  I am sorry that my path draws me elsewhere.  Return whenever you wish." }
@@ -2024,7 +2024,7 @@ function OtherDialogue()
 		alien={"" }
 	}
 		questions[998] = {
-		action="jump", goto=999,
+		action="jump", ["goto"]=999,
 		player="<Open Communication>", -- Generic I do not want to talk question
 		playerFragment= "...",
 		alien={"Get lost!" }
@@ -2282,11 +2282,11 @@ end
 	questions[1] = {
 		action="branch",
 		choices = {
-			{ text="YOURSELVES", goto=10000 },
-			{ text="OTHER RACES", goto=20000 },
-			{ text="THE PAST", goto=30000 },
-			{ text="THE ANCIENTS", goto=40000 },
-			{ text="GENERAL INFO", goto = 50000 }
+			{ text="YOURSELVES", ["goto"]=10000 },
+			{ text="OTHER RACES", ["goto"]=20000 },
+			{ text="THE PAST", ["goto"]=30000 },
+			{ text="THE ANCIENTS", ["goto"]=40000 },
+			{ text="GENERAL INFO", ["goto"] = 50000 }
 		}
 	}
 

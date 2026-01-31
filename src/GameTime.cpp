@@ -1,6 +1,8 @@
 
 #include "env.h"
 #include "GameTime.h"
+#include "Util.h"
+
 
 using namespace std;
 
@@ -48,11 +50,9 @@ bool GameTime::Check()
 std::string GameTime::ToString()
 {
 	std::string str = "Total game time is atleast ";
-	char *gametimeStr = new char[10];
-	_itoa(gametime, gametimeStr, 10);
-	str += gametimeStr;
+	str += Util::ToString(gametime);
 	str += " minutes";
-	delete [] gametimeStr;
+
 
 	return str;
 }

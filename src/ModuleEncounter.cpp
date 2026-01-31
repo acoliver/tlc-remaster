@@ -5,7 +5,6 @@
 	Date: December, 2007
 */
 
-#pragma region HEADER
 
 #include <exception>
 #include <sstream>
@@ -92,9 +91,7 @@ ModuleEncounter::ModuleEncounter(void) :
 ModuleEncounter::~ModuleEncounter(void){}
 
 
-#pragma endregion
 
-#pragma region INPUT
 
 void ModuleEncounter::OnKeyPress(int keyCode)
 {
@@ -285,9 +282,7 @@ void ModuleEncounter::OnMouseWheelDown(int x, int y)
 	dialogue->OnMouseWheelDown(x,y);
 }
 
-#pragma endregion
 
-#pragma region INIT_CLOSE
 
 bool ModuleEncounter::Init()
 {
@@ -1015,9 +1010,7 @@ void ModuleEncounter::setEngineProperties(CombatObject *ship, int engineclass)
 }
 
 
-#pragma endregion
 
-#pragma region COMM_ACTIONS
 
 std::string ModuleEncounter::commGetAction()
 {
@@ -1388,9 +1381,7 @@ void ModuleEncounter::commInitPosture()
 	dialogue->ScrollToTop();
 }
 
-#pragma endregion
 
-#pragma region ENCOUNTER_CORE
 
 
 void ModuleEncounter::OnEvent(Event *event)
@@ -1479,19 +1470,20 @@ void ModuleEncounter::OnEvent(Event *event)
 		case EVENT_HIDE_CONTROLS: adjustVerticalCoords(
 			(SCREEN_HEIGHT-NormalScreenHeight)/2 );  break; // +128
 		//Pause Screen events
-		case 0xDEADBEEF + 2: //save game
+		case (int)(0xDEADBEEF + 2): //save game
 			//g_game->gameState->AutoSave();
 			Print("<Game Save is not available during encounters>", WHITE, -1);
 			break;
-		case 0xDEADBEEF + 3: //load game
+		case (int)(0xDEADBEEF + 3): //load game
 			g_game->gameState->AutoLoad();
 			//Print("<Game Load is not available during encounters>", WHITE, -1);
 			break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
 			g_game->setVibration(0);
 			escape = g_game->getGlobalString("ESCAPEMODULE");
 			g_game->modeMgr->LoadModule(escape);
 			break;
+
 
 		case EVENT_NAVIGATOR_HYPERSPACE:
 			flag_DoHyperspace = !flag_DoHyperspace;
@@ -1837,9 +1829,7 @@ string ModuleEncounter::replaceKeyWords(string input)
 
 	return input;
 }
-#pragma endregion
 
-#pragma region COLLISIONS
 
 void ModuleEncounter::ImpactPlayer(CombatObject *player,CombatObject *other)
 {
@@ -2365,9 +2355,7 @@ void ModuleEncounter::combatDoCollision(CombatObject *first, CombatObject *secon
 }
 
 
-#pragma endregion
 
-#pragma region COMBAT_CORE
 
 void ModuleEncounter::DoAlienShipCombat(CombatObject *ship)
 {
@@ -2965,9 +2953,7 @@ void ModuleEncounter::RemoveCombatObject(CombatObject *CObject)
 	}
 }
 
-#pragma endregion
 
-#pragma region FIRING
 void ModuleEncounter::enemyFireLaser(CombatObject *ship)
 {
 	static Timer timer;
@@ -3168,10 +3154,8 @@ void ModuleEncounter::createMissile(CombatObject *missile, double x, double y, f
 	//missile sound effect
 	g_game->audioSystem->Play(snd_player_missile);
 }
-#pragma endregion
 
 
-#pragma region EXPLOSIONS_POWERUPS
 
 void ModuleEncounter::combatDoBigExplosion(CombatObject *victim)
 {
@@ -3388,7 +3372,6 @@ void ModuleEncounter::combatDoPowerup(CombatObject *victim)
 	AddCombatObject(pow);
 }
 
-#pragma endregion
 
 void ModuleEncounter::sendGlobalsToScript()
 {

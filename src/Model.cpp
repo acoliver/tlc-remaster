@@ -1,9 +1,13 @@
 #include "env.h"
 #include <allegro.h>
-#include <alleggl.h>
-#include <gl/glu.h>
+
+// alleggl.h is an AllegroGL header used by legacy builds; it's not available on all platforms.
+// Model.cpp only uses OpenGL headers directly.
+#include <OpenGL/glu.h>
+
 
 #include "Model.h"
+
 
 using namespace std;
 

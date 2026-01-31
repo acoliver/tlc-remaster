@@ -60,7 +60,7 @@ end
 -- GET A RANDOM GREETING -----------------------------------------------
 ------------------------------------------------------------------------
 function Greeting()
-	local size = table.getn(greetings)
+	local size = #greetings
 	local n = gen_random(size)
 	ACTION = greetings[n].action
 	GREETING = greetings[n].player
@@ -77,7 +77,7 @@ function Greeting()
 	number_of_actions = number_of_actions + 1
 
 	--choose one of multiple responses
-	size = table.getn(greetings[n].alien) --get table size
+	size = #greetings[n].alien --get table size
 	local r = gen_random(size)			--choose one at random
 	RESPONSE = greetings[n].alien[r]
 end
@@ -86,7 +86,7 @@ end
 -- GET A RANDOM STATEMENT ----------------------------------------------
 ------------------------------------------------------------------------
 function Statement()
-	local size = table.getn(statements)
+	local size = #statements
 	--local size = table.maxn(statements)
 	local n = gen_random(size)
 	ACTION = statements[n].action
@@ -105,7 +105,7 @@ function Statement()
 	commFxn(1, n, FTEST)
 
 	--choose one of multiple responses
-	size = table.getn(statements[n].alien)	--get table size
+	size = #statements[n].alien	--get table size
 	local r = gen_random(size)				--choose one at random
 	RESPONSE = statements[n].alien[r]
 end
@@ -132,7 +132,7 @@ function Question()
 	if ACTION == "branch" then
 
 		--total number of choices in this branch
-		CHOICES = table.getn(questions[current_question].choices)
+		CHOICES = #questions[current_question].choices
 
 		Q = {}
 		G = {}
@@ -145,7 +145,7 @@ function Question()
 			end
 			QUESTION1 = questions[current_question].choices[1].text
 			Q[1] = QUESTION1
-			GOTO1 = questions[current_question].choices[1].goto
+			GOTO1 = questions[current_question].choices[1]["goto"]
 			G[1] = GOTO1
 		end
 
@@ -157,7 +157,7 @@ function Question()
 			end
 			QUESTION2 = questions[current_question].choices[2].text
 			Q[2] = QUESTION2
-			GOTO2 = questions[current_question].choices[2].goto
+			GOTO2 = questions[current_question].choices[2]["goto"]
 			G[2] = GOTO2
 		end
 
@@ -169,7 +169,7 @@ function Question()
 			end
 			QUESTION3 = questions[current_question].choices[3].text
 			Q[3] = QUESTION3
-			GOTO3 = questions[current_question].choices[3].goto
+			GOTO3 = questions[current_question].choices[3]["goto"]
 			G[3] = GOTO3
 		end
 
@@ -181,7 +181,7 @@ function Question()
 			end
 			QUESTION4 = questions[current_question].choices[4].text
 			Q[4] = QUESTION4
-			GOTO4 = questions[current_question].choices[4].goto
+			GOTO4 = questions[current_question].choices[4]["goto"]
 			G[4] = GOTO4
 		end
 
@@ -193,7 +193,7 @@ function Question()
 			end
 			QUESTION5 = questions[current_question].choices[5].text
 			Q[5] = QUESTION5
-			GOTO5 = questions[current_question].choices[5].goto
+			GOTO5 = questions[current_question].choices[5]["goto"]
 			G[5] = GOTO5
 		end
 
@@ -206,7 +206,7 @@ function Question()
 		return
 
 	elseif ACTION == "jump" and goto_question == 0 then
-		next_question = questions[current_question].goto
+		next_question = questions[current_question]["goto"]
 
 	--Increment the action counter to determine when the alien is tired of responding
 	 	number_of_actions = number_of_actions + 1
@@ -227,7 +227,7 @@ function Question()
 	QUESTION= joinFragments(2, current_question)
 
 	--choose one of multiple responses
-	local size = table.getn(questions[current_question].alien)	--get table size
+	local size = #questions[current_question].alien	--get table size
 	local r = gen_random(size)									--choose one at random
 	RESPONSE = questions[current_question].alien[r]
 end
@@ -372,7 +372,7 @@ function joinFragments(ctype, n)
 
 	--If all fragments have been (mistakenly) vetoed, use the player field.
 	if (veto) then
-		if (table.getn(fragmentTable) == table.getn(fragmentVeto)) then
+		if (#fragmentTable == #fragmentVeto) then
 			return t.player
 		end
 	end
@@ -386,11 +386,11 @@ function joinFragments(ctype, n)
 	end
 
 	repeat
-		tSize= table.getn(fragmentTable)
+		tSize= #fragmentTable
 		choice= gen_random(tSize)
 		vetoed= false
 		if (veto) then
-			for i= 1, table.getn(fragmentVeto) do
+			for i= 1, #fragmentVeto do
 				if (fragmentVeto[i] == choice) then
 					vetoed= true
 				end

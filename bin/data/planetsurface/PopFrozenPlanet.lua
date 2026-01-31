@@ -51,7 +51,7 @@ lifeForms[5] = lifeForm
 
 if HasLife then
 
-	TotalLifeForms = table.getn(lifeForms)
+	TotalLifeForms = #lifeForms
 	for LifeFormID = 0, TotalLifeForms do
 
 		-- fill up the init variables
@@ -92,7 +92,7 @@ end
 minerals = {30, 31, 32, 33, 34, 35, 37, 38, 39, 40, 41, 51, 54}
 
 --iterate through the list of minerals
-TotalMinerals = table.getn(minerals)
+TotalMinerals = #minerals
 
 for i = 0, TotalMinerals do
 

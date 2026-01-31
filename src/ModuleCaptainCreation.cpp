@@ -571,7 +571,6 @@ void ModuleCaptainCreation::Close()
 }
 
 
-#pragma region INPUT
 
 
 void ModuleCaptainCreation::OnKeyPress(int keyCode)
@@ -1035,7 +1034,6 @@ void ModuleCaptainCreation::OnMouseWheelDown(int x, int y)
 
 
 
-#pragma endregion
 
 
 void ModuleCaptainCreation::chooseFreelance()

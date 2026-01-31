@@ -7,9 +7,12 @@
 #include <utility>
 #include "tinyxml/tinyxml.h"
 #include "QuestMgr.h"
+#include "QuestEventInterfaces.h"
 #include "GameState.h"
+#include "Requirement.h"
 
 class OrbitPlanet : public Requirement, public IOrbitPlanetEvent
+
 {
 public:
 	OrbitPlanet();

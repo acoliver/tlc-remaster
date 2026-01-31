@@ -123,7 +123,7 @@ lifeForms[25] = lifeForm
 --
 -- For oceanic planet, we want large variety of lifeforms but only a random subset added to the surface at a time
 --
-TotalLifeForms = table.getn(lifeForms)
+TotalLifeForms = #lifeForms
 for i=0, TotalLifeForms do
 
 	--choose a random lifeform from the large list of available candidates
@@ -174,7 +174,7 @@ end
 minerals = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 54}
 
 --iterate through the list of minerals
-TotalMinerals = table.getn(minerals)
+TotalMinerals = #minerals
 
 for i = 0, TotalMinerals do
 

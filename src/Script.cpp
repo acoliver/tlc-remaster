@@ -7,12 +7,14 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <csetjmp>
 #include <allegro.h>
 #include "Script.h"
 #include "Game.h"
 using namespace std;
 
 static jmp_buf custom_lua_panic_jump;
+
 
 static int custom_lua_atpanic(lua_State *lua)
 {

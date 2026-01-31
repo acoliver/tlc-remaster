@@ -285,17 +285,18 @@ void ModuleCrewHire::OnEvent(Event *event)
 
 	switch (event->getEventType())
 	{
-		case 0xDEADBEEF + 2: //save game
+		case (int)(0xDEADBEEF + 2): //save game
 			g_game->gameState->AutoSave();
 			break;
-		case 0xDEADBEEF + 3: //load game
+		case (int)(0xDEADBEEF + 3): //load game
             g_game->gameState->AutoLoad();
 			break;
-		case 0xDEADBEEF + 4: //quit game
+		case (int)(0xDEADBEEF + 4): //quit game
 			g_game->setVibration(0);
 			escape = g_game->getGlobalString("ESCAPEMODULE");
 			g_game->modeMgr->LoadModule(escape);
 			break;
+
 
     case EVENT_EXIT_CLICK:
 		{
@@ -456,7 +457,6 @@ void ModuleCrewHire::OnEvent(Event *event)
 		playBtnClick = true;
 		if (currentScreen == PERSONEL_SCREEN)
 		{
-#pragma region Personel Screen functions
 			
             //no position selected yet, so we need to highlight it
             if (selectedPosition == -1)
@@ -548,13 +548,10 @@ void ModuleCrewHire::OnEvent(Event *event)
 					}
 				}
 			}
-#pragma endregion
 		}
 		else if (currentScreen == UNEMPLOYEED_SCREEN)
 		{
-#pragma region Unemployeed Screen functions
 			
-#pragma endregion
 		}
 		selectedPositionLastRun = -2;// This forces a refresh in the run function
 		break;
@@ -963,7 +960,6 @@ void ModuleCrewHire::Draw()
 	switch (currentScreen)
 	{
 		case PERSONEL_SCREEN:
-#pragma region Personel Screen
 			if (selectedEntryLastRun != unassignedCrew->GetSelectedIndex())
 			{
 				selectedEntryLastRun = unassignedCrew->GetSelectedIndex();
@@ -1096,11 +1092,9 @@ void ModuleCrewHire::Draw()
 				if (tOfficers[i]->GetOfficerType() != OFFICER_NONE)
 					alfont_textout_ex(g_game->GetBackBuffer(), g_game->font24, tOfficers[i]->name.c_str(),CREWPOSITION_X, CREWPOSITION_Y +((tOfficers[i]->GetOfficerType()-1)*CREWSPACING), ((tOfficers[i]->GetOfficerType()-1) == selectedPosition ?  makecol(0,255,255) : makecol(255,255,255)), -1);
 			}
-#pragma endregion
 			break;
 
 		case UNEMPLOYEED_SCREEN:
-#pragma region Unemployeed Screen
 			//unemployeed->Draw(g_game->GetBackBuffer());
 
 			unemployeedType->Draw(g_game->GetBackBuffer());
@@ -1120,7 +1114,6 @@ void ModuleCrewHire::Draw()
 				slogan->Draw(g_game->GetBackBuffer());
 				hiremoreDirections->Draw(g_game->GetBackBuffer());
 			}
-#pragma endregion
 			break;
 
 	}

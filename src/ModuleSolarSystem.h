@@ -8,7 +8,7 @@
 #pragma once
 
 #include "env.h"
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <alfont.h>
 #include "Module.h"

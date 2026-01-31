@@ -1,28 +1,25 @@
 
 #include "CombatPlayerVessel.h"
 
-CombatPlayerVessel::CombatPlayerVessel(lua_State *LuaVM, std::string ScriptName) : CombatObject(LuaVM, ScriptName),
+CombatPlayerVessel::CombatPlayerVessel(lua_State *LuaVM, std::string ScriptName) : CombatObject(),
 	forwardThrust(0),
 	reverseThrust(0),
 	turnRight(0),
 	turnLeft(0)
 {
-	
+	(void)LuaVM;
+	(void)ScriptName;
 }
+
 
 CombatPlayerVessel::~CombatPlayerVessel() {}
 
 
 void CombatPlayerVessel::Move()
 {
-	///* the function name */
-	//lua_getglobal(luaVM, this->GetScriptName().append("Move").c_str());
-
-	//// call the function 
-	//lua_call(luaVM, 0, 0);
-
-	CombatObject::Move();
+	CombatObject::Update();
 }
+
 
 void CombatPlayerVessel::Draw(BITMAP *Canvas)
 {

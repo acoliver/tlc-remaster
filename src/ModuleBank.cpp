@@ -679,7 +679,6 @@ void ModuleBank::pay_loan(){
 	}
 }
 
-#pragma region INPUT
 
 void ModuleBank::OnKeyReleased(int keyCode)
 {
@@ -820,7 +819,6 @@ void ModuleBank::OnMouseWheelDown(int x, int y){
 	}
 }
 
-#pragma endregion
 
 void ModuleBank::Close(){
 	debug << "ModuleBank Closing" << endl;

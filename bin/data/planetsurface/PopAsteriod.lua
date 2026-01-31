@@ -18,7 +18,7 @@ L_LoadScript("data/planetsurface/ruin.lua")
 minerals = {30, 31, 33, 34, 35, 37, 39}
 
 --iterate through the list of minerals
-TotalMinerals = table.getn(minerals)
+TotalMinerals = #minerals
 for MineralID = 0, TotalMinerals do
 
 	--add random number of each mineral to planet surface
