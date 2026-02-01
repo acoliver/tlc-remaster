@@ -128,6 +128,11 @@ jobs:
         if: startsWith(matrix.platform, 'macos')
         run: |
           brew install allegro lua pkg-config ninja
+          BREW_PREFIX="$(brew --prefix)"
+          if [ "$BREW_PREFIX" != "/opt/homebrew" ]; then
+            sudo mkdir -p /opt/homebrew/opt
+            sudo ln -s "$BREW_PREFIX/opt/allegro" /opt/homebrew/opt/allegro || true
+          fi
 
       - name: Build Allegro Legacy (macOS)
         if: startsWith(matrix.platform, 'macos')
@@ -240,6 +245,7 @@ jobs:
             -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows" `
             -DCMAKE_C_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
             -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
+            -DSTATIC_RUNTIME=OFF `
             -DSHARED=OFF
           cmake --build . --config Release
 
@@ -272,6 +278,12 @@ jobs:
           # Copy Allegro Legacy DLLs
           if (Test-Path deps\allegro-legacy\build\Release\*.dll) {
             copy deps\allegro-legacy\build\Release\*.dll package\starflight-tlc\
+          }
+          
+          # Copy MSVC runtime DLLs for portability
+          $vcRedist = "$env:VCToolsRedistDir\x64\Microsoft.VC143.CRT"
+          if (Test-Path $vcRedist) {
+            copy $vcRedist\*.dll package\starflight-tlc\
           }
 
       - name: Create Windows Installer
