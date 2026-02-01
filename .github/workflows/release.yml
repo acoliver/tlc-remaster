@@ -1,9 +1,17 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -77,7 +85,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/usr
           ninja
           
-          # Create AppImage-style package structure
+          # Create package structure
           cd ..
           mkdir -p package/starflight-tlc
           cp build/src/starflighttlc package/starflight-tlc/
@@ -100,7 +108,7 @@ jobs:
           
           # Create tarball
           cd package
-          tar -czvf ../starflight-tlc-linux-x64.tar.gz starflight-tlc
+          tar -czvf ../starflight-tlc-${{ inputs.version }}-linux-x64.tar.gz starflight-tlc
 
       # ─────────────────────────────────────────────────────────────────────────
       # macOS Setup & Build
@@ -120,6 +128,8 @@ jobs:
 
       - name: Build & Package (macOS)
         if: startsWith(matrix.platform, 'macos')
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
           mkdir -p build && cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
@@ -143,7 +153,7 @@ jobs:
           cp deps/allegro-legacy/build/lib/*.dylib "package/$APP_NAME/Contents/Frameworks/" 2>/dev/null || true
           
           # Create Info.plist
-          cat > "package/$APP_NAME/Contents/Info.plist" << 'EOF'
+          cat > "package/$APP_NAME/Contents/Info.plist" << EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
@@ -159,9 +169,9 @@ jobs:
               <key>CFBundlePackageType</key>
               <string>APPL</string>
               <key>CFBundleShortVersionString</key>
-              <string>${GITHUB_REF_NAME}</string>
+              <string>${VERSION}</string>
               <key>CFBundleVersion</key>
-              <string>${GITHUB_REF_NAME}</string>
+              <string>${VERSION}</string>
               <key>LSMinimumSystemVersion</key>
               <string>11.0</string>
               <key>NSHighResolutionCapable</key>
@@ -183,7 +193,7 @@ jobs:
           
           # Create DMG
           cd package
-          hdiutil create -volname "Starflight TLC" -srcfolder "." -ov -format UDZO "../${{ matrix.artifact_name }}.dmg"
+          hdiutil create -volname "Starflight TLC" -srcfolder "." -ov -format UDZO "../starflight-tlc-${{ inputs.version }}-${{ matrix.platform }}.dmg"
 
       # ─────────────────────────────────────────────────────────────────────────
       # Windows Setup & Build
@@ -229,10 +239,22 @@ jobs:
           copy $env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\*.dll package\starflight-tlc\
           
           # Copy Allegro Legacy DLLs
-          copy deps\allegro-legacy\build\Release\*.dll package\starflight-tlc\ 2>$null
+          if (Test-Path deps\allegro-legacy\build\Release\*.dll) {
+            copy deps\allegro-legacy\build\Release\*.dll package\starflight-tlc\
+          }
+
+      - name: Create Windows Installer
+        if: matrix.platform == 'windows'
+        run: |
+          # Download and install Inno Setup
+          choco install innosetup -y
           
-          # Create ZIP
-          Compress-Archive -Path package\starflight-tlc -DestinationPath starflight-tlc-windows-x64.zip
+          # Build installer
+          $env:VERSION = "${{ inputs.version }}"
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DVersion=${{ inputs.version }} installer\windows\starflight-tlc.iss
+          
+          # Also create ZIP for portable use
+          Compress-Archive -Path package\starflight-tlc -DestinationPath starflight-tlc-${{ inputs.version }}-windows-x64-portable.zip
 
       # ─────────────────────────────────────────────────────────────────────────
       # Upload Artifacts
@@ -242,7 +264,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: starflight-tlc-linux-x64.tar.gz
+          path: starflight-tlc-${{ inputs.version }}-linux-x64.tar.gz
           if-no-files-found: error
 
       - name: Upload artifact (macOS)
@@ -250,15 +272,23 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.artifact_name }}.dmg
+          path: starflight-tlc-${{ inputs.version }}-${{ matrix.platform }}.dmg
           if-no-files-found: error
 
-      - name: Upload artifact (Windows)
+      - name: Upload artifact (Windows Installer)
         if: matrix.platform == 'windows'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
-          path: starflight-tlc-windows-x64.zip
+          name: ${{ matrix.artifact_name }}-setup
+          path: starflight-tlc-${{ inputs.version }}-windows-x64-setup.exe
+          if-no-files-found: error
+
+      - name: Upload artifact (Windows Portable)
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}-portable
+          path: starflight-tlc-${{ inputs.version }}-windows-x64-portable.zip
           if-no-files-found: error
 
   # ═══════════════════════════════════════════════════════════════════════════
@@ -276,52 +306,71 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
-          merge-multiple: true
 
-      - name: List artifacts
+      - name: Prepare release files
         run: |
-          echo "Downloaded artifacts:"
-          ls -la artifacts/
+          mkdir -p release-files
+          find artifacts -type f \( -name "*.tar.gz" -o -name "*.dmg" -o -name "*.zip" -o -name "*.exe" \) -exec cp {} release-files/ \;
+          echo "Release files:"
+          ls -la release-files/
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Starflight TLC ${{ github.ref_name }}
+          tag_name: v${{ inputs.version }}
+          name: Starflight TLC v${{ inputs.version }}
           body: |
-            ## Starflight: The Lost Colony - ${{ github.ref_name }}
+            ## Starflight: The Lost Colony - v${{ inputs.version }}
             
             ### Downloads
             
-            | Platform | File |
-            |----------|------|
-            |  Linux (x64) | `starflight-tlc-linux-x64.tar.gz` |
-            |  macOS (Apple Silicon) | `starflight-tlc-macos-arm64.dmg` |
-            |  macOS (Intel) | `starflight-tlc-macos-x64.dmg` |
-            |  Windows (x64) | `starflight-tlc-windows-x64.zip` |
+            | Platform | Installer | Portable |
+            |----------|-----------|----------|
+            | Windows (x64) | `starflight-tlc-${{ inputs.version }}-windows-x64-setup.exe` | `starflight-tlc-${{ inputs.version }}-windows-x64-portable.zip` |
+            | macOS (Apple Silicon) | `starflight-tlc-${{ inputs.version }}-macos-arm64.dmg` | - |
+            | macOS (Intel) | `starflight-tlc-${{ inputs.version }}-macos-x64.dmg` | - |
+            | Linux (x64) | - | `starflight-tlc-${{ inputs.version }}-linux-x64.tar.gz` |
             
             ### Installation
             
-            **Linux:**
-            ```bash
-            tar -xzf starflight-tlc-linux-x64.tar.gz
-            cd starflight-tlc
-            ./starflight-tlc.sh
-            ```
+            **Windows (Installer):**
+            - Download and run `starflight-tlc-${{ inputs.version }}-windows-x64-setup.exe`
+            - Follow the installation wizard
+            - Launch from Start Menu or Desktop shortcut
+            
+            **Windows (Portable):**
+            - Extract the ZIP file anywhere
+            - Run `starflighttlc.exe`
             
             **macOS:**
             - Open the DMG file
             - Drag "Starflight TLC" to Applications
             - Right-click and select "Open" (first time only, to bypass Gatekeeper)
             
-            **Windows:**
-            - Extract the ZIP file
-            - Run `starflighttlc.exe`
+            **Linux:**
+            ```bash
+            tar -xzf starflight-tlc-${{ inputs.version }}-linux-x64.tar.gz
+            cd starflight-tlc
+            ./starflight-tlc.sh
+            ```
+            
+            ### System Requirements
+            
+            - **Windows:** Windows 10 or later (64-bit)
+            - **macOS:** macOS 11 (Big Sur) or later
+            - **Linux:** Ubuntu 22.04 or equivalent (64-bit)
             
             ### What's New
             
-            See the [commit history](https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}) for changes.
-          files: |
-            artifacts/*
+            See the [commit history](https://github.com/${{ github.repository }}/commits/v${{ inputs.version }}) for changes.
+          files: release-files/*
           draft: false
-          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
+          prerelease: ${{ inputs.prerelease }}
           generate_release_notes: true
