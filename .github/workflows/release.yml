@@ -53,7 +53,7 @@ jobs:
 
       - name: Clone libnoise
         run: |
-          git clone https://github.com/qknight/libnoise.git deps/libnoise
+          git clone https://github.com/eXpl0it3r/libnoise.git deps/libnoise
 
       # ─────────────────────────────────────────────────────────────────────────
       # Linux Setup & Build
@@ -92,6 +92,7 @@ jobs:
           mkdir -p build && cd build
           cmake .. -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
             -DCMAKE_INSTALL_PREFIX=/usr
           ninja
           
@@ -149,7 +150,9 @@ jobs:
           VERSION: ${{ inputs.version }}
         run: |
           mkdir -p build && cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           ninja
           
           # Create macOS app bundle
@@ -236,7 +239,8 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
             -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows" `
             -DCMAKE_C_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
-            -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include"
+            -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
+            -DSHARED=OFF
           cmake --build . --config Release
 
       - name: Build & Package (Windows)
@@ -244,7 +248,11 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake .. `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
+            -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows"
           cmake --build . --config Release
           
           # Create package directory

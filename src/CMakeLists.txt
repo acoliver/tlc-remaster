@@ -146,29 +146,44 @@ endif()
 
 # Platform-specific Allegro linking
 if(WIN32)
-  # Windows: Link Allegro 5 libraries (from vcpkg or manual install)
-  find_package(allegro CONFIG QUIET)
-  if(allegro_FOUND)
+  # Windows: Link Allegro 5 libraries (from vcpkg)
+  # vcpkg's allegro5 uses Allegro::* target names
+  find_package(Allegro CONFIG QUIET)
+  if(Allegro_FOUND)
     target_link_libraries(starflighttlc PRIVATE
-      allegro::allegro
-      allegro::allegro_font
-      allegro::allegro_ttf
-      allegro::allegro_primitives
-      allegro::allegro_audio
-      allegro::allegro_acodec
-      allegro::allegro_main
+      Allegro::allegro
+      Allegro::allegro_font
+      Allegro::allegro_ttf
+      Allegro::allegro_primitives
+      Allegro::allegro_audio
+      Allegro::allegro_acodec
+      Allegro::allegro_main
+      Allegro::allegro_image
     )
   else()
-    # Fallback to library names
-    target_link_libraries(starflighttlc PRIVATE
-      allegro
-      allegro_font
-      allegro_ttf
-      allegro_primitives
-      allegro_audio
-      allegro_acodec
-      allegro_main
-    )
+    # Fallback: try pkg-config style or manual library names
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+      pkg_check_modules(ALLEGRO5 QUIET allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_audio-5 allegro_acodec-5 allegro_main-5 allegro_image-5)
+      if(ALLEGRO5_FOUND)
+        target_include_directories(starflighttlc PRIVATE ${ALLEGRO5_INCLUDE_DIRS})
+        target_link_directories(starflighttlc PRIVATE ${ALLEGRO5_LIBRARY_DIRS})
+        target_link_libraries(starflighttlc PRIVATE ${ALLEGRO5_LIBRARIES})
+      endif()
+    endif()
+    if(NOT ALLEGRO5_FOUND)
+      # Last resort: raw library names
+      target_link_libraries(starflighttlc PRIVATE
+        allegro
+        allegro_font
+        allegro_ttf
+        allegro_primitives
+        allegro_audio
+        allegro_acodec
+        allegro_main
+        allegro_image
+      )
+    endif()
   endif()
   # Windows OpenGL
   target_link_libraries(starflighttlc PRIVATE opengl32)
