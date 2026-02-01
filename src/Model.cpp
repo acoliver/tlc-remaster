@@ -1,3 +1,17 @@
+// Platform-specific OpenGL includes
+// On Windows, we need windows.h before GL headers for WINGDIAPI/APIENTRY.
+// Use winalleg.h after allegro.h to get windows.h with proper BITMAP handling.
+#ifdef _WIN32
+#include "env.h"
+#include <allegro.h>
+#include <winalleg.h>
+#include <GL/glu.h>
+#elif defined(__APPLE__)
+#include <OpenGL/glu.h>
+#else
+#include <GL/glu.h>
+#endif
+
 #include "Model.h"
 
 
