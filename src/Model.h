@@ -4,16 +4,14 @@
 
 // Platform-specific OpenGL includes
 // On Windows, we need windows.h for GL headers but with NOGDI to avoid
-// conflicting BITMAP definition with Allegro. Then we re-enable it before
-// including allegro.h since Allegro handles the conflict internally.
+// conflicting BITMAP definition with Allegro.
 #ifdef _WIN32
-#define ALLEGRO_LEGACY_NO_MAGIC_MAIN
 #define WIN32_LEAN_AND_MEAN
 #define NOGDI
 #include <windows.h>
 #undef NOGDI
-#include <GL/glu.h>
 #undef WIN32_LEAN_AND_MEAN
+#include <GL/glu.h>
 #elif defined(__APPLE__)
 #include <OpenGL/glu.h>
 #else
