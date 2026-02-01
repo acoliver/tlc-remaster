@@ -116,6 +116,12 @@ target_compile_definitions(starflighttlc PRIVATE
   ALLEGRO_LEGACY_NO_FIX_ALIASES
 )
 
+# On Windows, we build Allegro Legacy as a static library, so tell the headers
+# not to use dllimport on function declarations
+if(WIN32)
+  target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_STATICLINK)
+endif()
+
 # Include directories - order matters!
 # Match the working order from tests/CMakeLists.txt:
 # 1. Source include (allegro.h)
