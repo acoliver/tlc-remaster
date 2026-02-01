@@ -1,7 +1,8 @@
 # Real libnoise (replaces tlc_noise_shim)
 # Build as a subproject so the main build can link to the libnoise target.
-# Set CMAKE_POLICY_VERSION_MINIMUM to allow libnoise's old cmake_minimum_required(VERSION 3.0)
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+# Disable examples and noiseutils - the project has its own noiseutils.cpp
+set(BUILD_LIBNOISE_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_LIBNOISE_UTILS OFF CACHE BOOL "" FORCE)
 add_subdirectory("${CMAKE_SOURCE_DIR}/deps/libnoise" "${CMAKE_BINARY_DIR}/deps/libnoise")
 
 
