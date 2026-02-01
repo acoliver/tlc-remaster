@@ -20,10 +20,13 @@
     // On Windows with MSVC, we need to define ALLEGRO_LEGACY_MSVC before including
     // allegro.h so that alconfig.h selects the correct platform header (almsvc.h).
     // almsvc.h sets up ALLEGRO_LEGACY_WINDOWS and the magic main handling.
-    // The generated alplatf.h from the Allegro Legacy build may not have this
-    // defined correctly since it's generated based on Allegro Legacy's build
-    // environment, not ours.
-    #if defined(_MSC_VER) && !defined(ALLEGRO_LEGACY_MSVC)
+    // 
+    // IMPORTANT: alconfig.h includes alplatf.h FIRST (line 40), which reads from
+    // the generated file in build/include. That file doesn't have ALLEGRO_LEGACY_MSVC
+    // defined. So we must define SCAN_DEPEND to skip alplatf.h inclusion, and
+    // define ALLEGRO_LEGACY_MSVC ourselves.
+    #if defined(_MSC_VER)
+        #define SCAN_DEPEND 1
         #define ALLEGRO_LEGACY_MSVC 1
     #endif
     #include <allegro.h>
