@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: linux
+          - os: macos-14
+            platform: macos
+          - os: windows-latest
+            platform: windows
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Linux Setup
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Install dependencies (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            pkg-config \
+            liballegro5-dev \
+            liballegro-acodec5-dev \
+            liballegro-audio5-dev \
+            liballegro-font5-dev \
+            liballegro-image5-dev \
+            liballegro-ttf5-dev \
+            liballegro-primitives5-dev \
+            liblua5.4-dev \
+            libgl1-mesa-dev
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # macOS Setup
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Install dependencies (macOS)
+        if: matrix.platform == 'macos'
+        run: |
+          brew install allegro lua pkg-config ninja
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Windows Setup
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Setup MSVC (Windows)
+        if: matrix.platform == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install dependencies (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          vcpkg install allegro5 lua --triplet x64-windows
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Build Allegro Legacy
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Build Allegro Legacy (Unix)
+        if: matrix.platform != 'windows'
+        run: |
+          cd deps/allegro-legacy
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+
+      - name: Build Allegro Legacy (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          cd deps/allegro-legacy
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake --build . --config Release
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Build libnoise
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Build libnoise (Unix)
+        if: matrix.platform != 'windows'
+        run: |
+          cd deps/libnoise
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+
+      - name: Build libnoise (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          cd deps/libnoise
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Build Game
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Configure (Unix)
+        if: matrix.platform != 'windows'
+        run: |
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+
+      - name: Build (Unix)
+        if: matrix.platform != 'windows'
+        run: |
+          cd build
+          ninja
+
+      - name: Build (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          cd build
+          cmake --build . --config Release
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Verify Build
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Verify executable exists (Unix)
+        if: matrix.platform != 'windows'
+        run: |
+          ls -la build/src/starflighttlc
+          file build/src/starflighttlc
+
+      - name: Verify executable exists (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          dir build\src\Release\starflighttlc.exe

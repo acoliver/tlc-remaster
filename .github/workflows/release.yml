@@ -1,0 +1,327 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Build artifacts for each platform
+  # ═══════════════════════════════════════════════════════════════════════════
+  build:
+    name: Build (${{ matrix.platform }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            platform: linux
+            artifact_name: starflight-tlc-linux-x64
+          - os: macos-14
+            platform: macos-arm64
+            artifact_name: starflight-tlc-macos-arm64
+          - os: macos-13
+            platform: macos-x64
+            artifact_name: starflight-tlc-macos-x64
+          - os: windows-latest
+            platform: windows
+            artifact_name: starflight-tlc-windows-x64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Linux Setup & Build
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Install dependencies (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            pkg-config \
+            liballegro5-dev \
+            liballegro-acodec5-dev \
+            liballegro-audio5-dev \
+            liballegro-font5-dev \
+            liballegro-image5-dev \
+            liballegro-ttf5-dev \
+            liballegro-primitives5-dev \
+            liblua5.4-dev \
+            libgl1-mesa-dev
+
+      - name: Build Allegro Legacy (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          cd deps/allegro-legacy
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+
+      - name: Build & Package (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          mkdir -p build && cd build
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/usr
+          ninja
+          
+          # Create AppImage-style package structure
+          cd ..
+          mkdir -p package/starflight-tlc
+          cp build/src/starflighttlc package/starflight-tlc/
+          cp -r bin/data package/starflight-tlc/
+          mkdir -p package/starflight-tlc/saves
+          
+          # Copy shared libraries
+          mkdir -p package/starflight-tlc/lib
+          cp deps/allegro-legacy/build/lib/*.so* package/starflight-tlc/lib/ 2>/dev/null || true
+          
+          # Create launcher script
+          cat > package/starflight-tlc/starflight-tlc.sh << 'EOF'
+          #!/bin/bash
+          SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          export LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
+          cd "$SCRIPT_DIR"
+          exec ./starflighttlc "$@"
+          EOF
+          chmod +x package/starflight-tlc/starflight-tlc.sh
+          
+          # Create tarball
+          cd package
+          tar -czvf ../starflight-tlc-linux-x64.tar.gz starflight-tlc
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # macOS Setup & Build
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Install dependencies (macOS)
+        if: startsWith(matrix.platform, 'macos')
+        run: |
+          brew install allegro lua pkg-config ninja
+
+      - name: Build Allegro Legacy (macOS)
+        if: startsWith(matrix.platform, 'macos')
+        run: |
+          cd deps/allegro-legacy
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+
+      - name: Build & Package (macOS)
+        if: startsWith(matrix.platform, 'macos')
+        run: |
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+          
+          # Create macOS app bundle
+          cd ..
+          APP_NAME="Starflight TLC.app"
+          mkdir -p "package/$APP_NAME/Contents/MacOS"
+          mkdir -p "package/$APP_NAME/Contents/Resources"
+          mkdir -p "package/$APP_NAME/Contents/Frameworks"
+          
+          # Copy executable
+          cp build/src/starflighttlc "package/$APP_NAME/Contents/MacOS/"
+          
+          # Copy game data
+          cp -r bin/data "package/$APP_NAME/Contents/Resources/"
+          mkdir -p "package/$APP_NAME/Contents/Resources/saves"
+          
+          # Copy Allegro Legacy dylibs
+          cp deps/allegro-legacy/build/lib/*.dylib "package/$APP_NAME/Contents/Frameworks/" 2>/dev/null || true
+          
+          # Create Info.plist
+          cat > "package/$APP_NAME/Contents/Info.plist" << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>starflight-tlc.sh</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.starflight.tlc</string>
+              <key>CFBundleName</key>
+              <string>Starflight TLC</string>
+              <key>CFBundleDisplayName</key>
+              <string>Starflight: The Lost Colony</string>
+              <key>CFBundlePackageType</key>
+              <string>APPL</string>
+              <key>CFBundleShortVersionString</key>
+              <string>${GITHUB_REF_NAME}</string>
+              <key>CFBundleVersion</key>
+              <string>${GITHUB_REF_NAME}</string>
+              <key>LSMinimumSystemVersion</key>
+              <string>11.0</string>
+              <key>NSHighResolutionCapable</key>
+              <true/>
+          </dict>
+          </plist>
+          EOF
+          
+          # Create launcher script that sets up dylib paths
+          cat > "package/$APP_NAME/Contents/MacOS/starflight-tlc.sh" << 'EOF'
+          #!/bin/bash
+          SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          CONTENTS_DIR="$(dirname "$SCRIPT_DIR")"
+          export DYLD_LIBRARY_PATH="$CONTENTS_DIR/Frameworks:$DYLD_LIBRARY_PATH"
+          cd "$CONTENTS_DIR/Resources"
+          exec "$SCRIPT_DIR/starflighttlc" "$@"
+          EOF
+          chmod +x "package/$APP_NAME/Contents/MacOS/starflight-tlc.sh"
+          
+          # Create DMG
+          cd package
+          hdiutil create -volname "Starflight TLC" -srcfolder "." -ov -format UDZO "../${{ matrix.artifact_name }}.dmg"
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Windows Setup & Build
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Setup MSVC (Windows)
+        if: matrix.platform == 'windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install dependencies (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          vcpkg install allegro5 lua --triplet x64-windows
+
+      - name: Build Allegro Legacy (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          cd deps/allegro-legacy
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake --build . --config Release
+
+      - name: Build & Package (Windows)
+        if: matrix.platform == 'windows'
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake --build . --config Release
+          
+          # Create package directory
+          cd ..
+          mkdir package\starflight-tlc
+          
+          # Copy executable
+          copy build\src\Release\starflighttlc.exe package\starflight-tlc\
+          
+          # Copy game data
+          xcopy /E /I bin\data package\starflight-tlc\data
+          mkdir package\starflight-tlc\saves
+          
+          # Copy DLLs from vcpkg
+          copy $env:VCPKG_INSTALLATION_ROOT\installed\x64-windows\bin\*.dll package\starflight-tlc\
+          
+          # Copy Allegro Legacy DLLs
+          copy deps\allegro-legacy\build\Release\*.dll package\starflight-tlc\ 2>$null
+          
+          # Create ZIP
+          Compress-Archive -Path package\starflight-tlc -DestinationPath starflight-tlc-windows-x64.zip
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Upload Artifacts
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Upload artifact (Linux)
+        if: matrix.platform == 'linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: starflight-tlc-linux-x64.tar.gz
+          if-no-files-found: error
+
+      - name: Upload artifact (macOS)
+        if: startsWith(matrix.platform, 'macos')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}.dmg
+          if-no-files-found: error
+
+      - name: Upload artifact (Windows)
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: starflight-tlc-windows-x64.zip
+          if-no-files-found: error
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Create GitHub Release
+  # ═══════════════════════════════════════════════════════════════════════════
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          ls -la artifacts/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Starflight TLC ${{ github.ref_name }}
+          body: |
+            ## Starflight: The Lost Colony - ${{ github.ref_name }}
+            
+            ### Downloads
+            
+            | Platform | File |
+            |----------|------|
+            |  Linux (x64) | `starflight-tlc-linux-x64.tar.gz` |
+            |  macOS (Apple Silicon) | `starflight-tlc-macos-arm64.dmg` |
+            |  macOS (Intel) | `starflight-tlc-macos-x64.dmg` |
+            |  Windows (x64) | `starflight-tlc-windows-x64.zip` |
+            
+            ### Installation
+            
+            **Linux:**
+            ```bash
+            tar -xzf starflight-tlc-linux-x64.tar.gz
+            cd starflight-tlc
+            ./starflight-tlc.sh
+            ```
+            
+            **macOS:**
+            - Open the DMG file
+            - Drag "Starflight TLC" to Applications
+            - Right-click and select "Open" (first time only, to bypass Gatekeeper)
+            
+            **Windows:**
+            - Extract the ZIP file
+            - Run `starflighttlc.exe`
+            
+            ### What's New
+            
+            See the [commit history](https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}) for changes.
+          files: |
+            artifacts/*
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
+          generate_release_notes: true

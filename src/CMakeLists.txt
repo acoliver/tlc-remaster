@@ -135,37 +135,86 @@ if(TLC_LUA_LIBRARY_DIRS)
   target_link_directories(starflighttlc PRIVATE ${TLC_LUA_LIBRARY_DIRS})
 endif()
 
-# allegro_main ships in Homebrew allegro
-target_link_directories(starflighttlc PRIVATE
-  "/opt/homebrew/opt/allegro/lib"
-)
+# Platform-specific Allegro linking
+if(WIN32)
+  # Windows: Link Allegro 5 libraries (from vcpkg or manual install)
+  find_package(allegro CONFIG QUIET)
+  if(allegro_FOUND)
+    target_link_libraries(starflighttlc PRIVATE
+      allegro::allegro
+      allegro::allegro_font
+      allegro::allegro_ttf
+      allegro::allegro_primitives
+      allegro::allegro_audio
+      allegro::allegro_acodec
+      allegro::allegro_main
+    )
+  else()
+    # Fallback to library names
+    target_link_libraries(starflighttlc PRIVATE
+      allegro
+      allegro_font
+      allegro_ttf
+      allegro_primitives
+      allegro_audio
+      allegro_acodec
+      allegro_main
+    )
+  endif()
+  # Windows OpenGL
+  target_link_libraries(starflighttlc PRIVATE opengl32)
+elseif(APPLE)
+  # macOS: Homebrew Allegro
+  # Add Allegro 5 include directory (needed by Allegro Legacy headers)
+  target_include_directories(starflighttlc PRIVATE
+    "/opt/homebrew/opt/allegro/include"
+  )
+  target_link_directories(starflighttlc PRIVATE
+    "/opt/homebrew/opt/allegro/lib"
+  )
+  target_link_libraries(starflighttlc PRIVATE
+    allegro
+    allegro_font
+    allegro_ttf
+    allegro_primitives
+    allegro_audio
+    allegro_acodec
+    allegro_main
+    "-framework OpenGL"
+  )
+  # RPATH so executable finds dylibs at runtime
+  set_target_properties(starflighttlc PROPERTIES
+    BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib;/opt/homebrew/opt/allegro/lib"
+    INSTALL_RPATH "@executable_path/../Frameworks"
+  )
+else()
+  # Linux
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(ALLEGRO5 REQUIRED 
+    allegro-5
+    allegro_font-5
+    allegro_ttf-5
+    allegro_primitives-5
+    allegro_audio-5
+    allegro_acodec-5
+    allegro_main-5
+  )
+  target_include_directories(starflighttlc PRIVATE ${ALLEGRO5_INCLUDE_DIRS})
+  target_link_directories(starflighttlc PRIVATE ${ALLEGRO5_LIBRARY_DIRS})
+  target_link_libraries(starflighttlc PRIVATE ${ALLEGRO5_LIBRARIES})
+  # Linux OpenGL
+  find_package(OpenGL REQUIRED)
+  target_link_libraries(starflighttlc PRIVATE OpenGL::GL)
+  # RPATH for Linux
+  set_target_properties(starflighttlc PROPERTIES
+    BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib"
+    INSTALL_RPATH "$ORIGIN/lib"
+  )
+endif()
 
-# Link libraries
+# Link common libraries (all platforms)
 target_link_libraries(starflighttlc PRIVATE
   AllegroLegacy::allegrolegacy
-  allegro
-  allegro_font
-  allegro_ttf
-  allegro_primitives
-  allegro_audio
-  allegro_acodec
   ${TLC_LUA_LIBRARIES}
   libnoise
 )
-
-# Link allegro_main for macOS entry point
-target_link_libraries(starflighttlc PRIVATE allegro_main)
-
-# OpenGL symbols are used directly (glBegin/glEnd/etc.). On macOS these come from the
-# OpenGL framework.
-if(APPLE)
-  target_link_libraries(starflighttlc PRIVATE "-framework OpenGL")
-endif()
-
-# RPATH so executable finds dylibs at runtime
-if(APPLE)
-  set_target_properties(starflighttlc PROPERTIES
-    BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib;/opt/homebrew/opt/allegro/lib"
-    INSTALL_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib;/opt/homebrew/opt/allegro/lib"
-  )
-endif()
