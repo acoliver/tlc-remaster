@@ -21,13 +21,19 @@
     // allegro.h so that alconfig.h selects the correct platform header (almsvc.h).
     // almsvc.h sets up ALLEGRO_LEGACY_WINDOWS and the magic main handling.
     // 
-    // IMPORTANT: alconfig.h includes alplatf.h FIRST (line 40), which reads from
-    // the generated file in build/include. That file doesn't have ALLEGRO_LEGACY_MSVC
-    // defined. So we must define SCAN_DEPEND to skip alplatf.h inclusion, and
-    // define ALLEGRO_LEGACY_MSVC ourselves.
+    // CRITICAL: alconfig.h includes alplatf.h FIRST (line 40), which is a generated
+    // file from the Allegro Legacy build. When Allegro Legacy is built with MSVC,
+    // it SHOULD define ALLEGRO_LEGACY_MSVC in alplatf.h (see line 236 of its
+    // CMakeLists.txt). The generated alplatf.h should have:
+    //   #define ALLEGRO_LEGACY_MSVC
+    // not:
+    //   /* #undef ALLEGRO_LEGACY_MSVC */
+    //
+    // If the generated alplatf.h doesn't have ALLEGRO_LEGACY_MSVC defined, it means
+    // the Allegro Legacy CMake didn't detect MSVC correctly. We define it here as
+    // a fallback, but the proper fix is to ensure Allegro Legacy is built correctly.
     #if defined(_MSC_VER)
         #ifndef ALLEGRO_LEGACY_MSVC
-            #define SCAN_DEPEND 1
             #define ALLEGRO_LEGACY_MSVC 1
         #endif
     #endif
