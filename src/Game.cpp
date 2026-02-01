@@ -885,10 +885,20 @@ bool Game::InitGame()
 	}
 	memset(m_prevKeyState,0,256);
 	m_numMouseButtons = install_mouse();
+	debug << "install_mouse returned: " << m_numMouseButtons << " buttons" << endl;
 	if (m_numMouseButtons < 0) {
 		g_game->message("Error initializing mouse");
 		return false;
 	}
+	// Ensure we have at least 3 buttons for left/middle/right
+	if (m_numMouseButtons < 3) {
+		debug << "Warning: install_mouse returned only " << m_numMouseButtons << " buttons, forcing to 3" << endl;
+		m_numMouseButtons = 3;
+	}
+	
+	// Hide the OS cursor immediately after install_mouse
+	// This needs to happen before graphics are fully set up
+	show_os_cursor(MOUSE_CURSOR_NONE);
 	m_mouseButtons = new bool[m_numMouseButtons+1];
 	m_prevMouseButtons = new bool[m_numMouseButtons+1];
 	m_mousePressedLocs = new MousePos[m_numMouseButtons+1];
@@ -938,13 +948,18 @@ bool Game::InitGame()
 	//create the PauseMenu
 	pauseMenu = new PauseMenu();
 
-	//hide the default mouse cursor
+	//hide the default mouse cursor (Allegro software cursor)
 	show_mouse(NULL);
+	
+	//Also ensure the OS/hardware cursor is hidden
+	//We use show_os_cursor with MOUSE_CURSOR_NONE to hide it
+	show_os_cursor(MOUSE_CURSOR_NONE);
 
     if (g_game->getGlobalBoolean("DEBUG_MOUSE"))
     {
         //display system cursor at actual location (not scaled to resolution)
-        show_os_cursor(2);
+        //This overrides the hide above for debugging
+        show_os_cursor(MOUSE_CURSOR_ARROW);
     }
 
 
@@ -1273,6 +1288,15 @@ void Game::UpdateMouse()
 {
 	poll_mouse();
 
+	// Debug: periodically log mouse_b state
+	static int debug_counter = 0;
+	static int last_mouse_b = -1;
+	if (mouse_b != last_mouse_b) {
+		debug << "mouse_b changed: " << last_mouse_b << " -> " << mouse_b 
+		      << " at (" << mouse_x << "," << mouse_y << ")" << endl;
+		last_mouse_b = mouse_b;
+	}
+
 	for (int button = 0; button < (m_numMouseButtons); button++)
 	{
 		if ((mouse_b & (1 << button)) != 0)
@@ -1286,6 +1310,7 @@ void Game::UpdateMouse()
 
 		if (m_mouseButtons[button] && (!m_prevMouseButtons[button]))
 		{
+			debug << "Mouse button " << button << " PRESSED at (" << mouse_x << "," << mouse_y << ")" << endl;
 			OnMousePressed(button, mouse_x, mouse_y);
 
 			m_mousePressedLocs[button].x = mouse_x;
@@ -1293,11 +1318,13 @@ void Game::UpdateMouse()
 		}
 		else if ((!m_mouseButtons[button]) && m_prevMouseButtons[button])
 		{
+			debug << "Mouse button " << button << " RELEASED at (" << mouse_x << "," << mouse_y << ")" << endl;
 			OnMouseReleased(button, mouse_x, mouse_y);
 
 			if ((m_mousePressedLocs[button].x == mouse_x) &&
 				 (m_mousePressedLocs[button].y == mouse_y))
 			{
+				debug << "Mouse CLICK at (" << mouse_x << "," << mouse_y << ")" << endl;
 				OnMouseClick(button,mouse_x,mouse_y);
 			}
 		}

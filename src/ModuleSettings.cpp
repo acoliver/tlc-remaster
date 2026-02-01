@@ -170,16 +170,16 @@ void ModuleSettings::Close()
 {
 	debug << "*** ModuleSettings closing" << endl;
 	try {
-        if (btn_fullscreen!=NULL)
+        if (btn_fullscreen != NULL)
         {
             btn_fullscreen->Destroy();
-            btn_fullscreen=NULL;
+            btn_fullscreen = NULL;
         }
 		if(btn_exit != NULL){
 			btn_exit->Destroy();
 			btn_exit = NULL;
 		}
-		for(int i=0; i<10; i++){
+		for(int i=0; i<11; i++){  // Fixed: was 10, should be 11
 			if(btn_controls[i] != NULL){
 				btn_controls[i]->Destroy();
 				btn_controls[i] = NULL;
@@ -189,10 +189,15 @@ void ModuleSettings::Close()
 			btn_save->Destroy();
 			btn_save = NULL;
 		}
-        if (!btn_fullscreen) {
-            btn_fullscreen->Destroy();
-            btn_fullscreen=NULL;
-        }
+		// Removed duplicate btn_fullscreen destroy (was already destroyed above)
+		if(background != NULL){
+			destroy_bitmap(background);
+			background = NULL;
+		}
+		if(resScrollbox != NULL){
+			delete resScrollbox;
+			resScrollbox = NULL;
+		}
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

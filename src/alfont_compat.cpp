@@ -40,7 +40,9 @@ static void alfont_reload_if_needed(ALFONT_FONT* f)
         return;
     }
 
-    f->a5_font = al_load_ttf_font(f->filename.c_str(), f->size, 0);
+    // Use negative size to specify pixel height (not points)
+    // This gives more consistent sizing across different DPI settings
+    f->a5_font = al_load_ttf_font(f->filename.c_str(), -f->size, 0);
 }
 
 int alfont_init(void)
@@ -102,11 +104,17 @@ int alfont_set_font_size(ALFONT_FONT* font, int size)
         return 0;
     }
 
-    if (font->size == size && font->a5_font) {
+    // The original AlFont used a different sizing model than Allegro 5's TTF loader.
+    // Allegro 5 TTF fonts use pixel height directly, but the original game's fonts
+    // were designed for a specific scaling. We need to use the size as-is since
+    // the game was designed around these specific point sizes.
+    int adjusted_size = size;
+
+    if (font->size == adjusted_size && font->a5_font) {
         return 1;
     }
 
-    font->size = size;
+    font->size = adjusted_size;
     if (font->a5_font) {
         al_destroy_font(font->a5_font);
         font->a5_font = nullptr;
@@ -153,24 +161,83 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
         return;
     }
 
-    ALLEGRO_BITMAP* a5_bmp = all_get_a5_bitmap(bmp);
-    if (!a5_bmp) {
+    // Draw text directly onto the Allegro 4 bitmap's pixel buffer
+    // We need to use Allegro 4's textout functions or draw to a temp A5 bitmap
+    // and blit the result back.
+    
+    // Create a temporary A5 bitmap for rendering
+    const int text_w = (int)al_get_text_width(font->a5_font, text) + 4;
+    const int text_h = (int)al_get_font_line_height(font->a5_font) + 2;
+    
+    if (text_w <= 0 || text_h <= 0) {
         return;
     }
-
-    ALLEGRO_BITMAP* prev = al_get_target_bitmap();
-    al_set_target_bitmap(a5_bmp);
-
-    // Background fill is only used when bg != -1 (matches common AlFont usage).
-    if (bg != -1) {
-        const int w = (int)al_get_text_width(font->a5_font, text);
-        const int h = (int)al_get_font_line_height(font->a5_font);
-        al_draw_filled_rectangle((float)x, (float)y, (float)(x + w), (float)(y + h), a4_color_to_a5(bg));
+    
+    ALLEGRO_BITMAP* temp = al_create_bitmap(text_w, text_h);
+    if (!temp) {
+        return;
     }
-
-    al_draw_text(font->a5_font, a4_color_to_a5(color), (float)x, (float)y, flags, text);
-
+    
+    ALLEGRO_BITMAP* prev = al_get_target_bitmap();
+    al_set_target_bitmap(temp);
+    
+    // Clear with transparent or background color
+    if (bg != -1) {
+        al_clear_to_color(a4_color_to_a5(bg));
+    } else {
+        al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+    }
+    
+    // Calculate draw position based on alignment
+    float draw_x = 0;
+    if (flags & ALLEGRO_ALIGN_CENTRE) {
+        draw_x = text_w / 2.0f;
+    } else if (flags & ALLEGRO_ALIGN_RIGHT) {
+        draw_x = (float)(text_w - 2);
+    }
+    
+    al_draw_text(font->a5_font, a4_color_to_a5(color), draw_x, 0, flags, text);
+    
     al_set_target_bitmap(prev);
+    
+    // Now we need to copy the A5 bitmap pixels to the A4 bitmap
+    // Lock the A5 bitmap to read pixels
+    ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(temp, ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE, ALLEGRO_LOCK_READONLY);
+    if (lock) {
+        // Calculate destination position based on alignment
+        int dest_x = x;
+        if (flags & ALLEGRO_ALIGN_CENTRE) {
+            dest_x = x - text_w / 2;
+        } else if (flags & ALLEGRO_ALIGN_RIGHT) {
+            dest_x = x - text_w + 2;
+        }
+        
+        // Copy pixels to A4 bitmap
+        unsigned char* src_row = (unsigned char*)lock->data;
+        for (int py = 0; py < text_h; py++) {
+            unsigned char* src = src_row;
+            for (int px = 0; px < text_w; px++) {
+                unsigned char r = src[0];
+                unsigned char g = src[1];
+                unsigned char b = src[2];
+                unsigned char a = src[3];
+                src += 4;
+                
+                // Only draw non-transparent pixels
+                if (a > 128) {
+                    int bmp_x = dest_x + px;
+                    int bmp_y = y + py;
+                    if (bmp_x >= 0 && bmp_x < bmp->w && bmp_y >= 0 && bmp_y < bmp->h) {
+                        putpixel(bmp, bmp_x, bmp_y, makecol(r, g, b));
+                    }
+                }
+            }
+            src_row += lock->pitch;
+        }
+        al_unlock_bitmap(temp);
+    }
+    
+    al_destroy_bitmap(temp);
 }
 
 void alfont_textout(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color)
