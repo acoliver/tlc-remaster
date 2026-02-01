@@ -25,8 +25,9 @@ find_path(AllegroLegacy_INCLUDE_DIR
 
 # Platform-specific library name
 # Note: Allegro Legacy builds as "liballeg" not "liballegro_legacy"
+# On Windows with static build (SHARED=OFF), it creates alleg-static.lib
 if(WIN32)
-    set(ALLEGRO_LEGACY_LIB_NAME "alleg" "allegro_legacy" "allegro4")
+    set(ALLEGRO_LEGACY_LIB_NAME "alleg-static" "alleg" "allegro_legacy" "allegro4")
 elseif(APPLE)
     set(ALLEGRO_LEGACY_LIB_NAME "alleg" "allegro_legacy")
 else()
@@ -38,6 +39,7 @@ find_library(AllegroLegacy_LIBRARY
     NAMES ${ALLEGRO_LEGACY_LIB_NAME}
     PATHS
         "${ALLEGRO_LEGACY_ROOT}/build/lib"
+        "${ALLEGRO_LEGACY_ROOT}/build/lib/Release"
         "${ALLEGRO_LEGACY_ROOT}/build"
         "${ALLEGRO_LEGACY_ROOT}/build/Release"
     NO_DEFAULT_PATH

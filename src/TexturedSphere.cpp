@@ -1,6 +1,7 @@
 #include "TexturedSphere.h"
 #include <allegro.h>
 #include <sstream>
+#include <cmath>
 
 TexturedSphere::TexturedSphere(int tex_size) 
 {
@@ -82,9 +83,9 @@ void TexturedSphere::Spherical2Cartesian(int alpha, int beta, double *x, double 
 	double beta1  = (double)(beta - MAP_SIZE/2) * m_pi / MAP_SIZE;
 	   
 	/* Convert to Cartesian */
-	*x = cos(alpha1) * cos(beta1);
-	*y = sin(beta1);
-	*z = sin(alpha1) * cos(beta1);
+	*x = std::cos(alpha1) * std::cos(beta1);
+	*y = std::sin(beta1);
+	*z = std::sin(alpha1) * std::cos(beta1);
 }
 	 
 void TexturedSphere::Cartesian2Sphere(double x, double y, double z, int *alpha, int *beta)
@@ -92,12 +93,12 @@ void TexturedSphere::Cartesian2Sphere(double x, double y, double z, int *alpha, 
 	double beta1, alpha1, w;
 	   
 	/* convert to Spherical Coordinates */ 
-	beta1 = asin(y);
-	if (fabs(cos(beta1)) > 0.0) {  // we'll be dividing by cos(beta1)
-	    w = x / cos(beta1);
+	beta1 = std::asin(y);
+	if (std::fabs(std::cos(beta1)) > 0.0) {  // we'll be dividing by cos(beta1)
+	    w = x / std::cos(beta1);
 	    if (w > 1) w = 1; if (w < -1) w = -1;   // Check bounds
-	    alpha1 = acos(w);
-	    if (z/cos(beta1) < 0) // Check for wrapping around top/bottom of sphere
+	    alpha1 = std::acos(w);
+	    if (z/std::cos(beta1) < 0) // Check for wrapping around top/bottom of sphere
 	        alpha1 = 2 * m_pi - alpha1;
 	}
 	else 
@@ -192,7 +193,7 @@ void TexturedSphere::InitSphereLookupTables()
         to the initial Spherical Coordinates */
 	for(i = 0; i < TEX_SIZE; i++) 
     {
-	    screen2sphere_table[i] = (int)(acos((double)(i-TEX_SIZE/2+1) * 2/TEX_SIZE) * TEX_SIZE/m_pi);
+	    screen2sphere_table[i] = (int)(std::acos((double)(i-TEX_SIZE/2+1) * 2/TEX_SIZE) * TEX_SIZE/m_pi);
 	    screen2sphere_table[i] %= TEX_SIZE;
 	}
 }
@@ -214,7 +215,7 @@ void TexturedSphere::Draw(BITMAP *dest, int phi, int theta, int psi, int radius,
 	for(y = -radius+1;y < radius; y++) 
     {
 	    /* compute the Width of the Sphere in this Scanline */
-	    xr = (int)(sqrt( (double)(radius*radius - y*y) ) * ASPECT_RATIO); // Can be turned into fixed point
+	    xr = (int)(std::sqrt( (double)(radius*radius - y*y) ) * ASPECT_RATIO); // Can be turned into fixed point
 	    if (xr==0) xr = 1;
 	      
 	    /* compute the first Spherical Coordinate beta */
