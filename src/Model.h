@@ -1,10 +1,10 @@
 #pragma once
 
-#include "env.h"
-#include <allegro.h>
-
 // Forward declare OpenGL types used in this header
 // The actual GL includes are in Model.cpp
+// NOTE: This file intentionally does NOT include allegro.h or env.h
+// to avoid triggering magic main on Windows when Model.h is transitively
+// included by files that don't need it.
 typedef unsigned int GLuint;
 typedef double GLdouble;
 
