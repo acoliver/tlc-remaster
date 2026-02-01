@@ -33,9 +33,7 @@ jobs:
           - os: macos-14
             platform: macos-arm64
             artifact_name: starflight-tlc-macos-arm64
-          - os: macos-13
-            platform: macos-x64
-            artifact_name: starflight-tlc-macos-x64
+
           - os: windows-latest
             platform: windows
             artifact_name: starflight-tlc-windows-x64
@@ -378,7 +376,6 @@ jobs:
             |----------|-----------|----------|
             | Windows (x64) | `starflight-tlc-${{ inputs.version }}-windows-x64-setup.exe` | `starflight-tlc-${{ inputs.version }}-windows-x64-portable.zip` |
             | macOS (Apple Silicon) | `starflight-tlc-${{ inputs.version }}-macos-arm64.dmg` | - |
-            | macOS (Intel) | `starflight-tlc-${{ inputs.version }}-macos-x64.dmg` | - |
             | Linux (x64) | - | `starflight-tlc-${{ inputs.version }}-linux-x64.tar.gz` |
             
             ### Installation
