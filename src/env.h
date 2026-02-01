@@ -17,8 +17,15 @@
 
 // MessageBox fallback for non-Windows
 #ifdef TLC_PLATFORM_WINDOWS
-    // On Windows, include allegro.h which will set up the magic main properly.
-    // allegro.h must be included before any other code that uses main().
+    // On Windows with MSVC, we need to define ALLEGRO_LEGACY_MSVC before including
+    // allegro.h so that alconfig.h selects the correct platform header (almsvc.h).
+    // almsvc.h sets up ALLEGRO_LEGACY_WINDOWS and the magic main handling.
+    // The generated alplatf.h from the Allegro Legacy build may not have this
+    // defined correctly since it's generated based on Allegro Legacy's build
+    // environment, not ours.
+    #if defined(_MSC_VER) && !defined(ALLEGRO_LEGACY_MSVC)
+        #define ALLEGRO_LEGACY_MSVC 1
+    #endif
     #include <allegro.h>
     // allegro.h defines 'main' as '_mangled_main' and END_OF_MAIN() creates WinMain.
 #else
