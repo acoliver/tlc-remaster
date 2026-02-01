@@ -1,14 +1,26 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
 
-// OpenGL headers - platform-specific paths
-#ifdef __APPLE__
+// Platform-specific OpenGL includes
+// On Windows, we need windows.h for GL headers but with NOGDI to avoid
+// conflicting BITMAP definition with Allegro. Then we re-enable it before
+// including allegro.h since Allegro handles the conflict internally.
+#ifdef _WIN32
+#define ALLEGRO_LEGACY_NO_MAGIC_MAIN
+#define WIN32_LEAN_AND_MEAN
+#define NOGDI
+#include <windows.h>
+#undef NOGDI
+#include <GL/glu.h>
+#undef WIN32_LEAN_AND_MEAN
+#elif defined(__APPLE__)
 #include <OpenGL/glu.h>
 #else
 #include <GL/glu.h>
 #endif
+
+#include <allegro.h>
 
 
 #include <string>
