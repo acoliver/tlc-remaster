@@ -119,7 +119,11 @@ target_compile_definitions(starflighttlc PRIVATE
 # On Windows, we build Allegro Legacy as a static library, so tell the headers
 # not to use dllimport on function declarations
 if(WIN32)
-  target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_STATICLINK)
+  # Keep main unmangled; Allegro 5's allegro_main provides WinMain on Windows.
+  target_compile_definitions(starflighttlc PRIVATE
+    ALLEGRO_LEGACY_STATICLINK
+    ALLEGRO_LEGACY_NO_MAGIC_MAIN
+  )
   # Also define ALLEGRO_LEGACY_MSVC so we get the correct platform headers.
   # The generated alplatf.h on CI won't have this since Allegro Legacy is built
   # before we configure our project.
