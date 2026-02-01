@@ -1,8 +1,13 @@
 // Platform-specific OpenGL includes
 // On Windows, we need windows.h before GL headers for WINGDIAPI/APIENTRY.
+// But windows.h also defines BITMAP which conflicts with Allegro's BITMAP.
+// winalleg.h handles this by temporarily redefining BITMAP to WINDOWS_BITMAP
+// while including windows.h, then undefining it. We use the same trick.
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
+#define BITMAP WINDOWS_BITMAP
 #include <windows.h>
+#undef BITMAP
 #include <GL/glu.h>
 #elif defined(__APPLE__)
 #include <OpenGL/glu.h>
