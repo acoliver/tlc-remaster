@@ -26,8 +26,10 @@
     // defined. So we must define SCAN_DEPEND to skip alplatf.h inclusion, and
     // define ALLEGRO_LEGACY_MSVC ourselves.
     #if defined(_MSC_VER)
-        #define SCAN_DEPEND 1
-        #define ALLEGRO_LEGACY_MSVC 1
+        #ifndef ALLEGRO_LEGACY_MSVC
+            #define SCAN_DEPEND 1
+            #define ALLEGRO_LEGACY_MSVC 1
+        #endif
     #endif
     #include <allegro.h>
     // allegro.h defines 'main' as '_mangled_main' and END_OF_MAIN() creates WinMain.
