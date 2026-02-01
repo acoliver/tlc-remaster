@@ -70,7 +70,7 @@ jobs:
       # ─────────────────────────────────────────────────────────────────────────
       - name: Clone Allegro Legacy
         run: |
-          git clone https://github.com/NewCreature/Allegro-Legacy.git deps/allegro-legacy
+          git clone https://github.com/acoliver/Allegro-Legacy.git deps/allegro-legacy
 
       - name: Clone libnoise
         run: |
