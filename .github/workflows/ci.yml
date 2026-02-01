@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       # ─────────────────────────────────────────────────────────────────────────
       # Linux Setup
@@ -42,10 +40,8 @@ jobs:
             liballegro5-dev \
             liballegro-acodec5-dev \
             liballegro-audio5-dev \
-            liballegro-font5-dev \
             liballegro-image5-dev \
             liballegro-ttf5-dev \
-            liballegro-primitives5-dev \
             liblua5.4-dev \
             libgl1-mesa-dev
 
@@ -70,6 +66,17 @@ jobs:
           vcpkg install allegro5 lua --triplet x64-windows
 
       # ─────────────────────────────────────────────────────────────────────────
+      # Clone Dependencies
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Clone Allegro Legacy
+        run: |
+          git clone https://github.com/NewCreature/Allegro-Legacy.git deps/allegro-legacy
+
+      - name: Clone libnoise
+        run: |
+          git clone https://github.com/qknight/libnoise.git deps/libnoise
+
+      # ─────────────────────────────────────────────────────────────────────────
       # Build Allegro Legacy
       # ─────────────────────────────────────────────────────────────────────────
       - name: Build Allegro Legacy (Unix)
@@ -87,26 +94,6 @@ jobs:
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
-          cmake --build . --config Release
-
-      # ─────────────────────────────────────────────────────────────────────────
-      # Build libnoise
-      # ─────────────────────────────────────────────────────────────────────────
-      - name: Build libnoise (Unix)
-        if: matrix.platform != 'windows'
-        run: |
-          cd deps/libnoise
-          mkdir -p build && cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
-          ninja
-
-      - name: Build libnoise (Windows)
-        if: matrix.platform == 'windows'
-        run: |
-          cd deps/libnoise
-          mkdir build
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
 
       # ─────────────────────────────────────────────────────────────────────────

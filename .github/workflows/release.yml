@@ -43,8 +43,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      # ─────────────────────────────────────────────────────────────────────────
+      # Clone Dependencies (all platforms)
+      # ─────────────────────────────────────────────────────────────────────────
+      - name: Clone Allegro Legacy
+        run: |
+          git clone https://github.com/NewCreature/Allegro-Legacy.git deps/allegro-legacy
+
+      - name: Clone libnoise
+        run: |
+          git clone https://github.com/qknight/libnoise.git deps/libnoise
 
       # ─────────────────────────────────────────────────────────────────────────
       # Linux Setup & Build
@@ -61,10 +70,8 @@ jobs:
             liballegro5-dev \
             liballegro-acodec5-dev \
             liballegro-audio5-dev \
-            liballegro-font5-dev \
             liballegro-image5-dev \
             liballegro-ttf5-dev \
-            liballegro-primitives5-dev \
             liblua5.4-dev \
             libgl1-mesa-dev
 
