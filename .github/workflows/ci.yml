@@ -118,7 +118,8 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
             -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows" `
             -DCMAKE_C_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
-            -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include"
+            -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
+            -DCMAKE_SHARED_LINKER_FLAGS="winmm.lib"
           cmake --build . --config Release
 
       # ─────────────────────────────────────────────────────────────────────────
@@ -128,20 +129,27 @@ jobs:
         if: matrix.platform == 'linux'
         run: |
           mkdir -p build && cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
       - name: Configure (macOS)
         if: matrix.platform == 'macos'
         run: |
           mkdir -p build && cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
       - name: Configure (Windows)
         if: matrix.platform == 'windows'
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake .. `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
 
       - name: Build (Unix)
         if: matrix.platform != 'windows'

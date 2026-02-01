@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
+# Allow old CMakeLists.txt in dependencies (libnoise uses VERSION 3.0)
+if(POLICY CMP0000)
+  cmake_policy(SET CMP0000 OLD)
+endif()
+
+# Also set the minimum policy version to help with newer CMake
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING "" FORCE)
+
 project(StarflightTLC VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)

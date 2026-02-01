@@ -1,5 +1,7 @@
 # Real libnoise (replaces tlc_noise_shim)
 # Build as a subproject so the main build can link to the libnoise target.
+# Set CMAKE_POLICY_VERSION_MINIMUM to allow libnoise's old cmake_minimum_required(VERSION 3.0)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 add_subdirectory("${CMAKE_SOURCE_DIR}/deps/libnoise" "${CMAKE_BINARY_DIR}/deps/libnoise")
 
 
@@ -105,6 +107,12 @@ add_executable(starflighttlc
   tinyxml/tinyxml.cpp
   tinyxml/tinyxmlerror.cpp
   tinyxml/tinyxmlparser.cpp
+)
+
+# Disable Allegro Legacy's fixed-point math aliases (fadd, fsub, etc.)
+# that conflict with glibc's mathcalls-narrow.h on Linux
+target_compile_definitions(starflighttlc PRIVATE
+  ALLEGRO_LEGACY_NO_FIX_ALIASES
 )
 
 # Include directories - order matters!
