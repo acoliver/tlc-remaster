@@ -1,12 +1,18 @@
 #include "env.h"
-#include <allegro.h>
 
 // OpenGL headers - platform-specific paths
+// On Windows, must include windows.h before GL headers for WINGDIAPI/APIENTRY
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #ifdef __APPLE__
 #include <OpenGL/glu.h>
 #else
 #include <GL/glu.h>
 #endif
+
+#include <allegro.h>
 
 
 #include "Model.h"
