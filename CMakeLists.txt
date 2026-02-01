@@ -23,7 +23,7 @@ if(WIN32)
     # Windows: Use vcpkg or manual configuration
     # Try to find Lua via CMake first (vcpkg provides this)
     find_package(Lua QUIET)
-    if(Lua_FOUND)
+    if(LUA_FOUND)
         set(TLC_LUA_INCLUDE_DIRS ${LUA_INCLUDE_DIR})
         set(TLC_LUA_LIBRARIES ${LUA_LIBRARIES})
         set(TLC_LUA_LIBRARY_DIRS "")

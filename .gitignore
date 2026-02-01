@@ -21,6 +21,9 @@ package/
 *.lib
 *.pdb
 
+# Legacy Windows binary (misnamed as .dat)
+bin/starflighttlc.dat
+
 # Backup files
 *.old/
 
