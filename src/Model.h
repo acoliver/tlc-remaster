@@ -1,14 +1,19 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
 
 // Platform-specific OpenGL includes
-// On Windows, allegro.h includes windows.h, so GL headers should work.
-// On macOS, use the framework path.
-#ifdef __APPLE__
+#ifdef _WIN32
+// On Windows, we need windows.h before GL headers for WINGDIAPI/APIENTRY.
+// Use winalleg.h after allegro.h to get windows.h with proper BITMAP handling.
+#include <allegro.h>
+#include <winalleg.h>
+#include <GL/glu.h>
+#elif defined(__APPLE__)
+#include <allegro.h>
 #include <OpenGL/glu.h>
 #else
+#include <allegro.h>
 #include <GL/glu.h>
 #endif
 
