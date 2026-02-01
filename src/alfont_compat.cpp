@@ -1,14 +1,17 @@
+// Include C++ standard headers BEFORE Allegro headers to avoid conflicts
+// with Allegro Legacy's MSVC int64_t/uint64_t macros (almsvc.h lines 81-82)
+#include <cstdarg>
+#include <cstdint>
+#include <cstdio>
+#include <cstring>
+#include <string>
+
 #include "alfont.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <a5alleg.h>
-
-#include <cstdarg>
-#include <cstdio>
-#include <cstring>
-#include <string>
 
 // Allegro 4 BITMAP* -> Allegro 5 ALLEGRO_BITMAP* bridge.
 // a5alleg.h comes from the AllegroLegacy::allegrolegacy target.

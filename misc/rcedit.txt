@@ -1,1 +1,0 @@
-rcedit-x64.exe starflighttlc.exe --set-icon starflighttlc.ico

@@ -39,3 +39,16 @@ bin/saves/*.dat
 
 # Generated planet textures (created at runtime)
 bin/data/planetorbit/planet_*_1024.bmp
+
+# Legacy Windows binaries (should never be committed)
+bin/data/*.exe
+bin/data/*.dll
+bin/data/**/*.exe
+bin/data/**/*.dll
+*.lib
+
+# Legacy build directory
+src/build/
+
+# Misc tools
+misc/*.exe
