@@ -5,8 +5,9 @@
 	Date:
 */
 
+// env.h must be first - it includes allegro.h which sets up the magic main on Windows
 #include "env.h"
-#include <allegro.h>
+// Do NOT include allegro.h again - env.h already did it
 #include "Game.h"
 #include "LogFile.h"
 
