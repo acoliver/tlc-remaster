@@ -16,13 +16,14 @@ ESCAPEMODULE = "TITLESCREEN"
 UNLIMITED_FRAMERATE = false
 
 --to enable testing mode for modules in development
-DEBUG_MODE = true
+DEBUG_MODE = false
 
 --to display debugging info on the screen
-DEBUG_CORE = true
+DEBUG_CORE = false
 
 --to see the system cursor in unscaled position
-DEBUG_MOUSE = true
+DEBUG_MOUSE = false
+
 
 
 --SHIP SCALE VALUE (1.00 = 128x128)

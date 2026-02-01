@@ -1,7 +1,7 @@
 ; Inno Setup Script for Starflight: The Lost Colony
 ; https://jrsoftware.org/isinfo.php
 
-#define MyAppName "Starflight: The Lost Colony"
+#define MyAppName "Starflight The Lost Colony"
 #define MyAppVersion GetEnv('VERSION')
 #if MyAppVersion == ""
 #define MyAppVersion "1.0.0"
