@@ -3,9 +3,12 @@
 #include "env.h"
 #include <allegro.h>
 
-// alleggl.h is an AllegroGL header used by legacy builds; it's not available on all platforms.
-// Model only requires OpenGL types.
+// OpenGL headers - platform-specific paths
+#ifdef __APPLE__
 #include <OpenGL/glu.h>
+#else
+#include <GL/glu.h>
+#endif
 
 
 #include <string>

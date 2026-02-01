@@ -211,9 +211,9 @@ else()
   target_include_directories(starflighttlc PRIVATE ${ALLEGRO5_INCLUDE_DIRS})
   target_link_directories(starflighttlc PRIVATE ${ALLEGRO5_LIBRARY_DIRS})
   target_link_libraries(starflighttlc PRIVATE ${ALLEGRO5_LIBRARIES})
-  # Linux OpenGL
+  # Linux OpenGL (need GLU for Model.cpp)
   find_package(OpenGL REQUIRED)
-  target_link_libraries(starflighttlc PRIVATE OpenGL::GL)
+  target_link_libraries(starflighttlc PRIVATE OpenGL::GL OpenGL::GLU)
   # RPATH for Linux
   set_target_properties(starflighttlc PROPERTIES
     BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib"

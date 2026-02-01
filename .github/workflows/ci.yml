@@ -147,7 +147,8 @@ jobs:
           cmake .. `
             -DCMAKE_BUILD_TYPE=Release `
             -DCMAKE_POLICY_VERSION_MINIMUM=3.5 `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
+            -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows"
 
       - name: Build (Unix)
         if: matrix.platform != 'windows'
