@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies (macOS)
         if: matrix.platform == 'macos'
         run: |
-          brew install allegro lua pkg-config ninja
+          brew install allegro lua pkg-config ninja cmake
 
       # ─────────────────────────────────────────────────────────────────────────
       # Windows Setup
@@ -79,12 +79,20 @@ jobs:
       # ─────────────────────────────────────────────────────────────────────────
       # Build Allegro Legacy
       # ─────────────────────────────────────────────────────────────────────────
-      - name: Build Allegro Legacy (Unix)
-        if: matrix.platform != 'windows'
+      - name: Build Allegro Legacy (Linux)
+        if: matrix.platform == 'linux'
         run: |
           cd deps/allegro-legacy
           mkdir -p build && cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          ninja
+
+      - name: Build Allegro Legacy (macOS)
+        if: matrix.platform == 'macos'
+        run: |
+          cd deps/allegro-legacy
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           ninja
 
       - name: Build Allegro Legacy (Windows)
@@ -93,14 +101,20 @@ jobs:
           cd deps/allegro-legacy
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows"
           cmake --build . --config Release
 
       # ─────────────────────────────────────────────────────────────────────────
       # Build Game
       # ─────────────────────────────────────────────────────────────────────────
-      - name: Configure (Unix)
-        if: matrix.platform != 'windows'
+      - name: Configure (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          mkdir -p build && cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Configure (macOS)
+        if: matrix.platform == 'macos'
         run: |
           mkdir -p build && cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
