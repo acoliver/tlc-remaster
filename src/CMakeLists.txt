@@ -120,6 +120,12 @@ target_compile_definitions(starflighttlc PRIVATE
 # not to use dllimport on function declarations
 if(WIN32)
   target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_STATICLINK)
+  # Also define ALLEGRO_LEGACY_MSVC so we get the correct platform headers.
+  # The generated alplatf.h on CI won't have this since Allegro Legacy is built
+  # before we configure our project.
+  if(MSVC)
+    target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_MSVC)
+  endif()
   # Make it a Windows GUI app (not console), which is required for WinMain entry point
   set_target_properties(starflighttlc PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
