@@ -765,6 +765,19 @@ bool Game::Initialize_Graphics()
     (void)fullscreen;
     gfxmode = GFX_AUTODETECT;
 #endif
+
+    int fallbackMode = gfxmode;
+#if defined(TLC_PLATFORM_WINDOWS)
+    fallbackMode = GFX_AUTODETECT;
+    #ifdef GFX_AUTODETECT_WINDOWED
+    if (!fullscreen)
+    {
+        fallbackMode = GFX_AUTODETECT_WINDOWED;
+    }
+    #endif
+#else
+    fallbackMode = GFX_AUTODETECT;
+#endif
     
     //set text mode to reset graphics
     set_gfx_mode(GFX_TEXT,0,0,0,0);
@@ -772,16 +785,29 @@ bool Game::Initialize_Graphics()
     //try to set graphics mode
 	if (set_gfx_mode(gfxmode, actual_width, actual_height, 0, 0) != 0)
 	{
+        debug << "Video mode failed (" << resolution << "), attempting fallback driver..." << endl;
+        if (fallbackMode != gfxmode)
+        {
+            if (set_gfx_mode(fallbackMode, actual_width, actual_height, 0, 0) == 0)
+            {
+                debug << "Using fallback graphics driver" << endl;
+                debug << "Refresh rate: " << get_refresh_rate() << endl;
+                goto graphics_ok;
+            }
+        }
         debug << "Video mode failed (" << resolution << "), attempting default mode..." << endl;
         actual_width = SCREEN_WIDTH;
         actual_height = SCREEN_HEIGHT;
-        if (set_gfx_mode(gfxmode, actual_width, actual_height, 0, 0) != 0)
+        if (set_gfx_mode(fallbackMode, actual_width, actual_height, 0, 0) != 0)
         {
             debug << "Fatal Error: Unable to set graphics mode" << endl;
             return false;
         }
 	}
     debug << "Refresh rate: " << get_refresh_rate() << endl;
+
+graphics_ok:
+
 
 
     //
@@ -815,25 +841,32 @@ bool Game::Initialize_Graphics()
 #ifdef TLC_PLATFORM_WINDOWS
         GFX_MODE_LIST *list = NULL;
         list = get_gfx_mode_list(GFX_DIRECTX_ACCEL);
-        for (int i = list->num_modes; i >= 0; i--)
+        if (list == NULL)
         {
-            //add to list only if bpp matches detected desktop color depth
-            if (list->mode[i].bpp == desktop_colordepth)
-            {
-                VideoMode mode;
-                mode.bpp = list->mode[i].bpp;
-                mode.width = list->mode[i].width;
-                mode.height = list->mode[i].height;
-                if (mode.width>=1024 && mode.height>=768)
-                    videomodes.push_back(mode);
-            }
+            debug << "Warning: get_gfx_mode_list returned NULL" << endl;
         }
-        destroy_gfx_mode_list(list);
+        else
+        {
+            for (int i = list->num_modes; i >= 0; i--)
+            {
+                //add to list only if bpp matches detected desktop color depth
+                if (list->mode[i].bpp == desktop_colordepth)
+                {
+                    VideoMode mode;
+                    mode.bpp = list->mode[i].bpp;
+                    mode.width = list->mode[i].width;
+                    mode.height = list->mode[i].height;
+                    if (mode.width>=1024 && mode.height>=768)
+                        videomodes.push_back(mode);
+                }
+            }
+            destroy_gfx_mode_list(list);
 
-        debug << "Detected video modes:" << endl;
-        for (VideoModeIterator mode = videomodes.begin(); mode != videomodes.end(); ++mode)
-	    {
-            debug << mode->bpp << "," << mode->width << "," << mode->height << endl;
+            debug << "Detected video modes:" << endl;
+            for (VideoModeIterator mode = videomodes.begin(); mode != videomodes.end(); ++mode)
+            {
+                debug << mode->bpp << "," << mode->width << "," << mode->height << endl;
+            }
         }
 #else
         // Allegro's gfx mode list is driver-specific; DirectX is Windows-only.

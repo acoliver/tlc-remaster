@@ -266,6 +266,9 @@ jobs:
           # Copy executable
           copy build\src\Release\starflighttlc.exe package\starflight-tlc\
           
+          # Copy app icon for installer shortcuts
+          copy bin\starflighttlc.ico package\starflight-tlc\
+          
           # Copy game data
           xcopy /E /I bin\data package\starflight-tlc\data
           mkdir package\starflight-tlc\saves

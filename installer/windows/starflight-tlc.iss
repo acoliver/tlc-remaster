@@ -23,6 +23,8 @@ AppUpdatesURL={#MyAppURL}/releases
 DefaultDirName={autopf}\Starflight TLC
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
+DisableProgramGroupPage=yes
+
 ; Output settings
 OutputDir=..\..\
 OutputBaseFilename=starflight-tlc-{#MyAppVersion}-windows-x64-setup
@@ -39,6 +41,8 @@ MinVersion=10.0
 ; 64-bit only
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+; Icon
+SetupIconFile={#SourcePath}\..\..\package\starflight-tlc\starflighttlc.ico
 ; Uninstall info
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppName}
@@ -52,6 +56,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 ; Main executable
 Source: "..\..\package\starflight-tlc\starflighttlc.exe"; DestDir: "{app}"; Flags: ignoreversion
+
+; App icon
+Source: "..\..\package\starflight-tlc\starflighttlc.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Game data
 Source: "..\..\package\starflight-tlc\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -67,9 +74,10 @@ Source: "..\..\package\starflight-tlc\saves\*"; DestDir: "{app}\saves"; Flags: i
 Name: "{app}\saves"; Permissions: users-modify
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\starflighttlc.ico"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; WorkingDir: "{app}"; IconFilename: "{app}\starflighttlc.ico"
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent; WorkingDir: "{app}"
+
