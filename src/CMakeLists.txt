@@ -120,6 +120,8 @@ target_compile_definitions(starflighttlc PRIVATE
 # not to use dllimport on function declarations
 if(WIN32)
   target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_STATICLINK)
+  # Make it a Windows GUI app (not console), which is required for WinMain entry point
+  set_target_properties(starflighttlc PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
 # Include directories - order matters!
