@@ -45,7 +45,7 @@ bool ModuleTitleScreen::Init()
 	//to this module in the game:
 	g_game->SetTimePaused(true);
 
-    m_background = (BITMAP*)load_bitmap("data/titlescreen/TITLE_BACKGROUND.BMP",NULL);
+    m_background = (BITMAP*)load_bitmap("data/titlescreen/title_background.bmp",NULL);
 	if (!m_background) {
 		g_game->fatalerror("Titlescreen: Error loading background");
 		return 0;

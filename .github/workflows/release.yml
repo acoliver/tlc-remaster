@@ -105,6 +105,18 @@ jobs:
           mkdir -p package/starflight-tlc/lib
           cp deps/allegro-legacy/build/lib/*.so* package/starflight-tlc/lib/ 2>/dev/null || true
           
+          # Bundle runtime deps so users don't need system packages
+          ldd build/src/starflighttlc | awk '/=>/ {print $3}' | while read -r lib; do
+            [ -f "$lib" ] || continue
+            case "$(basename "$lib")" in
+              ld-linux*|libc.so.*|libm.so.*|libpthread.so.*|libdl.so.*|librt.so.*|libgcc_s.so.*|libstdc++.so.*)
+                ;;
+              *)
+                cp -v "$lib" package/starflight-tlc/lib/
+                ;;
+            esac
+          done
+          
           # Create launcher script
           cat > package/starflight-tlc/starflight-tlc.sh << 'EOF'
           #!/bin/bash
