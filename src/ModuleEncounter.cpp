@@ -482,57 +482,57 @@ bool ModuleEncounter::Encounter_Init()
 	{
 		case ALIEN_ELOWAN:
 			scriptFile = "encounter_elowan";
-			portraitFile = "PORTRAIT_ELOWAN.bmp";
-			schematicFile = "SCHEMATIC_ELOWAN.bmp";
-			spriteFile = "SHIP_ELOWAN.bmp";
+			portraitFile = "portrait_elowan.bmp";
+			schematicFile = "schematic_elowan.bmp";
+			spriteFile = "ship_elowan.bmp";
 			break;
 		case ALIEN_SPEMIN:
 			scriptFile = "encounter_spemin";
-			portraitFile = "PORTRAIT_SPEMIN.bmp";
-			schematicFile = "SCHEMATIC_SPEMIN.bmp";
-			spriteFile = "SHIP_SPEMIN.bmp";
+			portraitFile = "portrait_spemin.bmp";
+			schematicFile = "schematic_spemin.bmp";
+			spriteFile = "ship_spemin.bmp";
 			break;
 		case ALIEN_THRYNN:
 			scriptFile = "encounter_thrynn";
-			portraitFile = "PORTRAIT_THRYNN.bmp";
-			schematicFile = "SCHEMATIC_THRYNN.bmp";
-			spriteFile = "SHIP_THRYNN.bmp";
+			portraitFile = "portrait_thrynn.bmp";
+			schematicFile = "schematic_thrynn.bmp";
+			spriteFile = "ship_thrynn.bmp";
 			break;
 		case ALIEN_BARZHON:
 			scriptFile = "encounter_barzhon";
-			portraitFile = "PORTRAIT_BARZHON.bmp";
-			schematicFile = "SCHEMATIC_BARZHON.bmp";
-			spriteFile = "SHIP_BARZHON.bmp";
+			portraitFile = "portrait_barzhon.bmp";
+			schematicFile = "schematic_barzhon.bmp";
+			spriteFile = "ship_barzhon.bmp";
 			break;
 		case ALIEN_NYSSIAN:
 			scriptFile = "encounter_nyssian";
-			portraitFile = "PORTRAIT_NYSSIAN.bmp";
-			schematicFile = "SCHEMATIC_NYSSIAN.bmp";
-			spriteFile = "SHIP_NYSSIAN.bmp";
+			portraitFile = "portrait_nyssian.bmp";
+			schematicFile = "schematic_nyssian.bmp";
+			spriteFile = "ship_nyssian.bmp";
 			break;
 		case ALIEN_TAFEL:
 			scriptFile = "encounter_tafel";
-			portraitFile = "PORTRAIT_TAFEL.bmp";
-			schematicFile = "SCHEMATIC_TAFEL.bmp";
-			spriteFile = "SHIP_TAFEL.bmp";
+			portraitFile = "portrait_tafel.bmp";
+			schematicFile = "schematic_tafel.bmp";
+			spriteFile = "ship_tafel.bmp";
 			break;
 		case ALIEN_MINEX:
 			scriptFile = "encounter_minex";
-			portraitFile = "PORTRAIT_MINEX.bmp";
-			schematicFile = "SCHEMATIC_MINEX.bmp";
-			spriteFile = "SHIP_MINEX.bmp";
+			portraitFile = "portrait_minex.bmp";
+			schematicFile = "schematic_minex.bmp";
+			spriteFile = "ship_minex.bmp";
 			break;
 		case ALIEN_COALITION:
 			scriptFile = "encounter_coalition";
-			portraitFile = "PORTRAIT_COALITION.bmp";
-			schematicFile = "SCHEMATIC_COALITION.bmp";
-			spriteFile = "SHIP_COALITION.bmp";
+			portraitFile = "portrait_coalition.bmp";
+			schematicFile = "schematic_coalition.bmp";
+			spriteFile = "ship_coalition.bmp";
 			break;
 		case ALIEN_PIRATE:
 			scriptFile = "encounter_pirate";
-			portraitFile = "PORTRAIT_PIRATE.bmp";
-			schematicFile = "SCHEMATIC_PIRATE.bmp";
-			spriteFile = "SHIP_PIRATE.bmp";
+			portraitFile = "portrait_pirate.bmp";
+			schematicFile = "schematic_pirate.bmp";
+			spriteFile = "ship_pirate.bmp";
 			break;
 		default:
 			break;
@@ -622,46 +622,46 @@ bool ModuleEncounter::Combat_Init()
 	minimap = create_bitmap(asw, ash);
 
 	//load small asteroids
-	img_smlasteroid = (BITMAP*)load_bitmap("data/encounter/SMLASTEROID.bmp",NULL);
+	img_smlasteroid = (BITMAP*)load_bitmap("data/encounter/smlasteroid.bmp",NULL);
 	if (!img_smlasteroid) {
 		g_game->message("error loading img_smlasteroid");
 		return false;
 	}
-	img_bigasteroid = (BITMAP*)load_bitmap("data/encounter/BIGASTEROID.bmp",NULL);
+	img_bigasteroid = (BITMAP*)load_bitmap("data/encounter/bigasteroid.bmp",NULL);
 	if (!img_bigasteroid) {
 		g_game->message("error loading img_bigasteroid");
 		return false;
 	}
 
 	//load weapon images
-	img_laserbeam = (BITMAP*)load_bitmap("data/encounter/LASER_BEAM.bmp",NULL);
+	img_laserbeam = (BITMAP*)load_bitmap("data/encounter/laser_beam.bmp",NULL);
 	if (!img_laserbeam) {
 		g_game->message("error loading img_laserbeam");
 		return false;
 	}
-	img_plasma = (BITMAP*)load_bitmap("data/encounter/WEAPON_PLASMA_32.tga",NULL);
+	img_plasma = (BITMAP*)load_bitmap("data/encounter/weapon_plasma_32.tga",NULL);
 	if (!img_plasma) {
 		g_game->message("error loading weapon_player_primary");
 		return false;
 	}
-	img_redbolt = (BITMAP*)load_bitmap("data/encounter/RED_BOLT.bmp",NULL);
+	img_redbolt = (BITMAP*)load_bitmap("data/encounter/red_bolt.bmp",NULL);
 	if (!img_redbolt) {
 		g_game->message("error loading img_redbolt");
 		return false;
 	}
 
 	//load explosions
-	img_bigexplosion = (BITMAP*)load_bitmap("data/encounter/EXPLOSION_30_128.tga",NULL);
+	img_bigexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_128.tga",NULL);
 	if (!img_bigexplosion) {
 		g_game->message("error loading img_bigexplosion");
 		return false;
 	}
-	img_medexplosion = (BITMAP*)load_bitmap("data/encounter/EXPLOSION_30_64.tga",NULL);
+	img_medexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_64.tga",NULL);
 	if (!img_medexplosion) {
 		g_game->message("error loading img_medexplosion");
 		return false;
 	}
-	img_smlexplosion = (BITMAP*)load_bitmap("data/encounter/EXPLOSION_30_48.tga",NULL);
+	img_smlexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_48.tga",NULL);
 	if (!img_smlexplosion) {
 		g_game->message("error loading img_smlexplosion");
 		return false;
@@ -674,22 +674,22 @@ bool ModuleEncounter::Combat_Init()
 	snd_explosion = g_game->audioSystem->Load("data/encounter/hit2.wav");
 
 	//load powerups
-	img_powerup_health = (BITMAP*)load_bitmap("data/encounter/POWERUP_HEALTH.tga",NULL);
+	img_powerup_health = (BITMAP*)load_bitmap("data/encounter/powerup_health.tga",NULL);
 	if (!img_powerup_health) {
 		g_game->message("error loading img_powerup_health");
 		return false;
 	}
-	img_powerup_shield = (BITMAP*)load_bitmap("data/encounter/POWERUP_SHIELD.tga",NULL);
+	img_powerup_shield = (BITMAP*)load_bitmap("data/encounter/powerup_shield.tga",NULL);
 	if (!img_powerup_shield) {
 		g_game->message("error loading img_powerup_shield");
 		return false;
 	}
-	img_powerup_armor = (BITMAP*)load_bitmap("data/encounter/POWERUP_ARMOR.tga",NULL);
+	img_powerup_armor = (BITMAP*)load_bitmap("data/encounter/powerup_armor.tga",NULL);
 	if (!img_powerup_armor) {
 		g_game->message("error loading img_powerup_armor");
 		return false;
 	}
-	img_powerup_mineral = (BITMAP*)load_bitmap("data/encounter/POWERUP_MINERAL.tga",NULL);
+	img_powerup_mineral = (BITMAP*)load_bitmap("data/encounter/powerup_mineral.tga",NULL);
 	if (!img_powerup_mineral) {
 		g_game->message("error loading img_powerup_mineral");
 		return false;
@@ -820,7 +820,7 @@ bool ModuleEncounter::Combat_Init()
 
 	//load animated shield sprite
 	shield = new Sprite();
-	shield->load("data/encounter/SHIELD.tga");
+	shield->load("data/encounter/shield.tga");
 	shield->setAnimColumns(7);
 	shield->setTotalFrames(14);
 	shield->setFrameWidth(96);

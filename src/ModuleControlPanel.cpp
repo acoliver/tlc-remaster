@@ -49,7 +49,7 @@ bool ModuleControlPanel::Init()
 	
 
 	//load background image
-	controlPanelBackgroundImg = (BITMAP *)load_bitmap("data/controlpanel/GUI_CONTROLPANEL.BMP",NULL);
+	controlPanelBackgroundImg = (BITMAP *)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
 	if (controlPanelBackgroundImg == NULL) 
     {
 		g_game->message("Error loading controlpanel background");
@@ -82,7 +82,7 @@ bool ModuleControlPanel::Init()
 	OfficerButton *captainBtn;
 	captainBtn = new OfficerButton(*this, OFFICER_CAPTAIN, 
         "data/controlpanel/cp_captain_mo.bmp",
-        "data/controlpanel/CP_CAPTAIN_SELECT.BMP", 
+        "data/controlpanel/cp_captain_select.bmp", 
         officerIconX, officerIconY);
 
 		selectedOfficer = captainBtn;
@@ -93,33 +93,33 @@ bool ModuleControlPanel::Init()
 		int ciy = CMDBUTTONS_UL_Y;
 
 		//LAUNCH BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_CAPTAIN_LAUNCH.BMP", "Break orbit", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_captain_launch.bmp", "Break orbit", cix,ciy);
 		cbtn->setEventID(EVENT_CAPTAIN_LAUNCH);
 		captainBtn->commandButtons.push_back(cbtn);
 
 		//DESCEND BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_CAPTAIN_DESCEND.BMP", "Descend to surface", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_captain_descend.bmp", "Descend to surface", cix,ciy);
 		cbtn->setEventID(EVENT_CAPTAIN_DESCEND);
 		captainBtn->commandButtons.push_back(cbtn);
 
 		//CARGO HOLD BUTTON
 		cix = CMDBUTTONS_UL_X;
         ciy += buttonSpacingY;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_CAPTAIN_CARGO.BMP", "Cargo hold", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_captain_cargo.bmp", "Cargo hold", cix,ciy);
 		cbtn->setEventID(EVENT_CAPTAIN_CARGO);
 		captainBtn->commandButtons.push_back(cbtn);
 
 		//QUESTLOG BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_QUESTLOG.BMP", "Quest log", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_questlog.bmp", "Quest log", cix,ciy);
 		cbtn->setEventID(EVENT_CAPTAIN_QUESTLOG);
 		captainBtn->commandButtons.push_back(cbtn);
 
 		//LOG PLANET BUTTON
 		cix = CMDBUTTONS_UL_X;
 		ciy += buttonSpacingY;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_CAPTAIN_LOGPLANET.bmp", "Log planet", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_captain_logplanet.bmp", "Log planet", cix,ciy);
 		cbtn->setEventID(EVENT_CAPTAIN_LOG);
 		captainBtn->commandButtons.push_back(cbtn);
 
@@ -131,8 +131,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *scienceBtn = new OfficerButton(*this, OFFICER_SCIENCE,
-        "data/controlpanel/CP_SCIENCE_MO.BMP",
-        "data/controlpanel/CP_SCIENCE_SELECT.BMP",
+        "data/controlpanel/cp_science_mo.bmp",
+        "data/controlpanel/cp_science_select.bmp",
         officerIconX, officerIconY);
 
 	officerButtons.push_back(scienceBtn);
@@ -142,13 +142,13 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//SCAN BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_SCIENCE_SCAN.bmp", "Sensor scan", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_science_scan.bmp", "Sensor scan", cix,ciy);
 		cbtn->setEventID(EVENT_SCIENCE_SCAN);
 		scienceBtn->commandButtons.push_back(cbtn);
 
 		//ANALYSIS BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_SCIENCE_ANALYSIS.bmp", "Sensor analysis", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_science_analysis.bmp", "Sensor analysis", cix,ciy);
 		cbtn->setEventID(EVENT_SCIENCE_ANALYSIS);
 		scienceBtn->commandButtons.push_back(cbtn);
 
@@ -159,8 +159,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *navBtn = new OfficerButton(*this, OFFICER_NAVIGATION,
-        "data/controlpanel/CP_NAVIGATION_MO.bmp",
-        "data/controlpanel/CP_NAVIGATION_SELECT.bmp",
+        "data/controlpanel/cp_navigation_mo.bmp",
+        "data/controlpanel/cp_navigation_select.bmp",
         officerIconX, officerIconY);
 
 	officerButtons.push_back(navBtn);
@@ -170,26 +170,26 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//ORBIT BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_NAV_ORBIT.bmp", "Orbit planet", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_nav_orbit.bmp", "Orbit planet", cix,ciy);
 		cbtn->setEventID(EVENT_NAVIGATOR_ORBIT);
 		navBtn->commandButtons.push_back(cbtn);
 
 		//STARPORT DOCK BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_NAV_DOCK.bmp", "Dock with Starport", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_nav_dock.bmp", "Dock with Starport", cix,ciy);
 		cbtn->setEventID(EVENT_NAVIGATOR_DOCK);
 		navBtn->commandButtons.push_back(cbtn);
 
 		//HYPERSPACE ENGINE BUTTON
 		cix = CMDBUTTONS_UL_X;
         ciy += buttonSpacingY;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_NAV_HYPERSPACE.bmp", "Hyperspace engine", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_nav_hyperspace.bmp", "Hyperspace engine", cix,ciy);
 		cbtn->setEventID(EVENT_NAVIGATOR_HYPERSPACE);
 		navBtn->commandButtons.push_back(cbtn);
 
 		//STARMAP BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_NAV_STARMAP.bmp", "Starmap", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_nav_starmap.bmp", "Starmap", cix,ciy);
 		cbtn->setEventID(EVENT_NAVIGATOR_STARMAP);
 		navBtn->commandButtons.push_back(cbtn);
 
@@ -201,8 +201,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *tacBtn = new OfficerButton(*this,OFFICER_TACTICAL,
-        "data/controlpanel/CP_TACTICAL_MO.bmp",
-        "data/controlpanel/CP_TACTICAL_SELECT.bmp",
+        "data/controlpanel/cp_tactical_mo.bmp",
+        "data/controlpanel/cp_tactical_select.bmp",
         officerIconX,officerIconY);
 
 	officerButtons.push_back(tacBtn);
@@ -212,13 +212,13 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//SHIELDS BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_TAC_SHIELDS.bmp", "Raise/Lower Shields", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_tac_shields.bmp", "Raise/Lower Shields", cix,ciy);
 		cbtn->setEventID(EVENT_TACTICAL_SHIELDS);
 		tacBtn->commandButtons.push_back(cbtn);
 
 		//WEAPONS BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_TAC_WEAPONS.bmp", "Arm/Disarm Weapons", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_tac_weapons.bmp", "Arm/Disarm Weapons", cix,ciy);
 		cbtn->setEventID(EVENT_TACTICAL_WEAPONS);
 		tacBtn->commandButtons.push_back(cbtn);
 
@@ -229,8 +229,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *engBtn = new OfficerButton(*this,OFFICER_ENGINEER,
-        "data/controlpanel/CP_ENGINEER_MO.bmp",
-        "data/controlpanel/CP_ENGINEER_SELECT.bmp",
+        "data/controlpanel/cp_engineer_mo.bmp",
+        "data/controlpanel/cp_engineer_select.bmp",
         officerIconX,officerIconY);
 
 	officerButtons.push_back(engBtn);
@@ -240,13 +240,13 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//REPAIR BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_ENG_REPAIR.bmp", "Repair systems", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_eng_repair.bmp", "Repair systems", cix,ciy);
 		cbtn->setEventID(EVENT_ENGINEER_REPAIR);
 		engBtn->commandButtons.push_back(cbtn);
 
 		//INJECT FUEL BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_RESPOND.bmp", "Inject fuel", cix, ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_respond.bmp", "Inject fuel", cix, ciy);
 		cbtn->setEventID(EVENT_ENGINEER_INJECT);
 		engBtn->commandButtons.push_back(cbtn);
 
@@ -257,8 +257,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *comBtn = new OfficerButton(*this,OFFICER_COMMUNICATION,
-        "data/controlpanel/CP_COMM_MO.bmp",
-        "data/controlpanel/CP_COMM_SELECT.bmp",
+        "data/controlpanel/cp_comm_mo.bmp",
+        "data/controlpanel/cp_comm_select.bmp",
         officerIconX,officerIconY);
 
 	officerButtons.push_back(comBtn);
@@ -268,33 +268,33 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//POSTURE BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_POSTURE.bmp", "Change posture", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_posture.bmp", "Change posture", cix,ciy);
 		cbtn->setEventID(EVENT_COMM_POSTURE);
 		comBtn->commandButtons.push_back(cbtn);
 
 		//HAIL BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_HAIL.bmp", "Hail or respond", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_hail.bmp", "Hail or respond", cix,ciy);
 		cbtn->setEventID(EVENT_COMM_HAIL);
 		comBtn->commandButtons.push_back(cbtn);
 
 		//QUESTION BUTTON
 		cix = CMDBUTTONS_UL_X;
         ciy += buttonSpacingY;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_QUESTION.bmp", "Ask a question", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_question.bmp", "Ask a question", cix,ciy);
 		cbtn->setEventID(EVENT_COMM_QUESTION);
 		comBtn->commandButtons.push_back(cbtn);
 
 		//TERMINATE BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_TERMINATE.bmp", "End communication", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_terminate.bmp", "End communication", cix,ciy);
 		cbtn->setEventID(EVENT_COMM_TERMINATE);
 		comBtn->commandButtons.push_back(cbtn);
 
 		//DISTRESS BUTTON
 		cix = CMDBUTTONS_UL_X;
         ciy += buttonSpacingY;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_COM_DISTRESS.bmp", "Send distress signal", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_com_distress.bmp", "Send distress signal", cix,ciy);
 		cbtn->setEventID(EVENT_COMM_DISTRESS);
 		comBtn->commandButtons.push_back(cbtn);
 
@@ -312,8 +312,8 @@ bool ModuleControlPanel::Init()
 	officerIconY += officerIconHeight;
 
 	OfficerButton *medBtn = new OfficerButton(*this,OFFICER_MEDICAL,
-        "data/controlpanel/CP_MEDICAL_MO.bmp",
-        "data/controlpanel/CP_MEDICAL_SELECT.bmp",
+        "data/controlpanel/cp_medical_mo.bmp",
+        "data/controlpanel/cp_medical_select.bmp",
         officerIconX,officerIconY);
 
 	officerButtons.push_back(medBtn);
@@ -323,13 +323,13 @@ bool ModuleControlPanel::Init()
 		ciy = CMDBUTTONS_UL_Y;
 
 		//EXAMINE BUTTON
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_MED_EXAMINE.bmp", "Examine crew", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_med_examine.bmp", "Examine crew", cix,ciy);
 		cbtn->setEventID(EVENT_DOCTOR_EXAMINE);
 		medBtn->commandButtons.push_back(cbtn);
 
 		//TREAT BUTTON
 		cix += buttonSpacingX;
-		cbtn = new CommandButton(*this, "data/controlpanel/COMMANDICON_MED_TREAT.bmp", "Treat crew", cix,ciy);
+		cbtn = new CommandButton(*this, "data/controlpanel/commandicon_med_treat.bmp", "Treat crew", cix,ciy);
 		cbtn->setEventID(EVENT_DOCTOR_TREAT);
 		medBtn->commandButtons.push_back(cbtn);
 
@@ -754,28 +754,28 @@ ModuleControlPanel::CommandButton::~CommandButton(){}
 
 bool ModuleControlPanel::CommandButton::InitCommon()
 {
-	imgBackground = (BITMAP*)load_bitmap("data/controlpanel/COMMAND_BUTTON_BG.bmp",NULL);
+	imgBackground = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg.bmp",NULL);
 	if (imgBackground == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundDisabled = (BITMAP*)load_bitmap("data/controlpanel/COMMAND_BUTTON_BG_DISABLED.bmp",NULL);
+	imgBackgroundDisabled = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_disabled.bmp",NULL);
 	if (imgBackgroundDisabled == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundMouseOver = (BITMAP*)load_bitmap("data/controlpanel/COMMAND_BUTTON_BG_MO.bmp",NULL);
+	imgBackgroundMouseOver = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_mo.bmp",NULL);
 	if (imgBackgroundMouseOver == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundSelected = (BITMAP*)load_bitmap("data/controlpanel/COMMAND_BUTTON_BG_SELECT.bmp",NULL);
+	imgBackgroundSelected = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_select.bmp",NULL);
 	if (imgBackgroundSelected == NULL) 
     {
 		g_game->message("Error in control panel");

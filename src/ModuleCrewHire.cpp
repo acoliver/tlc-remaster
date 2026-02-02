@@ -932,7 +932,7 @@ bool ModuleCrewHire::Init()
 	destroy_bitmap(temp);
 
 	
-	m_miniSkills = (BITMAP*)load_bitmap("data/crewhire/PERSONEL_MINIPOSITIONS.BMP",NULL);
+	m_miniSkills = (BITMAP*)load_bitmap("data/crewhire/personel_miniPositions.bmp",NULL);
 	if (!m_miniSkills) {
 		g_game->message("CrewHire: Error loading personel_miniPositions");
 		return false;

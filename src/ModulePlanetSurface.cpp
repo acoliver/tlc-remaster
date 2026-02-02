@@ -823,7 +823,7 @@ bool ModulePlanetSurface::Init()
 	}
 
 	//load the control gui
-	//img_control = (BITMAP*)load_bitmap("data/controlpanel/GUI_CONTROLPANEL.BMP",NULL);
+	//img_control = (BITMAP*)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
     img_control = (BITMAP*)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
 	if (!img_control) {
 		g_game->message("Planet: Error loading gui_controlpanel");
@@ -1312,32 +1312,32 @@ bool ModulePlanetSurface::fabTilemap()
 bool ModulePlanetSurface::fabAsteroid()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ASH_TGA].dat, 16);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_ash.tga",NULL), 16)) 
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/TileSet_Ash.tga",NULL), 16)) 
     {
         debug << "Planet: error loading tileset_ash" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ICE_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_ice.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Ice.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_ice" << endl;
         return false;
     }
     
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_DARK_TGA].dat, 16, false);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_rock_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_STARS_TGA].dat, 16, false);//4
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_stars.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Stars.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_stars" << endl;
         return false;
@@ -1383,25 +1383,25 @@ bool ModulePlanetSurface::fabAsteroid()
 bool ModulePlanetSurface::fabRocky()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_DARK_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_rock_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_DIRT_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_dirt.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_dirt" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_DESERT_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_desert.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_desert" << endl;
         return false;
@@ -1462,25 +1462,25 @@ bool ModulePlanetSurface::fabRocky()
 bool ModulePlanetSurface::fabFrozen()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_WATER_DARK_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_water_dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Dark.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_water_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ICE_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_ice.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Ice.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_ice" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_SNOW_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_snow.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Snow.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_snow" << endl;
         return false;
@@ -1537,7 +1537,7 @@ bool ModulePlanetSurface::fabFrozen()
 
 bool ModulePlanetSurface::fabOceanic()
 {
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_water_dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Dark.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_water_dark " << endl;
         return false;
@@ -1546,43 +1546,43 @@ bool ModulePlanetSurface::fabOceanic()
 
 	if(planet->temperature == PTMP_TEMPERATE)
     {
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_mud.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Mud.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_mud" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_dark.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_water_mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_snow.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Snow.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_snow" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
@@ -1590,43 +1590,43 @@ bool ModulePlanetSurface::fabOceanic()
         
 	}
 	else if(planet->temperature == PTMP_SEARING){
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_desert.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_desert" << endl;
             return false;
         }
 
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_dead.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dead.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_dead" << endl;
             return false;
         }
        
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_water_mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_dirt.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_dirt" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
@@ -1634,43 +1634,43 @@ bool ModulePlanetSurface::fabOceanic()
         
 	}
 	else{ //if(planet->temperature == PTMP_TROPICAL){
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_desert.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_desert" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_grass_dark.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_grass_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_water_mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_dirt.tga",NULL), 16))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
         {
             debug << "Planet: error loading tileset_dirt" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
@@ -1733,25 +1733,25 @@ bool ModulePlanetSurface::fabOceanic()
 bool ModulePlanetSurface::fabMolten()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_LAVA_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_lava.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Lava.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_lava" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_MAGMA_TGA].dat, 16, false);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_magma.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Magma.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_magma" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ASH_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_ash.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/TileSet_Ash.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_ash" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_rock_light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
@@ -1810,25 +1810,25 @@ bool ModulePlanetSurface::fabMolten()
 bool ModulePlanetSurface::fabAcidic()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_GRASS_TGA].dat, 16, true);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_gas_grass.tga",NULL), 16, true))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Grass.tga",NULL), 16, true))
     {
         debug << "Planet: error loading tileset_gas_grass" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ACID_2_TGA].dat, 16, false);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_gas_acid_2.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Acid_2.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_gas_acid_2" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ROCK_1_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_gas_rock_1.tga",NULL), 16))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Rock_1.tga",NULL), 16))
     {
         debug << "Planet: error loading tileset_gas_rock_1" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ROCK_2_TGA].dat, 16, false);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/tileset_gas_rock_2.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Rock_2.tga",NULL), 16, false))
     {
         debug << "Planet: error loading tileset_gas_rock_2" << endl;
         return false;
