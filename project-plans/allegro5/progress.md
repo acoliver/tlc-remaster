@@ -20,7 +20,7 @@ Phase 3A: blit() Migration - IN PROGRESS
 | 3A | IN PROGRESS | - | - | blit() Migration |
 | 3B | COMPLETE | 245daf7 | 2026-02-02 | Sprite/Rotation |
 | 3C | pending | - | - | Primitives |
-| 4 | pending | - | - | Bitmap Management |
+| 4 | IN PROGRESS | - | - | Bitmap Management |
 | 5 | pending | - | - | Display System |
 | 6 | pending | - | - | Input System |
 | 7 | pending | - | - | Timer/System |
