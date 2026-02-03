@@ -1,5 +1,60 @@
 # Allegro 4 to Allegro 5 Conversion Plan
 
+---
+##  QUICK START - READ THIS FIRST
+
+**If you're starting fresh (context cleared), follow these steps exactly:**
+
+### Step 1: Verify Environment
+```bash
+cd /Users/acoliver/projects/tlc
+git branch --show-current  # Should be: allegro5-conversion
+```
+If not on correct branch: `git checkout allegro5-conversion`
+
+### Step 2: Verify Subagents Available
+Call `list_subagents` and confirm these exist:
+- `cplusplus-expert` (primary coder)
+- `deepthinker` (verifier)
+- `codeanalayzer` (analysis)
+
+If `cplusplus-expert` doesn't exist, check for similar C++ subagent or report to user.
+
+### Step 3: Check Current Progress
+```bash
+cat /Users/acoliver/projects/tlc/project-plans/allegro5/progress.md 2>/dev/null || echo "No progress file - starting fresh"
+git log --oneline -10  # See what phases are already committed
+```
+
+### Step 4: Create Todo List
+Use `todo_write` to create the full task list (see Execution Checklist section below).
+Each phase needs separate items for: Execute, Compile, Verify, (Remediate if needed), Commit.
+
+### Step 5: Execute Phases Sequentially
+For each phase:
+1. **Execute**: `task(subagent_name="cplusplus-expert", goal_prompt="[phase prompt from below]", timeout_seconds=900)`
+2. **Compile**: `run_shell_command("cd /Users/acoliver/projects/tlc && mkdir -p build && cd build && cmake .. && make -j4")`
+3. **If compile fails**: Remediate with cplusplus-expert until it passes
+4. **Verify**: `task(subagent_name="deepthinker", goal_prompt="[verification prompt from below]", timeout_seconds=300)`
+5. **If verify fails**: Remediate with cplusplus-expert, then re-compile, then re-verify
+6. **Commit**: `git add -A && git commit -m "[commit message from phase]"`
+7. **Update progress.md** with completed phase
+8. **Update todo status** to completed
+
+### Step 6: DO NOT STOP
+- Do NOT stop for "progress updates" - complete ALL phases
+- Do NOT skip compilation checks
+- Do NOT accept "preexisting errors" as excuse - fix everything
+- Loop remediation until verification passes
+
+### Key File Paths
+- **This plan**: `/Users/acoliver/projects/tlc/project-plans/allegro5/plan.md`
+- **Research docs**: `/Users/acoliver/projects/tlc/research/allegro_*.md`
+- **Source code**: `/Users/acoliver/projects/tlc/src/`
+- **Progress tracking**: `/Users/acoliver/projects/tlc/project-plans/allegro5/progress.md`
+
+---
+
 ## Overview
 
 This plan converts the TLC codebase from Allegro-Legacy (Allegro 4 API compatibility layer) to native Allegro 5 APIs. The conversion is broken into phases, each handled by subagents with verification and remediation loops.
@@ -14,10 +69,61 @@ This plan converts the TLC codebase from Allegro-Legacy (Allegro 4 API compatibi
 
 ### Todo Management
 
-For each phase, the coordinator (main agent) MUST use `todo_write` to create items:
-1. One item per phase execution
-2. One item per verification  
-3. One item per remediation (if needed)
+For each phase, the coordinator (main agent) MUST use `todo_write` to create items.
+
+**Initial Todo Structure (create this at start):**
+```json
+{
+  "todos": [
+    {"id": "p0-exec", "content": "Phase 0: Execute infrastructure analysis (codeanalayzer)", "status": "pending"},
+    {"id": "p0-verify", "content": "Phase 0: Verify and commit (deepthinker)", "status": "pending"},
+    {"id": "p1-exec", "content": "Phase 1: Create compatibility header (cplusplus-expert)", "status": "pending"},
+    {"id": "p1-compile", "content": "Phase 1: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p1-verify", "content": "Phase 1: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p1-commit", "content": "Phase 1: Commit changes", "status": "pending"},
+    {"id": "p2-exec", "content": "Phase 2: Color system migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p2-compile", "content": "Phase 2: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p2-verify", "content": "Phase 2: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p2-commit", "content": "Phase 2: Commit changes", "status": "pending"},
+    {"id": "p3a-exec", "content": "Phase 3A: blit() migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p3a-compile", "content": "Phase 3A: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p3a-verify", "content": "Phase 3A: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p3a-commit", "content": "Phase 3A: Commit changes", "status": "pending"},
+    {"id": "p3b-exec", "content": "Phase 3B: Sprite/rotation migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p3b-compile", "content": "Phase 3B: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p3b-verify", "content": "Phase 3B: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p3b-commit", "content": "Phase 3B: Commit changes", "status": "pending"},
+    {"id": "p3c-exec", "content": "Phase 3C: Primitives migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p3c-compile", "content": "Phase 3C: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p3c-verify", "content": "Phase 3C: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p3c-commit", "content": "Phase 3C: Commit changes", "status": "pending"},
+    {"id": "p4-exec", "content": "Phase 4: Bitmap management migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p4-compile", "content": "Phase 4: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p4-verify", "content": "Phase 4: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p4-commit", "content": "Phase 4: Commit changes", "status": "pending"},
+    {"id": "p5-exec", "content": "Phase 5: Display system migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p5-compile", "content": "Phase 5: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p5-verify", "content": "Phase 5: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p5-commit", "content": "Phase 5: Commit changes", "status": "pending"},
+    {"id": "p6-exec", "content": "Phase 6: Input system migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p6-compile", "content": "Phase 6: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p6-verify", "content": "Phase 6: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p6-commit", "content": "Phase 6: Commit changes", "status": "pending"},
+    {"id": "p7-exec", "content": "Phase 7: Timer/system migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p7-compile", "content": "Phase 7: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p7-verify", "content": "Phase 7: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p7-commit", "content": "Phase 7: Commit changes", "status": "pending"},
+    {"id": "p8-exec", "content": "Phase 8: Datafiles migration (cplusplus-expert)", "status": "pending"},
+    {"id": "p8-compile", "content": "Phase 8: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p8-verify", "content": "Phase 8: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p8-commit", "content": "Phase 8: Commit changes", "status": "pending"},
+    {"id": "p9-exec", "content": "Phase 9: Final integration (cplusplus-expert)", "status": "pending"},
+    {"id": "p9-compile", "content": "Phase 9: Compile check and remediate if needed", "status": "pending"},
+    {"id": "p9-verify", "content": "Phase 9: Verify work (deepthinker)", "status": "pending"},
+    {"id": "p9-commit", "content": "Phase 9: Final commit - MIGRATION COMPLETE", "status": "pending"}
+  ]
+}
+```
 
 **Status tracking:**
 - `pending` - Not started
