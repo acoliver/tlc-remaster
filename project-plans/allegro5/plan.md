@@ -26,26 +26,29 @@ cat /Users/acoliver/projects/tlc/project-plans/allegro5/progress.md 2>/dev/null 
 git log --oneline -10  # See what phases are already committed
 ```
 
-### Step 4: Create Todo List
-Use `todo_write` to create the full task list (see Execution Checklist section below).
+### Step 4: Create Todo List (AGENT DOES THIS)
+Call `todo_write` with the exact JSON structure from the "Todo Management" section below.
+Do NOT ask the user to do this - the agent creates all todos automatically.
 Each phase needs separate items for: Execute, Compile, Verify, (Remediate if needed), Commit.
 
-### Step 5: Execute Phases Sequentially
-For each phase:
-1. **Execute**: `task(subagent_name="cplusplus-expert", goal_prompt="[phase prompt from below]", timeout_seconds=900)`
-2. **Compile**: `run_shell_command("cd /Users/acoliver/projects/tlc && mkdir -p build && cd build && cmake .. && make -j4")`
-3. **If compile fails**: Remediate with cplusplus-expert until it passes
-4. **Verify**: `task(subagent_name="deepthinker", goal_prompt="[verification prompt from below]", timeout_seconds=300)`
-5. **If verify fails**: Remediate with cplusplus-expert, then re-compile, then re-verify
-6. **Commit**: `git add -A && git commit -m "[commit message from phase]"`
-7. **Update progress.md** with completed phase
-8. **Update todo status** to completed
+### Step 5: Execute Phases Sequentially (AGENT DOES ALL OF THIS)
+For each phase, the agent executes these steps autonomously:
+1. **Execute**: Call `task(subagent_name="cplusplus-expert", goal_prompt="[phase prompt from below]", timeout_seconds=900)`
+2. **Compile**: Call `run_shell_command("cd /Users/acoliver/projects/tlc && mkdir -p build && cd build && cmake .. && make -j4")`
+3. **If compile fails**: Call `task()` with cplusplus-expert to remediate, loop until compile passes
+4. **Verify**: Call `task(subagent_name="deepthinker", goal_prompt="[verification prompt from below]", timeout_seconds=300)`
+5. **If verify fails**: Call `task()` with cplusplus-expert to remediate, then re-compile, then re-verify
+6. **Commit**: Call `run_shell_command("git add -A && git commit -m '[commit message from phase]'")`
+7. **Update progress.md**: Call `replace` or `write_file` to mark phase completed
+8. **Update todo status**: Call `todo_write` to mark items as `completed`
 
-### Step 6: DO NOT STOP
-- Do NOT stop for "progress updates" - complete ALL phases
+### Step 6: AGENT AUTONOMY RULES
+- Do NOT stop for "progress updates" - complete ALL phases autonomously
+- Do NOT ask user for permission at each step - just execute
 - Do NOT skip compilation checks
 - Do NOT accept "preexisting errors" as excuse - fix everything
 - Loop remediation until verification passes
+- Only report to user when ALL phases are complete or if truly blocked
 
 ### Key File Paths
 - **This plan**: `/Users/acoliver/projects/tlc/project-plans/allegro5/plan.md`
@@ -71,7 +74,7 @@ This plan converts the TLC codebase from Allegro-Legacy (Allegro 4 API compatibi
 
 For each phase, the coordinator (main agent) MUST use `todo_write` to create items.
 
-**Initial Todo Structure (create this at start):**
+**AGENT ACTION: At the start of execution, call `todo_write` with this exact structure:**
 ```json
 {
   "todos": [
