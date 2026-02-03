@@ -405,6 +405,50 @@ inline bool tlc_allegro5_init_all()
 }
 
 /*=============================================================================
+ * TRANSPARENT COLOR HANDLING HELPERS
+ *===========================================================================*/
+
+/*
+ * Transparent color migration helper
+ * 
+ * In Allegro 4, magenta (255,0,255) was commonly used as a transparency mask.
+ * In Allegro 5, transparency uses alpha channel.
+ * 
+ * This helper converts magenta pixels to transparent alpha after loading.
+ * Call this immediately after loading any bitmap that uses magenta transparency.
+ * 
+ * Example usage:
+ *   ALLEGRO_BITMAP *sprite = al_load_bitmap("sprite.bmp");
+ *   tlc_convert_magenta_to_alpha(sprite);
+ */
+inline void tlc_convert_magenta_to_alpha(ALLEGRO_BITMAP *bitmap)
+{
+    if (bitmap) {
+        al_convert_mask_to_alpha(bitmap, al_map_rgb(255, 0, 255));
+    }
+}
+
+/*
+ * Create a transparent bitmap (replaces clear_to_color with magenta)
+ * 
+ * In Allegro 4: clear_to_color(bmp, makecol(255,0,255)) created transparency
+ * In Allegro 5: clear to fully transparent alpha channel
+ * 
+ * Example usage:
+ *   ALLEGRO_BITMAP *temp = al_create_bitmap(width, height);
+ *   tlc_clear_to_transparent(temp);
+ */
+inline void tlc_clear_to_transparent(ALLEGRO_BITMAP *bitmap)
+{
+    if (bitmap) {
+        ALLEGRO_BITMAP *old = al_get_target_bitmap();
+        al_set_target_bitmap(bitmap);
+        al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+        al_set_target_bitmap(old);
+    }
+}
+
+/*=============================================================================
  * MIGRATION STATUS TRACKING
  *===========================================================================*/
 

@@ -30,6 +30,19 @@
 #define SCREEN_HEIGHT 768 //960
 
 //COMMON RGB COLORS
+//
+// COLOR SYSTEM MIGRATION NOTES:
+// These macros currently use makecol() which is compatible with both:
+// - Allegro Legacy (current): makecol() returns int color value
+// - Allegro 5 (future): makecol is #defined to al_map_rgb() in allegro5_compat.h
+//
+// When fully migrated to native Allegro 5, these will return ALLEGRO_COLOR structs.
+// The compatibility layer in allegro5_compat.h handles the transition transparently.
+//
+// Transparent pink (255,0,255) usage: In Allegro 4, magenta was used as a mask color.
+// In Allegro 5, use al_convert_mask_to_alpha() after loading bitmaps, or clear to
+// al_map_rgba(0,0,0,0) for fully transparent surfaces.
+//
 #define BLACK			makecol(0,0,0)
 #define GRAY1			makecol(232,232,232)
 #define DGRAY           makecol(120,120,120)
