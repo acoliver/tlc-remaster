@@ -87,7 +87,7 @@ void ModuleMessageGUI::Update(){}
 void ModuleMessageGUI::Draw()
 {
 	//draw message gui
-	masked_blit(img_message, g_game->GetBackBuffer(), 0, 0, gmx, gmy, img_message->w, img_message->h);
+	masked_blit(img_message, g_game->GetBackBuffer(), 0, 0, gmx, gmy, al_get_bitmap_width(img_message), al_get_bitmap_height(img_message));
 
 	//draw socket gui
 	//masked_blit(img_socket, g_game->GetBackBuffer(), 0, 0, gsx, gsy, img_socket->w, img_socket->h);

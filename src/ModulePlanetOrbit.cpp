@@ -655,8 +655,8 @@ void ModulePlanetOrbit::Update()
 	//planet scan?
 	if (planetScan == 1) 
     {
-        int pw = pbody->planetTopography->w-7;
-        int ph = pbody->planetTopography->h-7;
+        int pw = al_get_bitmap_width(pbody->planetTopography)-7;
+        int ph = al_get_bitmap_height(pbody->planetTopography)-7;
 
         //draw a bunch of random sensor blips
         for (int n=0; n<8; n++)
@@ -675,7 +675,7 @@ void ModulePlanetOrbit::Update()
 	}
 	else {
 		//restore original topography
-		blit( pbody->planetScannerMap, pbody->planetTopography,0,0,0,0, pbody->planetTopography->w, pbody->planetTopography->h);
+		blit( pbody->planetScannerMap, pbody->planetTopography,0,0,0,0, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography));
 	}
 
 
@@ -724,7 +724,7 @@ void ModulePlanetOrbit::Draw()
 
 
     //draw topography map of planet in the aux window
-    blit( pbody->planetTopography, g_game->GetBackBuffer(), 0, 0, asx, asy, pbody->planetTopography->w, pbody->planetTopography->h );
+    blit( pbody->planetTopography, g_game->GetBackBuffer(), 0, 0, asx, asy, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography) );
 
 
 

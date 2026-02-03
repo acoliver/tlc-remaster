@@ -74,7 +74,6 @@
 
 #define FLUX_SCANNER_ID 2
 
-struct BITMAP;
 class Module;
 class GameState;
 class ModeMgr;

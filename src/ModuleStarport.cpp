@@ -128,7 +128,7 @@ void ModuleStarport::movePlayerLeft(int distanceInPixels)
 		else
 			playerx -= distanceInPixels;
 	}
-	else if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH >= starport->w)//If we're scrolled atw right...
+	else if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH >= al_get_bitmap_width(starport))//If we're scrolled atw right...
 	{
 		if (playerx - distanceInPixels > SCREEN_WIDTH/2 - 237/2)
 			playerx -= distanceInPixels;
@@ -157,7 +157,7 @@ void ModuleStarport::movePlayerRight(int distanceInPixels)
 			g_game->gameState->player->posStarport.x += distanceInPixels;
 		}
 	}
-	else if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH >= starport->w)//If we're scrolled atw right...
+	else if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH >= al_get_bitmap_width(starport))//If we're scrolled atw right...
 	{
 		if (playerx + distanceInPixels + 237 + SCREEN_EDGE_PADDING > SCREEN_WIDTH)
 			playerx = SCREEN_WIDTH - 237 - SCREEN_EDGE_PADDING;
@@ -167,8 +167,8 @@ void ModuleStarport::movePlayerRight(int distanceInPixels)
 	else //If we're inbetween...
 	{
 		g_game->gameState->player->posStarport.x += distanceInPixels;
-		if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH > starport->w)
-			g_game->gameState->player->posStarport.x = starport->w - SCREEN_WIDTH;
+		if (g_game->gameState->player->posStarport.x + SCREEN_WIDTH > al_get_bitmap_width(starport))
+			g_game->gameState->player->posStarport.x = al_get_bitmap_width(starport) - SCREEN_WIDTH;
 	}
 }
 
@@ -421,7 +421,7 @@ void ModuleStarport::drawDoors()
 		else
 		{
 			//draw this door if it's in view
-			if (doors[a].right > g_game->gameState->player->posStarport.x && doors[a].left < g_game->gameState->player->posStarport.x + screen->w)
+			if (doors[a].right > g_game->gameState->player->posStarport.x && doors[a].left < g_game->gameState->player->posStarport.x + al_get_bitmap_width(screen))
 			{
 				//draw left door frame
 				door->setCurrFrame(0);
@@ -540,13 +540,13 @@ void ModuleStarport::Draw()
 	drawDoors();
 
 	//draw starport top section
-	blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 0, 0, 0, screen->w, 348);
+	blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 0, 0, 0, al_get_bitmap_width(screen), 348);
 
 	//draw starport floor section
-	blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 585, 0, 585, screen->w, 183);
+	blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 585, 0, 585, al_get_bitmap_width(screen), 183);
 
 	//draw starport middle section
-	masked_blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 348, 0, 348, screen->w, 237);
+	masked_blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 348, 0, 348, al_get_bitmap_width(screen), 237);
 
 
 	//draw avatar
@@ -567,7 +567,7 @@ void ModuleStarport::Draw()
 		door->DrawFrame(g_game->GetBackBuffer());
 
 		//draw starport center section
-		masked_blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 348, 0, 348, screen->w, 237);
+		masked_blit(starport, g_game->GetBackBuffer(), g_game->gameState->player->posStarport.x, 348, 0, 348, al_get_bitmap_width(screen), 237);
 	}
 
 	if(g_game->gameState->player->hasOverdueLoan() && g_game->gameState->player->hasHyperspacePermit()){

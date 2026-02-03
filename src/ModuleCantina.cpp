@@ -131,7 +131,7 @@ void ModuleCantina::Close()
 	try {
         if (m_background != NULL)
         {
-            delete m_background;
+            al_destroy_bitmap(m_background);
             m_background=NULL;
         }
 		if (m_exitBtn != NULL)
@@ -371,7 +371,7 @@ void ModuleCantina::Draw()
 	int id;
 
 	//draw background
-	blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, m_background->w, m_background->h);
+	blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background));
 
 	//draw buttons
 	m_exitBtn->Run(g_game->GetBackBuffer());

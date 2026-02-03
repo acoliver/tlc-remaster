@@ -28,7 +28,6 @@ private:
 	BITMAP *mwCorner;
 	BITMAP *mwSide;
 	BITMAP *mwInterior;
-	PALETTE mwPalette;
 public: 
 	MiniWindow();
 	MiniWindow(int width, int height);

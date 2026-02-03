@@ -78,7 +78,7 @@ void ModuleSideViewer::Draw()
 	}
 
 	if (img_viewer)
-		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, m_x, m_y, img_viewer->w, img_viewer->h);
+		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, m_x, m_y, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer));
 	else
 		TRACE("*** Error in ModuleSideViewer::Draw: img_viewer is null");
 

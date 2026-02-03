@@ -400,7 +400,7 @@ void ModuleBank::Draw()
 	}
 	{//help window
 		if(b_help_visible){
-			masked_blit(bmp_help_window, g_game->GetBackBuffer(), 0,0, HELP_WINDOW_X, HELP_WINDOW_Y, bmp_help_window->w, bmp_help_window->h);
+			masked_blit(bmp_help_window, g_game->GetBackBuffer(), 0,0, HELP_WINDOW_X, HELP_WINDOW_Y, al_get_bitmap_width(bmp_help_window), al_get_bitmap_height(bmp_help_window));
 			m_help_window->Draw(g_game->GetBackBuffer());
 		}
 	}
@@ -408,8 +408,8 @@ void ModuleBank::Draw()
 
 void ModuleBank::render_images(){
 	{
-		blit(bmp_bank_background,g_game->GetBackBuffer(),0,0,0,0,g_game->GetBackBuffer()->w,g_game->GetBackBuffer()->h);//render background
-		masked_blit(bmp_bank_banner, g_game->GetBackBuffer(), 0,0, BANK_BANNER_X, BANK_BANNER_Y, bmp_bank_banner->w, bmp_bank_banner->h);//render background
+		blit(bmp_bank_background,g_game->GetBackBuffer(),0,0,0,0,al_get_bitmap_width(g_game->GetBackBuffer()),al_get_bitmap_height(g_game->GetBackBuffer()));//render background
+		masked_blit(bmp_bank_banner, g_game->GetBackBuffer(), 0,0, BANK_BANNER_X, BANK_BANNER_Y, al_get_bitmap_width(bmp_bank_banner), al_get_bitmap_height(bmp_bank_banner));//render background
 	}
 	{//exit button
 		exit_button->Run(g_game->GetBackBuffer());

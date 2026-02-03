@@ -900,14 +900,14 @@ bool ModuleCrewHire::Init()
 	for (int i=0; i < 8; i++)
 	{
 		//create a normal image for each crew position button
-		posNormImages[i] = create_bitmap(btnNorm->w, btnNorm->h);
-		blit(btnNorm, posNormImages[i], 0, 0, 0, 0, btnNorm->w, btnNorm->h);
+		posNormImages[i] = create_bitmap(al_get_bitmap_width(btnNorm), al_get_bitmap_height(btnNorm));
+		blit(btnNorm, posNormImages[i], 0, 0, 0, 0, al_get_bitmap_width(btnNorm), al_get_bitmap_height(btnNorm));
 		//create an over image for each crew position button
-		posOverImages[i] = create_bitmap(btnOver->w, btnOver->h);
-		blit(btnOver, posOverImages[i], 0, 0, 0, 0, btnOver->w, btnOver->h);
+		posOverImages[i] = create_bitmap(al_get_bitmap_width(btnOver), al_get_bitmap_height(btnOver));
+		blit(btnOver, posOverImages[i], 0, 0, 0, 0, al_get_bitmap_width(btnOver), al_get_bitmap_height(btnOver));
 		//create a disabled image for each crew position button
-		posDisImages[i] = create_bitmap(btnDis->w, btnDis->h);
-		blit(btnDis, posDisImages[i], 0, 0, 0, 0, btnDis->w, btnDis->h);
+		posDisImages[i] = create_bitmap(al_get_bitmap_width(btnDis), al_get_bitmap_height(btnDis));
+		blit(btnDis, posDisImages[i], 0, 0, 0, 0, al_get_bitmap_width(btnDis), al_get_bitmap_height(btnDis));
 
 		//Create and initialize the new button
 		m_PositionBtns[i] = new Button( posNormImages[i], posOverImages[i], posDisImages[i],

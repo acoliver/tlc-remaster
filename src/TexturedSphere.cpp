@@ -133,8 +133,8 @@ void TexturedSphere::CreateTextureTable(BITMAP *bmp)
 //    {
 //	    for (int j=0; j<TEX_SIZE+1; j++)
 //        {
-//            x = i * bmp->w / TEX_SIZE; 
-//            y = j * bmp->h / TEX_SIZE;
+//            x = i * al_get_bitmap_width(bmp) / TEX_SIZE; 
+//            y = j * al_get_bitmap_height(bmp) / TEX_SIZE;
 //			  p = getpixel(bmp, x, y);  
 //map 2D coords into 1D array
 //		  tex_table[j*TEX_SIZE+i] = p;
@@ -150,8 +150,8 @@ void TexturedSphere::CreateTextureTable(BITMAP *bmp)
 		testi = (TEX_SIZE - 1) - i;			//testi starts column at 255
 	    for (int j=0; j<TEX_SIZE+1; j++)	
         {
-            x = i * bmp->w / TEX_SIZE;		//i and j dictate which pixel is pulled from the texture. 
-            y = j * bmp->h / TEX_SIZE;		//so don't change them to solve the problem.
+            x = i * al_get_bitmap_width(bmp) / TEX_SIZE;		//i and j dictate which pixel is pulled from the texture. 
+            y = j * al_get_bitmap_height(bmp) / TEX_SIZE;		//so don't change them to solve the problem.
 	        p = getpixel(bmp, x, y); 
 //map 2D coords into 1D array
 		  tex_table[testj*TEX_SIZE+testi] = p;

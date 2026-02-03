@@ -90,9 +90,9 @@ int ModuleStartup::fadein(BITMAP *dest, BITMAP *source, int speed)
 	{
 		loop += speed;
 		clear(fader);
-		set_trans_blender(0,0,0,loop);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 		draw_trans_sprite(fader, source, 0, 0);
-		blit(fader, dest, 0,0, 0,0, source->w, source->h);
+		blit(fader, dest, 0,0, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source));
 	}
 	else {
 		loop = 0;
@@ -111,12 +111,12 @@ int ModuleStartup::fadeout(BITMAP *dest, BITMAP *source, int speed)
 	{
 		loop -= speed;
 		clear(fader);
-		set_trans_blender(0,0,0,loop);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 		draw_trans_sprite(fader, source, 0, 0);
-		blit(fader, dest, 0,0, 0,0, source->w, source->h);
+		blit(fader, dest, 0,0, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source));
 	}
 	else {
-		rectfill(dest, 0,0, source->w, source->h, makecol(0,0,0));
+		rectfill(dest, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source), makecol(0,0,0));
 		loop = 255;
 		retval = 1;
 	}
@@ -130,7 +130,7 @@ void ModuleStartup::Draw()
 {
 	static bool title_done = false;
 
-    blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, g_game->GetBackBuffer()->w, g_game->GetBackBuffer()->h);
+    blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()));
 
 	switch (display_mode) {
 
@@ -145,11 +145,11 @@ void ModuleStartup::Draw()
 				title_done = true;
 			}
 
-		} else {
-			blit(copyright, g_game->GetBackBuffer(), 0, 0, 0, 0, copyright->w, copyright->h);
-			if (Util::ReentrantDelay(4000))
-				display_mode = 2;
-		}
+	} else {
+		blit(copyright, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(copyright), al_get_bitmap_height(copyright));
+		if (Util::ReentrantDelay(4000))
+			display_mode = 2;
+	}
 		break;
 		
 	case 2: //copyright fadeout

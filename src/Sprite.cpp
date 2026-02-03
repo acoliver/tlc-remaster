@@ -86,8 +86,8 @@ bool Sprite::load(const char *filename)
 		g_game->message(s.str().c_str());
 		return false;
 	}
-	this->width = image->w;
-	this->height = image->h;
+	this->width = al_get_bitmap_width(image);
+	this->height = al_get_bitmap_height(image);
 	this->bLoaded = true;
 	
 	//default frame size equals whole image size unless manually changed
@@ -123,10 +123,10 @@ bool Sprite::setImage(BITMAP *source)
 	}
 	
 	this->image = source;
-	this->width = source->w;
-	this->height = source->h;
-	this->frameWidth = source->w;
-	this->frameHeight = source->h;
+	this->width = al_get_bitmap_width(source);
+	this->height = al_get_bitmap_height(source);
+	this->frameWidth = al_get_bitmap_width(source);
+	this->frameHeight = al_get_bitmap_height(source);
 	this->bLoaded = false;
 	
 	set_alpha_blender();
@@ -137,8 +137,12 @@ bool Sprite::setImage(BITMAP *source)
 
 void Sprite::Draw(BITMAP *dest) 
 {
-    if (this->image)
-	    draw_trans_sprite(dest, this->image, (int)this->x, (int)this->y);
+    if (this->image) {
+        ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
+        al_set_target_bitmap(dest);
+        al_draw_bitmap(this->image, (int)this->x, (int)this->y, 0);
+        al_set_target_bitmap(prev_target);
+    }
 }
 
 void Sprite::DrawScaled(BITMAP *dest, double scaling)  
@@ -186,14 +190,16 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
     rotate_sprite( temp, this->image, 0, 0, itofix((int)(angle / 0.7f / 2.0f)));
 
     //draw ROTATED image to dest 
-    int w = (int)(temp->w * scaling);
-    int h = (int)(temp->h * scaling);
-    masked_stretch_blit( temp, dest, 0, 0, temp->w, temp->h, (int)this->x, (int)this->y, w, h );
+    int temp_w = al_get_bitmap_width(temp);
+    int temp_h = al_get_bitmap_height(temp);
+    int w = (int)(temp_w * scaling);
+    int h = (int)(temp_h * scaling);
+    masked_stretch_blit( temp, dest, 0, 0, temp_w, temp_h, (int)this->x, (int)this->y, w, h );
 
 
 	if (this->DebugOutline) 
     {
-		rect( dest, (int)this->x, (int)this->y, (int)this->x + temp->w, (int)y + temp->h, BLUE );
+		rect( dest, (int)this->x, (int)this->y, (int)this->x + temp_w, (int)y + temp_h, BLUE );
 	}
 
     destroy_bitmap(temp);
@@ -221,7 +227,10 @@ void Sprite::DrawFrame(BITMAP *dest, bool UseAlpha)
 		//paste frame onto scratch image using alpha channel
 		BITMAP *temp = create_bitmap(frameWidth, frameHeight);
 		masked_blit(image, temp, fx, fy, 0, 0, frameWidth, frameHeight);
-		draw_trans_sprite(dest, temp, (int)x, (int)y);
+		ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_bitmap(temp, (int)x, (int)y, 0);
+		al_set_target_bitmap(prev_target);
 		destroy_bitmap(temp);
 	}
 	

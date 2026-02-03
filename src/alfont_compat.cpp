@@ -11,10 +11,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-#include <a5alleg.h>
 
-// Allegro 4 BITMAP* -> Allegro 5 ALLEGRO_BITMAP* bridge.
-// a5alleg.h comes from the AllegroLegacy::allegrolegacy target.
+// Pure Allegro 5 implementation - no AllegroLegacy dependency
 
 struct ALFONT_FONT {
     std::string filename;
@@ -22,14 +20,13 @@ struct ALFONT_FONT {
     ALLEGRO_FONT* a5_font;
 };
 
+// Convert packed RGB int color (0x00RRGGBB from makecol) to ALLEGRO_COLOR
 static ALLEGRO_COLOR a4_color_to_a5(int a4_color)
 {
-    // Allegro 4 encodes colors according to the current color depth.
-    // Use the "_depth" accessors so this works correctly regardless of mode.
-    const int bpp = bitmap_color_depth(screen);
-    const int r = getr_depth(bpp, a4_color);
-    const int g = getg_depth(bpp, a4_color);
-    const int b = getb_depth(bpp, a4_color);
+    // Colors are packed as 0x00RRGGBB by makecol() in allegro5_compat.h
+    const int r = (a4_color >> 16) & 0xFF;
+    const int g = (a4_color >> 8) & 0xFF;
+    const int b = a4_color & 0xFF;
     return al_map_rgb(r, g, b);
 }
 
@@ -230,7 +227,7 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
                 if (a > 128) {
                     int bmp_x = dest_x + px;
                     int bmp_y = y + py;
-                    if (bmp_x >= 0 && bmp_x < bmp->w && bmp_y >= 0 && bmp_y < bmp->h) {
+                    if (bmp_x >= 0 && bmp_x < al_get_bitmap_width(bmp) && bmp_y >= 0 && bmp_y < al_get_bitmap_height(bmp)) {
                         putpixel(bmp, bmp_x, bmp_y, makecol(r, g, b));
                     }
                 }

@@ -287,34 +287,34 @@ void ModuleEngineer::Draw()
 		//masked_blit(img_ship, g_game->GetBackBuffer(), 0, 0, 342+X_OFFSET, 95+viewer_offset_y, img_ship->w, img_ship->h);
 		draw_trans_sprite(g_game->GetBackBuffer(), img_ship, 342+X_OFFSET, 95+viewer_offset_y);
 
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, img_bar_base->w, img_bar_base->h); //laser
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, img_bar_base->w, img_bar_base->h); //missile
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, img_bar_base->w, img_bar_base->h); //hull
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, img_bar_base->w, img_bar_base->h); //Armor
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, img_bar_base->w, img_bar_base->h); //shields
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, img_bar_base->w, img_bar_base->h); //engines
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //laser
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //missile
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //hull
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //Armor
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //shields
+		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //engines
 		float percentage = 0;
 		percentage = g_game->gameState->getShip().getLaserIntegrity() / 100.0f;
-		masked_blit(img_bar_laser, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, img_bar_laser->w * percentage, img_bar_base->h); //laser
+		masked_blit(img_bar_laser, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, al_get_bitmap_width(img_bar_laser) * percentage, al_get_bitmap_height(img_bar_base)); //laser
 		
 		percentage = g_game->gameState->getShip().getMissileLauncherIntegrity() / 100.0f;
-		masked_blit(img_bar_missile, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, img_bar_missile->w * percentage, img_bar_base->h); //missile
+		masked_blit(img_bar_missile, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, al_get_bitmap_width(img_bar_missile) * percentage, al_get_bitmap_height(img_bar_base)); //missile
 		
 		percentage = g_game->gameState->getShip().getHullIntegrity() / 100.0f;
-		masked_blit(img_bar_hull, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, img_bar_hull->w * percentage, img_bar_base->h); //hull
+		masked_blit(img_bar_hull, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, al_get_bitmap_width(img_bar_hull) * percentage, al_get_bitmap_height(img_bar_base)); //hull
 		
 		if(g_game->gameState->getShip().getMaxArmorIntegrity() <= 0){
 			percentage = 0;
 		}else{
 			percentage = g_game->gameState->getShip().getArmorIntegrity() / g_game->gameState->getShip().getMaxArmorIntegrity();
 		}
-		masked_blit(img_bar_armor, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, img_bar_armor->w * percentage, img_bar_base->h); //Armor
+		masked_blit(img_bar_armor, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, al_get_bitmap_width(img_bar_armor) * percentage, al_get_bitmap_height(img_bar_base)); //Armor
 		
 		percentage = g_game->gameState->getShip().getShieldIntegrity() /  100.0f;
-		masked_blit(img_bar_shield, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, img_bar_shield->w * percentage, img_bar_base->h); //shields
+		masked_blit(img_bar_shield, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, al_get_bitmap_width(img_bar_shield) * percentage, al_get_bitmap_height(img_bar_base)); //shields
 		
-		percentage =  g_game->gameState->getShip().getEngineIntegrity() / 100.0f;
-		masked_blit(img_bar_engine, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, img_bar_engine->w * percentage, img_bar_base->h); //engines
+	percentage =  g_game->gameState->getShip().getEngineIntegrity() / 100.0f;
+	masked_blit(img_bar_engine, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, al_get_bitmap_width(img_bar_engine) * percentage, al_get_bitmap_height(img_bar_base)); //engines
 		line(g_game->GetBackBuffer(), 407+X_OFFSET, 104+viewer_offset_y, 560+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
 		line(g_game->GetBackBuffer(), 560+X_OFFSET, 130+viewer_offset_y, 690+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
 
@@ -364,9 +364,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The lasers are now fully functional!", BLUE, 5000);
 		}
-		textprintf_ex(text, font, 580, 115, LTGREEN, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 580, 115, LTGREEN, -1);
 	}else{
-		textprintf_ex(text, font, 580, 115, LTBLUE, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 580, 115, LTBLUE, -1);
 	}
 
 	s = "MISSILES: " + ship.getMissileLauncherClassString();
@@ -386,9 +386,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The missile system is now fully functional!", BLUE,5000);
 		}
-		textprintf_ex(text, font, 175, 160, LTGREEN, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 175, 160, LTGREEN, -1);
 	}else{
-		textprintf_ex(text, font, 175, 160, LTBLUE, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 175, 160, LTBLUE, -1);
 	}
 
 	s = "HULL";
@@ -408,13 +408,13 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The hull is now fully repaired!", BLUE, 5000);
 		}
-		textprintf_centre_ex(text, font, 565 + img_bar_base->w/2, 210, LTGREEN, -1, s.c_str());
+		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTGREEN, -1);
 	}else{
-		textprintf_centre_ex(text, font, 565 + img_bar_base->w/2, 210, LTBLUE, -1, s.c_str());
+		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTBLUE, -1);
 	}
 
 	s = "ARMOR: " + ship.getArmorClassString();
-	textprintf_ex(text, font, 155, 250, LTBLUE, -1, s.c_str());
+	textout_ex(text, g_game->font22, s.c_str(), 155, 250, LTBLUE, -1);
 
 	s = "SHIELDS: " + ship.getShieldClassString();
 	if(ship.partInRepair == PART_SHIELDS){
@@ -435,9 +435,9 @@ void ModuleEngineer::Draw()
 			ship.setShieldCapacity(ship.getMaxShieldCapacity());
 			g_game->printout(g_game->g_scrollbox, eng + "The shields are now fully functional!", BLUE,5000);
 		}
-		textprintf_ex(text, font, 550, 305, LTGREEN, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 550, 305, LTGREEN, -1);
 	}else{
-		textprintf_ex(text, font, 550, 305, LTBLUE, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 550, 305, LTBLUE, -1);
 	}
 
 	s = "ENGINES: " + ship.getEngineClassString();
@@ -457,9 +457,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The engines are now fully repaired!", BLUE, 5000);
 		}
-		textprintf_ex(text, font, 170, 365, LTGREEN, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 170, 365, LTGREEN, -1);
 	}else{
-		textprintf_ex(text, font, 170, 365, LTBLUE, -1, s.c_str());
+		textout_ex(text, g_game->font22, s.c_str(), 170, 365, LTBLUE, -1);
 	}
 	g_game->gameState->setShip(ship);
 	masked_blit(text, g_game->GetBackBuffer(), 0, 0, X_OFFSET, viewer_offset_y, VIEWER_WIDTH, VIEWER_HEIGHT);
@@ -562,3 +562,4 @@ void ModuleEngineer::OnMouseClick(int button, int x, int y){}
 void ModuleEngineer::OnMousePressed(int button, int x, int y){}
 void ModuleEngineer::OnMouseWheelUp(int x, int y) {}
 void ModuleEngineer::OnMouseWheelDown(int x, int y) {}
+

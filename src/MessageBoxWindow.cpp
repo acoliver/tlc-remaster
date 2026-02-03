@@ -195,14 +195,14 @@ void MessageBoxWindow::Draw()
 	}
 
 	BITMAP *temp = create_bitmap(width, height);
-	stretch_blit(bg, temp, 0, 0, bg->w, bg->h, 0, 0, width, height);
+	stretch_blit(bg, temp, 0, 0, al_get_bitmap_width(bg), al_get_bitmap_height(bg), 0, 0, width, height);
 	draw_trans_sprite(backBuffer, temp, left, top); 
 
 	if(button1)	button1->Run(backBuffer);
 	if(button2)	button2->Run(backBuffer);
 
-	masked_stretch_blit(bar, backBuffer, 0, 0, bar->w, bar->h, left, top, temp->w, bar->h);
-	masked_stretch_blit(bar, backBuffer, 0, 0, bar->w, bar->h, left, top + temp->h - bar->h, temp->w, bar->h);
+	masked_stretch_blit(bar, backBuffer, 0, 0, al_get_bitmap_width(bar), al_get_bitmap_height(bar), left, top, al_get_bitmap_width(temp), al_get_bitmap_height(bar));
+	masked_stretch_blit(bar, backBuffer, 0, 0, al_get_bitmap_width(bar), al_get_bitmap_height(bar), left, top + al_get_bitmap_height(temp) - al_get_bitmap_height(bar), al_get_bitmap_width(temp), al_get_bitmap_height(bar));
 
 	destroy_bitmap(temp);
 

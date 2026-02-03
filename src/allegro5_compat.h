@@ -165,6 +165,14 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
         al_set_target_bitmap(_old); \
     } while(0)
 
+/* Helper function for clear(bitmap) - Allegro 4 style */
+inline void clear(ALLEGRO_BITMAP *bmp) {
+    ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+    al_set_target_bitmap(bmp);
+    al_clear_to_color(al_map_rgba(0, 0, 0, 0));
+    al_set_target_bitmap(_old);
+}
+
 /*
  * Blitting Functions
  * 
@@ -237,6 +245,15 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(dest); \
         al_draw_bitmap(src, x, y, ALLEGRO_FLIP_HORIZONTAL | ALLEGRO_FLIP_VERTICAL); \
+        al_set_target_bitmap(_old); \
+    } while(0)
+
+/* Transparent sprite drawing (uses alpha blending) */
+#define draw_trans_sprite(dest, src, x, y) \
+    do { \
+        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
+        al_set_target_bitmap(dest); \
+        al_draw_bitmap(src, x, y, 0); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -382,6 +399,55 @@ inline int getpixel_compat(ALLEGRO_BITMAP *bmp, int x, int y) {
     } while(0)
 
 /*=============================================================================
+ * TEXT OUTPUT COMPATIBILITY
+ *===========================================================================*/
+
+/*
+ * Text output functions
+ * 
+ * Allegro 4: textout_ex(bmp, font, text, x, y, fg_color, bg_color)
+ * Allegro 5: al_draw_text(font, color, x, y, flags, text)
+ * 
+ * Note: A5 doesn't support background color in the same way.
+ * For now, we ignore the bg_color parameter.
+ */
+
+/* Forward declaration for ALFONT_FONT compatibility */
+struct ALFONT_FONT;
+
+#define textout_ex(bmp, fnt, str, x, y, fg_color, bg_color) \
+    do { \
+        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
+        al_set_target_bitmap(bmp); \
+        ALLEGRO_FONT *_font = (ALLEGRO_FONT*)(fnt); \
+        al_draw_text(_font, int_to_al_color(fg_color), x, y, 0, str); \
+        al_set_target_bitmap(_old); \
+    } while(0)
+
+#define textprintf_ex(bmp, fnt, x, y, fg_color, bg_color, fmt, ...) \
+    do { \
+        char _buf[1024]; \
+        snprintf(_buf, sizeof(_buf), fmt, __VA_ARGS__); \
+        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
+        al_set_target_bitmap(bmp); \
+        ALLEGRO_FONT *_font = (ALLEGRO_FONT*)(fnt); \
+        al_draw_text(_font, int_to_al_color(fg_color), x, y, 0, _buf); \
+        al_set_target_bitmap(_old); \
+    } while(0)
+
+
+#define textprintf_centre_ex(bmp, fnt, x, y, fg_color, bg_color, fmt, ...) \
+    do { \
+        char _buf[1024]; \
+        snprintf(_buf, sizeof(_buf), fmt, __VA_ARGS__); \
+        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
+        al_set_target_bitmap(bmp); \
+        ALLEGRO_FONT *_font = (ALLEGRO_FONT*)(fnt); \
+        al_draw_text(_font, int_to_al_color(fg_color), x, y, ALLEGRO_ALIGN_CENTER, _buf); \
+        al_set_target_bitmap(_old); \
+    } while(0)
+
+/*=============================================================================
  * SYSTEM COMPATIBILITY
  *===========================================================================*/
 
@@ -395,26 +461,407 @@ inline int getpixel_compat(ALLEGRO_BITMAP *bmp, int x, int y) {
 #define ftofix(x) ((int)((x) * 65536.0f))
 
 /*=============================================================================
- * INPUT SYSTEM COMPATIBILITY NOTES
+ * BITMAP PROPERTY ACCESS
  *===========================================================================*/
 
 /*
- * INPUT MIGRATION REQUIRED
+ * In Allegro 4, BITMAP was a struct with direct member access: bmp->w, bmp->h
+ * In Allegro 5, ALLEGRO_BITMAP is opaque, use accessor functions.
  * 
- * Allegro 4 uses polling with global state:
- *   - key[KEY_ESC] array for keyboard
- *   - mouse_x, mouse_y, mouse_b globals
- * 
- * Allegro 5 uses event-driven system:
- *   - al_get_keyboard_state() / al_key_down()
- *   - al_get_mouse_state()
- *   - ALLEGRO_EVENT_QUEUE for event handling
- * 
- * TLC already has custom input handling in Game.cpp event loop.
- * Key migration: Replace key[] and mouse_* references with A5 state queries.
+ * Since we can't override -> operator with macros, code that uses bmp->w
+ * must be changed to use these helper macros or direct al_get_bitmap_* calls.
  */
 
+/* Helper macros for bitmap properties - use these instead of ->w, ->h */
+#define bitmap_width(bmp) al_get_bitmap_width(bmp)
+#define bitmap_height(bmp) al_get_bitmap_height(bmp)
+
+/* For code that needs a "screen" global - this should point to display backbuffer */
+/* The game must set this during initialization */
+extern ALLEGRO_BITMAP *_tlc_screen;
+extern ALLEGRO_DISPLAY *_tlc_display;
+#define screen _tlc_screen
+
+/* Screen dimensions - game should set these during init */
+extern int SCREEN_W, SCREEN_H;
+
+/*=============================================================================
+ * DISPLAY/GRAPHICS MODE COMPATIBILITY
+ *===========================================================================*/
+
+/* Graphics mode constants */
+#define GFX_TEXT 0
+#define GFX_AUTODETECT 1
+#define GFX_AUTODETECT_FULLSCREEN 2
+#define GFX_AUTODETECT_WINDOWED 3
+
+/* Display creation - simplified version of set_gfx_mode 
+ * Returns 0 on success, -1 on failure (like A4)
+ */
+inline int set_gfx_mode(int mode, int w, int h, int v_w, int v_h) {
+    (void)v_w; (void)v_h; /* virtual width/height not used in A5 */
+    
+    if (mode == GFX_TEXT) {
+        /* Text mode - destroy current display if any */
+        if (_tlc_display) {
+            al_destroy_display(_tlc_display);
+            _tlc_display = NULL;
+            _tlc_screen = NULL;
+        }
+        return 0;
+    }
+    
+    /* Destroy existing display */
+    if (_tlc_display) {
+        al_destroy_display(_tlc_display);
+    }
+    
+    /* Set display flags based on mode */
+    int flags = 0;
+    if (mode == GFX_AUTODETECT_FULLSCREEN) {
+        flags = ALLEGRO_FULLSCREEN;
+    } else if (mode == GFX_AUTODETECT_WINDOWED) {
+        flags = ALLEGRO_WINDOWED;
+    }
+    /* GFX_AUTODETECT - let Allegro choose */
+    
+    al_set_new_display_flags(flags);
+    _tlc_display = al_create_display(w, h);
+    
+    if (!_tlc_display) {
+        return -1;
+    }
+    
+    _tlc_screen = al_get_backbuffer(_tlc_display);
+    SCREEN_W = w;
+    SCREEN_H = h;
+    
+    return 0;
+}
+
+/* Desktop/display info */
+inline int get_desktop_resolution(int *w, int *h) {
+    ALLEGRO_MONITOR_INFO info;
+    if (al_get_monitor_info(0, &info)) {
+        *w = info.x2 - info.x1;
+        *h = info.y2 - info.y1;
+        return 0;
+    }
+    *w = 1024;
+    *h = 768;
+    return -1;
+}
+
+inline int desktop_color_depth() {
+    return 32; /* A5 always uses 32-bit */
+}
+
+inline void set_color_depth(int depth) {
+    (void)depth; /* A5 always uses 32-bit, ignore */
+}
+
+inline void set_alpha_blender() {
+    al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+}
+
+inline void set_window_title(const char *title) {
+    if (_tlc_display) {
+        al_set_window_title(_tlc_display, title);
+    }
+}
+
+inline int get_refresh_rate() {
+    return 60; /* Default, could query actual rate */
+}
+
+/*=============================================================================
+ * INPUT SYSTEM COMPATIBILITY
+ *===========================================================================*/
+
+/* Installation functions - return 0 on success, -1 on failure (like A4) */
+inline int install_keyboard() {
+    return al_install_keyboard() ? 0 : -1;
+}
+
+inline int install_mouse() {
+    if (!al_install_mouse()) return -1;
+    return al_get_mouse_num_buttons(); /* Return button count like A4 */
+}
+
+inline int install_timer() {
+    /* A5 doesn't need explicit timer installation, timers just work */
+    return 0;
+}
+
+/* Mouse cursor control */
+#define MOUSE_CURSOR_NONE 0
+#define MOUSE_CURSOR_ALLEGRO 1
+
+inline void show_os_cursor(int cursor) {
+    if (cursor == MOUSE_CURSOR_NONE) {
+        al_hide_mouse_cursor(_tlc_display);
+    } else {
+        al_show_mouse_cursor(_tlc_display);
+    }
+}
+
+/* Keyboard state - A5 uses state queries instead of array 
+ * The game will need to call poll_keyboard_state() each frame
+ * and use key_down() instead of key[]
+ */
+extern ALLEGRO_KEYBOARD_STATE _tlc_keyboard_state;
+
+inline void poll_keyboard_state() {
+    al_get_keyboard_state(&_tlc_keyboard_state);
+}
+
+inline bool key_down(int keycode) {
+    return al_key_down(&_tlc_keyboard_state, keycode);
+}
+
+/* Keyboard state array emulation */
+extern bool _tlc_key[ALLEGRO_KEY_MAX];
+#define key _tlc_key
+
+/* scancode_to_ascii - convert keycode to ASCII (simplified version) */
+inline int scancode_to_ascii(int scancode) {
+    // This is a simplified implementation
+    // For full functionality, would need to track shift/caps state
+    if (scancode >= ALLEGRO_KEY_A && scancode <= ALLEGRO_KEY_Z) {
+        return 'a' + (scancode - ALLEGRO_KEY_A);
+    }
+    if (scancode >= ALLEGRO_KEY_0 && scancode <= ALLEGRO_KEY_9) {
+        return '0' + (scancode - ALLEGRO_KEY_0);
+    }
+    if (scancode == ALLEGRO_KEY_SPACE) return ' ';
+    return 0;
+}
+
+/* clear_keybuf - clear keyboard buffer */
+inline void clear_keybuf() {
+    // In Allegro 5, we just clear the key state array
+    for (int i = 0; i < ALLEGRO_KEY_MAX; i++) {
+        _tlc_key[i] = false;
+    }
+}
+
+/* Key code compatibility - map Allegro 4 key codes to Allegro 5 */
+#define KEY_ENTER ALLEGRO_KEY_ENTER
+#define KEY_ENTER_PAD ALLEGRO_KEY_PAD_ENTER
+#define KEY_ESC ALLEGRO_KEY_ESCAPE
+#define KEY_SPACE ALLEGRO_KEY_SPACE
+#define KEY_TAB ALLEGRO_KEY_TAB
+#define KEY_BACKSPACE ALLEGRO_KEY_BACKSPACE
+#define KEY_DEL ALLEGRO_KEY_DELETE
+#define KEY_DEL_PAD ALLEGRO_KEY_PAD_DELETE
+#define KEY_UP ALLEGRO_KEY_UP
+#define KEY_DOWN ALLEGRO_KEY_DOWN
+#define KEY_LEFT ALLEGRO_KEY_LEFT
+#define KEY_RIGHT ALLEGRO_KEY_RIGHT
+#define KEY_LCONTROL ALLEGRO_KEY_LCTRL
+#define KEY_RCONTROL ALLEGRO_KEY_RCTRL
+
+/* Number keys */
+#define KEY_0 ALLEGRO_KEY_0
+#define KEY_1 ALLEGRO_KEY_1
+#define KEY_2 ALLEGRO_KEY_2
+#define KEY_3 ALLEGRO_KEY_3
+#define KEY_4 ALLEGRO_KEY_4
+#define KEY_5 ALLEGRO_KEY_5
+#define KEY_6 ALLEGRO_KEY_6
+#define KEY_7 ALLEGRO_KEY_7
+#define KEY_8 ALLEGRO_KEY_8
+#define KEY_9 ALLEGRO_KEY_9
+
+/* Numpad keys */
+#define KEY_0_PAD ALLEGRO_KEY_PAD_0
+#define KEY_1_PAD ALLEGRO_KEY_PAD_1
+#define KEY_2_PAD ALLEGRO_KEY_PAD_2
+#define KEY_3_PAD ALLEGRO_KEY_PAD_3
+#define KEY_4_PAD ALLEGRO_KEY_PAD_4
+#define KEY_5_PAD ALLEGRO_KEY_PAD_5
+#define KEY_6_PAD ALLEGRO_KEY_PAD_6
+#define KEY_7_PAD ALLEGRO_KEY_PAD_7
+#define KEY_8_PAD ALLEGRO_KEY_PAD_8
+#define KEY_9_PAD ALLEGRO_KEY_PAD_9
+#define KEY_PLUS_PAD ALLEGRO_KEY_PAD_PLUS
+#define KEY_MINUS_PAD ALLEGRO_KEY_PAD_MINUS
+
+/* Function keys */
+#define KEY_F1 ALLEGRO_KEY_F1
+#define KEY_F2 ALLEGRO_KEY_F2
+#define KEY_F3 ALLEGRO_KEY_F3
+#define KEY_F4 ALLEGRO_KEY_F4
+#define KEY_F5 ALLEGRO_KEY_F5
+#define KEY_F6 ALLEGRO_KEY_F6
+#define KEY_F7 ALLEGRO_KEY_F7
+#define KEY_F8 ALLEGRO_KEY_F8
+#define KEY_F9 ALLEGRO_KEY_F9
+#define KEY_F10 ALLEGRO_KEY_F10
+#define KEY_F11 ALLEGRO_KEY_F11
+#define KEY_F12 ALLEGRO_KEY_F12
+
+/* Letter keys */
+#define KEY_A ALLEGRO_KEY_A
+#define KEY_B ALLEGRO_KEY_B
+#define KEY_C ALLEGRO_KEY_C
+#define KEY_D ALLEGRO_KEY_D
+#define KEY_E ALLEGRO_KEY_E
+#define KEY_F ALLEGRO_KEY_F
+#define KEY_G ALLEGRO_KEY_G
+#define KEY_H ALLEGRO_KEY_H
+#define KEY_I ALLEGRO_KEY_I
+#define KEY_J ALLEGRO_KEY_J
+#define KEY_K ALLEGRO_KEY_K
+#define KEY_L ALLEGRO_KEY_L
+#define KEY_M ALLEGRO_KEY_M
+#define KEY_N ALLEGRO_KEY_N
+#define KEY_O ALLEGRO_KEY_O
+#define KEY_P ALLEGRO_KEY_P
+#define KEY_Q ALLEGRO_KEY_Q
+#define KEY_R ALLEGRO_KEY_R
+#define KEY_S ALLEGRO_KEY_S
+#define KEY_T ALLEGRO_KEY_T
+#define KEY_U ALLEGRO_KEY_U
+#define KEY_V ALLEGRO_KEY_V
+#define KEY_W ALLEGRO_KEY_W
+#define KEY_X ALLEGRO_KEY_X
+#define KEY_Y ALLEGRO_KEY_Y
+#define KEY_Z ALLEGRO_KEY_Z
+
+/* Shift keys */
+#define KEY_LSHIFT ALLEGRO_KEY_LSHIFT
+#define KEY_RSHIFT ALLEGRO_KEY_RSHIFT
+
+/* Alt keys */
+#define KEY_ALT ALLEGRO_KEY_ALT
+#define KEY_ALTGR ALLEGRO_KEY_ALTGR
+
+/* Page navigation */
+#define KEY_PGUP ALLEGRO_KEY_PGUP
+#define KEY_PGDN ALLEGRO_KEY_PGDN
+#define KEY_HOME ALLEGRO_KEY_HOME
+#define KEY_END ALLEGRO_KEY_END
+
+/* Mouse state */
+extern ALLEGRO_MOUSE_STATE _tlc_mouse_state;
+extern int mouse_x, mouse_y, mouse_b;
+
+inline void poll_mouse_state() {
+    al_get_mouse_state(&_tlc_mouse_state);
+    mouse_x = _tlc_mouse_state.x;
+    mouse_y = _tlc_mouse_state.y;
+    mouse_b = _tlc_mouse_state.buttons;
+}
+
+/*=============================================================================
+ * FILE SYSTEM COMPATIBILITY
+ *===========================================================================*/
+
+/* File attribute flags (A4 style) */
+#define FA_RDONLY  1
+#define FA_HIDDEN  2
+#define FA_SYSTEM  4
+#define FA_LABEL   8
+#define FA_DIREC   16
+#define FA_ARCH    32
+#define FA_ALL     (~FA_LABEL)
+
+/* Check if file exists - A4: file_exists(path, attrib, aret)
+ * In A5 we just check if the file can be opened */
+inline int file_exists(const char *path, int attrib, int *aret) {
+    (void)attrib; (void)aret;
+    return al_filename_exists(path) ? -1 : 0; /* A4 returns non-zero if exists */
+}
+
+/* exists() - simple file existence check */
+inline bool exists(const char *path) {
+    return al_filename_exists(path);
+}
+
+/* delete_file() - delete a file */
+inline int delete_file(const char *path) {
+    return al_remove_filename(path) ? 0 : -1;
+}
+
+/*=============================================================================
+ * DATAFILE COMPATIBILITY (STUB)
+ *===========================================================================*/
+
+/*
+ * DATAFILE MIGRATION REQUIRED
+ * 
+ * Allegro 5 removed the datafile system. Options:
+ * 1. Extract .dat files to individual files (recommended)
+ * 2. Use a third-party datafile library
+ * 3. Keep Allegro Legacy just for datafile support
+ * 
+ * For now, we provide stub definitions so code compiles.
+ * The actual datafile loading will fail at runtime.
+ */
+
+typedef struct DATAFILE {
+    void *dat;
+    int type;
+    long size;
+    void *prop;
+} DATAFILE;
+
+/* Datafile object types */
+#define DAT_ID(a,b,c,d) ((((a)&255)<<24) | (((b)&255)<<16) | (((c)&255)<<8) | ((d)&255))
+#define DAT_MAGIC       DAT_ID('A','L','L','.')
+#define DAT_FILE        DAT_ID('F','I','L','E')
+#define DAT_DATA        DAT_ID('D','A','T','A')
+#define DAT_FONT        DAT_ID('F','O','N','T')
+#define DAT_SAMPLE      DAT_ID('S','A','M','P')
+#define DAT_MIDI        DAT_ID('M','I','D','I')
+#define DAT_PATCH       DAT_ID('P','A','T',' ')
+#define DAT_FLI         DAT_ID('F','L','I','C')
+#define DAT_BITMAP      DAT_ID('B','M','P',' ')
+#define DAT_RLE_SPRITE  DAT_ID('R','L','E',' ')
+#define DAT_C_SPRITE    DAT_ID('C','M','P',' ')
+#define DAT_XC_SPRITE   DAT_ID('X','C','M','P')
+#define DAT_PALETTE     DAT_ID('P','A','L',' ')
+#define DAT_PROPERTY    DAT_ID('p','r','o','p')
+#define DAT_NAME        DAT_ID('N','A','M','E')
+#define DAT_END         (-1)
+
+/* Stub functions - these need real implementations or datafile extraction */
+inline DATAFILE *load_datafile(const char *filename) {
+    (void)filename;
+    fprintf(stderr, "ERROR: load_datafile() called but datafiles not supported in native A5 mode.\n");
+    fprintf(stderr, "Please extract %s to individual files.\n", filename);
+    return NULL;
+}
+
+
+
+inline void unload_datafile(DATAFILE *dat) {
+    (void)dat;
+}
+
+inline DATAFILE *find_datafile_object(const DATAFILE *dat, const char *name) {
+    (void)dat; (void)name;
+    return NULL;
+}
+
 #endif /* TLC_USING_ALLEGRO_LEGACY */
+
+/*=============================================================================
+ * GLOBAL STATE DEFINITIONS (needed by both modes)
+ *===========================================================================*/
+
+#ifndef TLC_USING_ALLEGRO_LEGACY
+/* These need to be defined in one .cpp file when building without Allegro Legacy:
+ * 
+ * ALLEGRO_BITMAP *_tlc_screen = NULL;
+ * ALLEGRO_DISPLAY *_tlc_display = NULL;
+ * int SCREEN_W = 0, SCREEN_H = 0;
+ * int mouse_x = 0, mouse_y = 0, mouse_b = 0;
+ * ALLEGRO_KEYBOARD_STATE _tlc_keyboard_state;
+ * ALLEGRO_MOUSE_STATE _tlc_mouse_state;
+ */
+#endif
 
 /*=============================================================================
  * INITIALIZATION HELPERS

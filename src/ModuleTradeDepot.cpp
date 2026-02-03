@@ -587,7 +587,7 @@ void ModuleTradeDepot::Draw()
 
    BITMAP* canvas = g_game->GetBackBuffer();
 
-	blit(m_background,canvas,0,0,0,0,screen->w,screen->h);
+	blit(m_background,canvas,0,0,0,0,al_get_bitmap_width(screen),al_get_bitmap_height(screen));
 
    alfont_set_font_size(g_game->font10,LIST_TEXTHEIGHT);
    m_playerListValue->Draw(canvas);
@@ -618,12 +618,12 @@ void ModuleTradeDepot::Draw()
 
    if (m_tradeMode == TM_PROMPTING)
    {
-      blit(m_promptBackground,canvas,0,0,PROMPTBG_X,PROMPTBG_Y,m_promptBackground->w,m_promptBackground->h);
+      blit(m_promptBackground,canvas,0,0,PROMPTBG_X,PROMPTBG_Y,al_get_bitmap_width(m_promptBackground),al_get_bitmap_height(m_promptBackground));
       alfont_set_font_size(g_game->font10,PROMPT_VAL_TEXTHEIGHT);
       alfont_textout(canvas,g_game->font10,m_promptText.c_str(),QTYTEXT_X+PROMPTBG_X,QTYTEXT_Y+PROMPTBG_Y,PROMPT_TEXT_COLOR);
 
 		int nlen = alfont_text_length(g_game->font10,m_promptText.c_str());
-      blit(m_cursor[m_cursorIdx],canvas,0,0,QTYTEXT_X+PROMPTBG_X+nlen+2,CURSOR_Y+PROMPTBG_Y,m_cursor[m_cursorIdx]->w,m_cursor[m_cursorIdx]->h);
+      blit(m_cursor[m_cursorIdx],canvas,0,0,QTYTEXT_X+PROMPTBG_X+nlen+2,CURSOR_Y+PROMPTBG_Y,al_get_bitmap_width(m_cursor[m_cursorIdx]),al_get_bitmap_height(m_cursor[m_cursorIdx]));
 
 		if (++m_cursorIdxDelay > CURSOR_DELAY)
 		{

@@ -411,7 +411,7 @@ void ModuleControlPanel::Draw()
 	if (controlPanelBackgroundImg)
     {
 		masked_blit(controlPanelBackgroundImg, g_game->GetBackBuffer(), 0,0,
-			gcpx, gcpy, controlPanelBackgroundImg->w, controlPanelBackgroundImg->h);
+			gcpx, gcpy, al_get_bitmap_width(controlPanelBackgroundImg), al_get_bitmap_height(controlPanelBackgroundImg));
     }
 
 	// render command buttons for the selected officer
@@ -461,7 +461,7 @@ void ModuleControlPanel::Draw()
             {
 			    blit(officerButton->imgMouseOver, g_game->GetBackBuffer(), 
                     0, 0, officerButton->posX, officerButton->posY, 
-                    officerButton->imgMouseOver->w, officerButton->imgMouseOver->h);
+                    al_get_bitmap_width(officerButton->imgMouseOver), al_get_bitmap_height(officerButton->imgMouseOver));
             }
 		}
 	}
@@ -787,12 +787,12 @@ bool ModuleControlPanel::CommandButton::InitCommon()
 
 int ModuleControlPanel::CommandButton::GetCommonWidth()
 {
-	return imgBackground->w;
+	return al_get_bitmap_width(imgBackground);
 }
 
 int ModuleControlPanel::CommandButton::GetCommonHeight()
 {
-	return imgBackground->h;
+	return al_get_bitmap_height(imgBackground);
 }
 
 bool ModuleControlPanel::CommandButton::InitButton()
@@ -871,8 +871,8 @@ void ModuleControlPanel::CommandButton::RenderSelected(BITMAP* canvas)
 
 bool ModuleControlPanel::CommandButton::IsInButton(int x, int y)
 {
-	if ((x >= posX) && (x < posX+imgBackground->w) &&
-		(y >= posY) && (y < posY+imgBackground->h))
+	if ((x >= posX) && (x < posX+al_get_bitmap_width(imgBackground)) &&
+		(y >= posY) && (y < posY+al_get_bitmap_height(imgBackground)))
 	{
 		return true;
 	}
@@ -893,12 +893,12 @@ bool ModuleControlPanel::CommandButton::GetEnabled()
 void ModuleControlPanel::CommandButton::Render(BITMAP *canvas, BITMAP *imgBackground, bool down)
 {
 	// draw button background and command icon image
-	blit(imgBackground,canvas,0,0,posX,posY,imgBackground->w,imgBackground->h);
+	blit(imgBackground,canvas,0,0,posX,posY,al_get_bitmap_width(imgBackground),al_get_bitmap_height(imgBackground));
 	
 	if (down)
-		masked_blit(imgCmdIcon,canvas,0,0,posX,posY,imgCmdIcon->w,imgCmdIcon->h);
+		masked_blit(imgCmdIcon,canvas,0,0,posX,posY,al_get_bitmap_width(imgCmdIcon),al_get_bitmap_height(imgCmdIcon));
 	else
-		masked_blit(imgCmdIcon,canvas,0,2,posX,posY,imgCmdIcon->w,imgCmdIcon->h);
+		masked_blit(imgCmdIcon,canvas,0,2,posX,posY,al_get_bitmap_width(imgCmdIcon),al_get_bitmap_height(imgCmdIcon));
 
 }
 
@@ -978,7 +978,7 @@ void ModuleControlPanel::OfficerButton::RenderMouseOver(BITMAP *canvas)
 	Officer* officer = NULL;
 
 	// mouse-over button image
-	blit(imgMouseOver,canvas,0,0,posX,posY,imgMouseOver->w,imgMouseOver->h);
+	blit(imgMouseOver,canvas,0,0,posX,posY,al_get_bitmap_width(imgMouseOver),al_get_bitmap_height(imgMouseOver));
 
 	try {
 		// get the officer associated with this button
@@ -1008,7 +1008,7 @@ void ModuleControlPanel::OfficerButton::RenderSelected(BITMAP *canvas)
 	Officer* officer = NULL;
 
 	// selected button image
-	blit(imgSelected,canvas,0,0,posX,posY,imgMouseOver->w,imgMouseOver->h);
+	blit(imgSelected,canvas,0,0,posX,posY,al_get_bitmap_width(imgMouseOver),al_get_bitmap_height(imgMouseOver));
 
 	try {
 		// get the officer associated with this button
@@ -1033,8 +1033,8 @@ void ModuleControlPanel::OfficerButton::RenderSelected(BITMAP *canvas)
 
 bool ModuleControlPanel::OfficerButton::IsInButton(int x, int y)
 {
-	if ((x >= posX) && (x < posX+imgMouseOver->w) &&
-		(y >= posY) && (y < posY+imgMouseOver->h))
+	if ((x >= posX) && (x < posX+al_get_bitmap_width(imgMouseOver)) &&
+		(y >= posY) && (y < posY+al_get_bitmap_height(imgMouseOver)))
 	{
 		return true;
 	}

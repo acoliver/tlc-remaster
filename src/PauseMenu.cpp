@@ -23,8 +23,8 @@ PauseMenu::PauseMenu()
 		bg = load_bitmap("data/pausemenu/pausemenu_bg.tga", NULL);
 
 	//get location of dialog
-	x = 512-bg->w/2;
-	y = 384-bg->h/2;
+	x = 512-al_get_bitmap_width(bg)/2;
+	y = 384-al_get_bitmap_height(bg)/2;
 
 	//SAVE GAME button
 	if (button1 == NULL)

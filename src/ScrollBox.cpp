@@ -98,22 +98,22 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 void ScrollBox::ScrollBox::PaintNormalImage()
 {
     clear_bitmap(sbNormal);
-	rect(sbNormal, 0, 0, sbNormal->w-1, sbNormal->h-1, ColorItemBorder);
-	rectfill(sbNormal, 1, 1, sbNormal->w - 2, sbNormal->h - 2, ColorBackground);
+	rect(sbNormal, 0, 0, al_get_bitmap_width(sbNormal)-1, al_get_bitmap_height(sbNormal)-1, ColorItemBorder);
+	rectfill(sbNormal, 1, 1, al_get_bitmap_width(sbNormal) - 2, al_get_bitmap_height(sbNormal) - 2, ColorBackground);
 }
 
 void ScrollBox::ScrollBox::PaintHoverImage()
 {
     clear_bitmap(sbHover);
-	rect(sbHover, 0, 0, sbHover->w-1, sbHover->h-1, ColorItemBorder);
-	rectfill(sbHover, 1, 1, sbHover->w - 2, sbHover->h - 2, ColorControls);
+	rect(sbHover, 0, 0, al_get_bitmap_width(sbHover)-1, al_get_bitmap_height(sbHover)-1, ColorItemBorder);
+	rectfill(sbHover, 1, 1, al_get_bitmap_width(sbHover) - 2, al_get_bitmap_height(sbHover) - 2, ColorControls);
 }
 
 void ScrollBox::ScrollBox::PaintSelectedImage()
 {
     clear_bitmap(sbSelected);
-	rect(sbSelected, 0, 0, sbSelected->w-1, sbSelected->h-1, ColorSelectedHighlight);
-	rectfill(sbSelected, 1, 1, sbSelected->w - 2, sbSelected->h - 2, ColorSelectedBackground);
+	rect(sbSelected, 0, 0, al_get_bitmap_width(sbSelected)-1, al_get_bitmap_height(sbSelected)-1, ColorSelectedHighlight);
+	rectfill(sbSelected, 1, 1, al_get_bitmap_width(sbSelected) - 2, al_get_bitmap_height(sbSelected) - 2, ColorSelectedBackground);
 }
 
 ScrollBox::ScrollBox::~ScrollBox()

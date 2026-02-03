@@ -114,10 +114,10 @@ void ModuleTopGUI::Draw()
 	 */
 	draw_trans_sprite(g_game->GetBackBuffer(), img_gauges, ggx, ggy);
 	//masked_blit(img_gauges, g_game->GetBackBuffer(), 0, 0, ggx, ggy, img_gauges->w, img_gauges->h);
-	masked_blit(img_hull_gauge, g_game->GetBackBuffer(), 0, 0, ggx+89, ggy+15, img_hull_gauge->w * hull_percent, img_hull_gauge->h);
-	masked_blit(img_armor_gauge, g_game->GetBackBuffer(), 0, 0, ggx+273, ggy+15, img_armor_gauge->w * armor_percent, img_armor_gauge->h);
-	masked_blit(img_shield_gauge, g_game->GetBackBuffer(), 0, 0, ggx+464, ggy+15, img_shield_gauge->w * shield_percent, img_shield_gauge->h);
-	masked_blit(img_fuel_gauge, g_game->GetBackBuffer(), 0, 0, ggx+630, ggy+14, img_fuel_gauge->w * fuel_percent, img_fuel_gauge->h);
+	masked_blit(img_hull_gauge, g_game->GetBackBuffer(), 0, 0, ggx+89, ggy+15, al_get_bitmap_width(img_hull_gauge) * hull_percent, al_get_bitmap_height(img_hull_gauge));
+	masked_blit(img_armor_gauge, g_game->GetBackBuffer(), 0, 0, ggx+273, ggy+15, al_get_bitmap_width(img_armor_gauge) * armor_percent, al_get_bitmap_height(img_armor_gauge));
+	masked_blit(img_shield_gauge, g_game->GetBackBuffer(), 0, 0, ggx+464, ggy+15, al_get_bitmap_width(img_shield_gauge) * shield_percent, al_get_bitmap_height(img_shield_gauge));
+	masked_blit(img_fuel_gauge, g_game->GetBackBuffer(), 0, 0, ggx+630, ggy+14, al_get_bitmap_width(img_fuel_gauge) * fuel_percent, al_get_bitmap_height(img_fuel_gauge));
 
 }
 

@@ -130,22 +130,22 @@ bool Button::IsVisible()				const { return visible; }
 std::string Button::GetButtonText()		const { return buttonText; }
 int	Button::GetTextColor()				const { return textColor; }
 bool Button::IsInitialized()			const { return initialized; }
-int	Button::GetWidth()					const { if(initialized) return imgNormal->w; return 0; }
-int	Button::GetHeight()					const { if(initialized) return imgNormal->h; return 0; }
+int	Button::GetWidth()					const { if(initialized) return al_get_bitmap_width(imgNormal); return 0; }
+int	Button::GetHeight()					const { if(initialized) return al_get_bitmap_height(imgNormal); return 0; }
 bool Button::GetHighlight()				const { return highlight; }
 
 //mutators
 void Button::SetImgNormal(BITMAP *initImgNormal) 
 { 
-	if(deleteBitmaps && imgNormal) delete imgNormal; imgNormal = initImgNormal; 
+	if(deleteBitmaps && imgNormal) al_destroy_bitmap(imgNormal); imgNormal = initImgNormal; 
 }
 void Button::SetImgMouseOver(BITMAP *initImgMouseOver) 
 { 
-	if(deleteBitmaps && imgMouseOver) delete imgMouseOver; imgMouseOver = initImgMouseOver; 
+	if(deleteBitmaps && imgMouseOver) al_destroy_bitmap(imgMouseOver); imgMouseOver = initImgMouseOver; 
 }
 void Button::SetImgDiabled(BITMAP *initImgDisabled) 
 { 
-	if(deleteBitmaps && imgDisabled) delete imgDisabled; imgDisabled = initImgDisabled; 
+	if(deleteBitmaps && imgDisabled) al_destroy_bitmap(imgDisabled); imgDisabled = initImgDisabled; 
 }
 void Button::SetButtonSound(std::string initButtonSound){ buttonSound = initButtonSound; }
 void Button::SetX(int initX)							{ x = initX; }
@@ -202,10 +202,14 @@ bool Button::Run(BITMAP *canvas, bool trans)
    else if (enabled && highlight && (imgMouseOver != NULL))
 	  imgToDraw = imgMouseOver;
 
-	if (!trans)
+	if (!trans) {
 		draw_sprite(canvas, imgToDraw, x, y);
-	else
-		draw_trans_sprite(canvas, imgToDraw, x, y);
+	} else {
+		ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
+		al_set_target_bitmap(canvas);
+		al_draw_bitmap(imgToDraw, x, y, 0);
+		al_set_target_bitmap(prev_target);
+	}
 
 	if(fontPtr != NULL && buttonText.length() > 0)
 	{
@@ -267,7 +271,7 @@ bool Button::OnMouseReleased(int button, int initX, int initY)
 bool Button::PtInBtn(int initX, int initY)
 {
 	try {	
-		if ((initX >= x) && (initX < (x + imgNormal->w)) && (initY >= y) && (initY < (y + imgNormal->h) ) )
+		if ((initX >= x) && (initX < (x + al_get_bitmap_width(imgNormal))) && (initY >= y) && (initY < (y + al_get_bitmap_height(imgNormal))) )
 			return true;
 	}
 	catch(...) { }

@@ -1734,7 +1734,7 @@ void ModuleEncounter::Draw()
 		// draw the aux gui
 		static int gax = (int)g_game->getGlobalNumber("GUI_AUX_POS_X");
 		static int gay = (int)g_game->getGlobalNumber("GUI_AUX_POS_Y");
-		masked_blit(img_aux, g_game->GetBackBuffer(), 0, 0, gax, gay, img_aux->w, img_aux->h);
+		masked_blit(img_aux, g_game->GetBackBuffer(), 0, 0, gax, gay, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux));
 	}
 
     if (g_game->getGlobalBoolean("DEBUG_MODE") == true)
@@ -1796,14 +1796,14 @@ void ModuleEncounter::Encounter_Draw()
 	{
 		static int gvx = (int)g_game->getGlobalNumber("GUI_VIEWER_POS_X");
 		static int gvy = (int)g_game->getGlobalNumber("GUI_VIEWER_POS_Y");
-		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, gvx, gvy, img_viewer->w, img_viewer->h);
-		blit(img_alien_portrait, g_game->GetBackBuffer(), 0, 0, gvx+108, gvy+34, img_alien_portrait->w, img_alien_portrait->h);
+		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, gvx, gvy, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer));
+		blit(img_alien_portrait, g_game->GetBackBuffer(), 0, 0, gvx+108, gvy+34, al_get_bitmap_width(img_alien_portrait), al_get_bitmap_height(img_alien_portrait));
 
 		//draw gui schematic window with ship schematic
 		static int gvrx = (int)g_game->getGlobalNumber("GUI_RIGHT_VIEWER_POS_X");
 		static int gvry = (int)g_game->getGlobalNumber("GUI_RIGHT_VIEWER_POS_Y");
-		masked_blit(img_rightviewer, g_game->GetBackBuffer(), 0, 0, gvrx, gvry, img_rightviewer->w, img_rightviewer->h);
-		blit(img_alien_schematic, g_game->GetBackBuffer(), 0, 0, gvrx+34, gvry+34, img_alien_schematic->w, img_alien_schematic->h);
+		masked_blit(img_rightviewer, g_game->GetBackBuffer(), 0, 0, gvrx, gvry, al_get_bitmap_width(img_rightviewer), al_get_bitmap_height(img_rightviewer));
+		blit(img_alien_schematic, g_game->GetBackBuffer(), 0, 0, gvrx+34, gvry+34, al_get_bitmap_width(img_alien_schematic), al_get_bitmap_height(img_alien_schematic));
 	}
 }
 

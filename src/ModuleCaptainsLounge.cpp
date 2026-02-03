@@ -406,7 +406,7 @@ void ModuleCaptainsLounge::Draw()
 	//static bool displayHelp = true;
 
 	//draw background
-	blit(m_background,g_game->GetBackBuffer(),0,0,0,0,screen->w,screen->h);
+	blit(m_background,g_game->GetBackBuffer(),0,0,0,0,al_get_display_width(al_get_current_display()),al_get_display_height(al_get_current_display()));
 
 	m_backBtn->Run(g_game->GetBackBuffer());
     m_launchBtn->Run(g_game->GetBackBuffer());
@@ -601,7 +601,7 @@ void ModuleCaptainsLounge::Draw()
 
 	if (m_modalPromptActive)
 	{
-		blit(m_modalPromptBackground,g_game->GetBackBuffer(),0,0,MODALPROMPT_BG_X,MODALPROMPT_BG_Y,m_modalPromptBackground->w,m_modalPromptBackground->h);
+		blit(m_modalPromptBackground,g_game->GetBackBuffer(),0,0,MODALPROMPT_BG_X,MODALPROMPT_BG_Y,al_get_bitmap_width(m_modalPromptBackground),al_get_bitmap_height(m_modalPromptBackground));
 
 		int y = MODALPROMPT_START_Y;
 		for (vector<string>::iterator i = m_modalPromptStrings.begin(); i != m_modalPromptStrings.end(); ++i)

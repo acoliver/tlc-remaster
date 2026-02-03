@@ -108,6 +108,10 @@ add_executable(starflighttlc
   tinyxml/tinyxml.cpp
   tinyxml/tinyxmlerror.cpp
   tinyxml/tinyxmlparser.cpp
+
+  # Allegro 5 compatibility globals (native A5 mode)
+  allegro5_compat_globals.cpp
+
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -236,6 +240,8 @@ elseif(APPLE)
     allegro_audio
     allegro_acodec
     allegro_main
+    allegro_dialog
+    allegro_image
     "-framework OpenGL"
   )
   # RPATH so executable finds dylibs at runtime

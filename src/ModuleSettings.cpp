@@ -68,7 +68,7 @@ bool ModuleSettings::Init()
 	imgOver = load_bitmap("data/settings/button.tga",0);
 	btn_exit = new Button(
 		imgNorm, imgOver, NULL, 
-		10, SCREEN_HEIGHT-imgNorm->h-10, 
+		10, SCREEN_HEIGHT-al_get_bitmap_height(imgNorm)-10, 
         0, EVENT_EXIT, g_game->font22, "EXIT", GOLD, "click", true, true);
 	if(!btn_exit) return false;
 	if(!btn_exit->IsInitialized()) return false;
@@ -76,7 +76,7 @@ bool ModuleSettings::Init()
     //save button
 	btn_save = new Button(
 		imgNorm, imgOver, NULL, 
-		140, SCREEN_HEIGHT-imgNorm->h-10,  
+		140, SCREEN_HEIGHT-al_get_bitmap_height(imgNorm)-10,  
         0, EVENT_SAVESETTINGS, g_game->font22, "SAVE", GOLD, "click", true, true);
 	if(!btn_save) return false;
 	if(!btn_save->IsInitialized()) return false;
@@ -210,7 +210,7 @@ void ModuleSettings::Close()
 void ModuleSettings::Draw()
 {
 	//draw background
-	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, background->w, background->h);
+	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background));
 
     btn_save->Run(g_game->GetBackBuffer());
 	btn_exit->Run(g_game->GetBackBuffer());

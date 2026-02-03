@@ -621,7 +621,7 @@ void ModuleAuxiliaryDisplay::Update() {}
 void ModuleAuxiliaryDisplay::DrawBackground()
 {
 	// draw the aux gui
-	masked_blit(img_aux, canvas, 0, 0, gax, gay, img_aux->w, img_aux->h);
+	masked_blit(img_aux, canvas, 0, 0, gax, gay, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux));
 }
 
 void ModuleAuxiliaryDisplay::DrawContent()

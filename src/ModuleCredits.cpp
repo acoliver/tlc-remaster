@@ -136,7 +136,7 @@ void ModuleCredits::Update()
 void ModuleCredits::Draw()
 {
 	//draw background
-	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, background->w, background->h);
+	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background));
 
 
 }

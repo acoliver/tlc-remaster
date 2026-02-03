@@ -220,8 +220,8 @@ int PlanetSurfaceObject::load(const char *filename)
 		this->image = it->second;
 	}
 
-	this->width = image->w;
-	this->height = image->h;
+	this->width = al_get_bitmap_width(image);
+	this->height = al_get_bitmap_height(image);
 	
 	//default frame size equals whole image size unless manually changed
 	this->frameWidth = this->width;

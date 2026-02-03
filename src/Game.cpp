@@ -162,7 +162,7 @@ Game::~Game()
 void Game::message(std::string msg)
 {
     debug << msg << endl;
-	allegro_message(msg.c_str());
+	al_show_native_message_box(al_get_current_display(), "Message", "", msg.c_str(), NULL, ALLEGRO_MESSAGEBOX_WARN);
 }
 
 void Game::fatalerror(std::string error)
@@ -818,7 +818,7 @@ graphics_ok:
     //
     if (m_backbuffer) 
     {
-        debug << "Destroying old backbuffer " << m_backbuffer->w << "," << m_backbuffer->h << "..." << endl;
+        debug << "Destroying old backbuffer " << al_get_bitmap_width(m_backbuffer) << "," << al_get_bitmap_height(m_backbuffer) << "..." << endl;
         destroy_bitmap(m_backbuffer);
         m_backbuffer = NULL;
     }
@@ -981,18 +981,14 @@ bool Game::InitGame()
 	//create the PauseMenu
 	pauseMenu = new PauseMenu();
 
-	//hide the default mouse cursor (Allegro software cursor)
-	show_mouse(NULL);
-	
-	//Also ensure the OS/hardware cursor is hidden
-	//We use show_os_cursor with MOUSE_CURSOR_NONE to hide it
-	show_os_cursor(MOUSE_CURSOR_NONE);
+	//hide the mouse cursor in Allegro 5
+	al_hide_mouse_cursor(al_get_current_display());
 
     if (g_game->getGlobalBoolean("DEBUG_MOUSE"))
     {
         //display system cursor at actual location (not scaled to resolution)
         //This overrides the hide above for debugging
-        show_os_cursor(MOUSE_CURSOR_ARROW);
+        al_show_mouse_cursor(al_get_current_display());
     }
 
 
@@ -1046,7 +1042,6 @@ void Game::DestroyGame()
 
 	if (m_backbuffer != NULL)
 	{
-		show_mouse(NULL);
 		destroy_bitmap(m_backbuffer);
 		m_backbuffer = NULL;
 	}
@@ -1231,9 +1226,10 @@ void Game::RunGame()
     //
     //prepare resolution scaling so values are available to debug output
     //
-    screen_scaling = (double)screen->h / (double)SCREEN_HEIGHT;
-    scale_height = (int)( (double)m_backbuffer->h * screen_scaling );
-    scale_width = (int)( (double)m_backbuffer->w * screen_scaling );
+    ALLEGRO_BITMAP* screen_bitmap = al_get_backbuffer(al_get_current_display());
+    screen_scaling = (double)al_get_bitmap_height(screen_bitmap) / (double)SCREEN_HEIGHT;
+    scale_height = (int)( (double)al_get_bitmap_height(m_backbuffer) * screen_scaling );
+    scale_width = (int)( (double)al_get_bitmap_width(m_backbuffer) * screen_scaling );
 
     //display debug info on the upper-left corner of screen
     if (g_game->getGlobalBoolean("DEBUG_MODE") && g_game->getGlobalBoolean("DEBUG_CORE"))
@@ -1292,10 +1288,12 @@ void Game::RunGame()
 
 void Game::UpdateKeyboard()
 {
-	poll_keyboard();
+	ALLEGRO_KEYBOARD_STATE keyState;
+	al_get_keyboard_state(&keyState);
+	
 	for (int k = 0; k < 256; k++)
 	{
-        if (key[k])
+        if (al_key_down(&keyState, k))
         {
 	        OnKeyPress(k);
 
@@ -1304,7 +1302,7 @@ void Game::UpdateKeyboard()
 	            OnKeyPressed(k);
 	        }
         }
-        else if (!key[k])
+        else if (!al_key_down(&keyState, k))
         {
 	        if (m_prevKeyState[k])
 	        {
@@ -1314,15 +1312,23 @@ void Game::UpdateKeyboard()
 	}
 
 	//save key states for release detection
-	memcpy(m_prevKeyState,(char*)key,256);
+	for (int k = 0; k < 256; k++)
+	{
+		m_prevKeyState[k] = al_key_down(&keyState, k) ? 1 : 0;
+	}
 }
 
 void Game::UpdateMouse()
 {
-	poll_mouse();
+	ALLEGRO_MOUSE_STATE mouseState;
+	al_get_mouse_state(&mouseState);
+
+	int mouse_x = mouseState.x;
+	int mouse_y = mouseState.y;
+	int mouse_z = mouseState.z;
+	int mouse_b = mouseState.buttons;
 
 	// Debug: periodically log mouse_b state
-	static int debug_counter = 0;
 	static int last_mouse_b = -1;
 	if (mouse_b != last_mouse_b) {
 		debug << "mouse_b changed: " << last_mouse_b << " -> " << mouse_b 
@@ -1412,7 +1418,7 @@ void Game::OnKeyPressed(int keyCode)
 
 void Game::OnKeyReleased(int keyCode)
 {
-	if (keyCode == KEY_ESC) TogglePauseMenu();
+	if (keyCode == ALLEGRO_KEY_ESCAPE) TogglePauseMenu();
 
 	if (!m_pause)
     {
@@ -1656,7 +1662,8 @@ bool Game::InitializeModules()
 
 void Game::PrintDefault(BITMAP *dest,int x,int y, std::string text,int color)
 {
-	textprintf_ex(dest,font,x,y,color,-1, text.c_str());
+	// Use font12 as the default font for PrintDefault
+	alfont_textprintf_ex(dest, font12, x, y, color, -1, text.c_str());
 }
 
 void Game::Print(BITMAP *dest, ALFONT_FONT *_font, int x,int y,std::string text, int color, bool shadow)

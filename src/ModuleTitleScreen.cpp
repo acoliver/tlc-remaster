@@ -116,7 +116,7 @@ void ModuleTitleScreen::Update(){}
 void ModuleTitleScreen::Draw()
 {
 	string text;
-	stretch_blit( m_background, g_game->GetBackBuffer(), 0, 0, m_background->w, m_background->h, 0, 0, g_game->GetBackBuffer()->w, g_game->GetBackBuffer()->h );
+	stretch_blit( m_background, g_game->GetBackBuffer(), 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background), 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()) );
 	btnTitle->Run(g_game->GetBackBuffer(),true);
 	btnNewGame->Run(g_game->GetBackBuffer(),true);
 	btnLoadGame->Run(g_game->GetBackBuffer(),true);

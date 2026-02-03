@@ -778,7 +778,7 @@ void ModuleMedical::Draw()
 	if(right_offset < SCREEN_W)
 	{
 		//draw crew list viewer
-		masked_blit(img_crewlist_viewer, g_game->GetBackBuffer(), 0, 0, RIGHT_X, RIGHT_Y, img_crewlist_viewer->w, img_crewlist_viewer->h);
+		masked_blit(img_crewlist_viewer, g_game->GetBackBuffer(), 0, 0, RIGHT_X, RIGHT_Y, al_get_bitmap_width(img_crewlist_viewer), al_get_bitmap_height(img_crewlist_viewer));
 
 		//draw crew buttons
 		for(int i=0; i < 7; i++)
@@ -800,7 +800,7 @@ void ModuleMedical::Draw()
 
 	if(left_offset2 > -LEFT_TARGET_OFFSET)
 	{
-		masked_blit(img_crewhealth_viewer, g_game->GetBackBuffer(), 0, 0, LEFT_X, LEFT_Y, img_crewhealth_viewer->w, img_crewhealth_viewer->h);
+		masked_blit(img_crewhealth_viewer, g_game->GetBackBuffer(), 0, 0, LEFT_X, LEFT_Y, al_get_bitmap_width(img_crewhealth_viewer), al_get_bitmap_height(img_crewhealth_viewer));
 
 		if(selected_officer != NULL)
 		{
@@ -886,7 +886,7 @@ void ModuleMedical::Draw()
 	if(left_offset > -LEFT_TARGET_OFFSET)
     {
         //left sliding viewer showing crew skills
-		masked_blit(img_crewskills_viewer, g_game->GetBackBuffer(), 0, 0, LEFT_X, LEFT_Y, img_crewskills_viewer->w, img_crewskills_viewer->h);
+		masked_blit(img_crewskills_viewer, g_game->GetBackBuffer(), 0, 0, LEFT_X, LEFT_Y, al_get_bitmap_width(img_crewskills_viewer), al_get_bitmap_height(img_crewskills_viewer));
 
         //display officer stat bars
 		if(selected_officer != NULL)
@@ -898,63 +898,63 @@ void ModuleMedical::Draw()
             //vitality bar
 			percentile = selected_officer->attributes.getVitality(); 
             //percentile /= 100;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_health_bar->w * percentile/100, img_health_bar->h);
+			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_health_bar) * percentile/100, al_get_bitmap_height(img_health_bar));
             s = "HEALTH: " + Util::ToString(percentile,1,0) + string(" %");
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //science bar
-			percentile = selected_officer->attributes.getScience();	
+		percentile = selected_officer->attributes.getScience();	
             //percentile /= 250;
             y1+=stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_science_bar->w * percentile/250, img_science_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_science_bar) * percentile/250, al_get_bitmap_height(img_science_bar));
             s = "SCI SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //navigation bar
-			percentile = selected_officer->attributes.getNavigation(); 
+		percentile = selected_officer->attributes.getNavigation(); 
             //percentile /= 250;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_nav_bar->w * percentile/250, img_nav_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_nav_bar) * percentile/250, al_get_bitmap_height(img_nav_bar));
             s = "NAV SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //engineering bar
-			percentile = selected_officer->attributes.getEngineering(); 
+		percentile = selected_officer->attributes.getEngineering(); 
             //percentile /= 250;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_engineer_bar->w * percentile/250, img_engineer_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_engineer_bar) * percentile/250, al_get_bitmap_height(img_engineer_bar));
             s = "ENG SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //communications bar
-			percentile = selected_officer->attributes.getCommunication(); 
+		percentile = selected_officer->attributes.getCommunication(); 
             //percentile /= 250;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_comm_bar->w * percentile/250, img_comm_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_comm_bar) * percentile/250, al_get_bitmap_height(img_comm_bar));
             s = "COM SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //medical bar
-			percentile = selected_officer->attributes.getMedical(); 
+		percentile = selected_officer->attributes.getMedical(); 
             //percentile /= 250;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_medical_bar->w * percentile/250, img_medical_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_medical_bar) * percentile/250, al_get_bitmap_height(img_medical_bar));
             s = "MED SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //tactical bar
-			percentile = selected_officer->attributes.getTactics(); 
+		percentile = selected_officer->attributes.getTactics(); 
             //percentile /= 250;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_tac_bar->w * percentile/250, img_tac_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_tac_bar) * percentile/250, al_get_bitmap_height(img_tac_bar));
             s = "TAC SKILL: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
             //learning rate bar
-			percentile = selected_officer->attributes.getLearnRate(); 
+		percentile = selected_officer->attributes.getLearnRate(); 
             //percentile /= 65;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_learn_bar->w * percentile/65, img_learn_bar->h);
+		masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_learn_bar) * percentile/65, al_get_bitmap_height(img_learn_bar));
             s = "LEARNING: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 
@@ -962,7 +962,7 @@ void ModuleMedical::Draw()
 			percentile = selected_officer->attributes.getDurability(); 
             //percentile /= 65;
             y1 += stepy;
-			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, img_dur_bar->w * percentile/65, img_dur_bar->h);
+			masked_blit(img_medical_bar, g_game->GetBackBuffer(), 0, 0, x1, y1, al_get_bitmap_width(img_dur_bar) * percentile/65, al_get_bitmap_height(img_dur_bar));
             s = "DURABILITY: " + Util::ToString(percentile,1,0);
             g_game->Print22(g_game->GetBackBuffer(), x1+10, y1+5, s, skilltextcolor);
 		}

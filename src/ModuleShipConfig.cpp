@@ -1155,7 +1155,7 @@ void ModuleShipConfig::display() const
 		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, shipName.c_str(), MENU_PATH_X+80, MENU_PATH_Y, WHITE, -1);
 
 		int nlen = alfont_text_length(g_game->font32, shipName.c_str());
-		blit(m_cursor,g_game->GetBackBuffer(),0,0,MENU_PATH_X+80+nlen+2,MENU_PATH_Y,m_cursor->w,m_cursor->h);
+		blit(m_cursor,g_game->GetBackBuffer(),0,0,MENU_PATH_X+80+nlen+2,MENU_PATH_Y,al_get_bitmap_width(m_cursor),al_get_bitmap_height(m_cursor));
 		
 	}
 	else

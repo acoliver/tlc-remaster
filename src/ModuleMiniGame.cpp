@@ -95,10 +95,10 @@ void ModuleMiniGame::Close()
 bool ModuleMiniGame::Init()
 {
 	BITMAP *background = load_bitmap("data/minigame_background.bmp", NULL);
-	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, background->w, background->h);
+	blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background));
 	destroy_bitmap(background);
 	
-	window = create_sub_bitmap(g_game->GetBackBuffer(), 192, 144, 640, 480);
+	window = al_create_sub_bitmap(g_game->GetBackBuffer(), 192, 144, 640, 480);
 
 	return true;
 }
@@ -115,7 +115,7 @@ void ModuleMiniGame::Update()
 
 void ModuleMiniGame::Draw()
 {
-	textout_ex(window, font, "HELLO WORLD", 10, 10, WHITE, -1);
+	textout_ex(window, g_game->font24, "HELLO WORLD", 10, 10, WHITE, -1);
 	
 	
 }

@@ -179,8 +179,8 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 
 	//scale planet texture onto topography, cutting skewed N/S poles (drop 10 pixels from top/bottom)
  	stretch_blit(this->planetTexture, this->planetTopography, 
-        0, 10, this->planetTexture->w, this->planetTexture->h-20, 
-        1, 1, this->planetTopography->w-2, this->planetTopography->h-2);
+        0, 10, al_get_bitmap_width(this->planetTexture), al_get_bitmap_height(this->planetTexture)-20, 
+        1, 1, al_get_bitmap_width(this->planetTopography)-2, al_get_bitmap_height(this->planetTopography)-2);
 
     //just in case of a duplicate call...
     if (this->planetScannerMap!=NULL)
