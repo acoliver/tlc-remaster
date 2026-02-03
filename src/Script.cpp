@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include <csetjmp>
-#include <allegro.h>
+#include "env.h"
 #include "Script.h"
 #include "Game.h"
 using namespace std;

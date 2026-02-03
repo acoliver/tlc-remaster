@@ -47,7 +47,7 @@
 
 #include <sstream>
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Util.h"
 #include "GameState.h"
 #include "ModeMgr.h"

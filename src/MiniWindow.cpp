@@ -1,5 +1,5 @@
 #include "env.h"
-#include "allegro.h"
+#include "env.h"
 #include "MiniWindow.h"
 
 

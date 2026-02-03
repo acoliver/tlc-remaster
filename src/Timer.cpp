@@ -1,4 +1,4 @@
-#include <allegro.h>
+#include "env.h"
 #include "Timer.h"
 
 // macOS uses POSIX APIs

@@ -6,7 +6,7 @@
 */
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "ModuleQuestLog.h"
 #include "GameState.h"
 #include "Game.h"

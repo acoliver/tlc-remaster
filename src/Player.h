@@ -9,7 +9,7 @@
 #define _PLAYER_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Events.h"
 #include "Util.h"
 #include "Game.h"

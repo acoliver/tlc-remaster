@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <allegro.h>
+#include "env.h"
 
 class Button;
 class Label;

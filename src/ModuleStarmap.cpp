@@ -6,7 +6,7 @@
 */
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Util.h"
 #include "ModuleStarmap.h"
 #include "GameState.h"

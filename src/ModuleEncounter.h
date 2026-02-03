@@ -15,7 +15,7 @@
 #include <lua.hpp>
 #include "env.h"
 #include <typeinfo>
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include "Module.h"
 #include "ScrollBox.h"

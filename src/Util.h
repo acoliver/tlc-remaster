@@ -8,7 +8,7 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <stdlib.h>
 #include <cmath>
 

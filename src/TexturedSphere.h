@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <allegro.h>
+#include "env.h"
 #include <string>
 using namespace std;
 

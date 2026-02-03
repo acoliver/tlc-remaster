@@ -42,6 +42,9 @@
 #include <allegro5/allegro_primitives.h> /* Drawing primitives (lines, shapes) */
 #include <allegro5/allegro_audio.h>     /* Audio playback */
 #include <allegro5/allegro_acodec.h>    /* Audio codecs (WAV, OGG, etc.) */
+#include <allegro5/allegro_native_dialog.h> /* Native message boxes */
+
+#include <cstdio>  /* For snprintf in allegro_message */
 
 /*=============================================================================
  * TYPE COMPATIBILITY LAYER
@@ -57,6 +60,10 @@
  * WARNING: This is a temporary bridge only. Do not write new code using these!
  */
 #ifndef TLC_USING_ALLEGRO_LEGACY
+
+/* Forward declaration prevention - these are now typedefs, not structs */
+#define BITMAP ALLEGRO_BITMAP
+
 typedef ALLEGRO_BITMAP BITMAP;
 typedef ALLEGRO_COLOR COLOR;
 typedef ALLEGRO_DISPLAY DISPLAY;
@@ -67,6 +74,42 @@ typedef ALLEGRO_SAMPLE SAMPLE;
 typedef ALLEGRO_SAMPLE_INSTANCE SAMPLE_INSTANCE;
 typedef ALLEGRO_MOUSE_STATE MOUSE_STATE;
 typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
+
+/* ASSERT macro - Allegro Legacy provides this, Allegro 5 doesn't */
+#include <cassert>
+#ifndef ASSERT
+#define ASSERT(x) assert(x)
+#endif
+
+/* TRACE macro - debug output (Allegro Legacy provides this) */
+#ifndef TRACE
+#ifdef _DEBUG
+#define TRACE(...) printf(__VA_ARGS__)
+#else
+#define TRACE(...) ((void)0)
+#endif
+#endif
+
+/* END_OF_MAIN() - Allegro Legacy uses this for "magic main" on some platforms.
+ * In native Allegro 5, we use allegro_main addon which handles WinMain etc. */
+#ifndef END_OF_MAIN
+#define END_OF_MAIN()
+#endif
+
+/* allegro_init() - Replaced by al_init() in Allegro 5 */
+#define allegro_init() (al_init() ? 0 : -1)
+
+/* allegro_exit() - Clean shutdown */
+#define allegro_exit() al_uninstall_system()
+
+/* allegro_message() - Show message box */
+#define allegro_message(...) \
+    do { \
+        char _msg[1024]; \
+        snprintf(_msg, sizeof(_msg), __VA_ARGS__); \
+        al_show_native_message_box(NULL, "Message", "", _msg, NULL, 0); \
+    } while(0)
+
 #endif
 
 /*=============================================================================
@@ -118,7 +161,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_clear_to_color(color); \
+        al_clear_to_color(int_to_al_color(color)); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -222,23 +265,38 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     } while(0)
 
 /*=============================================================================
- * COLOR COMPATIBILITY MACROS
+ * COLOR COMPATIBILITY LAYER
  *===========================================================================*/
 
 /*
- * Color creation
+ * Color handling
  * 
- * Allegro 4: makecol(r, g, b) returns int color value
- * Allegro 5: al_map_rgb(r, g, b) returns ALLEGRO_COLOR struct
+ * Allegro 4: Colors are packed 32-bit integers (0xAARRGGBB or similar)
+ * Allegro 5: Colors are ALLEGRO_COLOR structs
+ * 
+ * For API compatibility, we keep using int for color parameters.
+ * Convert to ALLEGRO_COLOR only when calling A5 drawing functions.
  */
-#define makecol(r, g, b) al_map_rgb(r, g, b)
-#define makeacol(r, g, b, a) al_map_rgba(r, g, b, a)
 
-/* Color component extraction */
-#define getr(color) (color.r * 255)
-#define getg(color) (color.g * 255)
-#define getb(color) (color.b * 255)
-#define geta(color) (color.a * 255)
+/* Pack RGB into int (same as A4 32-bit format) */
+#define makecol(r, g, b) (((r) << 16) | ((g) << 8) | (b))
+#define makeacol(r, g, b, a) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+
+/* Extract components from packed int color */
+#define getr(c) (((c) >> 16) & 0xFF)
+#define getg(c) (((c) >> 8) & 0xFF)
+#define getb(c) ((c) & 0xFF)
+#define geta(c) (((c) >> 24) & 0xFF)
+
+/* Convert packed int color to ALLEGRO_COLOR for A5 drawing calls */
+inline ALLEGRO_COLOR int_to_al_color(int c) {
+    return al_map_rgba(getr(c), getg(c), getb(c), 255);
+}
+
+/* Convert with alpha */
+inline ALLEGRO_COLOR int_to_al_color_alpha(int c) {
+    return al_map_rgba(getr(c), getg(c), getb(c), geta(c));
+}
 
 /*=============================================================================
  * DRAWING PRIMITIVES COMPATIBILITY
@@ -254,17 +312,24 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_put_pixel(x, y, color); \
+        al_put_pixel(x, y, int_to_al_color(color)); \
         al_set_target_bitmap(_old); \
     } while(0)
 
-#define getpixel(bmp, x, y) al_get_pixel(bmp, x, y)
+/* getpixel returns packed int - need to convert from ALLEGRO_COLOR */
+inline int getpixel_compat(ALLEGRO_BITMAP *bmp, int x, int y) {
+    ALLEGRO_COLOR c = al_get_pixel(bmp, x, y);
+    unsigned char r, g, b, a;
+    al_unmap_rgba(c, &r, &g, &b, &a);
+    return makeacol(r, g, b, a);
+}
+#define getpixel(bmp, x, y) getpixel_compat(bmp, x, y)
 
 #define line(bmp, x1, y1, x2, y2, color) \
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_line(x1, y1, x2, y2, color, 1.0f); \
+        al_draw_line(x1, y1, x2, y2, int_to_al_color(color), 1.0f); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -272,7 +337,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_rectangle(x1, y1, x2, y2, color, 1.0f); \
+        al_draw_rectangle(x1, y1, x2, y2, int_to_al_color(color), 1.0f); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -280,7 +345,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_filled_rectangle(x1, y1, x2, y2, color); \
+        al_draw_filled_rectangle(x1, y1, x2, y2, int_to_al_color(color)); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -288,7 +353,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_circle(x, y, radius, color, 1.0f); \
+        al_draw_circle(x, y, radius, int_to_al_color(color), 1.0f); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -296,7 +361,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_filled_circle(x, y, radius, color); \
+        al_draw_filled_circle(x, y, radius, int_to_al_color(color)); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -304,7 +369,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_ellipse(x, y, rx, ry, color, 1.0f); \
+        al_draw_ellipse(x, y, rx, ry, int_to_al_color(color), 1.0f); \
         al_set_target_bitmap(_old); \
     } while(0)
 
@@ -312,7 +377,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
     do { \
         ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
         al_set_target_bitmap(bmp); \
-        al_draw_triangle(x1, y1, x2, y2, x3, y3, color, 1.0f); \
+        al_draw_triangle(x1, y1, x2, y2, x3, y3, int_to_al_color(color), 1.0f); \
         al_set_target_bitmap(_old); \
     } while(0)
 

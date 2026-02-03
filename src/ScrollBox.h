@@ -2,7 +2,7 @@
 #define _SCROLLBOX_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include <string>
 #include <list>

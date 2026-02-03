@@ -9,7 +9,7 @@
  */
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <sstream>
 #include "Game.h"
 #include "Sprite.h"

@@ -1,5 +1,5 @@
 #include "TexturedSphere.h"
-#include <allegro.h>
+#include "env.h"
 #include <sstream>
 #include <cmath>
 

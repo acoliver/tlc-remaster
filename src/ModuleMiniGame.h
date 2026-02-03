@@ -9,7 +9,7 @@
 #define _MINIGAME_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Module.h"
 
 class ModuleMiniGame : public Module

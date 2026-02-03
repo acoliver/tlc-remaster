@@ -9,7 +9,7 @@
 #define MODULECANTINA_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Module.h"
 #include "GameState.h"
 #include "Button.h"

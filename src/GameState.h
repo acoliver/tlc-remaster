@@ -11,7 +11,7 @@
 
 #include "debug.h"		//prefs for debug modes, keys, etc.
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <string>
 #include <vector>
 #include <map>

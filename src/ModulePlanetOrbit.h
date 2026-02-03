@@ -9,7 +9,7 @@
 #define _PLANETORBIT_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "ScrollBox.h"
 #include "Module.h"
 #include "DataMgr.h"

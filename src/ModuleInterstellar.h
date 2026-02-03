@@ -13,7 +13,7 @@
 #include "env.h"
 #include <vector>
 #include <typeinfo>
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include <cmath>
 #include "Module.h"

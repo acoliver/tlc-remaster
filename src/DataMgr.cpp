@@ -6,7 +6,7 @@
 */
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include "DataMgr.h"
 #include "tinyxml/tinyxml.h"

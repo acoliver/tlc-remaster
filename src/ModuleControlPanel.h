@@ -12,7 +12,7 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Module.h"
 #include "DataMgr.h"
 #include "AudioSystem.h"

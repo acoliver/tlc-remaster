@@ -9,7 +9,7 @@
 
 #include "env.h"
 #include <exception>
-#include <allegro.h>
+#include "env.h"
 #include "Game.h"
 #include "ModeMgr.h"
 #include "DataMgr.h"

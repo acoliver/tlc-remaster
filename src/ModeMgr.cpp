@@ -6,7 +6,7 @@
 */
 
 #include "env.h"		//for TRACE calls
-#include <allegro.h>	//for TRACE calls
+#include "env.h"	//for TRACE calls
 
 #include "ModeMgr.h"
 #include "Module.h"

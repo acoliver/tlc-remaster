@@ -7,7 +7,7 @@
 #include "env.h"
 #include <sstream>
 #include <fstream>
-#include <allegro.h>
+#include "env.h"
 #include "Util.h"
 #include "GameState.h"
 #include "Game.h"

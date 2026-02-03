@@ -1,6 +1,6 @@
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "TileScroller.h"
 
 TileScroller::TileScroller()

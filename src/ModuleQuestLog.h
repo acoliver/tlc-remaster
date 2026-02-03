@@ -9,7 +9,7 @@
 #define MODULEQUESTLOG_H
 
 #include "Module.h"
-#include <allegro.h>
+#include "env.h"
 #include "GameState.h"
 #include "EventMgr.h"
 #include "Label.h"

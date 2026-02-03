@@ -1,7 +1,7 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <string>
 #include "DataMgr.h"
 #include "Sprite.h"

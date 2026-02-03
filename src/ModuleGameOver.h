@@ -8,7 +8,7 @@
 #define GAMEOVER_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include "Module.h"
 

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <string>
 #include "Sprite.h"
 #include "Script.h"

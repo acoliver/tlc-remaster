@@ -9,7 +9,7 @@
 #define _SHIPCONFIG_H 1
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <vector>
 #include "Module.h"
 #include "Button.h"

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include "AudioSystem.h"
 #include "Game.h"

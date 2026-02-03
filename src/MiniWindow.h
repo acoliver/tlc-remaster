@@ -15,7 +15,7 @@
 #define _MINIWINDOW_H 1
 
 #include "env.h"
-#include "allegro.h"
+#include "env.h"
 #include <string>
 
 class MiniWindow

@@ -9,7 +9,7 @@
 #define _STARPORT_H 1
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "Module.h"
 #include "Sprite.h"
 #include "ScrollBox.h"

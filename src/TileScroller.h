@@ -2,7 +2,7 @@
 #define _TILESCROLLER_H 1
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <stdlib.h>
 #include <string.h>
 #include "Point2D.h"

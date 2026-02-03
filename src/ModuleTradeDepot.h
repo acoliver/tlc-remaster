@@ -3,7 +3,7 @@
 //#pragma once
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include <alfont.h>
 #include <map>
 #include "Module.h"

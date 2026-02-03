@@ -1,7 +1,7 @@
 #ifndef ALFONT_H
 #define ALFONT_H
 
-#include <allegro.h>
+#include "env.h"
 
 #ifndef ALFONT_OK
     #define ALFONT_OK 0

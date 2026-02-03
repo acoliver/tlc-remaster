@@ -9,7 +9,7 @@
 #define MODULECREWHIRE_H
 
 #include "env.h"
-#include <allegro.h>
+#include "env.h"
 #include "tinyxml/tinyxml.h"
 #include "Module.h"
 
