@@ -1,0 +1,21 @@
+# Allegro 4 API Usage Catalog - Executive Summary
+
+## Analysis Date: February 2, 2026
+
+## Key Findings:
+- 78 files using Allegro 4 APIs
+- 782 BITMAP type occurrences
+- 320+ graphics function calls (blit, masked_blit, draw_sprite, etc.)
+- 190+ color function calls (makecol, getr, getg, getb)
+- 99 text rendering calls (alfont wrappers)
+- 127 screen/display constant references
+- 44 datafile operations (load_datafile, unload_datafile)
+- 56 input functions (keyboard, mouse polling)
+- ~1,500 total API references requiring migration
+
+## Files Analyzed:
+- 89 .cpp files
+- 90 .h files
+- ~1,500 total Allegro 4 API references found
+
+*Full detailed catalog to be added...*
