@@ -18,7 +18,7 @@ Phase 3A: blit() Migration - IN PROGRESS
 | 1 | COMPLETE | 17d4476 | 2026-02-02 | Compatibility Header |
 | 2 | COMPLETE | 64240eb | 2026-02-02 | Color System |
 | 3A | IN PROGRESS | - | - | blit() Migration |
-| 3B | pending | - | - | Sprite/Rotation |
+| 3B | IN PROGRESS | - | - | Sprite/Rotation |
 | 3C | pending | - | - | Primitives |
 | 4 | pending | - | - | Bitmap Management |
 | 5 | pending | - | - | Display System |
@@ -31,4 +31,5 @@ Phase 3A: blit() Migration - IN PROGRESS
 (Track any remediation loops here)
 
 ---
+Last Updated: 2026-02-02
 Last Updated: 2026-02-02
