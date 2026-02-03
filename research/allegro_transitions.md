@@ -856,43 +856,68 @@ dat -x archive.dat
 
 ---
 
-## Priority 8: Timer System
+## Priority 8: Timer and System Functions
 
-### Current Pattern
+**See detailed documentation:** [timer_system_migration.md](timer_system_migration.md)
+
+### Quick Summary
+
+The timer and system migration is straightforward because:
+- [OK] No timer callbacks (`install_int`/`install_int_ex`) are used
+- [OK] Custom `Timer` class is independent of Allegro
+- [OK] `rest()` already has compatibility macro in `allegro5_compat.h`
+
+### Key Migrations
+
+| Allegro 4 | Allegro 5 | Location |
+|-----------|-----------|----------|
+| `allegro_init()` | `al_init()` | Game.cpp L898 |
+| `allegro_exit()` | `al_uninstall_system()` | Game.cpp L1074 |
+| `install_timer()` | Not needed | Game.cpp L947 |
+| `rest(ms)` | `al_rest(ms/1000.0)` | Already defined in allegro5_compat.h |
+| `allegro_message()` | `al_show_native_message_box()` | Game.cpp L165, Player.cpp L21 |
+
+### Custom Timer Class (Keep As-Is)
+
+The codebase has a custom `Timer` class that provides millisecond timing using platform-specific functions (`gettimeofday()` on macOS/Linux, `clock()` on Windows). This class is **independent of Allegro** and should be kept for game logic timing.
+
+**Global Timer Usage (22 occurrences):**
+- FPS limiting
+- Game time calculation
+- Timed text messages
+- Weapon fire rates
+- Object expiration
+
+### Allegro 5 Event-Based Timing (Recommended)
+
+For the main game loop, use Allegro 5's event-driven timer system:
 
 ```cpp
-// Allegro 4 (current)
-install_timer();
-install_int(timer_callback, 1000/60);  // 60 FPS
-volatile int timer_ticks = 0;
-void timer_callback() { timer_ticks++; }
+// Create and start frame timer
+ALLEGRO_TIMER *frame_timer = al_create_timer(1.0 / 60.0);  // 60 FPS
+ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+al_register_event_source(event_queue, al_get_timer_event_source(frame_timer));
+al_start_timer(frame_timer);
 
-// Usage
-while (timer_ticks > 0) {
-    timer_ticks--;
-    update_game();
+// Main loop
+while (running) {
+    ALLEGRO_EVENT event;
+    al_wait_for_event(event_queue, &event);
+    
+    if (event.type == ALLEGRO_EVENT_TIMER) {
+        Update();
+        redraw = true;
+    }
+    
+    if (redraw && al_is_event_queue_empty(event_queue)) {
+        Render();
+        al_flip_display();
+        redraw = false;
+    }
 }
-
-// Sleep
-rest(10);
 ```
 
-### Allegro 5 Timer System
-
-```cpp
-// Allegro 5 (migrated)
-ALLEGRO_TIMER *timer = al_create_timer(1.0 / 60.0);  // 60 FPS
-al_register_event_source(event_queue, al_get_timer_event_source(timer));
-al_start_timer(timer);
-
-// Event loop handles timing
-case ALLEGRO_EVENT_TIMER:
-    update_game();
-    break;
-
-// Sleep
-al_rest(0.01);  // 10ms (takes seconds, not milliseconds!)
-```
+**Benefits:** Zero CPU usage while waiting, precise timing, platform-independent.
 
 ---
 
