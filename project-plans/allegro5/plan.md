@@ -43,9 +43,9 @@ For each phase:
 
 | Task Type | Subagent | Profile |
 |-----------|----------|---------|
-| Code Migration | `deepthinker` | Deep analysis, careful changes |
+| Code Migration | `cplusplus-expert` | C++ coding, careful changes |
 | Code Search/Analysis | `codeanalayzer` | Pattern finding |
-| Work Verification | `reviewer` | Quality assurance |
+| Work Verification | `deepthinker` | Deep analysis, quality assurance |
 | Documentation | `docwriter` | Update docs |
 
 ---
@@ -69,7 +69,7 @@ Write your findings to /Users/acoliver/projects/tlc/project-plans/allegro5/phase
 List every file that includes allegro.h directly.
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Read /Users/acoliver/projects/tlc/project-plans/allegro5/phase0_analysis.md
 
@@ -94,7 +94,7 @@ Phase 0: Infrastructure analysis for Allegro 5 conversion
 
 ## Phase 1: Create Allegro 5 Compatibility Header
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 600 seconds
 
 ### Task Prompt
@@ -133,7 +133,7 @@ cd /Users/acoliver/projects/tlc && mkdir -p build && cd build && cmake .. && mak
 If compilation fails, fix the errors.
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Review the Allegro 5 compatibility header at /Users/acoliver/projects/tlc/src/allegro5_compat.h
 
@@ -149,7 +149,7 @@ cd /Users/acoliver/projects/tlc/build && make -j4
 Report PASS or FAIL with specific issues.
 ```
 
-### Remediation Prompt (deepthinker)
+### Remediation Prompt (cplusplus-expert)
 ```
 The Allegro 5 compatibility header has issues that need fixing.
 
@@ -176,7 +176,7 @@ Phase 1: Create Allegro 5 compatibility header
 
 ## Phase 2: Color System Migration
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -215,7 +215,7 @@ cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 Fix any compilation errors before completing.
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify the color system migration in TLC codebase.
 
@@ -234,7 +234,7 @@ grep -r "makecol" /Users/acoliver/projects/tlc/src --include="*.cpp" --include="
 Report PASS or FAIL with specific issues.
 ```
 
-### Remediation Prompt (deepthinker)
+### Remediation Prompt (cplusplus-expert)
 ```
 Color system migration has issues.
 
@@ -263,7 +263,7 @@ Phase 2: Migrate color system to Allegro 5
 
 ## Phase 3A: Graphics Functions - blit() Migration
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -304,7 +304,7 @@ cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 Fix any compilation errors.
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify blit() migration in TLC codebase.
 
@@ -336,7 +336,7 @@ Phase 3A: Migrate blit()/masked_blit() to Allegro 5
 
 ## Phase 3B: Graphics Functions - Sprite and Rotation
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -372,7 +372,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify sprite/rotation migration.
 
@@ -402,7 +402,7 @@ Phase 3B: Migrate sprite/rotation functions to Allegro 5
 
 ## Phase 3C: Graphics Functions - Primitives
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 600 seconds
 
 ### Task Prompt
@@ -431,7 +431,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify primitives migration.
 
@@ -459,7 +459,7 @@ Phase 3C: Migrate drawing primitives to Allegro 5
 
 ## Phase 4: Bitmap Management Functions
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -500,7 +500,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify bitmap management migration.
 
@@ -528,7 +528,7 @@ Phase 4: Migrate bitmap management to Allegro 5
 
 ## Phase 5: Display System Migration
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -566,7 +566,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify display system migration.
 
@@ -596,7 +596,7 @@ Phase 5: Migrate display system to Allegro 5
 
 ## Phase 6: Input System Migration
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 600 seconds
 
 ### Task Prompt
@@ -637,7 +637,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify input system migration.
 
@@ -666,7 +666,7 @@ Phase 6: Migrate input system to Allegro 5
 
 ## Phase 7: Timer and System Functions
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 600 seconds
 
 ### Task Prompt
@@ -704,7 +704,7 @@ After changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify timer/system migration.
 
@@ -733,7 +733,7 @@ Phase 7: Migrate timer and system functions to Allegro 5
 
 ## Phase 8: Datafile System Migration
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 600 seconds
 
 ### Task Prompt
@@ -763,7 +763,7 @@ After any changes, verify compilation:
 cd /Users/acoliver/projects/tlc/build && cmake .. && make -j4
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Verify datafile handling.
 
@@ -791,7 +791,7 @@ Phase 8: Address datafile system for Allegro 5
 
 ## Phase 9: Final Integration and Cleanup
 
-**Subagent:** `deepthinker`
+**Subagent:** `cplusplus-expert`
 **Timeout:** 900 seconds
 
 ### Task Prompt
@@ -822,7 +822,7 @@ Create final migration status document:
 /Users/acoliver/projects/tlc/project-plans/allegro5/migration_complete.md
 ```
 
-### Verification Prompt (reviewer)
+### Verification Prompt (deepthinker)
 ```
 Final verification of Allegro 5 migration.
 
@@ -860,84 +860,84 @@ The coordinator MUST execute phases in order, using todo_write to track:
 ```
 [ ] Phase 0: Infrastructure Setup
     [ ] Execute (codeanalayzer)
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 1: Compatibility Header
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 2: Color System
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 3A: blit() Migration
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 3B: Sprite/Rotation
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 3C: Primitives
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 4: Bitmap Management
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 5: Display System
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 6: Input System
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 7: Timer/System
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 8: Datafiles
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Commit
 
 [ ] Phase 9: Final Integration
-    [ ] Execute (deepthinker)
+    [ ] Execute (cplusplus-expert)
     [ ] Compile check
-    [ ] Verify (reviewer)
+    [ ] Verify (deepthinker)
     [ ] Remediate if needed
     [ ] Final commit
 ```
