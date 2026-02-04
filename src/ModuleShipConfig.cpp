@@ -174,21 +174,23 @@ void ModuleShipConfig::OnKeyPressed(int keyCode)
 		bool playKeySnd = false;
 		bool playErrSnd = false;
 
-		if (((keyCode >= KEY_A) && (keyCode <= KEY_9_PAD)) || (keyCode == KEY_SPACE))
+	if (((keyCode >= KEY_A) && (keyCode <= KEY_9_PAD)) || (keyCode == KEY_SPACE))
+	{
+	if (shipName.size() < SHIPNAME_MAXLEN)
+	{
+		char c = (char)scancode_to_ascii(keyCode);
+
+		ALLEGRO_KEYBOARD_STATE keyboard_state;
+		al_get_keyboard_state(&keyboard_state);
+		if ((al_key_down(&keyboard_state, ALLEGRO_KEY_LSHIFT) || al_key_down(&keyboard_state, ALLEGRO_KEY_RSHIFT)) && (keyCode < KEY_0) && (keyCode != KEY_SPACE))
 		{
-		if (shipName.size() < SHIPNAME_MAXLEN)
-		{
-			char c = (char)scancode_to_ascii(keyCode);
-
-			if ((key[KEY_LSHIFT] || key[KEY_RSHIFT]) && (keyCode < KEY_0) && (keyCode != KEY_SPACE))
-			{
-				c -= 32;
-			}
-
-			shipName.push_back(c);
-
-			playKeySnd = true;
+			c -= 32;
 		}
+
+		shipName.push_back(c);
+
+		playKeySnd = true;
+	}
 		else
 			playErrSnd = true;
 		}

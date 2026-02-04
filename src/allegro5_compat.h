@@ -20,12 +20,14 @@
  * - Audio system already uses native Allegro 5 (AudioSystem_allegro.cpp)
  * - Font system uses hybrid approach (alfont_compat.cpp bridges to A5)
  * 
+ * Completed Migration Phases:
+ * - Phase 6: Input system migrated (key[] → al_get_keyboard_state, mouse globals → al_get_mouse_state)
+ * 
  * Next Steps:
  * - Phase 2: Migrate display/graphics initialization in Game.cpp
  * - Phase 3: Convert bitmap operations (blit, masked_blit, etc.)
  * - Phase 4: Migrate drawing primitives (lines, rectangles, circles)
  * - Phase 5: Convert color system (makecol → al_map_rgb)
- * - Phase 6: Update input system (key[] → events, mouse globals → al_get_mouse_state)
  */
 
 #ifndef ALLEGRO5_COMPAT_H
@@ -398,24 +400,6 @@ inline void show_os_cursor(int cursor) {
     }
 }
 
-/* Keyboard state - A5 uses state queries instead of array 
- * The game will need to call poll_keyboard_state() each frame
- * and use key_down() instead of key[]
- */
-extern ALLEGRO_KEYBOARD_STATE _tlc_keyboard_state;
-
-inline void poll_keyboard_state() {
-    al_get_keyboard_state(&_tlc_keyboard_state);
-}
-
-inline bool key_down(int keycode) {
-    return al_key_down(&_tlc_keyboard_state, keycode);
-}
-
-/* Keyboard state array emulation */
-extern bool _tlc_key[ALLEGRO_KEY_MAX];
-#define key _tlc_key
-
 /* scancode_to_ascii - convert keycode to ASCII (simplified version) */
 inline int scancode_to_ascii(int scancode) {
     // This is a simplified implementation
@@ -428,14 +412,6 @@ inline int scancode_to_ascii(int scancode) {
     }
     if (scancode == ALLEGRO_KEY_SPACE) return ' ';
     return 0;
-}
-
-/* clear_keybuf - clear keyboard buffer */
-inline void clear_keybuf() {
-    // In Allegro 5, we just clear the key state array
-    for (int i = 0; i < ALLEGRO_KEY_MAX; i++) {
-        _tlc_key[i] = false;
-    }
 }
 
 /* Key code compatibility - map Allegro 4 key codes to Allegro 5 */
@@ -535,17 +511,6 @@ inline void clear_keybuf() {
 #define KEY_PGDN ALLEGRO_KEY_PGDN
 #define KEY_HOME ALLEGRO_KEY_HOME
 #define KEY_END ALLEGRO_KEY_END
-
-/* Mouse state */
-extern ALLEGRO_MOUSE_STATE _tlc_mouse_state;
-extern int mouse_x, mouse_y, mouse_b;
-
-inline void poll_mouse_state() {
-    al_get_mouse_state(&_tlc_mouse_state);
-    mouse_x = _tlc_mouse_state.x;
-    mouse_y = _tlc_mouse_state.y;
-    mouse_b = _tlc_mouse_state.buttons;
-}
 
 /*=============================================================================
  * FILE SYSTEM COMPATIBILITY

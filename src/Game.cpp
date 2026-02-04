@@ -1216,12 +1216,14 @@ void Game::RunGame()
 		if (cursor != NULL)
 		{
             //keep the mouse cursor image on the screen
+            ALLEGRO_MOUSE_STATE current_mouse_state;
+            al_get_mouse_state(&current_mouse_state);
             int cw = cursor->getWidth(); 
             int ch = cursor->getHeight(); 
-            int mx = mouse_x; 
+            int mx = current_mouse_state.x; 
             //if (mx < 0) mx = 0; 
             //if (mx > SCREEN_WIDTH - cw) mx = SCREEN_WIDTH - cw; 
-            int my = mouse_y; 
+            int my = current_mouse_state.y; 
             //if (my < 0) my = 0; 
             //if (my > SCREEN_HEIGHT - ch) my = SCREEN_HEIGHT - ch; 
 			cursor->setX(mx); 
@@ -1262,9 +1264,11 @@ void Game::RunGame()
 
         y+=10; g_game->Print12(m_backbuffer,x,y,"Screen:  " + Util::ToString((int)scale_width) + "," + Util::ToString((int)scale_height) + " (" + Util::ToString(screen_scaling) + "x)" , GRAY);
 
-        int scalemx = (int)((double)mouse_x / screen_scaling);
-        int scalemy = (int)((double)mouse_y / screen_scaling);
-        oss.str(""); oss << "Mouse: " << mouse_x << "," << mouse_y << " (unscaled: " << scalemx << "," << scalemy << ")";
+        ALLEGRO_MOUSE_STATE debug_mouse_state;
+        al_get_mouse_state(&debug_mouse_state);
+        int scalemx = (int)((double)debug_mouse_state.x / screen_scaling);
+        int scalemy = (int)((double)debug_mouse_state.y / screen_scaling);
+        oss.str(""); oss << "Mouse: " << debug_mouse_state.x << "," << debug_mouse_state.y << " (unscaled: " << scalemx << "," << scalemy << ")";
         y+=10; g_game->Print12(m_backbuffer,x,y, oss.str().c_str(), GRAY); 
 
 		y+=10; g_game->Print12(m_backbuffer,x,y,"Quest: " + Util::ToString( g_game->gameState->getActiveQuest() ) + " (" + Util::ToString( g_game->gameState->getQuestCompleted()) + ")" , GRAY);
@@ -1350,22 +1354,22 @@ void Game::UpdateMouse()
 	ALLEGRO_MOUSE_STATE mouseState;
 	al_get_mouse_state(&mouseState);
 
-	int mouse_x = mouseState.x;
-	int mouse_y = mouseState.y;
-	int mouse_z = mouseState.z;
-	int mouse_b = mouseState.buttons;
+	int current_mouse_x = mouseState.x;
+	int current_mouse_y = mouseState.y;
+	int current_mouse_z = mouseState.z;
+	int current_mouse_b = mouseState.buttons;
 
 	// Debug: periodically log mouse_b state
 	static int last_mouse_b = -1;
-	if (mouse_b != last_mouse_b) {
-		debug << "mouse_b changed: " << last_mouse_b << " -> " << mouse_b 
-		      << " at (" << mouse_x << "," << mouse_y << ")" << endl;
-		last_mouse_b = mouse_b;
+	if (current_mouse_b != last_mouse_b) {
+		debug << "mouse_b changed: " << last_mouse_b << " -> " << current_mouse_b 
+		      << " at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
+		last_mouse_b = current_mouse_b;
 	}
 
 	for (int button = 0; button < (m_numMouseButtons); button++)
 	{
-		if ((mouse_b & (1 << button)) != 0)
+		if ((current_mouse_b & (1 << button)) != 0)
 		{
 			m_mouseButtons[button] = true;
 		}
@@ -1376,22 +1380,22 @@ void Game::UpdateMouse()
 
 		if (m_mouseButtons[button] && (!m_prevMouseButtons[button]))
 		{
-			debug << "Mouse button " << button << " PRESSED at (" << mouse_x << "," << mouse_y << ")" << endl;
-			OnMousePressed(button, mouse_x, mouse_y);
+			debug << "Mouse button " << button << " PRESSED at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
+			OnMousePressed(button, current_mouse_x, current_mouse_y);
 
-			m_mousePressedLocs[button].x = mouse_x;
-			m_mousePressedLocs[button].y = mouse_y;
+			m_mousePressedLocs[button].x = current_mouse_x;
+			m_mousePressedLocs[button].y = current_mouse_y;
 		}
 		else if ((!m_mouseButtons[button]) && m_prevMouseButtons[button])
 		{
-			debug << "Mouse button " << button << " RELEASED at (" << mouse_x << "," << mouse_y << ")" << endl;
-			OnMouseReleased(button, mouse_x, mouse_y);
+			debug << "Mouse button " << button << " RELEASED at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
+			OnMouseReleased(button, current_mouse_x, current_mouse_y);
 
-			if ((m_mousePressedLocs[button].x == mouse_x) &&
-				 (m_mousePressedLocs[button].y == mouse_y))
+			if ((m_mousePressedLocs[button].x == current_mouse_x) &&
+				 (m_mousePressedLocs[button].y == current_mouse_y))
 			{
-				debug << "Mouse CLICK at (" << mouse_x << "," << mouse_y << ")" << endl;
-				OnMouseClick(button,mouse_x,mouse_y);
+				debug << "Mouse CLICK at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
+				OnMouseClick(button,current_mouse_x,current_mouse_y);
 			}
 		}
 	}
@@ -1399,24 +1403,24 @@ void Game::UpdateMouse()
 	//save mouse button states for release detection
 	memcpy(m_prevMouseButtons,m_mouseButtons,sizeof(bool)*(m_numMouseButtons+1));
 
-	if ((mouse_x != m_prevMouseX) || (mouse_y != m_prevMouseY))
+	if ((current_mouse_x != m_prevMouseX) || (current_mouse_y != m_prevMouseY))
 	{
-		OnMouseMove(mouse_x,mouse_y);
-		m_prevMouseX = mouse_x;
-		m_prevMouseY = mouse_y;
+		OnMouseMove(current_mouse_x,current_mouse_y);
+		m_prevMouseX = current_mouse_x;
+		m_prevMouseY = current_mouse_y;
 	}
 
 	// mouse wheel
-	if (mouse_z > m_prevMouseZ)
+	if (current_mouse_z > m_prevMouseZ)
 	{
-		OnMouseWheelUp( mouse_x, mouse_y );
-		m_prevMouseZ = mouse_z;
+		OnMouseWheelUp( current_mouse_x, current_mouse_y );
+		m_prevMouseZ = current_mouse_z;
 	}
 	else
-	if (mouse_z < m_prevMouseZ)
+	if (current_mouse_z < m_prevMouseZ)
 	{
-		OnMouseWheelDown( mouse_x, mouse_y );
-		m_prevMouseZ = mouse_z;
+		OnMouseWheelDown( current_mouse_x, current_mouse_y );
+		m_prevMouseZ = current_mouse_z;
 	}
 
 }

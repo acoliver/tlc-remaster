@@ -716,7 +716,9 @@ void ModuleCaptainCreation::OnKeyPressed(int keyCode)
 			{
 				char c = (char)scancode_to_ascii(keyCode);
 
-				if ((key[KEY_LSHIFT] || key[KEY_RSHIFT]) && (keyCode < KEY_0) && (keyCode != KEY_SPACE))
+				ALLEGRO_KEYBOARD_STATE keyboard_state;
+				al_get_keyboard_state(&keyboard_state);
+				if ((al_key_down(&keyboard_state, ALLEGRO_KEY_LSHIFT) || al_key_down(&keyboard_state, ALLEGRO_KEY_RSHIFT)) && (keyCode < KEY_0) && (keyCode != KEY_SPACE))
 				{
 					c -= 32;
 				}

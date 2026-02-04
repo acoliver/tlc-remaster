@@ -17,12 +17,4 @@ ALLEGRO_DISPLAY *_tlc_display = nullptr;
 int SCREEN_W = 0;
 int SCREEN_H = 0;
 
-/* Input state globals */
-int mouse_x = 0;
-int mouse_y = 0;
-int mouse_b = 0;
-ALLEGRO_KEYBOARD_STATE _tlc_keyboard_state;
-ALLEGRO_MOUSE_STATE _tlc_mouse_state;
-bool _tlc_key[ALLEGRO_KEY_MAX] = {false};
-
 #endif /* TLC_NATIVE_ALLEGRO5 */
