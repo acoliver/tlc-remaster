@@ -115,57 +115,24 @@ add_executable(starflighttlc
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Allegro Legacy vs Native Allegro 5 Configuration
+# Native Allegro 5 Configuration
 # ─────────────────────────────────────────────────────────────────────────────
-if(TLC_USING_ALLEGRO_LEGACY)
-  # Disable Allegro Legacy's fixed-point math aliases (fadd, fsub, etc.)
-  # that conflict with glibc's mathcalls-narrow.h on Linux
-  target_compile_definitions(starflighttlc PRIVATE
-    ALLEGRO_LEGACY_NO_FIX_ALIASES
-    TLC_USING_ALLEGRO_LEGACY
-  )
-
-  # On Windows, we build Allegro Legacy as a static library, so tell the headers
-  # not to use dllimport on function declarations
-  if(WIN32)
-    # Keep main unmangled; Allegro 5's allegro_main provides WinMain on Windows.
-    target_compile_definitions(starflighttlc PRIVATE
-      ALLEGRO_LEGACY_STATICLINK
-      ALLEGRO_LEGACY_NO_MAGIC_MAIN
-    )
-    # Also define ALLEGRO_LEGACY_MSVC so we get the correct platform headers.
-    # The generated alplatf.h on CI won't have this since Allegro Legacy is built
-    # before we configure our project.
-    if(MSVC)
-      target_compile_definitions(starflighttlc PRIVATE ALLEGRO_LEGACY_MSVC)
-    endif()
-  endif()
-else()
-  # Native Allegro 5 mode - use compatibility layer
-  target_compile_definitions(starflighttlc PRIVATE
-    TLC_NATIVE_ALLEGRO5
-  )
-endif()
+# Using native Allegro 5 with compatibility layer
+target_compile_definitions(starflighttlc PRIVATE
+  TLC_NATIVE_ALLEGRO5
+)
 
 # On Windows, make it a GUI app (not console), required for WinMain entry point
 if(WIN32)
   set_target_properties(starflighttlc PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
-# Include directories - order matters!
-# Match the working order from tests/CMakeLists.txt:
-# 1. Source include (allegro.h)
-# 2. Build include (generated platform headers)
-# 3. Homebrew Allegro 5
+# Include directories
 target_include_directories(starflighttlc PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}"
   "${CMAKE_CURRENT_SOURCE_DIR}/tinyxml"
   ${TLC_LUA_INCLUDE_DIRS}
 )
-
-# Allegro Legacy headers come from the AllegroLegacy::allegrolegacy target.
-# Do not add them manually here (it can break libc++ header lookup on macOS
-# by pulling in /opt/homebrew/opt/allegro/include too early).
 
 # libnoise headers
 # Add the src dir so code can use <noise/noise.h>.
@@ -246,7 +213,7 @@ elseif(APPLE)
   )
   # RPATH so executable finds dylibs at runtime
   set_target_properties(starflighttlc PROPERTIES
-    BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib;/opt/homebrew/opt/allegro/lib"
+    BUILD_RPATH "/opt/homebrew/opt/allegro/lib"
     INSTALL_RPATH "@executable_path/../Frameworks"
   )
 else()
@@ -267,24 +234,11 @@ else()
   # Linux OpenGL (need GLU for Model.cpp)
   find_package(OpenGL REQUIRED)
   target_link_libraries(starflighttlc PRIVATE OpenGL::GL OpenGL::GLU)
-  # RPATH for Linux
-  set_target_properties(starflighttlc PROPERTIES
-    BUILD_RPATH "${CMAKE_SOURCE_DIR}/deps/allegro-legacy/build/lib"
-    INSTALL_RPATH "$ORIGIN/lib"
-  )
 endif()
 
 # Link common libraries (all platforms)
-if(TLC_USING_ALLEGRO_LEGACY)
-  target_link_libraries(starflighttlc PRIVATE
-    AllegroLegacy::allegrolegacy
-    ${TLC_LUA_LIBRARIES}
-    noise
-  )
-else()
-  # Native Allegro 5 mode - link Allegro 5 directly (handled per-platform above)
-  target_link_libraries(starflighttlc PRIVATE
-    ${TLC_LUA_LIBRARIES}
-    noise
-  )
-endif()
+# Allegro 5 is linked per-platform above
+target_link_libraries(starflighttlc PRIVATE
+  ${TLC_LUA_LIBRARIES}
+  noise
+)
