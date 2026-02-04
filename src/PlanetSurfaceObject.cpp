@@ -302,8 +302,10 @@ void PlanetSurfaceObject::TimedUpdate()
 
 void PlanetSurfaceObject::Draw()
 {
-	if (selected)
-		ellipse(g_game->GetBackBuffer(), (int)(getXOffset() - g_game->gameState->player->posPlanet.x), (int)(getYOffset() - g_game->gameState->player->posPlanet.y), (int)(width * scale)/2, (int)(height * scale)/2, color_to_int(GREEN));
+	if (selected) {
+		al_set_target_bitmap(g_game->GetBackBuffer());
+		al_draw_ellipse((int)(getXOffset() - g_game->gameState->player->posPlanet.x), (int)(getYOffset() - g_game->gameState->player->posPlanet.y), (int)(width * scale)/2, (int)(height * scale)/2, GREEN, 1.0);
+	}
 
 	Draw(g_game->GetBackBuffer());
 	//rect(g_game->GetBackBuffer(), getXOffset() - g_game->gameState->player->posPlanet.x - getColHalfWidth(), getYOffset() - g_game->gameState->player->posPlanet.y  - getColHalfHeight(), getXOffset() - g_game->gameState->player->posPlanet.x + getColHalfWidth(), getYOffset() - g_game->gameState->player->posPlanet.y + getColHalfHeight(), RED);

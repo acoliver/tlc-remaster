@@ -116,7 +116,8 @@ int ModuleStartup::fadeout(BITMAP *dest, BITMAP *source, int speed)
 		al_set_target_bitmap(dest); al_draw_bitmap_region(fader, 0, 0, al_get_bitmap_width(source), al_get_bitmap_height(source), 0, 0, 0);
 	}
 	else {
-		rectfill(dest, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source), (0 << 16) | (0 << 8) | 0);
+		al_set_target_bitmap(dest);
+		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(source)+1, al_get_bitmap_height(source)+1, int_to_al_color((0 << 16) | (0 << 8) | 0));
 		loop = 255;
 		retval = 1;
 	}

@@ -2895,27 +2895,33 @@ void ModuleEncounter::DrawMinimap()
 		switch (combatObjects[i]->getObjectType())
 		{
 			case OBJ_ALIENSHIP:
-				rect(minimap, x-1, y-1, x+1, y+1, color_to_int(STEEL));
+				al_set_target_bitmap(minimap);
+				al_draw_rectangle(x-1+0.5, y-1+0.5, x+1+0.5, y+1+0.5, STEEL, 1.0);
 				break;
 			case OBJ_ASTEROID_BIG:
-				circle(minimap, x, y, 3, color_to_int(KHAKI));
+				al_set_target_bitmap(minimap);
+				al_draw_circle(x, y, 3, KHAKI, 1.0);
 				break;
 			case OBJ_ASTEROID_MED:
-				circle(minimap, x, y, 2, color_to_int(DKKHAKI));
+				al_set_target_bitmap(minimap);
+				al_draw_circle(x, y, 2, DKKHAKI, 1.0);
 				break;
 			//case OBJ_PLAYERLASER:
 			case OBJ_PLAYERMISSILE:
 			case OBJ_ENEMYFIRE:
-				putpixel(minimap, x, y, color_to_int(RED));
+				al_set_target_bitmap(minimap);
+				al_put_pixel(x, y, RED);
 				break;
 			case OBJ_POWERUP_HEALTH:
 			case OBJ_POWERUP_SHIELD:
 			case OBJ_POWERUP_ARMOR:
-				triangle(minimap, x, y-2, x-2,y+2, x+2,y+2, color_to_int(GREEN));
+				al_set_target_bitmap(minimap);
+				al_draw_triangle(x, y-2, x-2,y+2, x+2,y+2, GREEN, 1.0);
 				break;
 			case OBJ_POWERUP_MINERAL_FROM_SHIP:
 			case OBJ_POWERUP_MINERAL_FROM_ASTEROID:
-				triangle(minimap, x, y-2, x-2,y+2, x+2,y+2, color_to_int(YELLOW));
+				al_set_target_bitmap(minimap);
+				al_draw_triangle(x, y-2, x-2,y+2, x+2,y+2, YELLOW, 1.0);
 				break;
 		}
 	}
@@ -2923,7 +2929,8 @@ void ModuleEncounter::DrawMinimap()
 	//show player on minimap
 	int px = (int)((g_game->gameState->player->posCombat.x + SCREEN_WIDTH/2 ) / 78);// 39);
 	int py = (int)((g_game->gameState->player->posCombat.y + effectiveScreenHeight()/2 ) / 76);// 38);
-	circle(minimap, px, py, 2, color_to_int(GREEN));
+	al_set_target_bitmap(minimap);
+	al_draw_circle(px, py, 2, GREEN, 1.0);
 
 
 	//draw minimap

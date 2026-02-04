@@ -864,7 +864,8 @@ void ModuleMedical::Draw()
             //draw the health bar
             y1+=40;
 		percentile = selected_officer->attributes.getVitality();
-		rectfill(g_game->GetBackBuffer(), x1, y1, x1 + (int)(275.0f * percentile / 100.0f), y1 + 50, color_to_int(health_color));
+		al_set_target_bitmap(g_game->GetBackBuffer());
+		al_draw_filled_rectangle(x1, y1, x1 + (int)(275.0f * percentile / 100.0f)+1, y1 + 50+1, health_color);
 			
 			//print health percentage
             string percent = Util::ToString(percentile, 1, 1);

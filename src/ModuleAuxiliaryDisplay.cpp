@@ -626,7 +626,8 @@ void ModuleAuxiliaryDisplay::DrawContent()
 {
 	//clear the "lcd" portion of the screen with darkgreen
 	static int lcdcolor = (20 << 16) | (40 << 8) | 0;
-	rectfill(canvas, asx, asy, asx+asw, asy+ash, lcdcolor);
+	al_set_target_bitmap(canvas);
+	al_draw_filled_rectangle(asx, asy, asx+asw+1, asy+ash+1, int_to_al_color(lcdcolor));
 
 	updateAll();
 	updateCrew();

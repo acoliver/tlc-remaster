@@ -230,7 +230,8 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
                     int bmp_x = dest_x + px;
                     int bmp_y = y + py;
                     if (bmp_x >= 0 && bmp_x < al_get_bitmap_width(bmp) && bmp_y >= 0 && bmp_y < al_get_bitmap_height(bmp)) {
-                        putpixel(bmp, bmp_x, bmp_y, (r << 16) | (g << 8) | b);
+                        al_set_target_bitmap(bmp);
+                        al_put_pixel(bmp_x, bmp_y, int_to_al_color((r << 16) | (g << 8) | b));
                     }
                 }
             }

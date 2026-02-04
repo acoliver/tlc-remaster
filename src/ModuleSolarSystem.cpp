@@ -749,7 +749,8 @@ void ModuleSolarSystem::updateMiniMap()
 	static int ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
 
 	//clear aux window
-	rectfill(g_game->GetBackBuffer(), asx, asy, asx + asw, asy + ash , (0 << 16) | (0 << 8) | 0);
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_draw_filled_rectangle(asx, asy, asx + asw+1, asy + ash+1, int_to_al_color((0 << 16) | (0 << 8) | 0));
 
 	//draw ellipses representing planetary orbits
 	int rx,ry,cx,cy;
@@ -762,7 +763,8 @@ void ModuleSolarSystem::updateMiniMap()
 			cy = asy + ash / 2;
 			rx = (int)( (2 + i) * 8.9 );
 			ry = (int)( (2 + i) * 8.9 );
-			ellipse(g_game->GetBackBuffer(), cx, cy, rx, ry, (12 << 16) | (12 << 8) | 24);
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_ellipse(cx, cy, rx, ry, int_to_al_color((12 << 16) | (12 << 8) | 24), 1.0);
 		}
 	}
 
@@ -785,7 +787,8 @@ void ModuleSolarSystem::updateMiniMap()
     //draw the sun at the center
 	float starx = (int)(asx + systemCenterTileX * 2.3);
 	float stary = (int)(asy + systemCenterTileY * 2.3);
-	circlefill(g_game->GetBackBuffer(), starx, stary, 8, color_to_int(color));
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_draw_filled_circle(starx, stary, 8, color);
 
 	//draw planets in aux window
 	int planet_color = 0;
@@ -809,7 +812,8 @@ void ModuleSolarSystem::updateMiniMap()
 			}
 			px = (int)(asx + planets[i].tilex * 2.28);
 			py = (int)(asy + planets[i].tiley * 2.28);
-			circlefill(g_game->GetBackBuffer(), px, py, planets[i].radius, planet_color);
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_filled_circle(px, py, planets[i].radius, int_to_al_color(planet_color));
 		}
 	}
 
@@ -823,7 +827,8 @@ void ModuleSolarSystem::updateMiniMap()
 	//draw player's location on minimap
 	float fx = asx + g_game->gameState->player->posSystem.x / 256 * 2.3;
 	float fy = asy + g_game->gameState->player->posSystem.y / 256 * 2.3;
-	rect(g_game->GetBackBuffer(), (int)fx-1, (int)fy-1, (int)fx+2, (int)fy+2, color_to_int(BLUE));
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_draw_rectangle((int)fx-1+0.5, (int)fy-1+0.5, (int)fx+2+0.5, (int)fy+2+0.5, BLUE, 1.0);
 }
 
 bool ModuleSolarSystem::LoadStarSystem(int id)

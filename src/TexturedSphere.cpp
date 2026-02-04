@@ -152,7 +152,7 @@ void TexturedSphere::CreateTextureTable(BITMAP *bmp)
         {
             x = i * al_get_bitmap_width(bmp) / TEX_SIZE;		//i and j dictate which pixel is pulled from the texture. 
             y = j * al_get_bitmap_height(bmp) / TEX_SIZE;		//so don't change them to solve the problem.
-	        p = getpixel(bmp, x, y); 
+	        p = color_to_int(al_get_pixel(bmp, x, y)); 
 //map 2D coords into 1D array
 		  tex_table[testj*TEX_SIZE+testi] = p;
 		  testj--;
@@ -248,7 +248,8 @@ void TexturedSphere::Draw(BITMAP *dest, int phi, int theta, int psi, int radius,
 	        alpha_beta3 = coord_transform_table[alpha_beta2] + psi;
 	     
 	        /* draw the Pixel */
-	        putpixel(dest, x+center_x, y+center_y, tex_table[alpha_beta3]); 
+	        al_set_target_bitmap(dest);
+	        al_put_pixel(x+center_x, y+center_y, int_to_al_color(tex_table[alpha_beta3])); 
 	    }
 	}
 }

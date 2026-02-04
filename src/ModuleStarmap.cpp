@@ -206,12 +206,12 @@ bool ModuleStarmap::Init()
 		while(i != g_game->dataMgr->flux.end() ){
 			//if((*i)->VISIBLE() == true && (*i)->DRAWN() == false){
 				//if((*i)->PATH_VISIBLE() == true){
-					line(flux_view, 
-						(int)( (*i)->TILE().X * ratioX ),
+					al_set_target_bitmap(flux_view);
+					al_draw_line((int)( (*i)->TILE().X * ratioX ),
 						(int)( (*i)->TILE().Y * ratioY),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 2 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 2),
-						(0 << 16) | (170 << 8) | 255);
+						int_to_al_color((0 << 16) | (170 << 8) | 255), 1.0);
 				//}
 				flux_sprite.setX((*i)->TILE().X * ratioX - 4);
 				flux_sprite.setY((*i)->TILE().Y * ratioY - 4);
@@ -324,12 +324,12 @@ void ModuleStarmap::Draw()
 		while(i != g_game->dataMgr->flux.end() ){
 			if((*i)->VISIBLE() == true){
 				if((*i)->PATH_VISIBLE() && (*i)->LINE_DRAWN() == false){
-					line(flux_view, 
-						(int)( (*i)->TILE().X * ratioX - 2 ),
+					al_set_target_bitmap(flux_view);
+					al_draw_line((int)( (*i)->TILE().X * ratioX - 2 ),
 						(int)( (*i)->TILE().Y * ratioY - 4 ),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 4 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 4 ),
-						(0 << 16) | (170 << 8) | 255);
+						int_to_al_color((0 << 16) | (170 << 8) | 255), 1.0);
 					(*i)->rLINE_DRAWN() = true;
 				}
 				if((*i)->DRAWN() == false){
@@ -374,8 +374,9 @@ void ModuleStarmap::Draw()
 			textprintf_centre_ex(text, g_game->font12, 620, text_y, fontColor, -1, "%.2f", fuel );
 		
 
-			circle(g_game->GetBackBuffer(), (int)(playerPos.x * ratioX + new_x_offset), 
-			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, (0 << 16) | (255 << 8) | 0);
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_circle((int)(playerPos.x * ratioX + new_x_offset), 
+			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, int_to_al_color((0 << 16) | (255 << 8) | 0), 1.0);
 		}
 
 		// destination
@@ -390,8 +391,9 @@ void ModuleStarmap::Draw()
 
 			textprintf_centre_ex(text, g_game->font12, 310, text_y, fontColor, -1, "%.0f", m_destPos.x );
 			textprintf_centre_ex(text, g_game->font12, 380, text_y, fontColor, -1, "%.0f", m_destPos.y );
-			circle(g_game->GetBackBuffer(), (int)(m_destPos.x * ratioX + new_x_offset), 
-			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, (255 << 16) | (0 << 8) | 0);
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_circle((int)(m_destPos.x * ratioX + new_x_offset), 
+			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, int_to_al_color((255 << 16) | (0 << 8) | 0), 1.0);
 		}
 		//else if the mouse cursor is near a starsystem, we want to print the coordinates 
 		//of that starsystem instead of the actual coordinates under the mouse pointer

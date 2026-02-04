@@ -776,7 +776,8 @@ bool ModulePlanetSurface::Init()
 
 
 	//clear screen
-	rectfill(g_game->GetBackBuffer(), 0, 0, SCREEN_W-1, SCREEN_H-1, color_to_int(BLACK));
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_draw_filled_rectangle(0, 0, SCREEN_W-1+1, SCREEN_H-1+1, BLACK);
 
     //load the message gui
     img_messages = (BITMAP*)load_bitmap("data/messagegui/gui_messagewindow.bmp",NULL);
@@ -1343,7 +1344,7 @@ bool ModulePlanetSurface::fabAsteroid()
 			//test colors found on planet texture to determine which planet tiles to draw
 
 			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
+            color = color_to_int(al_get_pixel(this->pbody->planetTexture500, x, y));
 			r = getr(color); g = getg(color); b = getb(color);
 
 			tile = 0;
@@ -1409,7 +1410,7 @@ bool ModulePlanetSurface::fabRocky()
 			//test colors found on planet texture to determine which planet tiles to draw
 
 			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
+            color = color_to_int(al_get_pixel(this->pbody->planetTexture500, x, y));
 			r = getr(color);
 			g = getg(color);
 			b = getb(color);
@@ -1487,7 +1488,7 @@ bool ModulePlanetSurface::fabFrozen()
 			//test colors found on planet texture to determine which planet tiles to draw
 
 			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
+            color = color_to_int(al_get_pixel(this->pbody->planetTexture500, x, y));
 			r = getr(color); g = getg(color); b = getb(color);
 
 			tile = 17;
@@ -1677,7 +1678,7 @@ bool ModulePlanetSurface::fabOceanic()
 		for (int x=0; x < 500; x++) {
 
 			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
+            color = color_to_int(al_get_pixel(this->pbody->planetTexture500, x, y));
 			r = getr(color); g = getg(color); b = getb(color);
 
 			tile = 0;
@@ -1757,7 +1758,7 @@ bool ModulePlanetSurface::fabMolten()
 			//test colors found on planet texture to determine which planet tiles to draw
 
 			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
+            color = color_to_int(al_get_pixel(this->pbody->planetTexture500, x, y));
 			r = getr(color);
 			g = getg(color);
 			b = getb(color);
@@ -1882,7 +1883,8 @@ void ModulePlanetSurface::Update()
 	else if (y > 0) sprintf(sLat, "%iN", y);
 
 	//print position on top gui
-	rectfill(img_gauges, 640, 10, 772, 38, (50 << 16) | (50 << 8) | 50);
+	al_set_target_bitmap(img_gauges);
+	al_draw_filled_rectangle(640, 10, 772+1, 38+1, int_to_al_color((50 << 16) | (50 << 8) | 50));
 	sprintf(s, "%s,%s", sLat, sLong);
 	//g_game->setFontSize(24);
 	g_game->Print24(img_gauges, 645, 12, s, LTGREEN);
@@ -2243,16 +2245,20 @@ void ModulePlanetSurface::drawMinimap()
 	//draw the player's position on the minimap
 	float x =  playerShip->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap) ;
 	float y =  playerShip->getY() / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap) ;
-	circlefill(minimap, x , y, 3, color_to_int(LTRED));
-	circle(minimap, x , y, 3, color_to_int(BLACK));
+	al_set_target_bitmap(minimap);
+	al_draw_filled_circle(x, y, 3, LTRED);
+	al_set_target_bitmap(minimap);
+	al_draw_circle(x, y, 3, BLACK, 1.0);
 
 	//draw terrain vehicle on minimap
 	if (vessel_mode > 0)
 	{
 		x = ( playerTV->getX() ) / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap);
 		y = ( playerTV->getY() ) / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap);
-		circlefill(minimap, x, y, 3, color_to_int(YELLOW));
-		circle(minimap, x, y, 3, color_to_int(BLACK));
+		al_set_target_bitmap(minimap);
+		al_draw_filled_circle(x, y, 3, YELLOW);
+		al_set_target_bitmap(minimap);
+		al_draw_circle(x, y, 3, BLACK, 1.0);
 	}
 
 	//draw lifeforms and minerals on minimap
@@ -2274,8 +2280,10 @@ void ModulePlanetSurface::drawMinimap()
 
 		x = surfaceObjects[i]->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap);
 		y = surfaceObjects[i]->getY() / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap);
-		circlefill(minimap, x, y, 2, color );
-		circle(minimap, x, y, 2, color_to_int(BLACK));
+		al_set_target_bitmap(minimap);
+		al_draw_filled_circle(x, y, 2, int_to_al_color(color));
+		al_set_target_bitmap(minimap);
+		al_draw_circle(x, y, 2, BLACK, 1.0);
         }
 	}
 

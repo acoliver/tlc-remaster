@@ -998,7 +998,8 @@ void ModuleControlPanel::OfficerButton::RenderMouseOver(BITMAP *canvas)
 	static int y = CP_OFFICER_TOOLTIP_Y;
 
 	// clear background
-	rectfill(canvas, x, y, x+155, y+32, color_to_int(al_map_rgb(57,59,134)));
+	al_set_target_bitmap(canvas);
+	al_draw_filled_rectangle(x, y, x+155+1, y+32+1, al_map_rgb(57,59,134));
 
 	// draw tooltip of crew position/name
 	g_game->Print18(canvas, x + 5, y, officer->GetTitle().c_str(), OFFICER_MOUSEOVERTIP_TEXT_CLR);
@@ -1029,7 +1030,8 @@ void ModuleControlPanel::OfficerButton::RenderSelected(BITMAP *canvas)
 	static int y = CP_OFFICER_TOOLTIP_Y;
 
 	// clear background
-	rectfill(canvas, x, y, x+155, y+32, color_to_int(al_map_rgb(57,59,134)));
+	al_set_target_bitmap(canvas);
+	al_draw_filled_rectangle(x, y, x+155+1, y+32+1, al_map_rgb(57,59,134));
 
     // draw tooltip of crew position/name
 	g_game->Print18(canvas, x + 5, y, officer->GetTitle().c_str(), OFFICER_MOUSEOVERTIP_TEXT_CLR);
