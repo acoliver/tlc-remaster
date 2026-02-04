@@ -18,21 +18,22 @@ using namespace std;
 
 
 
-#define GENERIC_EXIT_BTN_NORM_BMP        0        /* BMP  */
-#define GENERIC_EXIT_BTN_OVER_BMP        1        /* BMP  */
-#define TRADEDEPOT_BTN_BMP               3        /* BMP  */
-#define TRADEDEPOT_BTN_MO_BMP            4        /* BMP  */
-#define TRADEDEPOT_CURSOR0_BMP           5        /* BMP  */
-#define TRADEDEPOT_CURSOR1_BMP           6        /* BMP  */
-#define TRADEDEPOT_FILTERBTN_BMP         7        /* BMP  */
-#define TRADEDEPOT_FILTERBTN_MO_BMP      8        /* BMP  */
-#define TRADEDEPOT_PROMPTBTN_BMP         9        /* BMP  */
-#define TRADEDEPOT_PROMPTBTN_MO_BMP      10       /* BMP  */
-#define TRADEDEPOT_QUANTITY_PROMPT_BMP   11       /* BMP  */
-#define TRADEDEPOT_SPINDOWNBTN_BMP       12       /* BMP  */
-#define TRADEDEPOT_SPINDOWNBTN_MO_BMP    13       /* BMP  */
-#define TRADEDEPOT_SPINUPBTN_BMP         14       /* BMP  */
-#define TRADEDEPOT_SPINUPBTN_MO_BMP      15       /* BMP  */
+// Asset pointers - loaded directly
+BITMAP *img_generic_exit_btn_norm;
+BITMAP *img_generic_exit_btn_over;
+BITMAP *img_tradedepot_btn;
+BITMAP *img_tradedepot_btn_mo;
+BITMAP *img_tradedepot_cursor0;
+BITMAP *img_tradedepot_cursor1;
+BITMAP *img_tradedepot_filterbtn;
+BITMAP *img_tradedepot_filterbtn_mo;
+BITMAP *img_tradedepot_promptbtn;
+BITMAP *img_tradedepot_promptbtn_mo;
+BITMAP *img_tradedepot_quantity_prompt;
+BITMAP *img_tradedepot_spindownbtn;
+BITMAP *img_tradedepot_spindownbtn_mo;
+BITMAP *img_tradedepot_spinupbtn;
+BITMAP *img_tradedepot_spinupbtn_mo;
 
 
 #define PLAYERLIST_X 10
@@ -144,8 +145,6 @@ using namespace std;
 
 const int ITEM_ENDURIUM			= 54;
 
-DATAFILE *tddata;
-
 
 ModuleTradeDepot::ModuleTradeDepot(void)
 : m_background(NULL)
@@ -209,10 +208,94 @@ bool ModuleTradeDepot::Init()
 
 	BITMAP *imgNormal, *imgMO;
 
-	//load the datafile
-	tddata = load_datafile("data/tradedepot/tradedepot.dat");
-	if (!tddata) {
-		g_game->message("TradeDepot: Error loading datafile");
+	// Load bitmap assets directly
+	img_generic_exit_btn_norm = al_load_bitmap("data/tradedepot/generic_exit_btn_norm.bmp");
+	if (!img_generic_exit_btn_norm) {
+		g_game->message("TradeDepot: Error loading generic_exit_btn_norm.bmp");
+		return false;
+	}
+
+	img_generic_exit_btn_over = al_load_bitmap("data/tradedepot/generic_exit_btn_over.bmp");
+	if (!img_generic_exit_btn_over) {
+		g_game->message("TradeDepot: Error loading generic_exit_btn_over.bmp");
+		return false;
+	}
+
+	img_tradedepot_btn = al_load_bitmap("data/tradedepot/tradedepot_btn.bmp");
+	if (!img_tradedepot_btn) {
+		g_game->message("TradeDepot: Error loading tradedepot_btn.bmp");
+		return false;
+	}
+
+	img_tradedepot_btn_mo = al_load_bitmap("data/tradedepot/tradedepot_btn_mo.bmp");
+	if (!img_tradedepot_btn_mo) {
+		g_game->message("TradeDepot: Error loading tradedepot_btn_mo.bmp");
+		return false;
+	}
+
+	img_tradedepot_cursor0 = al_load_bitmap("data/tradedepot/tradedepot_cursor0.bmp");
+	if (!img_tradedepot_cursor0) {
+		g_game->message("TradeDepot: Error loading tradedepot_cursor0.bmp");
+		return false;
+	}
+
+	img_tradedepot_cursor1 = al_load_bitmap("data/tradedepot/tradedepot_cursor1.bmp");
+	if (!img_tradedepot_cursor1) {
+		g_game->message("TradeDepot: Error loading tradedepot_cursor1.bmp");
+		return false;
+	}
+
+	img_tradedepot_filterbtn = al_load_bitmap("data/tradedepot/tradedepot_filterbtn.bmp");
+	if (!img_tradedepot_filterbtn) {
+		g_game->message("TradeDepot: Error loading tradedepot_filterbtn.bmp");
+		return false;
+	}
+
+	img_tradedepot_filterbtn_mo = al_load_bitmap("data/tradedepot/tradedepot_filterbtn_mo.bmp");
+	if (!img_tradedepot_filterbtn_mo) {
+		g_game->message("TradeDepot: Error loading tradedepot_filterbtn_mo.bmp");
+		return false;
+	}
+
+	img_tradedepot_promptbtn = al_load_bitmap("data/tradedepot/tradedepot_promptbtn.bmp");
+	if (!img_tradedepot_promptbtn) {
+		g_game->message("TradeDepot: Error loading tradedepot_promptbtn.bmp");
+		return false;
+	}
+
+	img_tradedepot_promptbtn_mo = al_load_bitmap("data/tradedepot/tradedepot_promptbtn_mo.bmp");
+	if (!img_tradedepot_promptbtn_mo) {
+		g_game->message("TradeDepot: Error loading tradedepot_promptbtn_mo.bmp");
+		return false;
+	}
+
+	img_tradedepot_quantity_prompt = al_load_bitmap("data/tradedepot/tradedepot_quantity_prompt.bmp");
+	if (!img_tradedepot_quantity_prompt) {
+		g_game->message("TradeDepot: Error loading tradedepot_quantity_prompt.bmp");
+		return false;
+	}
+
+	img_tradedepot_spindownbtn = al_load_bitmap("data/tradedepot/tradedepot_spindownbtn.bmp");
+	if (!img_tradedepot_spindownbtn) {
+		g_game->message("TradeDepot: Error loading tradedepot_spindownbtn.bmp");
+		return false;
+	}
+
+	img_tradedepot_spindownbtn_mo = al_load_bitmap("data/tradedepot/tradedepot_spindownbtn_mo.bmp");
+	if (!img_tradedepot_spindownbtn_mo) {
+		g_game->message("TradeDepot: Error loading tradedepot_spindownbtn_mo.bmp");
+		return false;
+	}
+
+	img_tradedepot_spinupbtn = al_load_bitmap("data/tradedepot/tradedepot_spinupbtn.bmp");
+	if (!img_tradedepot_spinupbtn) {
+		g_game->message("TradeDepot: Error loading tradedepot_spinupbtn.bmp");
+		return false;
+	}
+
+	img_tradedepot_spinupbtn_mo = al_load_bitmap("data/tradedepot/tradedepot_spinupbtn_mo.bmp");
+	if (!img_tradedepot_spinupbtn_mo) {
+		g_game->message("TradeDepot: Error loading tradedepot_spinupbtn_mo.bmp");
 		return false;
 	}
 
@@ -309,13 +392,9 @@ bool ModuleTradeDepot::Init()
    m_buyListNumItems->LinkBox(m_buyList);
    m_buyListValue->LinkBox(m_buyListNumItems);
 
-	//create exit button
-	imgNormal = (BITMAP*)tddata[GENERIC_EXIT_BTN_NORM_BMP].dat;
-	imgMO = (BITMAP*)tddata[GENERIC_EXIT_BTN_OVER_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create exit button
+	imgNormal = img_generic_exit_btn_norm;
+	imgMO = img_generic_exit_btn_over;
    m_exitBtn = new Button(imgNormal,imgMO,NULL,EXITBTN_X, EXITBTN_Y, 0, BTNEVENT_EXIT, g_game->font24, "Exit", BLACK);
    if (m_exitBtn == NULL)
       return false;
@@ -324,13 +403,9 @@ bool ModuleTradeDepot::Init()
    m_buttons[1] = m_exitBtn;
    m_modeBtnMap[m_exitBtn] = TM_TRADING;
 
-	//create buy/sell button
-	imgNormal = (BITMAP*)tddata[TRADEDEPOT_BTN_BMP].dat;
-	imgMO = (BITMAP*)tddata[TRADEDEPOT_BTN_MO_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create buy/sell button
+	imgNormal = img_tradedepot_btn;
+	imgMO = img_tradedepot_btn_mo;
    m_sellbuyBtn = new Button(imgNormal,imgMO,NULL,BUTTONS_X,SELLBUYBTN_Y,0,BTNEVENT_SELLBUY,g_game->font24,"SellBuy",BTNTEXTCOLOR);
    if (m_sellbuyBtn == NULL)
       return false;
@@ -358,13 +433,9 @@ bool ModuleTradeDepot::Init()
    m_modeBtnMap[m_clearBtn] = TM_TRADING;
 
 
-	//create shared filter buttons
-	imgNormal = (BITMAP*)tddata[TRADEDEPOT_FILTERBTN_BMP].dat;
-	imgMO = (BITMAP*)tddata[TRADEDEPOT_FILTERBTN_MO_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create shared filter buttons
+	imgNormal = img_tradedepot_filterbtn;
+	imgMO = img_tradedepot_filterbtn_mo;
 
 	//create all button
    int x = FILTERBTN_START_X;
@@ -445,19 +516,13 @@ bool ModuleTradeDepot::Init()
    m_modeBtnMap[m_filterShipUpgradeBtn] = TM_TRADING;
 
 
-	//load quantity prompt bitmap
-   m_promptBackground = (BITMAP*)tddata[TRADEDEPOT_QUANTITY_PROMPT_BMP].dat;
-   if (m_promptBackground == NULL)
-      return false;
+	// Load quantity prompt bitmap
+   m_promptBackground = img_tradedepot_quantity_prompt;
 
 
-	//create spinup buttons
-	imgNormal = (BITMAP*)tddata[TRADEDEPOT_SPINUPBTN_BMP].dat;
-	imgMO = (BITMAP*)tddata[TRADEDEPOT_SPINUPBTN_MO_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create spinup buttons
+	imgNormal = img_tradedepot_spinupbtn;
+	imgMO = img_tradedepot_spinupbtn_mo;
    m_spinUpBtn = new Button(imgNormal,imgMO,NULL,SPINUPBTN_X+PROMPTBG_X,SPINUPBTN_Y+PROMPTBG_Y,0,BTNEVENT_SPINUP);
    if (m_spinUpBtn == NULL)
       return false;
@@ -466,13 +531,9 @@ bool ModuleTradeDepot::Init()
    m_buttons[11] = m_spinUpBtn;
    m_modeBtnMap[m_spinUpBtn] = TM_PROMPTING;
 
-	//create spindown buttons
-	imgNormal = (BITMAP*)tddata[TRADEDEPOT_SPINDOWNBTN_BMP].dat;
-	imgMO = (BITMAP*)tddata[TRADEDEPOT_SPINDOWNBTN_MO_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create spindown buttons
+	imgNormal = img_tradedepot_spindownbtn;
+	imgMO = img_tradedepot_spindownbtn_mo;
    m_spinDownBtn = new Button(imgNormal,imgMO,NULL,SPINDOWNBTN_X+PROMPTBG_X,SPINDOWNBTN_Y+PROMPTBG_Y,0,BTNEVENT_SPINDOWN);
    if (m_spinDownBtn == NULL)
       return false;
@@ -482,13 +543,9 @@ bool ModuleTradeDepot::Init()
    m_modeBtnMap[m_spinDownBtn] = TM_PROMPTING;
 
 
-	//create shared prompt buttons
-	imgNormal = (BITMAP*)tddata[TRADEDEPOT_PROMPTBTN_BMP].dat;
-	imgMO = (BITMAP*)tddata[TRADEDEPOT_PROMPTBTN_MO_BMP].dat;
-	if (!imgNormal || !imgMO) {
-		g_game->message("TradeDepot: Trade depot images are missing");
-		return false;
-	}
+	// Create shared prompt buttons
+	imgNormal = img_tradedepot_promptbtn;
+	imgMO = img_tradedepot_promptbtn_mo;
 
 	//create all button
    m_allBtn = new Button(imgNormal,imgMO,NULL,ALLBTN_X+PROMPTBG_X,ALLBTN_Y+PROMPTBG_Y,0,BTNEVENT_ALL,g_game->font24,"All",PROMPTBTN_TEXT_COLOR);
@@ -518,13 +575,8 @@ bool ModuleTradeDepot::Init()
    m_modeBtnMap[m_cancelBtn] = TM_PROMPTING;
 
 
-	m_cursor[0] = (BITMAP*)tddata[TRADEDEPOT_CURSOR0_BMP].dat;
-	if (m_cursor[0] == NULL)
-		return false;
-
-	m_cursor[1] = (BITMAP*)tddata[TRADEDEPOT_CURSOR1_BMP].dat;
-	if (m_cursor[1] == NULL)
-		return false;
+	m_cursor[0] = img_tradedepot_cursor0;
+	m_cursor[1] = img_tradedepot_cursor1;
 
    m_sellTotal = 0;
    m_buyTotal = 0;
@@ -739,10 +791,10 @@ void ModuleTradeDepot::Close()
 		  m_buttons[i] = NULL;
 	   }
 
-	   //bug fix: was only going to < 5
+	   // Bug fix: was only going to < 5
 	   for (int i = 0; i < 6; i++)
 	   {
-           //new NULL setting in Init makes this work now
+           // New NULL setting in Init makes this work now
            if (item_portrait[i]) 
            {
 		        destroy_bitmap(item_portrait[i]);
@@ -750,9 +802,22 @@ void ModuleTradeDepot::Close()
            }
 	   }
 
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(tddata);
-		tddata = NULL;
+		// Destroy directly loaded bitmaps
+		if (img_generic_exit_btn_norm) al_destroy_bitmap(img_generic_exit_btn_norm);
+		if (img_generic_exit_btn_over) al_destroy_bitmap(img_generic_exit_btn_over);
+		if (img_tradedepot_btn) al_destroy_bitmap(img_tradedepot_btn);
+		if (img_tradedepot_btn_mo) al_destroy_bitmap(img_tradedepot_btn_mo);
+		if (img_tradedepot_cursor0) al_destroy_bitmap(img_tradedepot_cursor0);
+		if (img_tradedepot_cursor1) al_destroy_bitmap(img_tradedepot_cursor1);
+		if (img_tradedepot_filterbtn) al_destroy_bitmap(img_tradedepot_filterbtn);
+		if (img_tradedepot_filterbtn_mo) al_destroy_bitmap(img_tradedepot_filterbtn_mo);
+		if (img_tradedepot_promptbtn) al_destroy_bitmap(img_tradedepot_promptbtn);
+		if (img_tradedepot_promptbtn_mo) al_destroy_bitmap(img_tradedepot_promptbtn_mo);
+		if (img_tradedepot_quantity_prompt) al_destroy_bitmap(img_tradedepot_quantity_prompt);
+		if (img_tradedepot_spindownbtn) al_destroy_bitmap(img_tradedepot_spindownbtn);
+		if (img_tradedepot_spindownbtn_mo) al_destroy_bitmap(img_tradedepot_spindownbtn_mo);
+		if (img_tradedepot_spinupbtn) al_destroy_bitmap(img_tradedepot_spinupbtn);
+		if (img_tradedepot_spinupbtn_mo) al_destroy_bitmap(img_tradedepot_spinupbtn_mo);
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

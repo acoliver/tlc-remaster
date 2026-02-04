@@ -35,7 +35,6 @@ public:
 
 private:
 	BITMAP *background;
-	DATAFILE *datafile;
 };
 
 

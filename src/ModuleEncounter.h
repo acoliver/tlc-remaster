@@ -37,8 +37,6 @@ const int FullScreenHeight = SCREEN_HEIGHT;
 class ModuleEncounter : public Module
 {
 private:
-	DATAFILE *encdata;
-
 	enum PostureStates {
 		POSTURE_NONE = 0,
 		POSTURE_OBSEQUIOUS,

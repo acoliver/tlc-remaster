@@ -24,27 +24,11 @@
 #include "QuestMgr.h"
 using namespace std;
 
-//replaced with new image
-//#define STARPORT_BMP                     1        /* BMP  */
 
-#define STARPORT_AVATAR_BMP              0        /* BMP  */
-#define STARPORT_DOOR_BMP                2        /* BMP  */
-
-DATAFILE *spdata;
 
 
 ModuleStarport::ModuleStarport(void)
 {
-	//load the starport background
-	//debug << "    ModuleStarport: Loading starport.bmp");
-
-	//The starport.bmp file is huge so it is loaded at mode startup and remains
-	//in memory during gameplay only to be removed when the root mode terminates
-	spdata = load_datafile("data/starport/starport.dat");
-	if (!spdata) {
-		g_game->message("Starport: Error loading datafile");
-	}
-
 	//enable the Pause Menu
 	g_game->pauseMenu->setEnabled(true);
     flag_showWelcome = true;
@@ -52,16 +36,6 @@ ModuleStarport::ModuleStarport(void)
 
 ModuleStarport::~ModuleStarport(void)
 {
-	try {
-		unload_datafile(spdata);
-		spdata = NULL;
-	}
-	catch(std::exception e) {
-		debug << e.what() << endl;
-	}
-	catch(...) {
-		debug << "Unhandled exception in Starport" << endl;
-	}
 }
 
 bool ModuleStarport::testDoors()
@@ -176,22 +150,22 @@ void ModuleStarport::movePlayerRight(int distanceInPixels)
 void ModuleStarport::Close()
 {
 	try {
-        if (starport != NULL)
-        {
-            delete starport;
-            starport=NULL;
-        }
+		if (starport != NULL)
+		{
+			al_destroy_bitmap(starport);
+			starport = NULL;
+		}
 
-        if (avatar!=NULL)
-        {
-		    delete avatar;
-            avatar=NULL;
-        }
-        if (door!=NULL)
-        {
-            delete door;
-            door=NULL;
-        }
+		if (avatar != NULL)
+		{
+			delete avatar;
+			avatar = NULL;
+		}
+		if (door != NULL)
+		{
+			delete door;
+			door = NULL;
+		}
 
 	}
 	catch(std::exception e) {
@@ -222,9 +196,7 @@ bool ModuleStarport::Init()
 	}
 
 	//load the starport background
-	//starport = (BITMAP *)spdata[STARPORT_BMP].dat;
-    starport=NULL;
-    starport = (BITMAP*)load_bitmap("data/starport/starport.bmp",NULL);
+	starport = al_load_bitmap("data/starport/starport.bmp");
 	if (!starport)
 	{
 		debug << "Starport: Error loading background" << endl;
@@ -232,16 +204,26 @@ bool ModuleStarport::Init()
 	}
 
 	//load door
+	BITMAP *door_img = al_load_bitmap("data/starport/starport_door.bmp");
+	if (!door_img) {
+		debug << "Starport: Error loading door" << endl;
+		return false;
+	}
 	door = new Sprite();
-	door->setImage( (BITMAP*)spdata[STARPORT_DOOR_BMP].dat );
+	door->setImage(door_img);
 	door->setAnimColumns(2);
 	door->setFrameWidth(180);
 	door->setFrameHeight(237);
 	door->setTotalFrames(2);
 
 	//load avatar
+	BITMAP *avatar_img = al_load_bitmap("data/starport/starport_avatar.bmp");
+	if (!avatar_img) {
+		debug << "Starport: Error loading avatar" << endl;
+		return false;
+	}
 	avatar = new Sprite();
-	avatar->setImage( (BITMAP*)spdata[STARPORT_AVATAR_BMP].dat );
+	avatar->setImage(avatar_img);
 	avatar->setAnimColumns(8);
 	avatar->setTotalFrames(16);
 	avatar->setFrameHeight(237);

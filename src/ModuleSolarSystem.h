@@ -50,7 +50,6 @@ private:
     static const int MAX_PLANETS=10;
 	planet_t planets[MAX_PLANETS];
 
-	//DATAFILE *ipdata;
 	int tilex, tiley, tilenum;
 	bool flag_DoOrbit;
 	bool flag_DoDock;

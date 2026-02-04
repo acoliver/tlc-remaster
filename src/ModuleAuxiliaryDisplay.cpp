@@ -63,17 +63,7 @@
 
 using namespace std;
 
-#define AUX_ICON_FREELANCE_TGA           0        /* BMP  */
-#define AUX_ICON_MILITARY_TGA            1        /* BMP  */
-#define AUX_ICON_SCIENCE_TGA             2        /* BMP  */
-//#define GUI_AUX_BMP                    3        /* BMP  */
-#define HIGH_RES_SHIP_FREELANCE_TGA      4        /* BMP  */
-#define HIGH_RES_SHIP_MILITARY_TGA       5        /* BMP  */
-#define HIGH_RES_SHIP_SCIENCE_TGA        6        /* BMP  */
-#define IS_TILES_SMALL_BMP               7        /* BMP  */
-
-
-DATAFILE *auxdata;
+BITMAP *tiles_image = NULL;
 
 
 ModuleAuxiliaryDisplay::ModuleAuxiliaryDisplay() {}
@@ -102,28 +92,27 @@ void ModuleAuxiliaryDisplay::OnEvent(Event *event)
 
 void ModuleAuxiliaryDisplay::Close()
 {
-	delete scroller;
+	if (scroller) {
+		delete scroller;
+		scroller = NULL;
+	}
 
-    destroy_bitmap(img_aux);
+	if (img_aux) {
+		destroy_bitmap(img_aux);
+		img_aux = NULL;
+	}
 
-	//unload the data file
-	unload_datafile(auxdata);
-	auxdata = NULL;
-
+	if (tiles_image) {
+		al_destroy_bitmap(tiles_image);
+		tiles_image = NULL;
+	}
 }
 
 bool ModuleAuxiliaryDisplay::Init()
 {
 	debug << "  ModuleAuxiliaryDisplay Initialize" << endl;
 
-	//load the datafile
-	auxdata = load_datafile("data/auxiliary/auxiliary.dat");
-	if (!auxdata) {
-		g_game->message("Auxiliary: Error loading datafile");
-		return false;
-	}
-
-    //create a new color
+	//create a new color
 	HEADING_COLOR = makecol(0,168,168);
 
 
@@ -151,30 +140,20 @@ bool ModuleAuxiliaryDisplay::Init()
 	ship_icon_image = NULL;
 	switch(g_game->gameState->getProfession()){
 		case PROFESSION_FREELANCE:
-			ship_icon_image = (BITMAP*)auxdata[AUX_ICON_FREELANCE_TGA].dat;
-			if (!ship_icon_image) {
-				g_game->message("Aux: error loading ship image");
-				return false;
-			}
+			ship_icon_image = al_load_bitmap("data/auxiliary/aux_icon_freelance.tga");
 			break;
 		case PROFESSION_MILITARY:
-			ship_icon_image = (BITMAP*)auxdata[AUX_ICON_MILITARY_TGA].dat;
-			if (!ship_icon_image) {
-				g_game->message("Aux: error loading ship image");
-				return false;
-			}
+			ship_icon_image = al_load_bitmap("data/auxiliary/aux_icon_military.tga");
 			break;
 		case PROFESSION_SCIENTIFIC:
-			ship_icon_image = (BITMAP*)auxdata[AUX_ICON_SCIENCE_TGA].dat;
-			if (!ship_icon_image) {
-				g_game->message("Aux: error loading ship image");
-				return false;
-			}
+			ship_icon_image = al_load_bitmap("data/auxiliary/aux_icon_science.tga");
 			break;
-
 		default: ASSERT(0);
 	}
-	if(ship_icon_image == NULL){return false;}
+	if (!ship_icon_image) {
+		g_game->message("Aux: error loading ship icon image");
+		return false;
+	}
 
 	//create ship status icon sprite
 	ship_icon_sprite = new Sprite();
@@ -215,8 +194,15 @@ void ModuleAuxiliaryDisplay::init_nav()
 		g_game->message("ModuleAuxiliaryDisplay::Init: Error creating scroll buffer");
 		return;
 	}
+	//load scroller tiles
+	tiles_image = al_load_bitmap("data/auxiliary/is_tiles_small.bmp");
+	if (!tiles_image) {
+		g_game->message("Aux: Error loading is_tiles_small");
+		return;
+	}
+	
 	//initialize mini tile scroller for nav
-	scroller->SetTileImage( (BITMAP*)auxdata[IS_TILES_SMALL_BMP].dat );
+	scroller->SetTileImage(tiles_image);
 	scroller->SetScrollPosition(g_game->gameState->player->posHyperspace);
 
 	Star *star;

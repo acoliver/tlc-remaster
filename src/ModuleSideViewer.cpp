@@ -14,11 +14,6 @@
 */
 
 
-#define GUI_VIEWER_BMP                   0        /* BMP  */
-
-DATAFILE *svdata;
-
-
 
 ModuleSideViewer::ModuleSideViewer(int slideEventType)  
 {
@@ -31,17 +26,9 @@ ModuleSideViewer::~ModuleSideViewer()
 
 bool ModuleSideViewer::Init()
 {
-	//load the datafile
-	svdata = load_datafile("data/cargohold/sideviewer.dat");
-	if (!svdata) {
-		g_game->message("SideViewer: Error loading datafile");	
-		return false;
-	}
-
-
-	img_viewer = (BITMAP*)svdata[GUI_VIEWER_BMP].dat;
+	img_viewer = al_load_bitmap("data/messagegui/gui_viewer.bmp");
 	if (img_viewer == NULL) {
-		g_game->message("CargoWindow: Error loading gui_viewer");
+		g_game->message("SideViewer: Error loading gui_viewer");
 		return false;
     }
 
@@ -158,11 +145,10 @@ void ModuleSideViewer::OnEvent(Event * event)
 void ModuleSideViewer::Close()
 {
 	try {
-   
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(svdata);
-		svdata = NULL;	
-
+		if (img_viewer) {
+			al_destroy_bitmap(img_viewer);
+			img_viewer = NULL;
+		}
 	}
 	catch (std::exception e) {
 		TRACE(e.what());

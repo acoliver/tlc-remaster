@@ -32,23 +32,7 @@ using namespace std;
 #define EVENT_REPAIR_ENGINES	-9305
 
 
-#define AUX_REPAIR_BMP                   0        /* BMP  */
-#define AUX_REPAIR_HOVER_BMP             1        /* BMP  */
-#define ELEMENT_GAUGE_BLUE_BMP           2        /* BMP  */
-#define ELEMENT_GAUGE_GRAY_BMP           3        /* BMP  */
-#define ELEMENT_GAUGE_GREEN_BMP          4        /* BMP  */
-#define ELEMENT_GAUGE_MAGENTA_BMP        5        /* BMP  */
-#define ELEMENT_GAUGE_ORANGE_BMP         6        /* BMP  */
-#define ELEMENT_GAUGE_PURPLE_BMP         7        /* BMP  */
-#define ELEMENT_GAUGE_RED_BMP            8        /* BMP  */
-#define GUI_BMP                          9        /* BMP  */
-#define HIGH_RES_SHIP_FREELANCE_TGA      10       /* BMP  */
-#define HIGH_RES_SHIP_MILITARY_TGA       11       /* BMP  */
-#define HIGH_RES_SHIP_SCIENCE_TGA        12       /* BMP  */
 
-
-
-DATAFILE *engdata = NULL;
 
 
 ModuleEngineer::ModuleEngineer():
@@ -83,61 +67,57 @@ bool ModuleEngineer::Init()
 
 	g_game->audioSystem->Load("data/engineer/buttonclick.ogg", "click");
 
-	engdata = load_datafile("data/engineer/engineer.dat");
-	if (!engdata) {
-		g_game->message("Engineer: Error loading data file");
+	img_window = al_load_bitmap("data/engineer/gui.bmp");
+	if (!img_window) {
+		g_game->message("Engineer: Error loading gui");
 		return false;
 	}
- 
-	//img_window = load_bitmap("data/engineer/starmap_viewer.bmp", NULL);
-	img_window = (BITMAP*)engdata[GUI_BMP].dat;
 
-	//img_bar_base = load_bitmap("data/engineer/Element_Gauge_Gray.bmp", NULL);
-	img_bar_base = (BITMAP*)engdata[ELEMENT_GAUGE_GRAY_BMP].dat;
+	img_bar_base = al_load_bitmap("data/engineer/Element_Gauge_Gray.bmp");
+	img_bar_laser = al_load_bitmap("data/engineer/Element_Gauge_Magenta.bmp");
+	img_bar_missile = al_load_bitmap("data/engineer/Element_Gauge_Purple.bmp");
+	img_bar_hull = al_load_bitmap("data/engineer/Element_Gauge_Green.bmp");
+	img_bar_armor = al_load_bitmap("data/engineer/Element_Gauge_Red.bmp");
+	img_bar_shield = al_load_bitmap("data/engineer/Element_Gauge_Blue.bmp");
+	img_bar_engine = al_load_bitmap("data/engineer/Element_Gauge_Orange.bmp");
 
-	//img_bar_laser = load_bitmap("data/engineer/Element_Gauge_Magenta.bmp", NULL);
-	img_bar_laser = (BITMAP*)engdata[ELEMENT_GAUGE_MAGENTA_BMP].dat;
-	
-	//img_bar_missile = load_bitmap("data/engineer/Element_Gauge_Purple.bmp", NULL);
-	img_bar_missile = (BITMAP*)engdata[ELEMENT_GAUGE_PURPLE_BMP].dat;
-	
-	//img_bar_hull = load_bitmap("data/engineer/Element_Gauge_Green.bmp", NULL);
-	img_bar_hull = (BITMAP*)engdata[ELEMENT_GAUGE_GREEN_BMP].dat;
-	
-	//img_bar_armor = load_bitmap("data/engineer/Element_Gauge_Red.bmp", NULL);
-	img_bar_armor = (BITMAP*)engdata[ELEMENT_GAUGE_RED_BMP].dat;
-	
-	//img_bar_shield = load_bitmap("data/engineer/Element_Gauge_Blue.bmp", NULL);
-	img_bar_shield = (BITMAP*)engdata[ELEMENT_GAUGE_BLUE_BMP].dat;
-	
-	//img_bar_engine = load_bitmap("data/engineer/Element_Gauge_Orange.bmp", NULL);
-	img_bar_engine = (BITMAP*)engdata[ELEMENT_GAUGE_ORANGE_BMP].dat;
+	if (!img_bar_base || !img_bar_laser || !img_bar_missile || !img_bar_hull || 
+		!img_bar_armor || !img_bar_shield || !img_bar_engine) {
+		g_game->message("Engineer: Error loading gauge images");
+		return false;
+	}
 
 	switch(g_game->gameState->getProfession())
 	{
 		case PROFESSION_FREELANCE:
-			//img_ship = load_bitmap("data/engineer/high_res_ship_freelance.tga",NULL);
-			img_ship = (BITMAP*)engdata[HIGH_RES_SHIP_FREELANCE_TGA].dat;
+			img_ship = al_load_bitmap("data/engineer/high_res_ship_freelance.tga");
 			break;
 		
 		case PROFESSION_MILITARY:
-			//img_ship = load_bitmap("data/engineer/high_res_ship_military.tga",NULL);
-			img_ship = (BITMAP*)engdata[HIGH_RES_SHIP_MILITARY_TGA].dat;
+			img_ship = al_load_bitmap("data/engineer/high_res_ship_military.tga");
 			break;
 		
 		case PROFESSION_SCIENTIFIC:
 		default:
-			//img_ship = load_bitmap("data/engineer/high_res_ship_science.tga",NULL);
-			img_ship = (BITMAP*)engdata[HIGH_RES_SHIP_SCIENCE_TGA].dat;
+			img_ship = al_load_bitmap("data/engineer/high_res_ship_science.tga");
 			break;
+	}
+
+	if (!img_ship) {
+		g_game->message("Engineer: Error loading ship image");
+		return false;
 	}
 	
 	text = create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
 	clear_to_color(text,makecol(255,0,255));
 
 	//load button images
-	img_button_repair = (BITMAP*)engdata[AUX_REPAIR_BMP].dat;
-	img_button_repair_over = (BITMAP*)engdata[AUX_REPAIR_HOVER_BMP].dat;
+	img_button_repair = al_load_bitmap("data/engineer/aux_repair.bmp");
+	img_button_repair_over = al_load_bitmap("data/engineer/aux_repair_hover.bmp");
+	if (!img_button_repair || !img_button_repair_over) {
+		g_game->message("Engineer: Error loading button images");
+		return false;
+	}
 
 	//Create and initialize the crew buttons
 	button[0] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
@@ -177,14 +157,28 @@ bool ModuleEngineer::Init()
 void ModuleEngineer::Close()
 {
 	try {
-		destroy_bitmap(text);
+		if (text) {
+			destroy_bitmap(text);
+			text = NULL;
+		}
 
-		unload_datafile(engdata);
-		engdata = NULL;
+		if (img_window) { al_destroy_bitmap(img_window); img_window = NULL; }
+		if (img_bar_base) { al_destroy_bitmap(img_bar_base); img_bar_base = NULL; }
+		if (img_bar_laser) { al_destroy_bitmap(img_bar_laser); img_bar_laser = NULL; }
+		if (img_bar_missile) { al_destroy_bitmap(img_bar_missile); img_bar_missile = NULL; }
+		if (img_bar_hull) { al_destroy_bitmap(img_bar_hull); img_bar_hull = NULL; }
+		if (img_bar_armor) { al_destroy_bitmap(img_bar_armor); img_bar_armor = NULL; }
+		if (img_bar_shield) { al_destroy_bitmap(img_bar_shield); img_bar_shield = NULL; }
+		if (img_bar_engine) { al_destroy_bitmap(img_bar_engine); img_bar_engine = NULL; }
+		if (img_ship) { al_destroy_bitmap(img_ship); img_ship = NULL; }
+		if (img_button_repair) { al_destroy_bitmap(img_button_repair); img_button_repair = NULL; }
+		if (img_button_repair_over) { al_destroy_bitmap(img_button_repair_over); img_button_repair_over = NULL; }
 
 		for (int i=0; i < 5; i++){
-			delete button[i];
-			button[i] = NULL;
+			if (button[i]) {
+				delete button[i];
+				button[i] = NULL;
+			}
 		}
 	}
 	catch (std::exception e) {

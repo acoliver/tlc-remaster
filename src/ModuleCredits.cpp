@@ -13,9 +13,6 @@
 using namespace std;
 
 
-#define BACKGROUND_TGA                   0        /* BMP  */
-
-
 
 /*
   This is not elegant or data driven but it meets our needs. The credit list for this game
@@ -92,26 +89,17 @@ void ModuleCredits::Close()
 {
 	debug << "Credits Close" << endl;
 
-	//unload the data file 
-	unload_datafile(datafile);
-	datafile = NULL;
-
+	if (background) {
+		al_destroy_bitmap(background);
+		background = NULL;
+	}
 }
 
 bool ModuleCredits::Init()
 {
 	debug << "  ModuleCredits Initialize" << endl;
 
-	//load the datafile
-	datafile = load_datafile("data/credits/credits.dat");
-	if (!datafile) {
-		g_game->message("Credits: Error loading datafile");	
-		return false;
-	}
-
-	//Load background
-	//background = load_bitmap("data/credits/background.tga",NULL);
-	background = (BITMAP*)datafile[BACKGROUND_TGA].dat;
+	background = al_load_bitmap("data/credits/background.tga");
 	if (!background) {
 		g_game->message("Credits: Error loading background");
 		return false;

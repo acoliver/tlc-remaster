@@ -565,10 +565,6 @@ void ModulePlanetSurface::Close()
 	    if (img_aux!=NULL)      { delete img_aux; img_aux=NULL; }
 	    if (img_control!=NULL)  { delete img_control; img_control=NULL; }
 
-		//unload the data file (thus freeing all resources at once)
-		//unload_datafile(psdata);
-		//psdata = NULL;
-
 	    if (!Static) { delete Static; Static=NULL; }
 	    if (!Fuel) { delete Fuel; Fuel=NULL; }
 	    if (!FuelBar) { delete FuelBar; FuelBar=NULL; }
@@ -698,16 +694,6 @@ bool ModulePlanetSurface::Init()
         //after a short delay the "you were crushed" message is displayed
         badGravity = 90;
     }
-
-
-	//load the datafile
-	//psdata = load_datafile("data/planetsurface/planetsurface.dat");
-	//if (!psdata) {
-	//	g_game->message("PlanetSurface: Error loading datafile");
-	//	return false;
-	//}
-
-
 
 	//player's starting position
 	g_game->gameState->player->posPlanet.x = Util::Random(10 * 64, 490 * 64);

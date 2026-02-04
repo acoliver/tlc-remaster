@@ -379,13 +379,6 @@ bool ModuleInterstellar::Init()
 	//enable the Pause Menu
 	g_game->pauseMenu->setEnabled(true);
 
-	//load the datafile
-	//isdata = load_datafile("data/spacetravel/spacetravel.dat");
-	//if (!isdata) {
-	//	g_game->message("Hyperspace: Error loading datafile");
-	//	return false;
-	//}
-
 	//load sound effects
 	if (!g_game->audioSystem->Load("data/spacetravel/klaxon.wav","klaxon")) {
 		g_game->message("Hyperspace: Error loading audio files");
@@ -465,10 +458,6 @@ void ModuleInterstellar::Close()
         if (text!=NULL) { delete text; text=NULL; }
         if (scroller!=NULL) { delete scroller; scroller=NULL; }
         if (ship!=NULL) { delete ship; ship=NULL; }
-
-		//unload the data file (thus freeing all resources at once)
-		//unload_datafile(isdata);
-		//isdata = NULL;
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

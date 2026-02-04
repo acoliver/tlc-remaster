@@ -18,11 +18,7 @@
 #include "PlayerShipSprite.h"
 using namespace std;
 
-#define FLUX_TILE_TRANS_BMP              0        /* BMP  */
-#define IS_TILES_TRANS_BMP               1        /* BMP  */
-#define STARMAP_VIEWER_BMP               2        /* BMP  */
 Sprite flux_sprite;
-DATAFILE *smdata;
 
 
 ModuleStarmap::ModuleStarmap() {
@@ -147,14 +143,6 @@ bool ModuleStarmap::Init()
 	//if (!Module::Init()) return false;
 	debug << "  ModuleStarmap Initialize" << endl;
 
-	//load the datafile
-	smdata = load_datafile("data/starmap/starmap.dat");
-	if (!smdata) {
-		g_game->message("Starmap: Error loading datafile");	
-		return false;
-	}
-
-
 	//initialize constants
 	Script *lua = new Script();
 	lua->load("data/starmap/starmap.lua");
@@ -173,10 +161,10 @@ bool ModuleStarmap::Init()
 	delete lua;
 
 	//load starmap GUI
-	gui_starmap = (BITMAP*)smdata[STARMAP_VIEWER_BMP].dat;
+	gui_starmap = al_load_bitmap("data/starmap/starmap_viewer.bmp");
 	if (!gui_starmap) {
 		g_game->message("Starmap: Error loading background");
-		return 0;
+		return false;
 	}
 
 	m_bOver_Star = false;
@@ -199,11 +187,12 @@ bool ModuleStarmap::Init()
 
 	//flux_sprite = new Sprite();
 
-	flux_sprite.setImage( (BITMAP*)smdata[FLUX_TILE_TRANS_BMP].dat );
-	if (!flux_sprite.getImage()) {
+	BITMAP *flux_img = al_load_bitmap("data/starmap/flux_tile_trans.bmp");
+	if (!flux_img) {
 		g_game->message("Starmap: Error loading flux_sprite");	
 		return false;
 	}
+	flux_sprite.setImage(flux_img);
 
 	flux_sprite.setAnimColumns(1);
 	flux_sprite.setTotalFrames(1);
@@ -233,13 +222,13 @@ bool ModuleStarmap::Init()
 	//delete flux_sprite;
 
 	//load star tile image
-	stars = new Sprite();
-	
-	stars->setImage( (BITMAP*)smdata[IS_TILES_TRANS_BMP].dat );
-	if (!stars->getImage()) {
+	BITMAP *stars_img = al_load_bitmap("data/starmap/is_tiles_trans.bmp");
+	if (!stars_img) {
 		g_game->message("Starmap: Error loading stars");
 		return false;
 	}
+	stars = new Sprite();
+	stars->setImage(stars_img);
 
 	stars->setAnimColumns(8);
 	stars->setTotalFrames(8);
@@ -281,10 +270,10 @@ void ModuleStarmap::Close()
 			destroy_bitmap(starview);
 			starview = NULL;
 		}
-		//if (gui_starmap != NULL){
-		//	destroy_bitmap(gui_starmap);
-		//	temp = NULL;
-		//}
+		if (gui_starmap != NULL){
+			al_destroy_bitmap(gui_starmap);
+			gui_starmap = NULL;
+		}
 		if (text != NULL){
 			destroy_bitmap(text);
 			text = NULL;
@@ -299,8 +288,6 @@ void ModuleStarmap::Close()
 			delete star_label;
 			star_label = NULL;
 		}
-		
-		smdata = NULL;
 
 		flux_iter i = g_game->dataMgr->flux.begin();
 		while(i != g_game->dataMgr->flux.end() ){
@@ -308,8 +295,6 @@ void ModuleStarmap::Close()
 			(*i)->rLINE_DRAWN() = false;
 			i++;
 		}
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(smdata);
 	}
 	catch (std::exception e) {
 		debug << e.what() << endl;

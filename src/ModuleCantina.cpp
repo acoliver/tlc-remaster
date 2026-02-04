@@ -19,19 +19,7 @@
 
 using namespace std;
 
-//replaced with png file
-//#define CANTINA_BACKGROUND_BMP           0        /* BMP  */
-
-#define CANTINA_BTN_BMP                  1        /* BMP  */
-#define CANTINA_BTN_DIS_BMP              2        /* BMP  */
-#define CANTINA_BTN_HOV_BMP              3        /* BMP  */
-#define CANTINA_EXIT_BTN_NORM_BMP        4        /* BMP  */
-#define CANTINA_EXIT_BTN_OVER_BMP        5        /* BMP  */
-
-//#define MILITARYOPS_BACKGROUND_BMP       6        /* BMP  */
-//#define RESEARCHLAB_BACKGROUND_BMP       7        /* BMP  */
-
-DATAFILE *candata;
+// Removed DATAFILE defines - using direct bitmap pointers
 
 
 #define EXITBTN_X 16
@@ -134,6 +122,31 @@ void ModuleCantina::Close()
             al_destroy_bitmap(m_background);
             m_background=NULL;
         }
+		if (btn_norm != NULL)
+		{
+			al_destroy_bitmap(btn_norm);
+			btn_norm = NULL;
+		}
+		if (btn_over != NULL)
+		{
+			al_destroy_bitmap(btn_over);
+			btn_over = NULL;
+		}
+		if (btn_dis != NULL)
+		{
+			al_destroy_bitmap(btn_dis);
+			btn_dis = NULL;
+		}
+		if (exit_btn_norm != NULL)
+		{
+			al_destroy_bitmap(exit_btn_norm);
+			exit_btn_norm = NULL;
+		}
+		if (exit_btn_over != NULL)
+		{
+			al_destroy_bitmap(exit_btn_over);
+			exit_btn_over = NULL;
+		}
 		if (m_exitBtn != NULL)
 		{
 			delete m_exitBtn;
@@ -144,10 +157,6 @@ void ModuleCantina::Close()
 			delete m_turninBtn;
 			m_turninBtn = NULL;
 		}
-
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(candata);
-		candata = NULL;	
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;
@@ -161,34 +170,50 @@ bool ModuleCantina::Init()
 {
 	debug << "  Cantina/Research Lab/Military Ops Initialize" << endl;
 	
-	//load the datafile
-	candata = load_datafile("data/cantina/cantina.dat");
-	if (!candata) {
-		g_game->message("Cantina: Error loading datafile");		
-		return false;
-	}
-	
 	selectedQuestCompleted = false;
 
 	g_game->audioSystem->Load("data/cantina/buttonclick.ogg", "click");
 
-	//Create and initialize the ESC button for the module
-	BITMAP *btnNorm, *btnOver, *btnDis;
+	// Load exit button bitmaps
+	exit_btn_norm = (BITMAP*)al_load_bitmap("data/cantina/cantina_exit_btn_norm.bmp");
+	if (!exit_btn_norm) {
+		g_game->message("Cantina: Error loading exit button normal");
+		return false;
+	}
 	
-	btnNorm = (BITMAP*)candata[CANTINA_EXIT_BTN_NORM_BMP].dat;
-	btnOver = (BITMAP*)candata[CANTINA_EXIT_BTN_OVER_BMP].dat;	
-	m_exitBtn = new Button(btnNorm, btnOver, NULL,
+	exit_btn_over = (BITMAP*)al_load_bitmap("data/cantina/cantina_exit_btn_over.bmp");
+	if (!exit_btn_over) {
+		g_game->message("Cantina: Error loading exit button over");
+		return false;
+	}
+	
+	//Create and initialize the ESC button for the module
+	m_exitBtn = new Button(exit_btn_norm, exit_btn_over, NULL,
 		EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_EXIT_CLICK, g_game->font24, "Exit", BLACK,"click");
 	if (m_exitBtn == NULL) return false;
 	if (!m_exitBtn->IsInitialized()) return false;
 
-	//load button images
-	btnNorm = (BITMAP*)candata[CANTINA_BTN_BMP].dat;
-	btnOver = (BITMAP*)candata[CANTINA_BTN_HOV_BMP].dat;	
-	btnDis = (BITMAP*)candata[CANTINA_BTN_DIS_BMP].dat;
+	// Load turnin button bitmaps
+	btn_norm = (BITMAP*)al_load_bitmap("data/cantina/cantina_Btn.bmp");
+	if (!btn_norm) {
+		g_game->message("Cantina: Error loading button normal");
+		return false;
+	}
+	
+	btn_over = (BITMAP*)al_load_bitmap("data/cantina/cantina_Btn_hov.bmp");
+	if (!btn_over) {
+		g_game->message("Cantina: Error loading button hover");
+		return false;
+	}
+	
+	btn_dis = (BITMAP*)al_load_bitmap("data/cantina/cantina_Btn_dis.bmp");
+	if (!btn_dis) {
+		g_game->message("Cantina: Error loading button disabled");
+		return false;
+	}
 
 	//Create and initialize the TURNIN button for the module
-	m_turninBtn = new Button(btnNorm, btnOver, btnDis, 
+	m_turninBtn = new Button(btn_norm, btn_over, btn_dis, 
 		TURNINBTN_X,TURNINBTN_Y,EVENT_NONE,EVENT_TURNIN_CLICK, 
 		g_game->font24, "SUBMIT", BLACK, "click");
 	if (m_turninBtn == NULL) return false;

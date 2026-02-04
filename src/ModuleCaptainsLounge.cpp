@@ -74,33 +74,7 @@ using namespace std;
 
 
 //replaced with new image
-//#define CAPTAINSLOUNGE_BACKGROUND_BMP    0        /* BMP  */
-
-#define CAPTAINSLOUNGE_DEL_DISABLED_TGA  1        /* BMP  */
-#define CAPTAINSLOUNGE_DEL_MOUSEOVER_TGA 2        /* BMP  */
-#define CAPTAINSLOUNGE_DEL_TGA           3        /* BMP  */
-#define CAPTAINSLOUNGE_MODALPROMPT_BACKGROUND_BMP 4        /* BMP  */
-#define CAPTAINSLOUNGE_NO_BMP            5        /* BMP  */
-#define CAPTAINSLOUNGE_NO_MOUSEOVER_BMP  6        /* BMP  */
-#define CAPTAINSLOUNGE_PLUS_DISABLED_TGA 7        /* BMP  */
-#define CAPTAINSLOUNGE_PLUS_MOUSEOVER_TGA 8        /* BMP  */
-#define CAPTAINSLOUNGE_PLUS_TGA          9        /* BMP  */
-#define CAPTAINSLOUNGE_YES_BMP           15       /* BMP  */
-#define CAPTAINSLOUNGE_YES_MOUSEOVER_BMP 16       /* BMP  */
-#define GENERIC_EXIT_BTN_NORM_BMP        17       /* BMP  */
-#define GENERIC_EXIT_BTN_OVER_BMP        18       /* BMP  */
-
-DATAFILE *cldata;
-
-
-//#define CAPTAINSLOUNGE_SAVE_BMP          10       /* BMP  */
-//#define CAPTAINSLOUNGE_SAVE_MOUSEOVER_BMP 11       /* BMP  */
-BITMAP *img_cl_save, *img_cl_save_mo;
-
-//#define CAPTAINSLOUNGE_SEL_DISABLED_TGA  12       /* BMP  */
-//#define CAPTAINSLOUNGE_SEL_MOUSEOVER_TGA 13       /* BMP  */
-//#define CAPTAINSLOUNGE_SEL_TGA           14       /* BMP  */
-BITMAP *img_cl_sel, *img_cl_sel_dis, *img_cl_sel_mo;
+// Removed DATAFILE defines - using direct bitmap pointers
 
 
 
@@ -115,91 +89,130 @@ ModuleCaptainsLounge::~ModuleCaptainsLounge(void){}
 
 bool ModuleCaptainsLounge::Init()
 {
-
-	BITMAP *btnNorm, *btnOver, *btnDis;
-
 	g_game->SetTimePaused(true);	//game-time frozen in this module.
 
-	//load the datafile
-	cldata = load_datafile("data/captainslounge/captainslounge.dat");
-	if (!cldata) {
-		g_game->message("CaptainsLounge: Error loading datafile");
-		return false;
-	}
-
-
 	//load the background
-	//m_background = (BITMAP*)cldata[CAPTAINSLOUNGE_BACKGROUND_BMP].dat;
-    m_background=NULL;
-    m_background = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_background.bmp",NULL);
+    m_background = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_background.bmp");
 	if (m_background == NULL) {
-		debug << "Error loading captainslounge_background.bmp" << endl;
+		g_game->message("CaptainsLounge: Error loading background");
 		return false;
 	}
 
-	btnNorm = (BITMAP*)cldata[GENERIC_EXIT_BTN_NORM_BMP].dat;
-	btnOver = (BITMAP*)cldata[GENERIC_EXIT_BTN_OVER_BMP].dat;
+	// Load exit button bitmaps
+	exit_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_back.tga");
+	if (!exit_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading exit button normal");
+		return false;
+	}
+	
+	exit_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_back_mouseover.tga");
+	if (!exit_btn_over) {
+		g_game->message("CaptainsLounge: Error loading exit button over");
+		return false;
+	}
 	
     //create exit button
-    m_backBtn = new Button(btnNorm, btnOver,NULL,
+    m_backBtn = new Button(exit_btn_norm, exit_btn_over,NULL,
 		BACKBTN_X,BACKBTN_Y,EVENT_NONE,EVENT_BACK_CLICK, g_game->font32, "Exit", BLACK);
 	if (m_backBtn == NULL) return false;
 	if (!m_backBtn->IsInitialized()) return false;
 
     //create launch button
-    m_launchBtn = new Button(btnNorm, btnOver, NULL,
+    m_launchBtn = new Button(exit_btn_norm, exit_btn_over, NULL,
         BACKBTN_X+180, BACKBTN_Y,EVENT_NONE,EVENT_LAUNCH_CLICK, g_game->font32, "Launch", BLACK);
     if (m_launchBtn == NULL) return false;
     if (!m_launchBtn->IsInitialized()) return false;
 
+	// Load plus button bitmaps
+	plus_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_plus.tga");
+	if (!plus_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading plus button normal");
+		return false;
+	}
+	
+	plus_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_plus_mouseover.tga");
+	if (!plus_btn_over) {
+		g_game->message("CaptainsLounge: Error loading plus button over");
+		return false;
+	}
+	
+	plus_btn_dis = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_plus_disabled.tga");
+	if (!plus_btn_dis) {
+		g_game->message("CaptainsLounge: Error loading plus button disabled");
+		return false;
+	}
+
+	// Load del button bitmaps
+	del_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_del.tga");
+	if (!del_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading del button normal");
+		return false;
+	}
+	
+	del_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_del_mouseover.tga");
+	if (!del_btn_over) {
+		g_game->message("CaptainsLounge: Error loading del button over");
+		return false;
+	}
+	
+	del_btn_dis = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_del_disabled.tga");
+	if (!del_btn_dis) {
+		g_game->message("CaptainsLounge: Error loading del button disabled");
+		return false;
+	}
+
+	// Load sel button bitmaps
+	sel_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_sel.tga");
+	if (!sel_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading sel button normal");
+		return false;
+	}
+	
+	sel_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_sel_mouseover.tga");
+	if (!sel_btn_over) {
+		g_game->message("CaptainsLounge: Error loading sel button over");
+		return false;
+	}
+	
+	sel_btn_dis = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_sel_disabled.tga");
+	if (!sel_btn_dis) {
+		g_game->message("CaptainsLounge: Error loading sel button disabled");
+		return false;
+	}
+
+	// Load save button bitmaps
+	save_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_save.bmp");
+	if (!save_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading save button normal");
+		return false;
+	}
+	
+	save_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_save_mouseover.bmp");
+	if (!save_btn_over) {
+		g_game->message("CaptainsLounge: Error loading save button over");
+		return false;
+	}
+
 	int y = BTN_BASE_Y;
 	for (int i = 0; i < CAPTAINSLOUNGE_NUMSLOTS; i++)
 	{
-		btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_PLUS_TGA].dat;
-		btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_PLUS_MOUSEOVER_TGA].dat;
-		btnDis = (BITMAP*)cldata[CAPTAINSLOUNGE_PLUS_DISABLED_TGA].dat;
-		m_newCaptBtns[i] = new Button(btnNorm,btnOver,btnDis,
+		m_newCaptBtns[i] = new Button(plus_btn_norm,plus_btn_over,plus_btn_dis,
 			BTN_NEWCAPTAIN_X,y,EVENT_NONE,EVENT_NEWCAPTAIN_SLOT0+i);
 		if (m_newCaptBtns[i] == NULL) return false;
 		if (!m_newCaptBtns[i]->IsInitialized()) return false;
 
-		btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_DEL_TGA].dat;
-		btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_DEL_MOUSEOVER_TGA].dat;
-		btnDis = (BITMAP*)cldata[CAPTAINSLOUNGE_DEL_DISABLED_TGA].dat;
-		m_delCaptBtns[i] = new Button(btnNorm,btnOver,btnDis,
+		m_delCaptBtns[i] = new Button(del_btn_norm,del_btn_over,del_btn_dis,
 			BTN_DELCAPTAIN_X,y,EVENT_NONE,EVENT_DELCAPTAIN_SLOT0+i);
 		if (m_delCaptBtns[i] == NULL) return false;
 		if (!m_delCaptBtns[i]->IsInitialized()) return false;
 
-		//btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_SEL_TGA].dat;
-		//btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_SEL_MOUSEOVER_TGA].dat;
-		//btnDis = (BITMAP*)cldata[CAPTAINSLOUNGE_SEL_DISABLED_TGA].dat;
-        img_cl_sel = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_sel.tga",NULL);
-        img_cl_sel_dis = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_sel_disabled.tga",NULL);
-        img_cl_sel_mo = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_sel_mouseover.tga",NULL);
-
-        if (!img_cl_sel || !img_cl_sel_dis || !img_cl_sel_mo) 
-        {
-            debug << "captainslounge: error loading load button images" << endl;
-        }
-
-		m_selCaptBtns[i] = new Button(img_cl_sel, img_cl_sel_mo, img_cl_sel_dis, BTN_SELCAPTAIN_X, y, EVENT_NONE, EVENT_SELCAPTAIN_SLOT0+i);
+		m_selCaptBtns[i] = new Button(sel_btn_norm, sel_btn_over, sel_btn_dis, BTN_SELCAPTAIN_X, y, EVENT_NONE, EVENT_SELCAPTAIN_SLOT0+i);
 		if (m_selCaptBtns[i] == NULL)
 			return false;
 		if (!m_selCaptBtns[i]->IsInitialized())
 			return false;
 
-		//btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_SAVE_BMP].dat;
-		//btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_SAVE_MOUSEOVER_BMP].dat;
-        img_cl_save = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_save.bmp",NULL);
-        img_cl_save_mo = (BITMAP*)load_bitmap("data/captainslounge/captainslounge_save_mouseover.bmp",NULL);
-        if (!img_cl_save || !img_cl_save_mo)
-        {
-            debug << "captainslounge: error loading save button images" << endl;
-            return false;
-        }
-
-		m_saveCaptBtns[i] = new Button(img_cl_save, img_cl_save_mo, NULL, BTN_SAVECAPTAIN_X, y, EVENT_NONE, EVENT_SAVECAPTAIN_SLOT0+i);
+		m_saveCaptBtns[i] = new Button(save_btn_norm, save_btn_over, NULL, BTN_SAVECAPTAIN_X, y, EVENT_NONE, EVENT_SAVECAPTAIN_SLOT0+i);
 		if (m_saveCaptBtns[i] == NULL)
 			return false;
 		if (!m_saveCaptBtns[i]->IsInitialized())
@@ -210,15 +223,36 @@ bool ModuleCaptainsLounge::Init()
 		y += BTN_DELTA_Y;
 	}
 
-	btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_YES_BMP].dat;
-	btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_YES_MOUSEOVER_BMP].dat;
-	m_yesBtn = new Button(btnNorm, btnOver, NULL,YES_X,YES_Y,EVENT_NONE,EVENT_YES);
+	// Load yes button bitmaps
+	yes_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_yes.bmp");
+	if (!yes_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading yes button normal");
+		return false;
+	}
+	
+	yes_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_yes_mouseover.bmp");
+	if (!yes_btn_over) {
+		g_game->message("CaptainsLounge: Error loading yes button over");
+		return false;
+	}
+	
+	m_yesBtn = new Button(yes_btn_norm, yes_btn_over, NULL,YES_X,YES_Y,EVENT_NONE,EVENT_YES);
 	if (!m_yesBtn->IsInitialized())	return false;
 
-
-	btnNorm = (BITMAP*)cldata[CAPTAINSLOUNGE_NO_BMP].dat;
-	btnOver = (BITMAP*)cldata[CAPTAINSLOUNGE_NO_MOUSEOVER_BMP].dat;
-	m_noBtn = new Button(btnNorm, btnOver, NULL,NO_X,NO_Y,EVENT_NONE,EVENT_NO);
+	// Load no button bitmaps
+	no_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_no.bmp");
+	if (!no_btn_norm) {
+		g_game->message("CaptainsLounge: Error loading no button normal");
+		return false;
+	}
+	
+	no_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_no_mouseover.bmp");
+	if (!no_btn_over) {
+		g_game->message("CaptainsLounge: Error loading no button over");
+		return false;
+	}
+	
+	m_noBtn = new Button(no_btn_norm, no_btn_over, NULL,NO_X,NO_Y,EVENT_NONE,EVENT_NO);
 	if (!m_noBtn->IsInitialized()) return false;
 
 	m_backBtn->OnMouseMove(0,0);
@@ -270,7 +304,7 @@ bool ModuleCaptainsLounge::Init()
 
 	m_modalPromptActive = false;
 
-	m_modalPromptBackground = (BITMAP*)cldata[CAPTAINSLOUNGE_MODALPROMPT_BACKGROUND_BMP].dat;
+	m_modalPromptBackground = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_modalprompt_background.bmp");
 	if (m_modalPromptBackground == NULL) {
 		g_game->message("Lounge: Error loading modelprompt background");
 	    return false;
@@ -288,42 +322,103 @@ bool ModuleCaptainsLounge::Init()
 
 void ModuleCaptainsLounge::Close()
 {
-	//continue the stardate updates
-	//g_game->gameState->stardate.paused = false;
-
-
 	try 
     {
-        if (img_cl_sel != NULL)
-        {
-            delete img_cl_sel;
-            img_cl_sel=NULL;
-        }
-        if (img_cl_sel_mo != NULL)
-        {
-            delete img_cl_sel_mo;
-            img_cl_sel_mo=NULL;
-        }
-        if (img_cl_sel_dis != NULL)
-        {
-            delete img_cl_sel_dis;
-            img_cl_sel_dis=NULL;
-        }
-        if (img_cl_save != NULL)
-        {
-            delete img_cl_save;
-            img_cl_save=NULL;
-        }
-        if (img_cl_save_mo != NULL)
-        {
-            delete img_cl_save_mo;
-            img_cl_save_mo=NULL;
-        }
         if (m_background != NULL)
         {
-            delete m_background;
+            al_destroy_bitmap(m_background);
             m_background=NULL;
         }
+		if (m_modalPromptBackground != NULL)
+		{
+			al_destroy_bitmap(m_modalPromptBackground);
+			m_modalPromptBackground = NULL;
+		}
+		if (exit_btn_norm != NULL)
+		{
+			al_destroy_bitmap(exit_btn_norm);
+			exit_btn_norm = NULL;
+		}
+		if (exit_btn_over != NULL)
+		{
+			al_destroy_bitmap(exit_btn_over);
+			exit_btn_over = NULL;
+		}
+		if (plus_btn_norm != NULL)
+		{
+			al_destroy_bitmap(plus_btn_norm);
+			plus_btn_norm = NULL;
+		}
+		if (plus_btn_over != NULL)
+		{
+			al_destroy_bitmap(plus_btn_over);
+			plus_btn_over = NULL;
+		}
+		if (plus_btn_dis != NULL)
+		{
+			al_destroy_bitmap(plus_btn_dis);
+			plus_btn_dis = NULL;
+		}
+		if (del_btn_norm != NULL)
+		{
+			al_destroy_bitmap(del_btn_norm);
+			del_btn_norm = NULL;
+		}
+		if (del_btn_over != NULL)
+		{
+			al_destroy_bitmap(del_btn_over);
+			del_btn_over = NULL;
+		}
+		if (del_btn_dis != NULL)
+		{
+			al_destroy_bitmap(del_btn_dis);
+			del_btn_dis = NULL;
+		}
+		if (sel_btn_norm != NULL)
+		{
+			al_destroy_bitmap(sel_btn_norm);
+			sel_btn_norm = NULL;
+		}
+		if (sel_btn_over != NULL)
+		{
+			al_destroy_bitmap(sel_btn_over);
+			sel_btn_over = NULL;
+		}
+		if (sel_btn_dis != NULL)
+		{
+			al_destroy_bitmap(sel_btn_dis);
+			sel_btn_dis = NULL;
+		}
+		if (save_btn_norm != NULL)
+		{
+			al_destroy_bitmap(save_btn_norm);
+			save_btn_norm = NULL;
+		}
+		if (save_btn_over != NULL)
+		{
+			al_destroy_bitmap(save_btn_over);
+			save_btn_over = NULL;
+		}
+		if (yes_btn_norm != NULL)
+		{
+			al_destroy_bitmap(yes_btn_norm);
+			yes_btn_norm = NULL;
+		}
+		if (yes_btn_over != NULL)
+		{
+			al_destroy_bitmap(yes_btn_over);
+			yes_btn_over = NULL;
+		}
+		if (no_btn_norm != NULL)
+		{
+			al_destroy_bitmap(no_btn_norm);
+			no_btn_norm = NULL;
+		}
+		if (no_btn_over != NULL)
+		{
+			al_destroy_bitmap(no_btn_over);
+			no_btn_over = NULL;
+		}
 		if (m_sndBtnClick != NULL)
 		{
 			m_sndBtnClick = NULL;
@@ -384,10 +479,6 @@ void ModuleCaptainsLounge::Close()
 			delete m_noBtn;
 			m_noBtn = NULL;
 		}
-
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(cldata);
-		cldata = NULL;
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

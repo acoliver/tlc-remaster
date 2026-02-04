@@ -9,26 +9,22 @@
 #include "AudioSystem.h"
 using namespace std;
 
-//replaced with png file, no longer using this one
-//#define BANK_BACKGROUND_BMP              0        /* BMP  */
-
-#define BANK_BANNER_BMP                  1        /* BMP  */
-#define BANK_BUTTON_CONFIRM_HOVER_BMP    2        /* BMP  */
-#define BANK_BUTTON_CONFIRM_NORMAL_BMP   3        /* BMP  */
-#define BANK_BUTTON_EXIT_BMP             4        /* BMP  */
-#define BANK_BUTTON_EXIT_HOVER_BMP       5        /* BMP  */
-#define BANK_BUTTON_HELP_BMP             6        /* BMP  */
-#define BANK_BUTTON_HELP_HOVER_BMP       7        /* BMP  */
-#define BANK_BUTTON_PAY_HOVER_BMP        8        /* BMP  */
-#define BANK_BUTTON_PAY_NORMAL_BMP       9        /* BMP  */
-#define BANK_BUTTON_TAKE_HOVER_BMP       10       /* BMP  */
-#define BANK_BUTTON_TAKE_NORMAL_BMP      11       /* BMP  */
-#define BANK_CALC_BUTTON_DEACTIVATE_BMP  12       /* BMP  */
-#define BANK_CALC_BUTTON_HOVER_BMP       13       /* BMP  */
-#define BANK_CALC_BUTTON_NORMAL_BMP      14       /* BMP  */
-#define BANK_HELP_WINDOW_BMP             15       /* BMP  */
-
-DATAFILE *bdata;
+// Bank asset images (loaded directly)
+BITMAP *bmp_bank_banner = NULL;
+BITMAP *bmp_help_window = NULL;
+BITMAP *bmp_button_exit = NULL;
+BITMAP *bmp_button_exit_hover = NULL;
+BITMAP *bmp_button_help = NULL;
+BITMAP *bmp_button_help_hover = NULL;
+BITMAP *bmp_button_confirm_normal = NULL;
+BITMAP *bmp_button_confirm_hover = NULL;
+BITMAP *bmp_button_pay_normal = NULL;
+BITMAP *bmp_button_pay_hover = NULL;
+BITMAP *bmp_button_take_normal = NULL;
+BITMAP *bmp_button_take_hover = NULL;
+BITMAP *bmp_calc_button_normal = NULL;
+BITMAP *bmp_calc_button_hover = NULL;
+BITMAP *bmp_calc_button_deactivate = NULL;
 
 
 //NOTE: EVENT_NONE is now defined Events.h
@@ -122,10 +118,38 @@ bool ModuleBank::Init()
 	debug << "ModuleBank Initialize" << endl;
 
 
-	//load the datafile
-	bdata = load_datafile("data/bank/bank.dat");
-	if (!bdata) {
-		g_game->message("Bank: Error loading datafile");	
+	// Load all bank assets
+	bmp_bank_banner = al_load_bitmap("data/bank/bank_banner.bmp");
+	if (!bmp_bank_banner) {
+		g_game->message("Bank: Error loading banner");
+		return false;
+	}
+
+	bmp_help_window = al_load_bitmap("data/bank/bank_help_window.bmp");
+	if (!bmp_help_window) {
+		g_game->message("Bank: Error loading help window");
+		return false;
+	}
+
+	bmp_button_exit = al_load_bitmap("data/bank/bank_button_exit.bmp");
+	bmp_button_exit_hover = al_load_bitmap("data/bank/bank_button_exit_hover.bmp");
+	bmp_button_help = al_load_bitmap("data/bank/bank_button_help.bmp");
+	bmp_button_help_hover = al_load_bitmap("data/bank/bank_button_help_hover.bmp");
+	bmp_button_confirm_normal = al_load_bitmap("data/bank/bank_button_confirm_normal.bmp");
+	bmp_button_confirm_hover = al_load_bitmap("data/bank/bank_button_confirm_hover.bmp");
+	bmp_button_pay_normal = al_load_bitmap("data/bank/bank_button_pay_normal.bmp");
+	bmp_button_pay_hover = al_load_bitmap("data/bank/bank_button_pay_hover.bmp");
+	bmp_button_take_normal = al_load_bitmap("data/bank/bank_button_take_normal.bmp");
+	bmp_button_take_hover = al_load_bitmap("data/bank/bank_button_take_hover.bmp");
+	bmp_calc_button_normal = al_load_bitmap("data/bank/bank_calc_button_normal.bmp");
+	bmp_calc_button_hover = al_load_bitmap("data/bank/bank_calc_button_hover.bmp");
+	bmp_calc_button_deactivate = al_load_bitmap("data/bank/bank_calc_button_deactivate.bmp");
+
+	if (!bmp_button_exit || !bmp_button_exit_hover || !bmp_button_help || !bmp_button_help_hover ||
+		!bmp_button_confirm_normal || !bmp_button_confirm_hover || !bmp_button_pay_normal || !bmp_button_pay_hover ||
+		!bmp_button_take_normal || !bmp_button_take_hover || !bmp_calc_button_normal || !bmp_calc_button_hover ||
+		!bmp_calc_button_deactivate) {
+		g_game->message("Bank: Error loading button images");
 		return false;
 	}
 
@@ -176,24 +200,9 @@ bool ModuleBank::Init()
 
 bool ModuleBank::init_images()
 {
-	
-	//bmp_bank_background = (BITMAP*)bdata[BANK_BACKGROUND_BMP].dat;
-    bmp_bank_background = NULL;
-    bmp_bank_background =  (BITMAP*)load_bitmap("data/bank/bank_background.bmp",NULL);
+	bmp_bank_background = al_load_bitmap("data/bank/bank_background.bmp");
 	if (bmp_bank_background == NULL) {
 		g_game->message("Bank: Error loading background");
-		return false;
-	}
-	
-	bmp_bank_banner = (BITMAP*)bdata[BANK_BANNER_BMP].dat;
-	if (bmp_bank_banner == NULL) {
-		g_game->message("Bank: Error loading banner");
-		return false;
-	}
-
-	bmp_help_window = (BITMAP*)bdata[BANK_HELP_WINDOW_BMP].dat;
-	if (bmp_help_window == NULL) {
-		g_game->message("Bank: Error loading help window");
 		return false;
 	}
 
@@ -204,8 +213,8 @@ bool ModuleBank::init_buttons(){
 	BITMAP *imgNorm, *imgOver, *imgDis;
 	g_game->audioSystem->Load("data/cantina/buttonclick.ogg", "click");
 
-	imgNorm = (BITMAP*)bdata[BANK_BUTTON_EXIT_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_BUTTON_EXIT_HOVER_BMP].dat;
+	imgNorm = bmp_button_exit;
+	imgOver = bmp_button_exit_hover;
 	exit_button = new Button(//exit button
 				imgNorm, 
 				imgOver, 
@@ -216,8 +225,8 @@ bool ModuleBank::init_buttons(){
 	}else{return false;}
 
 
-	imgNorm = (BITMAP*)bdata[BANK_BUTTON_HELP_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_BUTTON_HELP_HOVER_BMP].dat;
+	imgNorm = bmp_button_help;
+	imgOver = bmp_button_help_hover;
 	help_button = new Button(//help button
 				imgNorm, 
 				imgOver, 
@@ -229,8 +238,8 @@ bool ModuleBank::init_buttons(){
 
 
 
-	imgNorm = (BITMAP*)bdata[BANK_BUTTON_CONFIRM_NORMAL_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_BUTTON_CONFIRM_HOVER_BMP].dat;
+	imgNorm = bmp_button_confirm_normal;
+	imgOver = bmp_button_confirm_hover;
 	confirm_button = new Button(//confirm button
 				imgNorm,  
 				imgOver, 
@@ -242,8 +251,8 @@ bool ModuleBank::init_buttons(){
 
 
 
-	imgNorm = (BITMAP*)bdata[BANK_BUTTON_PAY_NORMAL_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_BUTTON_PAY_HOVER_BMP].dat;
+	imgNorm = bmp_button_pay_normal;
+	imgOver = bmp_button_pay_hover;
 	pay_button = new Button(//pay button
 				imgNorm, 
 				imgOver, 
@@ -255,8 +264,8 @@ bool ModuleBank::init_buttons(){
 
 
 
-	imgNorm = (BITMAP*)bdata[BANK_BUTTON_TAKE_NORMAL_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_BUTTON_TAKE_HOVER_BMP].dat;
+	imgNorm = bmp_button_take_normal;
+	imgOver = bmp_button_take_hover;
 	take_button = new Button(//take button
 				imgNorm, 
 				imgOver, 
@@ -268,9 +277,9 @@ bool ModuleBank::init_buttons(){
 
 
 
-	imgNorm = (BITMAP*)bdata[BANK_CALC_BUTTON_NORMAL_BMP].dat;
-	imgOver = (BITMAP*)bdata[BANK_CALC_BUTTON_HOVER_BMP].dat;
-	imgDis = (BITMAP*)bdata[BANK_CALC_BUTTON_DEACTIVATE_BMP].dat;
+	imgNorm = bmp_calc_button_normal;
+	imgOver = bmp_calc_button_hover;
+	imgDis = bmp_calc_button_deactivate;
 	calc_buttons[0] = new Button(
 					imgNorm, 
 					imgOver, 
@@ -863,9 +872,38 @@ void ModuleBank::Close(){
 		}
 
 
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(bdata);
-		bdata = NULL;	
+		// Clean up loaded bitmaps
+		if (bmp_bank_banner) al_destroy_bitmap(bmp_bank_banner);
+		if (bmp_help_window) al_destroy_bitmap(bmp_help_window);
+		if (bmp_button_exit) al_destroy_bitmap(bmp_button_exit);
+		if (bmp_button_exit_hover) al_destroy_bitmap(bmp_button_exit_hover);
+		if (bmp_button_help) al_destroy_bitmap(bmp_button_help);
+		if (bmp_button_help_hover) al_destroy_bitmap(bmp_button_help_hover);
+		if (bmp_button_confirm_normal) al_destroy_bitmap(bmp_button_confirm_normal);
+		if (bmp_button_confirm_hover) al_destroy_bitmap(bmp_button_confirm_hover);
+		if (bmp_button_pay_normal) al_destroy_bitmap(bmp_button_pay_normal);
+		if (bmp_button_pay_hover) al_destroy_bitmap(bmp_button_pay_hover);
+		if (bmp_button_take_normal) al_destroy_bitmap(bmp_button_take_normal);
+		if (bmp_button_take_hover) al_destroy_bitmap(bmp_button_take_hover);
+		if (bmp_calc_button_normal) al_destroy_bitmap(bmp_calc_button_normal);
+		if (bmp_calc_button_hover) al_destroy_bitmap(bmp_calc_button_hover);
+		if (bmp_calc_button_deactivate) al_destroy_bitmap(bmp_calc_button_deactivate);
+		
+		bmp_bank_banner = NULL;
+		bmp_help_window = NULL;
+		bmp_button_exit = NULL;
+		bmp_button_exit_hover = NULL;
+		bmp_button_help = NULL;
+		bmp_button_help_hover = NULL;
+		bmp_button_confirm_normal = NULL;
+		bmp_button_confirm_hover = NULL;
+		bmp_button_pay_normal = NULL;
+		bmp_button_pay_hover = NULL;
+		bmp_button_take_normal = NULL;
+		bmp_button_take_hover = NULL;
+		bmp_calc_button_normal = NULL;
+		bmp_calc_button_hover = NULL;
+		bmp_calc_button_deactivate = NULL;	
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

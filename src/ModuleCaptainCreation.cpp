@@ -9,33 +9,7 @@
 using namespace std;
 
 
-//replaced with new images
-//#define CAPTAINCREATION_PROFESSIONBACKGROUND_BMP 14        /* BMP  */
-//#define CAPTAINCREATION_DETAILSBACKGROUND_BMP     4        /* BMP  */
-
-#define CAPTAINCREATION_BACK_BMP                  0        /* BMP  */
-#define CAPTAINCREATION_BACK_MOUSEOVER_BMP        1        /* BMP  */
-#define CAPTAINCREATION_CURSOR0_BMP               2        /* BMP  */
-#define CAPTAINCREATION_CURSOR1_BMP               3        /* BMP  */
-#define CAPTAINCREATION_FINISH_BMP                5        /* BMP  */
-#define CAPTAINCREATION_FINISH_DISABLED_BMP       6        /* BMP  */
-#define CAPTAINCREATION_FINISH_MOUSEOVER_BMP      7        /* BMP  */
-#define CAPTAINCREATION_FREELANCE_BMP             8        /* BMP  */
-#define CAPTAINCREATION_FREELANCE_MOUSEOVER_BMP   9        /* BMP  */
-#define CAPTAINCREATION_MILITARY_BMP             10        /* BMP  */
-#define CAPTAINCREATION_MILITARY_MOUSEOVER_BMP   11        /* BMP  */
-#define CAPTAINCREATION_PLUS_BMP                 12        /* BMP  */
-#define CAPTAINCREATION_PLUS_MOUSEOVER_BMP       13        /* BMP  */
-#define CAPTAINCREATION_RESET_BMP                15        /* BMP  */
-#define CAPTAINCREATION_RESET_MOUSEOVER_BMP      16        /* BMP  */
-#define CAPTAINCREATION_SCIENTIFIC_BMP           17        /* BMP  */
-#define CAPTAINCREATION_SCIENTIFIC_MOUSEOVER_BMP 18        /* BMP  */
-#define MINUS_BMP                                19        /* BMP  */
-#define MINUS_DISABLED_BMP                       20        /* BMP  */
-#define MINUS_MOUSEOVER_BMP                      21        /* BMP  */
-
-
-DATAFILE *ccdata;
+// Removed DATAFILE defines - using direct bitmap pointers
 
 
 
@@ -199,47 +173,58 @@ ModuleCaptainCreation::~ModuleCaptainCreation(void){}
 
 bool ModuleCaptainCreation::Init()
 {
-	//load the datafile
-
-	ccdata = load_datafile("data/captaincreation/captaincreation.dat");
-	if (!ccdata) {
-		g_game->message("CaptainCreation: Error loading datafile");	
-		return false;
-	}
-
-	//m_professionChoiceBackground = (BITMAP*)ccdata[CAPTAINCREATION_PROFESSIONBACKGROUND_BMP].dat;
-    m_professionChoiceBackground=NULL;
-    m_professionChoiceBackground = (BITMAP*)load_bitmap("data/captaincreation/captaincreation_professionbackground.bmp",NULL);
+	// Load profession choice background
+    m_professionChoiceBackground = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_professionbackground.bmp");
 	if (m_professionChoiceBackground == NULL)
     {
         debug << "captaincreation: error loading profession background" << endl;
 		return false;
     }
 
-	m_scientificBtn = (BITMAP*)ccdata[CAPTAINCREATION_SCIENTIFIC_BMP].dat;
+	// Load scientific button bitmaps
+	m_scientificBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_scientific.bmp");
 	if (m_scientificBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading scientific button");
 		return false;
+	}
 
-	m_scientificBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_SCIENTIFIC_MOUSEOVER_BMP].dat;
+	m_scientificBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_scientific_mouseover.bmp");
 	if (m_scientificBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading scientific button mouseover");
 		return false;
+	}
 
-	m_freelanceBtn = (BITMAP*)ccdata[CAPTAINCREATION_FREELANCE_BMP].dat; 
+	// Load freelance button bitmaps
+	m_freelanceBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_freelance.bmp"); 
 	if (m_freelanceBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading freelance button");
 		return false;
+	}
 
-	m_freelanceBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_FREELANCE_MOUSEOVER_BMP].dat;
+	m_freelanceBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_freelance_mouseover.bmp");
 	if (m_freelanceBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading freelance button mouseover");
 		return false;
+	}
 
-
-	m_militaryBtn = (BITMAP*)ccdata[CAPTAINCREATION_MILITARY_BMP].dat;
+	// Load military button bitmaps
+	m_militaryBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_military.bmp");
 	if (m_militaryBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading military button");
 		return false;
+	}
 
-	m_militaryBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_MILITARY_MOUSEOVER_BMP].dat;
+	m_militaryBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_military_mouseover.bmp");
 	if (m_militaryBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading military button mouseover");
 		return false;
+	}
 
 	m_profInfoScientific = new Label("Even though the universe regresses towards smaller and smaller components, it is still plenty large to hide a few mysteries. The Scientific Officer represents the pinnacle of Myrrdanian brainpower. Armed with wit, cunning, intelligence... and a stun gun these brave souls explore the edges of the galaxy documenting planets and capturing life forms for study. Not to mention, the ability to recommend a planet for colonization comes with monetary and retirement perks. Mostly monetary seeing as distant planet construction usually takes some time to kick start.",
 		150, 420, 750, 400, WHITE, g_game->font24);
@@ -259,71 +244,122 @@ bool ModuleCaptainCreation::Init()
 		return false;
 	m_profInfoMilitary->Refresh();
 
-	//m_detailsBackground = (BITMAP*)ccdata[CAPTAINCREATION_DETAILSBACKGROUND_BMP].dat;
-    m_detailsBackground=NULL;
-    m_detailsBackground = (BITMAP*)load_bitmap("data/captaincreation/captaincreation_detailsbackground.bmp",NULL);
+	// Load details background
+    m_detailsBackground = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_detailsbackground.bmp");
 	if (m_detailsBackground == NULL)
     {
         debug << "captaincreation: error loading details background" << endl;
 		return false;
     }
 
-	m_resetBtn = (BITMAP*)ccdata[CAPTAINCREATION_RESET_BMP].dat;
+	// Load reset button bitmaps
+	m_resetBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_reset.bmp");
 	if (m_resetBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading reset button");
 		return false;
+	}
 
-	m_resetBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_RESET_MOUSEOVER_BMP].dat;
+	m_resetBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_reset_mouseover.bmp");
 	if (m_resetBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading reset button mouseover");
 		return false;
+	}
 
-	BITMAP *btnNorm, *btnOver, *btnDis;
+	// Load finish button bitmaps
+	m_finishBtnNorm = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_finish.bmp");
+	if (m_finishBtnNorm == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading finish button");
+		return false;
+	}
 	
-	btnNorm = (BITMAP*)ccdata[CAPTAINCREATION_FINISH_BMP].dat;
-	btnOver = (BITMAP*)ccdata[CAPTAINCREATION_FINISH_MOUSEOVER_BMP].dat;
-	btnDis = (BITMAP*)ccdata[CAPTAINCREATION_FINISH_DISABLED_BMP].dat;
+	m_finishBtnOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_finish_mouseover.bmp");
+	if (m_finishBtnOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading finish button mouseover");
+		return false;
+	}
 	
-	m_finishBtn = new Button(btnNorm, btnOver, btnDis,
+	m_finishBtnDis = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_finish_disabled.bmp");
+	if (m_finishBtnDis == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading finish button disabled");
+		return false;
+	}
+	
+	m_finishBtn = new Button(m_finishBtnNorm, m_finishBtnOver, m_finishBtnDis,
 		FINISHBTN_X,FINISHBTN_Y,EVENT_NONE,EVENT_FINISH,"",false,true);
 	if (m_finishBtn == NULL) return false;
 	if (!m_finishBtn->IsInitialized()) return false;
 
-	m_cursor[0] = (BITMAP*)ccdata[CAPTAINCREATION_CURSOR0_BMP].dat;
-	if (m_cursor[0] == NULL) return false;
+	// Load cursor bitmaps
+	m_cursor[0] = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_cursor0.bmp");
+	if (m_cursor[0] == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading cursor0");
+		return false;
+	}
 
-	m_cursor[1] = (BITMAP*)ccdata[CAPTAINCREATION_CURSOR1_BMP].dat;
-	if (m_cursor[1] == NULL) return false;
+	m_cursor[1] = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_cursor1.bmp");
+	if (m_cursor[1] == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading cursor1");
+		return false;
+	}
 
-	m_backBtn = (BITMAP*)ccdata[CAPTAINCREATION_BACK_BMP].dat;
-	if (m_backBtn == NULL) return false;
+	// Load back button bitmaps
+	m_backBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_back.bmp");
+	if (m_backBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading back button");
+		return false;
+	}
 
-	m_backBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_BACK_MOUSEOVER_BMP].dat;
-	if (m_backBtnMouseOver == NULL) return false;
+	m_backBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_back_mouseover.bmp");
+	if (m_backBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading back button mouseover");
+		return false;
+	}
 
-	m_plusBtn = (BITMAP*)ccdata[CAPTAINCREATION_PLUS_BMP].dat;
-	if (m_plusBtn == NULL) return false;
+	// Load plus button bitmaps
+	m_plusBtn = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_plus.bmp");
+	if (m_plusBtn == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading plus button");
+		return false;
+	}
 
-	m_plusBtnMouseOver = (BITMAP*)ccdata[CAPTAINCREATION_PLUS_MOUSEOVER_BMP].dat;
-	if (m_plusBtnMouseOver == NULL) return false;
+	m_plusBtnMouseOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_plus_mouseover.bmp");
+	if (m_plusBtnMouseOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading plus button mouseover");
+		return false;
+	}
 
-
-	btnNorm = (BITMAP*)ccdata[MINUS_BMP].dat;
-	btnOver = (BITMAP*)ccdata[MINUS_DISABLED_BMP].dat;
-	btnDis = (BITMAP*)ccdata[MINUS_MOUSEOVER_BMP].dat;
-	m_minusBtns[0] = new Button(btnNorm, btnOver, btnDis,
+	// Note: MINUS button assets are missing from data directory
+	// Setting to NULL - minus buttons may not be functional without these assets
+	m_minusBtnNorm = NULL;
+	m_minusBtnOver = NULL;
+	m_minusBtnDis = NULL;
+	
+	m_minusBtns[0] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_DURABILITY_X + 42, PLUS_DURABILITY_Y, EVENT_NONE, EVENT_MINUS + 0,"");
-	m_minusBtns[1] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[1] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_LEARNRATE_X + 42, PLUS_LEARNRATE_Y, EVENT_NONE, EVENT_MINUS + 1,"");
-	m_minusBtns[2] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[2] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_SCIENCE_X + 42, PLUS_SCIENCE_Y, EVENT_NONE, EVENT_MINUS + 2,"");
-	m_minusBtns[3] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[3] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_NAVIGATION_X + 42, PLUS_NAVIGATION_Y, EVENT_NONE, EVENT_MINUS + 3,"");
-	m_minusBtns[4] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[4] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_TACTICS_X + 42, PLUS_TACTICS_Y, EVENT_NONE, EVENT_MINUS + 4,"");
-	m_minusBtns[5] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[5] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_ENGINEERING_X + 42, PLUS_ENGINEERING_Y, EVENT_NONE, EVENT_MINUS + 5,"");
-	m_minusBtns[6] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[6] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_COMMUNICATION_X + 42, PLUS_COMMUNICATION_Y, EVENT_NONE, EVENT_MINUS + 6,"");
-	m_minusBtns[7] = new Button(btnNorm, btnOver, btnDis,
+	m_minusBtns[7] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_MEDICAL_X + 42, PLUS_MEDICAL_Y, EVENT_NONE, EVENT_MINUS + 7,"");
 
 	for(int i = 0; i < 8; i++){
@@ -511,14 +547,100 @@ void ModuleCaptainCreation::Close()
 	try {
         if (m_professionChoiceBackground!=NULL)
         {
-            delete m_professionChoiceBackground;
+            al_destroy_bitmap(m_professionChoiceBackground);
             m_professionChoiceBackground=NULL;
         }
         if (m_detailsBackground!=NULL)
         {
-            delete m_detailsBackground;
+            al_destroy_bitmap(m_detailsBackground);
             m_detailsBackground=NULL;
         }
+		if (m_scientificBtn != NULL)
+		{
+			al_destroy_bitmap(m_scientificBtn);
+			m_scientificBtn = NULL;
+		}
+		if (m_scientificBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_scientificBtnMouseOver);
+			m_scientificBtnMouseOver = NULL;
+		}
+		if (m_freelanceBtn != NULL)
+		{
+			al_destroy_bitmap(m_freelanceBtn);
+			m_freelanceBtn = NULL;
+		}
+		if (m_freelanceBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_freelanceBtnMouseOver);
+			m_freelanceBtnMouseOver = NULL;
+		}
+		if (m_militaryBtn != NULL)
+		{
+			al_destroy_bitmap(m_militaryBtn);
+			m_militaryBtn = NULL;
+		}
+		if (m_militaryBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_militaryBtnMouseOver);
+			m_militaryBtnMouseOver = NULL;
+		}
+		if (m_resetBtn != NULL)
+		{
+			al_destroy_bitmap(m_resetBtn);
+			m_resetBtn = NULL;
+		}
+		if (m_resetBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_resetBtnMouseOver);
+			m_resetBtnMouseOver = NULL;
+		}
+		if (m_finishBtnNorm != NULL)
+		{
+			al_destroy_bitmap(m_finishBtnNorm);
+			m_finishBtnNorm = NULL;
+		}
+		if (m_finishBtnOver != NULL)
+		{
+			al_destroy_bitmap(m_finishBtnOver);
+			m_finishBtnOver = NULL;
+		}
+		if (m_finishBtnDis != NULL)
+		{
+			al_destroy_bitmap(m_finishBtnDis);
+			m_finishBtnDis = NULL;
+		}
+		if (m_cursor[0] != NULL)
+		{
+			al_destroy_bitmap(m_cursor[0]);
+			m_cursor[0] = NULL;
+		}
+		if (m_cursor[1] != NULL)
+		{
+			al_destroy_bitmap(m_cursor[1]);
+			m_cursor[1] = NULL;
+		}
+		if (m_backBtn != NULL)
+		{
+			al_destroy_bitmap(m_backBtn);
+			m_backBtn = NULL;
+		}
+		if (m_backBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_backBtnMouseOver);
+			m_backBtnMouseOver = NULL;
+		}
+		if (m_plusBtn != NULL)
+		{
+			al_destroy_bitmap(m_plusBtn);
+			m_plusBtn = NULL;
+		}
+		if (m_plusBtnMouseOver != NULL)
+		{
+			al_destroy_bitmap(m_plusBtnMouseOver);
+			m_plusBtnMouseOver = NULL;
+		}
+		// Note: minus button bitmaps are NULL, no need to destroy
 		if (m_profInfoScientific != NULL)
 		{
 			delete m_profInfoScientific;
@@ -555,10 +677,6 @@ void ModuleCaptainCreation::Close()
 			delete m_minusBtns[i];
 			m_minusBtns[i] = NULL;
 		}
-
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(ccdata);
-		ccdata = NULL;	
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

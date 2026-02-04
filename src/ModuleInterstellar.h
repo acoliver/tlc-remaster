@@ -42,7 +42,6 @@ private:
 
 	Officer* tempOfficer;
 
-	//DATAFILE *isdata;
 	Flux* flux;
 	Sprite *shield;
 

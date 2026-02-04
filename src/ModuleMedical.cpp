@@ -38,25 +38,22 @@ int left_offset2 = -400;
 //#define MED_WINDOW_DATA_BMP              14       /* BMP  */
 
 
-#define BTN_DIS_BMP                      0        /* BMP  */
-#define BTN_HOV_BMP                      1        /* BMP  */
-#define BTN_NORM_BMP                     2        /* BMP  */
-#define MED_BAR_COMMUNICATION_BMP        5        /* BMP  */
-#define MED_BAR_DURABILITY_BMP           6        /* BMP  */
-#define MED_BAR_ENGINEER_BMP             7        /* BMP  */
-#define MED_BAR_HEALTH_BMP               8        /* BMP  */
-#define MED_BAR_LEARN_BMP                9        /* BMP  */
-#define MED_BAR_MEDICAL_BMP              10       /* BMP  */
-#define MED_BAR_NAVIGATION_BMP           11       /* BMP  */
-#define MED_BAR_SCIENCE_BMP              12       /* BMP  */
-#define MED_BAR_TACTICAL_BMP             13       /* BMP  */
-#define MEDICAL_CAPTBTN_BMP              15       /* BMP  */
-#define MEDICAL_CAPTBTN_DIS_BMP          16       /* BMP  */
-#define MEDICAL_CAPTBTN_HOV_BMP          17       /* BMP  */
-
-
-
-DATAFILE *meddata;
+// Asset pointers - loaded directly
+BITMAP *img_btn_dis;
+BITMAP *img_btn_hov;
+BITMAP *img_btn_norm;
+BITMAP *img_med_bar_communication;
+BITMAP *img_med_bar_durability;
+BITMAP *img_med_bar_engineer;
+BITMAP *img_med_bar_health;
+BITMAP *img_med_bar_learn;
+BITMAP *img_med_bar_medical;
+BITMAP *img_med_bar_navigation;
+BITMAP *img_med_bar_science;
+BITMAP *img_med_bar_tactical;
+BITMAP *img_medical_captbtn;
+BITMAP *img_medical_captbtn_dis;
+BITMAP *img_medical_captbtn_hov;
 
 
 ModuleMedical::ModuleMedical() {}
@@ -301,10 +298,94 @@ bool ModuleMedical::Init()
 	//sound effects
 	g_game->audioSystem->Load("data/medical/buttonclick.ogg", "click");
 
-	//load data file
-	meddata = load_datafile("data/medical/medical.dat");
-	if (!meddata) {
-		g_game->message("Medical: Error loading data file");
+	// Load bitmap assets directly
+	img_btn_dis = al_load_bitmap("data/medical/btn_dis.bmp");
+	if (!img_btn_dis) {
+		g_game->message("Medical: Error loading btn_dis image");
+		return false;
+	}
+
+	img_btn_hov = al_load_bitmap("data/medical/btn_hov.bmp");
+	if (!img_btn_hov) {
+		g_game->message("Medical: Error loading btn_hov image");
+		return false;
+	}
+
+	img_btn_norm = al_load_bitmap("data/medical/btn_norm.bmp");
+	if (!img_btn_norm) {
+		g_game->message("Medical: Error loading btn_norm image");
+		return false;
+	}
+
+	img_med_bar_communication = al_load_bitmap("data/medical/med_bar_communication.bmp");
+	if (!img_med_bar_communication) {
+		g_game->message("Medical: Error loading med_bar_communication image");
+		return false;
+	}
+
+	img_med_bar_durability = al_load_bitmap("data/medical/med_bar_durability.bmp");
+	if (!img_med_bar_durability) {
+		g_game->message("Medical: Error loading med_bar_durability image");
+		return false;
+	}
+
+	img_med_bar_engineer = al_load_bitmap("data/medical/med_bar_engineer.bmp");
+	if (!img_med_bar_engineer) {
+		g_game->message("Medical: Error loading med_bar_engineer image");
+		return false;
+	}
+
+	img_med_bar_health = al_load_bitmap("data/medical/med_bar_health.bmp");
+	if (!img_med_bar_health) {
+		g_game->message("Medical: Error loading med_bar_health image");
+		return false;
+	}
+
+	img_med_bar_learn = al_load_bitmap("data/medical/med_bar_learn.bmp");
+	if (!img_med_bar_learn) {
+		g_game->message("Medical: Error loading med_bar_learn image");
+		return false;
+	}
+
+	img_med_bar_medical = al_load_bitmap("data/medical/med_bar_medical.bmp");
+	if (!img_med_bar_medical) {
+		g_game->message("Medical: Error loading med_bar_medical image");
+		return false;
+	}
+
+	img_med_bar_navigation = al_load_bitmap("data/medical/med_bar_navigation.bmp");
+	if (!img_med_bar_navigation) {
+		g_game->message("Medical: Error loading med_bar_navigation image");
+		return false;
+	}
+
+	img_med_bar_science = al_load_bitmap("data/medical/med_bar_science.bmp");
+	if (!img_med_bar_science) {
+		g_game->message("Medical: Error loading med_bar_science image");
+		return false;
+	}
+
+	img_med_bar_tactical = al_load_bitmap("data/medical/med_bar_tactical.bmp");
+	if (!img_med_bar_tactical) {
+		g_game->message("Medical: Error loading med_bar_tactical image");
+		return false;
+	}
+
+	img_medical_captbtn = al_load_bitmap("data/medical/medical_captBtn.bmp");
+	if (!img_medical_captbtn) {
+		g_game->message("Medical: Error loading medical_captBtn image");
+		return false;
+	}
+
+	img_medical_captbtn_hov = al_load_bitmap("data/medical/medical_captBtn_hov.bmp");
+	if (!img_medical_captbtn_hov) {
+		g_game->message("Medical: Error loading medical_captBtn_hov image");
+		return false;
+	}
+
+	img_medical_captbtn_dis = al_load_bitmap("data/medical/medical_captBtn_dis.bmp");
+	if (!img_medical_captbtn_dis) {
+		g_game->message("Medical: Error loading medical_captBtn_dis image");
 		return false;
 	}
 
@@ -338,87 +419,21 @@ bool ModuleMedical::Init()
 
 
 
-	//img_health_bar = load_bitmap("data/medical/med_bar_health.bmp", NULL);
-	img_health_bar = (BITMAP*)meddata[MED_BAR_HEALTH_BMP].dat;
-	if (!img_health_bar) {
-		g_game->message("Medical: Error loading med_bar_health image");
-		return false;
-	}
-	
-	//img_science_bar = load_bitmap("data/medical/med_bar_science.bmp", NULL);
-	img_science_bar = (BITMAP*)meddata[MED_BAR_SCIENCE_BMP].dat;
-	if (!img_science_bar) {
-		g_game->message("Medical: Error loading med_bar_science image");
-		return false;
-	}
-	
-	//img_nav_bar = load_bitmap("data/medical/med_bar_navigation.bmp", NULL);
-	img_nav_bar = (BITMAP*)meddata[MED_BAR_NAVIGATION_BMP].dat;
-	if (!img_nav_bar) {
-		g_game->message("Medical: Error loading med_bar_navigation image");
-		return false;
-	}
-	
-	//img_medical_bar = load_bitmap("data/medical/med_bar_medical.bmp", NULL); 
-	img_medical_bar = (BITMAP*)meddata[MED_BAR_MEDICAL_BMP].dat;
-	if (!img_medical_bar) {
-		g_game->message("Medical: Error loading med_bar_medical image");
-		return false;
-	}
-	
-	//img_engineer_bar = load_bitmap("data/medical/med_bar_engineer.bmp", NULL); 
-	img_engineer_bar = (BITMAP*)meddata[MED_BAR_ENGINEER_BMP].dat;
-	if (!img_engineer_bar) {
-		g_game->message("Medical: Error loading med_bar_engineer image");
-		return false;
-	}
-	
-	//img_dur_bar = load_bitmap("data/medical/med_bar_durability.bmp", NULL);
-	img_dur_bar = (BITMAP*)meddata[MED_BAR_DURABILITY_BMP].dat;
-	if (!img_dur_bar) {
-		g_game->message("Medical: Error loading med_bar_durability image");
-		return false;
-	}
-	
-	//img_learn_bar = load_bitmap("data/medical/med_bar_learn.bmp", NULL);
-	img_learn_bar = (BITMAP*)meddata[MED_BAR_LEARN_BMP].dat;
-	if (!img_learn_bar) {
-		g_game->message("Medical: Error loading med_bar_learn image");
-		return false;
-	}
-	
-	//img_comm_bar = load_bitmap("data/medical/med_bar_communication.bmp", NULL);
-	img_comm_bar = (BITMAP*)meddata[MED_BAR_COMMUNICATION_BMP].dat;
-	if (!img_comm_bar) {
-		g_game->message("Medical: Error loading med_bar_communication image");
-		return false;
-	}
-	
-	//img_tac_bar = load_bitmap("data/medical/med_bar_tactical.bmp", NULL);
-	img_tac_bar = (BITMAP*)meddata[MED_BAR_TACTICAL_BMP].dat;
-	if (!img_tac_bar) {
-		g_game->message("Medical: Error loading med_bar_tactical image");
-		return false;
-	}
+	// Use the directly loaded bitmaps
+	img_health_bar = img_med_bar_health;
+	img_science_bar = img_med_bar_science;
+	img_nav_bar = img_med_bar_navigation;
+	img_medical_bar = img_med_bar_medical;
+	img_engineer_bar = img_med_bar_engineer;
+	img_dur_bar = img_med_bar_durability;
+	img_learn_bar = img_med_bar_learn;
+	img_comm_bar = img_med_bar_communication;
+	img_tac_bar = img_med_bar_tactical;
 
-	//load crew button images
-	img_button_crew = (BITMAP*)meddata[MEDICAL_CAPTBTN_BMP].dat;
-	if (!img_button_crew) {
-		g_game->message("Medical: Error loading crew button image");
-		return false;
-	}
-
-	img_button_crew_hov = (BITMAP*)meddata[MEDICAL_CAPTBTN_HOV_BMP].dat;
-	if (!img_button_crew_hov) {
-		g_game->message("Medical: Error loading crew button hover image");
-		return false;
-	}
-
-	img_button_crew_dis = (BITMAP*)meddata[MEDICAL_CAPTBTN_DIS_BMP].dat;
-	if (!img_button_crew_dis) {
-		g_game->message("Medical: Error loading crew button disabled image");
-		return false;
-	}
+	// Load crew button images
+	img_button_crew = img_medical_captbtn;
+	img_button_crew_hov = img_medical_captbtn_hov;
+	img_button_crew_dis = img_medical_captbtn_dis;
 
 	for (int i=0; i < 7; i++)
 	{
@@ -439,22 +454,10 @@ bool ModuleMedical::Init()
 	OfficerBtns[5]->SetButtonText("COM. " + g_game->gameState->officerCom->name);
 	OfficerBtns[6]->SetButtonText("DOC. " + g_game->gameState->officerDoc->name);
 
-	//load plus button images
-	img_treat = (BITMAP*)meddata[BTN_NORM_BMP].dat;
-	if (!img_treat) {
-		g_game->message("Medical: Error loading plus button image");
-		return false;
-	}
-	img_treat_hov = (BITMAP*)meddata[BTN_HOV_BMP].dat;
-	if (!img_treat_hov) {
-		g_game->message("Medical: Error loading hov button image");
-		return false;
-	}
-	img_treat_dis = (BITMAP*)meddata[BTN_DIS_BMP].dat;
-	if (!img_treat_dis) {
-		g_game->message("Medical: Error loading plus button disabled image");
-		return false;
-	}
+	// Load plus button images
+	img_treat = img_btn_norm;
+	img_treat_hov = img_btn_hov;
+	img_treat_dis = img_btn_dis;
 
 	//Create and initialize the heal buttons
 	//they share the same location but are unique for each crew to make events simpler
@@ -503,8 +506,22 @@ void ModuleMedical::Close()
             img_crewskills_viewer=NULL;
         }
 
-		unload_datafile(meddata);
-		meddata = NULL;
+		// Destroy directly loaded bitmaps
+		if (img_btn_dis) al_destroy_bitmap(img_btn_dis);
+		if (img_btn_hov) al_destroy_bitmap(img_btn_hov);
+		if (img_btn_norm) al_destroy_bitmap(img_btn_norm);
+		if (img_med_bar_communication) al_destroy_bitmap(img_med_bar_communication);
+		if (img_med_bar_durability) al_destroy_bitmap(img_med_bar_durability);
+		if (img_med_bar_engineer) al_destroy_bitmap(img_med_bar_engineer);
+		if (img_med_bar_health) al_destroy_bitmap(img_med_bar_health);
+		if (img_med_bar_learn) al_destroy_bitmap(img_med_bar_learn);
+		if (img_med_bar_medical) al_destroy_bitmap(img_med_bar_medical);
+		if (img_med_bar_navigation) al_destroy_bitmap(img_med_bar_navigation);
+		if (img_med_bar_science) al_destroy_bitmap(img_med_bar_science);
+		if (img_med_bar_tactical) al_destroy_bitmap(img_med_bar_tactical);
+		if (img_medical_captbtn) al_destroy_bitmap(img_medical_captbtn);
+		if (img_medical_captbtn_dis) al_destroy_bitmap(img_medical_captbtn_dis);
+		if (img_medical_captbtn_hov) al_destroy_bitmap(img_medical_captbtn_hov);
 
 		for (int i=0; i < 7; i++){
 			delete OfficerBtns[i];

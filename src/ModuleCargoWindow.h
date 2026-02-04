@@ -50,9 +50,6 @@ private:
 	//true between end of Init() and start of Close(). false otherwise.
 	bool initialized;
 
-	//DATAFILE *cwdata;
-	//DATAFILE *svdata;
-
 	//the window itself
 	BITMAP *img_viewer;
 	int gui_viewer_left;

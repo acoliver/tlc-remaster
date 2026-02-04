@@ -39,6 +39,11 @@ public:
 
 private:
 	BITMAP 					*m_background;
+	BITMAP					*btn_norm;
+	BITMAP					*btn_over;
+	BITMAP					*btn_dis;
+	BITMAP					*exit_btn_norm;
+	BITMAP					*exit_btn_over;
 	Button 					*m_exitBtn;
 	Button 					*m_turninBtn;
 

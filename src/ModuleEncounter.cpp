@@ -424,9 +424,7 @@ void ModuleEncounter::Close()
 	Encounter_Close();
 	Combat_Close();
 
-	//unload the data file - causes Unhandled exception at 0x0f35b3aa
-	//unload_datafile(encdata); 
-	encdata = NULL;
+	// Assets are now loaded directly - no datafile to unload
 
 	if (scroller != NULL) {	delete scroller; scroller = NULL; }
 }

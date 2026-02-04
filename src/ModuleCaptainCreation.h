@@ -71,7 +71,14 @@ private:
 	BITMAP 			*m_resetBtn;
 	BITMAP 			*m_resetBtnMouseOver;
 
+	BITMAP			*m_finishBtnNorm;
+	BITMAP			*m_finishBtnOver;
+	BITMAP			*m_finishBtnDis;
 	Button			*m_finishBtn;
+
+	BITMAP			*m_minusBtnNorm;
+	BITMAP			*m_minusBtnOver;
+	BITMAP			*m_minusBtnDis;
 
 	BITMAP			*m_cursor[2];
 	int				m_cursorIdx;

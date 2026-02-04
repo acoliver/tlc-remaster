@@ -38,6 +38,24 @@ private:
 	BITMAP						*m_background;
 	BITMAP                  *m_modalPromptBackground;
 
+	BITMAP						*exit_btn_norm;
+	BITMAP						*exit_btn_over;
+	BITMAP						*plus_btn_norm;
+	BITMAP						*plus_btn_over;
+	BITMAP						*plus_btn_dis;
+	BITMAP						*del_btn_norm;
+	BITMAP						*del_btn_over;
+	BITMAP						*del_btn_dis;
+	BITMAP						*sel_btn_norm;
+	BITMAP						*sel_btn_over;
+	BITMAP						*sel_btn_dis;
+	BITMAP						*save_btn_norm;
+	BITMAP						*save_btn_over;
+	BITMAP						*yes_btn_norm;
+	BITMAP						*yes_btn_over;
+	BITMAP						*no_btn_norm;
+	BITMAP						*no_btn_over;
+
 	Sample *m_sndBtnClick;
 
 	Button						*m_backBtn;

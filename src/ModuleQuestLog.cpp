@@ -30,8 +30,6 @@ using namespace std;
 #define DESC_W NAME_W
 
 //#define QUEST_VIEWER_BMP                 0        /* BMP  */
-//DATAFILE *qldata;
-
 
 ModuleQuestLog::ModuleQuestLog() 
 {
@@ -66,10 +64,6 @@ void ModuleQuestLog::OnEvent(Event *event)
 void ModuleQuestLog::Close()
 {
 	try {
-		//close the datafile
-		//unload_datafile(qldata);
-		//qldata = NULL;
-
         if (window!=NULL)
         {
             delete window;
@@ -86,13 +80,6 @@ void ModuleQuestLog::Close()
 
 bool ModuleQuestLog::Init()
 {
-	//load the datafile
-	//qldata = load_datafile("data/questviewer/questviewer.dat");
-	//if (!qldata) {
-	//	g_game->message("QuestLog: Error loading datafile");	
-	//	return false;
-	//}
-	
 	viewer_offset_x = SCREEN_WIDTH;
 	viewer_offset_y = 90;
 

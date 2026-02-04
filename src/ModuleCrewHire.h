@@ -65,7 +65,21 @@ private:
 
 	BITMAP 					*m_background;
 	BITMAP 					*m_miniSkills;
-	//BITMAP					*m_skillBars[8];
+	
+	BITMAP					*exit_btn_norm;
+	BITMAP					*exit_btn_over;
+	BITMAP					*btn_norm;
+	BITMAP					*btn_over;
+	BITMAP					*btn_dis;
+	BITMAP					*btn2_norm;
+	BITMAP					*btn2_over;
+	BITMAP					*btn2_dis;
+	BITMAP					*catbtn_norm;
+	BITMAP					*catbtn_over;
+	BITMAP					*catbtn_dis;
+	BITMAP					*icons_small;
+	BITMAP					*icons_small_green;
+	BITMAP					*icons_small_red;
 
 	Button 					*m_exitBtn;
 	Button					*m_hireBtn;

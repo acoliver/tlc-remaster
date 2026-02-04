@@ -24,16 +24,14 @@ using namespace std;
 //#define SHIPCONFIG_BMP                   3        /* BMP  */
 
 
-#define FREELANCE_TGA                    0        /* BMP  */
-#define MILITARY_TGA                     1        /* BMP  */
-#define SCIENCE_TGA                      2        /* BMP  */
-#define SHIPCONFIG_BTN_DEACTIVE_BMP      4        /* BMP  */
-#define SHIPCONFIG_BTN_NORM_BMP          5        /* BMP  */
-#define SHIPCONFIG_BTN_OVER_BMP          6        /* BMP  */
-#define SHIPCONFIG_CURSOR0_BMP           7        /* BMP  */
-
-
-DATAFILE *scdata;
+// Asset pointers - loaded directly
+BITMAP *img_freelance;
+BITMAP *img_military;
+BITMAP *img_science;
+BITMAP *img_shipconfig_btn_deactive;
+BITMAP *img_shipconfig_btn_norm;
+BITMAP *img_shipconfig_btn_over;
+BITMAP *img_shipconfig_cursor;
 
 
 #define SHIPNAME_MAXLEN 20
@@ -50,24 +48,56 @@ bool ModuleShipConfig::Init()
 {
 	debug << "  ShipConfig Initialize" << endl;
 	
-	//load the datafile
-	scdata = load_datafile("data/shipconfig/shipconfig.dat");
-	if (!scdata) {
-		g_game->message("ShipConfig: Error loading datafile");
+	// Load bitmap assets directly
+	img_freelance = al_load_bitmap("data/shipconfig/freelance.tga");
+	if (!img_freelance) {
+		g_game->message("ShipConfig: Error loading freelance.tga");
+		return false;
+	}
+
+	img_military = al_load_bitmap("data/shipconfig/military.tga");
+	if (!img_military) {
+		g_game->message("ShipConfig: Error loading military.tga");
+		return false;
+	}
+
+	img_science = al_load_bitmap("data/shipconfig/science.tga");
+	if (!img_science) {
+		g_game->message("ShipConfig: Error loading science.tga");
+		return false;
+	}
+
+	img_shipconfig_btn_deactive = al_load_bitmap("data/shipconfig/shipconfig_btn_deactive.bmp");
+	if (!img_shipconfig_btn_deactive) {
+		g_game->message("ShipConfig: Error loading shipconfig_btn_deactive.bmp");
+		return false;
+	}
+
+	img_shipconfig_btn_norm = al_load_bitmap("data/shipconfig/shipconfig_btn_norm.bmp");
+	if (!img_shipconfig_btn_norm) {
+		g_game->message("ShipConfig: Error loading shipconfig_btn_norm.bmp");
+		return false;
+	}
+
+	img_shipconfig_btn_over = al_load_bitmap("data/shipconfig/shipconfig_btn_over.bmp");
+	if (!img_shipconfig_btn_over) {
+		g_game->message("ShipConfig: Error loading shipconfig_btn_over.bmp");
+		return false;
+	}
+
+	img_shipconfig_cursor = al_load_bitmap("data/shipconfig/shipconfig_cursor0.bmp");
+	if (!img_shipconfig_cursor) {
+		g_game->message("ShipConfig: Error loading shipconfig_cursor0.bmp");
 		return false;
 	}
 
 	inputName = false;
 
-	//create button images
+	// Create button images
 	BITMAP *btnNorm, *btnOver, *btnDeact;
-	btnNorm = (BITMAP*)scdata[SHIPCONFIG_BTN_NORM_BMP].dat;
-	btnOver = (BITMAP*)scdata[SHIPCONFIG_BTN_OVER_BMP].dat;
-	btnDeact = (BITMAP*)scdata[SHIPCONFIG_BTN_DEACTIVE_BMP].dat;
-	if (!btnNorm || !btnOver || !btnDeact) {
-		g_game->message("Error loading ship config images");
-		return false;
-	}
+	btnNorm = img_shipconfig_btn_norm;
+	btnOver = img_shipconfig_btn_over;
+	btnDeact = img_shipconfig_btn_deactive;
 
 	//initialize array of button ptrs
 	for(int i=0; i<NUMBER_OF_BUTTONS; ++i)
@@ -101,11 +131,11 @@ bool ModuleShipConfig::Init()
 		return false;
 	}
 
-	//load ship image
+	// Load ship image
 	switch(g_game->gameState->getProfession()) {
-		case PROFESSION_FREELANCE:	shipImage = (BITMAP*)scdata[FREELANCE_TGA].dat;	break;
-		case PROFESSION_MILITARY:	shipImage = (BITMAP*)scdata[MILITARY_TGA].dat; break;
-		case PROFESSION_SCIENTIFIC:	shipImage = (BITMAP*)scdata[SCIENCE_TGA].dat; break;
+		case PROFESSION_FREELANCE:	shipImage = img_freelance; break;
+		case PROFESSION_MILITARY:	shipImage = img_military; break;
+		case PROFESSION_SCIENTIFIC:	shipImage = img_science; break;
 		default:
 			debug << "***ERROR: ShipConfig: Player's profession is invalid" << endl;
 	}
@@ -122,11 +152,7 @@ bool ModuleShipConfig::Init()
 		g_game->message("ShipConfig: Error loading error.ogg");
 		return false;
 	}
-	m_cursor = (BITMAP*)scdata[SHIPCONFIG_CURSOR0_BMP].dat;
-	if (m_cursor == NULL) {
-		g_game->message("Error loading cursor");
-		return false;
-	}
+	m_cursor = img_shipconfig_cursor;
 
 
 
@@ -547,12 +573,15 @@ void ModuleShipConfig::Close()
 
 		if(m_sndClick != NULL) delete m_sndClick;
 		if(m_sndErr != NULL) delete m_sndErr;
-		//if(m_cursor != NULL) destroy_bitmap(m_cursor);
 
-		
-		//unload the data file (thus freeing all resources at once)
-		unload_datafile(scdata);
-		scdata = NULL;
+		// Destroy directly loaded bitmaps
+		if (img_freelance) al_destroy_bitmap(img_freelance);
+		if (img_military) al_destroy_bitmap(img_military);
+		if (img_science) al_destroy_bitmap(img_science);
+		if (img_shipconfig_btn_deactive) al_destroy_bitmap(img_shipconfig_btn_deactive);
+		if (img_shipconfig_btn_norm) al_destroy_bitmap(img_shipconfig_btn_norm);
+		if (img_shipconfig_btn_over) al_destroy_bitmap(img_shipconfig_btn_over);
+		if (img_shipconfig_cursor) al_destroy_bitmap(img_shipconfig_cursor);
 	}
 	catch(std::exception e) {
 		debug << e.what() << endl;

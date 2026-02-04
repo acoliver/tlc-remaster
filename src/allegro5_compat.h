@@ -784,68 +784,7 @@ inline int delete_file(const char *path) {
     return al_remove_filename(path) ? 0 : -1;
 }
 
-/*=============================================================================
- * DATAFILE COMPATIBILITY (STUB)
- *===========================================================================*/
-
-/*
- * DATAFILE MIGRATION REQUIRED
- * 
- * Allegro 5 removed the datafile system. Options:
- * 1. Extract .dat files to individual files (recommended)
- * 2. Use a third-party datafile library
- * 3. Keep Allegro Legacy just for datafile support
- * 
- * For now, we provide stub definitions so code compiles.
- * The actual datafile loading will fail at runtime.
- */
-
-typedef struct DATAFILE {
-    void *dat;
-    int type;
-    long size;
-    void *prop;
-} DATAFILE;
-
-/* Datafile object types */
-#define DAT_ID(a,b,c,d) ((((a)&255)<<24) | (((b)&255)<<16) | (((c)&255)<<8) | ((d)&255))
-#define DAT_MAGIC       DAT_ID('A','L','L','.')
-#define DAT_FILE        DAT_ID('F','I','L','E')
-#define DAT_DATA        DAT_ID('D','A','T','A')
-#define DAT_FONT        DAT_ID('F','O','N','T')
-#define DAT_SAMPLE      DAT_ID('S','A','M','P')
-#define DAT_MIDI        DAT_ID('M','I','D','I')
-#define DAT_PATCH       DAT_ID('P','A','T',' ')
-#define DAT_FLI         DAT_ID('F','L','I','C')
-#define DAT_BITMAP      DAT_ID('B','M','P',' ')
-#define DAT_RLE_SPRITE  DAT_ID('R','L','E',' ')
-#define DAT_C_SPRITE    DAT_ID('C','M','P',' ')
-#define DAT_XC_SPRITE   DAT_ID('X','C','M','P')
-#define DAT_PALETTE     DAT_ID('P','A','L',' ')
-#define DAT_PROPERTY    DAT_ID('p','r','o','p')
-#define DAT_NAME        DAT_ID('N','A','M','E')
-#define DAT_END         (-1)
-
-/* Stub functions - these need real implementations or datafile extraction */
-inline DATAFILE *load_datafile(const char *filename) {
-    (void)filename;
-    fprintf(stderr, "ERROR: load_datafile() called but datafiles not supported in native A5 mode.\n");
-    fprintf(stderr, "Please extract %s to individual files.\n", filename);
-    return NULL;
-}
-
-
-
-inline void unload_datafile(DATAFILE *dat) {
-    (void)dat;
-}
-
-inline DATAFILE *find_datafile_object(const DATAFILE *dat, const char *name) {
-    (void)dat; (void)name;
-    return NULL;
-}
-
-#endif /* TLC_USING_ALLEGRO_LEGACY */
+#endif /* !TLC_USING_ALLEGRO_LEGACY */
 
 /*=============================================================================
  * GLOBAL STATE DEFINITIONS (needed by both modes)
