@@ -344,7 +344,7 @@ void ModuleCargoWindow::Draw()
 		return;
 
 	//drawing the window
-	masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, m_x, m_y, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_viewer, 0, 0, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer), m_x, m_y, 0);
 
 	//draw items list header
 	g_game->Print20(g_game->GetBackBuffer(),108+m_x,32+m_y,"ITEM",LTGREEN,true);

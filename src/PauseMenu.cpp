@@ -129,7 +129,8 @@ void PauseMenu::Draw()
 	if (!enabled) return;
 
 	//draw background
-	draw_trans_sprite(g_game->GetBackBuffer(), bg, x, y); 
+	al_set_target_bitmap(g_game->GetBackBuffer()); 
+	al_draw_bitmap(bg, x, y, 0); 
 
 
 	//save/load only available in certain modules

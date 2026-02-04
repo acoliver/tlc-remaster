@@ -84,7 +84,7 @@ else
 
 void Label::Draw(BITMAP *Canvas)
 {
-	draw_sprite(Canvas, image, xPos, yPos);
+	al_set_target_bitmap(Canvas); al_draw_bitmap(image, xPos, yPos, 0);
 }
 
 void Label::SetWidth(int Width)

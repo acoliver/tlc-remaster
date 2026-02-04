@@ -214,17 +214,17 @@ void ScrollBox::ScrollBox::Draw(BITMAP *buffer)
 			{
 				if ((*myIt).selected)
                 {
-					blit((*myIt).bSelected, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
+					al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bSelected, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
             color = ColorSelectedText;
             }
 			else if ((*myIt).hover)
             {
-				blit((*myIt).bHover, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
+				al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bHover, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
                 color = (*myIt).text.Color;
             }
 			else
             {
-				blit((*myIt).bNormal, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
+				al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bNormal, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
                 color = (*myIt).text.Color;
             }
 
@@ -236,7 +236,7 @@ void ScrollBox::ScrollBox::Draw(BITMAP *buffer)
 		sbRedraw = false;
 	}
 	//Draw buffer to screen
-	blit(sbBuffer, buffer, 0, sbWindowClipY, sbX, sbY, sbWidth - 16, sbHeight);
+	al_set_target_bitmap(buffer); al_draw_bitmap_region(sbBuffer, 0, sbWindowClipY, sbWidth - 16, sbHeight, sbX, sbY, 0);
 	//Draw buttons to buffer
 	if (sbDrawBar)
 	{

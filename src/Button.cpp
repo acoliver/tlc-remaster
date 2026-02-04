@@ -203,7 +203,8 @@ bool Button::Run(BITMAP *canvas, bool trans)
 	  imgToDraw = imgMouseOver;
 
 	if (!trans) {
-		draw_sprite(canvas, imgToDraw, x, y);
+		al_set_target_bitmap(canvas);
+		al_draw_bitmap(imgToDraw, x, y, 0);
 	} else {
 		ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
 		al_set_target_bitmap(canvas);

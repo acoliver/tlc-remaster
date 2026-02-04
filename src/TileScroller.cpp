@@ -149,7 +149,7 @@ void TileScroller::UpdateScrollBuffer()
             left = (tilenum % this->columns) * this->tilewidth;
             top = (tilenum / this->columns) * this->tileheight;
 
-            blit( this->tiles, this->scrollbuffer, left, top, x * this->tilewidth, y * this->tileheight, this->tilewidth, this->tileheight);
+            al_set_target_bitmap(this->scrollbuffer); al_draw_bitmap_region(this->tiles, left, top, this->tilewidth, this->tileheight, x * this->tilewidth, y * this->tileheight, 0);
 		}
 	}
 }
@@ -168,5 +168,5 @@ void TileScroller::DrawScrollWindow(BITMAP *dest, int x, int y, int width, int h
 	
 	//draw the scroll buffer to the destination bitmap
 	if (this->scrollbuffer)
-		blit( this->scrollbuffer, dest, partialx, partialy, x, y, width, height );
+		al_set_target_bitmap(dest); al_draw_bitmap_region(this->scrollbuffer, partialx, partialy, width, height, x, y, 0);
 }

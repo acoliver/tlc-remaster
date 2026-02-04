@@ -275,40 +275,40 @@ void ModuleEngineer::Draw()
 		module_active = false;
 
 	if(viewer_offset_y > -VIEWER_TARGET_OFFSET){
-		masked_blit(img_window, g_game->GetBackBuffer(), 0, 0, X_OFFSET, viewer_offset_y, VIEWER_WIDTH, VIEWER_HEIGHT);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_window, 0, 0, VIEWER_WIDTH, VIEWER_HEIGHT, X_OFFSET, viewer_offset_y, 0);
 
 		//draw the ship
-		//masked_blit(img_ship, g_game->GetBackBuffer(), 0, 0, 342+X_OFFSET, 95+viewer_offset_y, img_ship->w, img_ship->h);
-		draw_trans_sprite(g_game->GetBackBuffer(), img_ship, 342+X_OFFSET, 95+viewer_offset_y);
+		//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_ship, 0, 0, img_ship->w, img_ship->h, 342+X_OFFSET, 95+viewer_offset_y, 0);
+		al_set_target_bitmap(img_ship); al_draw_bitmap(g_game->GetBackBuffer(), 342+X_OFFSET, 95+viewer_offset_y, 0);
 
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //laser
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //missile
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //hull
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //Armor
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //shields
-		masked_blit(img_bar_base, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base)); //engines
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 580+X_OFFSET, 135+viewer_offset_y, 0); //laser
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 175+X_OFFSET, 180+viewer_offset_y, 0); //missile
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 565+X_OFFSET, 230+viewer_offset_y, 0); //hull
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 155+X_OFFSET, 270+viewer_offset_y, 0); //Armor
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 550+X_OFFSET, 325+viewer_offset_y, 0); //shields
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_base, 0, 0, al_get_bitmap_width(img_bar_base), al_get_bitmap_height(img_bar_base), 170+X_OFFSET, 385+viewer_offset_y, 0); //engines
 		float percentage = 0;
 		percentage = g_game->gameState->getShip().getLaserIntegrity() / 100.0f;
-		masked_blit(img_bar_laser, g_game->GetBackBuffer(),0,0, 580+X_OFFSET, 135+viewer_offset_y, al_get_bitmap_width(img_bar_laser) * percentage, al_get_bitmap_height(img_bar_base)); //laser
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_laser, 0, 0, al_get_bitmap_width(img_bar_laser) * percentage, al_get_bitmap_height(img_bar_base), 580+X_OFFSET, 135+viewer_offset_y, 0); //laser
 		
 		percentage = g_game->gameState->getShip().getMissileLauncherIntegrity() / 100.0f;
-		masked_blit(img_bar_missile, g_game->GetBackBuffer(),0,0, 175+X_OFFSET, 180+viewer_offset_y, al_get_bitmap_width(img_bar_missile) * percentage, al_get_bitmap_height(img_bar_base)); //missile
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_missile, 0, 0, al_get_bitmap_width(img_bar_missile) * percentage, al_get_bitmap_height(img_bar_base), 175+X_OFFSET, 180+viewer_offset_y, 0); //missile
 		
 		percentage = g_game->gameState->getShip().getHullIntegrity() / 100.0f;
-		masked_blit(img_bar_hull, g_game->GetBackBuffer(),0,0, 565+X_OFFSET, 230+viewer_offset_y, al_get_bitmap_width(img_bar_hull) * percentage, al_get_bitmap_height(img_bar_base)); //hull
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_hull, 0, 0, al_get_bitmap_width(img_bar_hull) * percentage, al_get_bitmap_height(img_bar_base), 565+X_OFFSET, 230+viewer_offset_y, 0); //hull
 		
 		if(g_game->gameState->getShip().getMaxArmorIntegrity() <= 0){
 			percentage = 0;
 		}else{
 			percentage = g_game->gameState->getShip().getArmorIntegrity() / g_game->gameState->getShip().getMaxArmorIntegrity();
 		}
-		masked_blit(img_bar_armor, g_game->GetBackBuffer(),0,0, 155+X_OFFSET, 270+viewer_offset_y, al_get_bitmap_width(img_bar_armor) * percentage, al_get_bitmap_height(img_bar_base)); //Armor
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_armor, 0, 0, al_get_bitmap_width(img_bar_armor) * percentage, al_get_bitmap_height(img_bar_base), 155+X_OFFSET, 270+viewer_offset_y, 0); //Armor
 		
 		percentage = g_game->gameState->getShip().getShieldIntegrity() /  100.0f;
-		masked_blit(img_bar_shield, g_game->GetBackBuffer(),0,0, 550+X_OFFSET, 325+viewer_offset_y, al_get_bitmap_width(img_bar_shield) * percentage, al_get_bitmap_height(img_bar_base)); //shields
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_shield, 0, 0, al_get_bitmap_width(img_bar_shield) * percentage, al_get_bitmap_height(img_bar_base), 550+X_OFFSET, 325+viewer_offset_y, 0); //shields
 		
 	percentage =  g_game->gameState->getShip().getEngineIntegrity() / 100.0f;
-	masked_blit(img_bar_engine, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, al_get_bitmap_width(img_bar_engine) * percentage, al_get_bitmap_height(img_bar_base)); //engines
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_bar_engine, 0, 0, al_get_bitmap_width(img_bar_engine) * percentage, al_get_bitmap_height(img_bar_base), 170+X_OFFSET, 385+viewer_offset_y, 0); //engines
 		al_draw_line(407+X_OFFSET, 104+viewer_offset_y, 560+X_OFFSET, 130+viewer_offset_y, GREEN, 1); //laser line
 		al_draw_line(560+X_OFFSET, 130+viewer_offset_y, 690+X_OFFSET, 130+viewer_offset_y, GREEN, 1); //laser line
 
@@ -456,7 +456,7 @@ void ModuleEngineer::Draw()
 		textout_ex(text, g_game->font22, s.c_str(), 170, 365, color_to_int(LTBLUE), -1);
 	}
 	g_game->gameState->setShip(ship);
-	masked_blit(text, g_game->GetBackBuffer(), 0, 0, X_OFFSET, viewer_offset_y, VIEWER_WIDTH, VIEWER_HEIGHT);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(text, 0, 0, VIEWER_WIDTH, VIEWER_HEIGHT, X_OFFSET, viewer_offset_y, 0);
 
 	if(module_active){
 		if(viewer_offset_y < -30)

@@ -112,12 +112,12 @@ void ModuleTopGUI::Draw()
 	/*
 	 * draw top gauge gui
 	 */
-	draw_trans_sprite(g_game->GetBackBuffer(), img_gauges, ggx, ggy);
-	//masked_blit(img_gauges, g_game->GetBackBuffer(), 0, 0, ggx, ggy, img_gauges->w, img_gauges->h);
-	masked_blit(img_hull_gauge, g_game->GetBackBuffer(), 0, 0, ggx+89, ggy+15, al_get_bitmap_width(img_hull_gauge) * hull_percent, al_get_bitmap_height(img_hull_gauge));
-	masked_blit(img_armor_gauge, g_game->GetBackBuffer(), 0, 0, ggx+273, ggy+15, al_get_bitmap_width(img_armor_gauge) * armor_percent, al_get_bitmap_height(img_armor_gauge));
-	masked_blit(img_shield_gauge, g_game->GetBackBuffer(), 0, 0, ggx+464, ggy+15, al_get_bitmap_width(img_shield_gauge) * shield_percent, al_get_bitmap_height(img_shield_gauge));
-	masked_blit(img_fuel_gauge, g_game->GetBackBuffer(), 0, 0, ggx+630, ggy+14, al_get_bitmap_width(img_fuel_gauge) * fuel_percent, al_get_bitmap_height(img_fuel_gauge));
+	al_set_target_bitmap(img_gauges); al_draw_bitmap(g_game->GetBackBuffer(), ggx, ggy, 0);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_gauges, 0, 0, img_gauges->w, img_gauges->h, ggx, ggy, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_hull_gauge, 0, 0, al_get_bitmap_width(img_hull_gauge) * hull_percent, al_get_bitmap_height(img_hull_gauge), ggx+89, ggy+15, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_armor_gauge, 0, 0, al_get_bitmap_width(img_armor_gauge) * armor_percent, al_get_bitmap_height(img_armor_gauge), ggx+273, ggy+15, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_shield_gauge, 0, 0, al_get_bitmap_width(img_shield_gauge) * shield_percent, al_get_bitmap_height(img_shield_gauge), ggx+464, ggy+15, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_fuel_gauge, 0, 0, al_get_bitmap_width(img_fuel_gauge) * fuel_percent, al_get_bitmap_height(img_fuel_gauge), ggx+630, ggy+14, 0);
 
 }
 

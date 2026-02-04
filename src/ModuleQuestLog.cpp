@@ -129,7 +129,7 @@ void ModuleQuestLog::Draw()
 	if(viewer_offset_x < SCREEN_WIDTH)
 	{
 		//draw background
-		masked_blit(window,g_game->GetBackBuffer(),0,0,viewer_offset_x,viewer_offset_y,al_get_bitmap_width(window),al_get_bitmap_height(window));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(window, 0, 0, al_get_bitmap_width(window), al_get_bitmap_height(window), viewer_offset_x, viewer_offset_y, 0);
 
 		//draw quest title
 		questName->SetX(NAME_X + viewer_offset_x);

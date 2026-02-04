@@ -396,7 +396,7 @@ void ModuleCantina::Draw()
 	int id;
 
 	//draw background
-	blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_background, 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background), 0, 0, 0);
 
 	//draw buttons
 	m_exitBtn->Run(g_game->GetBackBuffer());

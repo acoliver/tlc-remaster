@@ -2120,7 +2120,7 @@ void ModulePlanetSurface::Draw()
 	//draw top gauges gui
 	static int ggx = (int)g_game->getGlobalNumber("GUI_GAUGES_POS_X");
 	static int ggy = (int)g_game->getGlobalNumber("GUI_GAUGES_POS_Y");
-	masked_blit(img_gauges, g_game->GetBackBuffer(), 0, 0, ggx, ggy, al_get_bitmap_width(img_gauges), al_get_bitmap_height(img_gauges));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_gauges, 0, 0, al_get_bitmap_width(img_gauges), al_get_bitmap_height(img_gauges), ggx, ggy, 0);
 	float percentage = 0.00f;
 
 
@@ -2131,47 +2131,47 @@ void ModulePlanetSurface::Draw()
 		}else{
 			percentage = g_game->gameState->getShip().getArmorIntegrity() / g_game->gameState->getShip().getMaxArmorIntegrity();
 		}
-		masked_blit(Armor, g_game->GetBackBuffer(), 0, 0, 476, 10, al_get_bitmap_width(Armor), al_get_bitmap_height(Armor));
-		masked_blit(ArmorBar, g_game->GetBackBuffer(), 0, 0, 536, 11, al_get_bitmap_width(ArmorBar) * percentage, al_get_bitmap_height(ArmorBar));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Armor, 0, 0, al_get_bitmap_width(Armor), al_get_bitmap_height(Armor), 476, 10, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(ArmorBar, 0, 0, al_get_bitmap_width(ArmorBar) * percentage, al_get_bitmap_height(ArmorBar), 536, 11, 0);
 
 		percentage = g_game->gameState->getShip().getFuel();
-		masked_blit(Fuel, g_game->GetBackBuffer(), 0, 0, 666, 11, al_get_bitmap_width(Fuel), al_get_bitmap_height(Fuel));
-		masked_blit(FuelBar, g_game->GetBackBuffer(), 0, 0, 709, 11, al_get_bitmap_width(FuelBar) * percentage, al_get_bitmap_height(FuelBar));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Fuel, 0, 0, al_get_bitmap_width(Fuel), al_get_bitmap_height(Fuel), 666, 11, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(FuelBar, 0, 0, al_get_bitmap_width(FuelBar) * percentage, al_get_bitmap_height(FuelBar), 709, 11, 0);
 
 		percentage = g_game->gameState->getShip().getHullIntegrity() / 100;
-		masked_blit(Hull, g_game->GetBackBuffer(), 0, 0, 300, 11, al_get_bitmap_width(Hull), al_get_bitmap_height(Hull));
-		masked_blit(HullBar, g_game->GetBackBuffer(), 0, 0, 342, 13, al_get_bitmap_width(HullBar) * percentage, al_get_bitmap_height(HullBar));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Hull, 0, 0, al_get_bitmap_width(Hull), al_get_bitmap_height(Hull), 300, 11, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(HullBar, 0, 0, al_get_bitmap_width(HullBar) * percentage, al_get_bitmap_height(HullBar), 342, 13, 0);
 	}
 	else
 	{
-		masked_blit(Fuel, g_game->GetBackBuffer(), 0, 0, 666, 11, al_get_bitmap_width(Fuel), al_get_bitmap_height(Fuel));
-		masked_blit(FuelBar, g_game->GetBackBuffer(), 0, 0, 709, 11, (int)(al_get_bitmap_width(FuelBar) * ((double)playerTV->getCounter3() / 100)), al_get_bitmap_height(FuelBar));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Fuel, 0, 0, al_get_bitmap_width(Fuel), al_get_bitmap_height(Fuel), 666, 11, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(FuelBar, 0, 0, (int)(al_get_bitmap_width(FuelBar) * ((double)playerTV->getCounter3() / 100)), al_get_bitmap_height(FuelBar), 709, 11, 0);
 
-		masked_blit(Hull, g_game->GetBackBuffer(), 0, 0, 300, 11, al_get_bitmap_width(Hull), al_get_bitmap_height(Hull));
-		masked_blit(HullBar, g_game->GetBackBuffer(), 0, 0, 342, 13, (int)(al_get_bitmap_width(HullBar) * ((double)playerTV->getHealth() / 100)), al_get_bitmap_height(HullBar));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Hull, 0, 0, al_get_bitmap_width(Hull), al_get_bitmap_height(Hull), 300, 11, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(HullBar, 0, 0, (int)(al_get_bitmap_width(HullBar) * ((double)playerTV->getHealth() / 100)), al_get_bitmap_height(HullBar), 342, 13, 0);
 
 	}
 
 	//draw the aux gui
 	static int gax = (int)g_game->getGlobalNumber("GUI_AUX_POS_X");
 	static int gay = (int)g_game->getGlobalNumber("GUI_AUX_POS_Y");
-	masked_blit(img_aux, g_game->GetBackBuffer(), 0, 0, gax, gay, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_aux, 0, 0, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux), gax, gay, 0);
 
 	//draw message window
 	static int gmx = (int)g_game->getGlobalNumber("GUI_MESSAGE_POS_X");
 	static int gmy = (int)g_game->getGlobalNumber("GUI_MESSAGE_POS_Y");
-	blit(img_messages, g_game->GetBackBuffer(), 0, 0, gmx, gmy, al_get_bitmap_width(img_messages), al_get_bitmap_height(img_messages));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_messages, 0, 0, al_get_bitmap_width(img_messages), al_get_bitmap_height(img_messages), gmx, gmy, 0);
 	messages->Draw(g_game->GetBackBuffer());
 
 	//draw socket gui (mainly used for the loading bar)
 	//static int gsx = (int)g_game->getGlobalNumber("GUI_SOCKET_POS_X");
 	//static int gsy = (int)g_game->getGlobalNumber("GUI_SOCKET_POS_Y");
-	//masked_blit(img_socket, g_game->GetBackBuffer(), 0, 0, gsx, gsy, img_socket->w, img_socket->h);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_socket, 0, 0, img_socket->w, img_socket->h, gsx, gsy, 0);
 
 
 	static int gcpx = (int)g_game->getGlobalNumber("GUI_CONTROLPANEL_POS_X");
 	static int gcpy = (int)g_game->getGlobalNumber("GUI_CONTROLPANEL_POS_Y");
-	masked_blit(img_control, g_game->GetBackBuffer(), 0, 0, gcpx, gcpy, al_get_bitmap_width(img_control), al_get_bitmap_height(img_control));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_control, 0, 0, al_get_bitmap_width(img_control), al_get_bitmap_height(img_control), gcpx, gcpy, 0);
 
 
 	//always draw help text unless it would interfere with buttons
@@ -2186,13 +2186,13 @@ void ModulePlanetSurface::Draw()
 
 	cargoBtn->Run(g_game->GetBackBuffer());
 
-	masked_blit( Cargo_BarFill, g_game->GetBackBuffer(), 0, 0, CARGOFILL_X, CARGOFILL_Y, (int)(al_get_bitmap_width(Cargo_BarFill) * cargoFillPercent), al_get_bitmap_height(Cargo_BarFill));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Cargo_BarFill, 0, 0, (int)(al_get_bitmap_width(Cargo_BarFill) * cargoFillPercent), al_get_bitmap_height(Cargo_BarFill), CARGOFILL_X, CARGOFILL_Y, 0);
 
 
 	if (timerOn)
 	{
-		masked_blit(Timer_BarEmpty, g_game->GetBackBuffer(), 0, 0, TIMER_X, TIMER_Y, al_get_bitmap_width(Timer_BarEmpty), al_get_bitmap_height(Timer_BarEmpty));
-		masked_blit(Timer_BarFill, g_game->GetBackBuffer(), 0, 0, TIMER_X, TIMER_Y, (int)(al_get_bitmap_width(Timer_BarFill) * ((double)timerCount/timerLength)), al_get_bitmap_height(Timer_BarFill));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Timer_BarEmpty, 0, 0, al_get_bitmap_width(Timer_BarEmpty), al_get_bitmap_height(Timer_BarEmpty), TIMER_X, TIMER_Y, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(Timer_BarFill, 0, 0, (int)(al_get_bitmap_width(Timer_BarFill) * ((double)timerCount/timerLength)), al_get_bitmap_height(Timer_BarFill), TIMER_X, TIMER_Y, 0);
 		TimerText->Draw(g_game->GetBackBuffer());
 
 		if (timerLength <= ++timerCount)
@@ -2237,11 +2237,8 @@ void ModulePlanetSurface::drawMinimap()
 	clear_bitmap(minimap);
 
 	//draw the planet scanner image
-	//stretch_blit(surface, minimap, 0, 0, surface->w, surface->h, 0, 0, al_get_bitmap_width(minimap), al_get_bitmap_height(minimap));
-    stretch_blit( this->pbody->planetTexture500, 
-                    minimap, 0, 0, 
-                    al_get_bitmap_width(this->pbody->planetTexture500), al_get_bitmap_height(this->pbody->planetTexture500),
-                    0, 0, al_get_bitmap_width(minimap), al_get_bitmap_height(minimap) );
+	//al_set_target_bitmap(minimap); al_draw_scaled_bitmap(surface, 0, 0, surface->w, surface->h, 0, 0, al_get_bitmap_width(minimap), al_get_bitmap_height(minimap), 0);
+    al_set_target_bitmap(minimap); al_draw_scaled_bitmap(this->pbody->planetTexture500, 0, 0, al_get_bitmap_width(this->pbody->planetTexture500), al_get_bitmap_height(this->pbody->planetTexture500), 0, 0, al_get_bitmap_width(minimap), al_get_bitmap_height(minimap), 0 );
 
 	//draw the player's position on the minimap
 	float x =  playerShip->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap) ;
@@ -2282,7 +2279,7 @@ void ModulePlanetSurface::drawMinimap()
         }
 	}
 
-	blit(minimap, g_game->GetBackBuffer(), 0, 0, asx, asy, asw, ash);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(minimap, 0, 0, asw, ash, asx, asy, 0);
 }
 
 void ModulePlanetSurface::updateCargoFillPercent()
@@ -2295,7 +2292,8 @@ void ModulePlanetSurface::updateCargoFillPercent()
 
 void ModulePlanetSurface::drawHPBar(PlanetSurfaceObject *PSO)
 {
-	masked_blit(HP_Bar, g_game->GetBackBuffer(), 0, 0, (int)(PSO->getX() + (PSO->getFrameWidth()/2) - (al_get_bitmap_width(HP_Bar)/2) - g_game->gameState->player->posPlanet.x), (int) (PSO->getY() - g_game->gameState->player->posPlanet.y), (int) (al_get_bitmap_width(HP_Bar) * (double)PSO->getHealth()/PSO->getMaxHealth()), al_get_bitmap_height(HP_Bar));
+	al_set_target_bitmap(g_game->GetBackBuffer()); 
+	al_draw_bitmap_region(HP_Bar, 0, 0, (int)(al_get_bitmap_width(HP_Bar) * (double)PSO->getHealth()/PSO->getMaxHealth()), al_get_bitmap_height(HP_Bar), (int)(PSO->getX() + (PSO->getFrameWidth()/2) - (al_get_bitmap_width(HP_Bar)/2) - g_game->gameState->player->posPlanet.x), (int)(PSO->getY() - g_game->gameState->player->posPlanet.y), 0);
 }
 
 double ModulePlanetSurface::CalcDistance(PlanetSurfaceObject *PSO1, PlanetSurfaceObject *PSO2)

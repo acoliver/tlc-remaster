@@ -156,7 +156,7 @@ void Sprite::DrawScaled(BITMAP *dest, int dest_w, int dest_h)
 {
     if (!this->image) return;
 
-    masked_stretch_blit( this->image, dest, 0, 0, this->getWidth(), this->getHeight(), (int)this->x, (int)this->y, dest_w, dest_h );
+    al_set_target_bitmap(dest); al_draw_scaled_bitmap(this->image, 0, 0, this->getWidth(), this->getHeight(), (int)this->x, (int)this->y, dest_w, dest_h, 0);
     
 	if (this->DebugOutline) 
     {
@@ -172,7 +172,13 @@ void Sprite::DrawRotated(BITMAP *dest, int angle)
     if (!image) return;
 
     //adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-    rotate_sprite( dest, this->image, (int)this->x, (int)this->y, itofix((int)(angle / 0.7f / 2.0f)));
+    al_set_target_bitmap(dest); 
+    { 
+        float _cx = al_get_bitmap_width(this->image) / 2.0f; 
+        float _cy = al_get_bitmap_height(this->image) / 2.0f; 
+        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        al_draw_rotated_bitmap(this->image, _cx, _cy, (int)this->x + _cx, (int)this->y + _cy, _angle_rad, 0); 
+    }
 
 	if (this->DebugOutline) 
     {
@@ -193,14 +199,20 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
 
     //draw SCALED image onto temp image
     //adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-    rotate_sprite( temp, this->image, 0, 0, itofix((int)(angle / 0.7f / 2.0f)));
+    al_set_target_bitmap(temp); 
+    { 
+        float _cx = al_get_bitmap_width(this->image) / 2.0f; 
+        float _cy = al_get_bitmap_height(this->image) / 2.0f; 
+        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        al_draw_rotated_bitmap(this->image, _cx, _cy, 0 + _cx, 0 + _cy, _angle_rad, 0); 
+    }
 
     //draw ROTATED image to dest 
     int temp_w = al_get_bitmap_width(temp);
     int temp_h = al_get_bitmap_height(temp);
     int w = (int)(temp_w * scaling);
     int h = (int)(temp_h * scaling);
-    masked_stretch_blit( temp, dest, 0, 0, temp_w, temp_h, (int)this->x, (int)this->y, w, h );
+    al_set_target_bitmap(dest); al_draw_scaled_bitmap(temp, 0, 0, temp_w, temp_h, (int)this->x, (int)this->y, w, h, 0);
 
 
 	if (this->DebugOutline) 
@@ -230,12 +242,12 @@ void Sprite::DrawFrame(BITMAP *dest, bool UseAlpha)
 	if (!UseAlpha) 
     {
 		//draw normally
-		masked_blit(this->image, dest, fx, fy, (int)x, (int)y, frameWidth, frameHeight);
+		al_set_target_bitmap(dest); al_draw_bitmap_region(this->image, fx, fy, frameWidth, frameHeight, (int)x, (int)y, 0);
 	} 
 	else {
 		//paste frame onto scratch image using alpha channel
 		BITMAP *temp = create_bitmap(frameWidth, frameHeight);
-		masked_blit(image, temp, fx, fy, 0, 0, frameWidth, frameHeight);
+		al_set_target_bitmap(temp); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 		ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
 		al_set_target_bitmap(dest);
 		al_draw_bitmap(temp, (int)x, (int)y, 0);
@@ -260,7 +272,7 @@ void Sprite::DrawFrameScaled(BITMAP *dest, int dest_w, int dest_h)
 
     int fx = animStartX + (currFrame % animColumns) * frameWidth;
     int fy = animStartY + (currFrame / animColumns) * frameHeight;
-    masked_stretch_blit(image, dest, fx, fy, frameWidth, frameHeight, (int)x, (int)y, dest_w, dest_h);
+    al_set_target_bitmap(dest); al_draw_scaled_bitmap(image, fx, fy, frameWidth, frameHeight, (int)x, (int)y, dest_w, dest_h, 0);
     
 	if (DebugOutline) 
     {
@@ -286,11 +298,17 @@ void Sprite::DrawFrameRotated(BITMAP *dest, int angle)
     //first, draw frame normally but send it to the scratch frame image
     int fx = animStartX + (currFrame % animColumns) * frameWidth;
     int fy = animStartY + (currFrame / animColumns) * frameHeight;
-    blit(image, frame, fx, fy, 0, 0, frameWidth, frameHeight);
+    al_set_target_bitmap(frame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 
     //draw rotated image in scratch frame onto dest 
     //adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-    rotate_sprite(dest, frame, (int)x, (int)y, itofix((int)(angle / 0.7f / 2.0f)));
+    al_set_target_bitmap(dest); 
+    { 
+        float _cx = al_get_bitmap_width(frame) / 2.0f; 
+        float _cy = al_get_bitmap_height(frame) / 2.0f; 
+        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        al_draw_rotated_bitmap(frame, _cx, _cy, (int)x + _cx, (int)y + _cy, _angle_rad, 0); 
+    }
 
 	if (DebugOutline) 
     {

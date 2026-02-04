@@ -91,8 +91,8 @@ int ModuleStartup::fadein(BITMAP *dest, BITMAP *source, int speed)
 		loop += speed;
 		clear(fader);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
-		draw_trans_sprite(fader, source, 0, 0);
-		blit(fader, dest, 0,0, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source));
+		al_set_target_bitmap(source); al_draw_bitmap(fader, 0, 0, 0);
+		al_set_target_bitmap(dest); al_draw_bitmap_region(fader, 0, 0, al_get_bitmap_width(source), al_get_bitmap_height(source), 0, 0, 0);
 	}
 	else {
 		loop = 0;
@@ -112,8 +112,8 @@ int ModuleStartup::fadeout(BITMAP *dest, BITMAP *source, int speed)
 		loop -= speed;
 		clear(fader);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
-		draw_trans_sprite(fader, source, 0, 0);
-		blit(fader, dest, 0,0, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source));
+		al_set_target_bitmap(source); al_draw_bitmap(fader, 0, 0, 0);
+		al_set_target_bitmap(dest); al_draw_bitmap_region(fader, 0, 0, al_get_bitmap_width(source), al_get_bitmap_height(source), 0, 0, 0);
 	}
 	else {
 		rectfill(dest, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source), (0 << 16) | (0 << 8) | 0);
@@ -130,7 +130,7 @@ void ModuleStartup::Draw()
 {
 	static bool title_done = false;
 
-    blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()));
+    al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_background, 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()), 0, 0, 0);
 
 	switch (display_mode) {
 
@@ -146,7 +146,7 @@ void ModuleStartup::Draw()
 			}
 
 	} else {
-		blit(copyright, g_game->GetBackBuffer(), 0, 0, 0, 0, al_get_bitmap_width(copyright), al_get_bitmap_height(copyright));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(copyright, 0, 0, al_get_bitmap_width(copyright), al_get_bitmap_height(copyright), 0, 0, 0);
 		if (Util::ReentrantDelay(4000))
 			display_mode = 2;
 	}

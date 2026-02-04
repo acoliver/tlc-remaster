@@ -411,11 +411,12 @@ void ModuleCaptainCreation::Draw()
 	{
 	case WP_PROFESSION_CHOICE:
 		{
-			blit(m_professionChoiceBackground,g_game->GetBackBuffer(),0,0,0,0,al_get_display_width(al_get_current_display()),al_get_display_height(al_get_current_display()));
-			blit(m_scientificBtn,g_game->GetBackBuffer(),0,0,PROFBTN_SCIENTIFIC_X,PROFBTN_SCIENTIFIC_Y,PROFBTN_WIDTH,PROFBTN_HEIGHT);
-			blit(m_freelanceBtn,g_game->GetBackBuffer(),0,0,PROFBTN_FREELANCE_X,PROFBTN_FREELANCE_Y,PROFBTN_WIDTH,PROFBTN_HEIGHT);
-			blit(m_militaryBtn,g_game->GetBackBuffer(),0,0,PROFBTN_MILITARY_X,PROFBTN_MILITARY_Y,PROFBTN_WIDTH,PROFBTN_HEIGHT);
-			blit(m_backBtn,g_game->GetBackBuffer(),0,0,BACKBTN_X,BACKBTN_Y,BACKBTN_WIDTH,BACKBTN_HEIGHT);
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_bitmap_region(m_professionChoiceBackground, 0, 0, al_get_display_width(al_get_current_display()), al_get_display_height(al_get_current_display()), 0, 0, 0);
+			al_draw_bitmap_region(m_scientificBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_SCIENTIFIC_X, PROFBTN_SCIENTIFIC_Y, 0);
+			al_draw_bitmap_region(m_freelanceBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_FREELANCE_X, PROFBTN_FREELANCE_Y, 0);
+			al_draw_bitmap_region(m_militaryBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_MILITARY_X, PROFBTN_MILITARY_Y, 0);
+			al_draw_bitmap_region(m_backBtn, 0, 0, BACKBTN_WIDTH, BACKBTN_HEIGHT, BACKBTN_X, BACKBTN_Y, 0);
 
 			if (m_profInfoBox != NULL)
 			{
@@ -424,7 +425,7 @@ void ModuleCaptainCreation::Draw()
 
 			if (m_mouseOverImg != NULL)
 			{
-				blit(m_mouseOverImg,g_game->GetBackBuffer(),0,0,m_mouseOverImgX,m_mouseOverImgY,al_get_bitmap_width(m_mouseOverImg),al_get_bitmap_height(m_mouseOverImg));
+				al_draw_bitmap_region(m_mouseOverImg, 0, 0, al_get_bitmap_width(m_mouseOverImg), al_get_bitmap_height(m_mouseOverImg), m_mouseOverImgX, m_mouseOverImgY, 0);
 			}
 
 			//display tutorial help messages for beginners
@@ -441,9 +442,10 @@ void ModuleCaptainCreation::Draw()
 
 	case WP_DETAILS:
 		{
-			blit(m_detailsBackground,g_game->GetBackBuffer(),0,0,0,0,al_get_bitmap_width(g_game->GetBackBuffer()),al_get_bitmap_height(g_game->GetBackBuffer()));
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_bitmap_region(m_detailsBackground, 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()), 0, 0, 0);
 
-			blit(m_backBtn,g_game->GetBackBuffer(),0,0,BACKBTN_X,BACKBTN_Y,BACKBTN_WIDTH,BACKBTN_HEIGHT);
+			al_draw_bitmap_region(m_backBtn, 0, 0, BACKBTN_WIDTH, BACKBTN_HEIGHT, BACKBTN_X, BACKBTN_Y, 0);
 
 		alfont_set_font_size(g_game->font10, TEXTHEIGHT_TITLES);
 		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font10,"Captain Details",al_get_bitmap_width(g_game->GetBackBuffer())/2,30,color_to_int(TEXTCOL));
@@ -454,7 +456,7 @@ void ModuleCaptainCreation::Draw()
 		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,NAME_X,NAME_Y,color_to_int(TEXTCOL),n);
 
 			int nlen = alfont_text_length(g_game->font10,n);
-			blit(m_cursor[m_cursorIdx],g_game->GetBackBuffer(),0,0,NAME_X+nlen+2,CURSOR_Y,al_get_bitmap_width(m_cursor[m_cursorIdx]),al_get_bitmap_height(m_cursor[m_cursorIdx]));
+			al_draw_bitmap_region(m_cursor[m_cursorIdx], 0, 0, al_get_bitmap_width(m_cursor[m_cursorIdx]), al_get_bitmap_height(m_cursor[m_cursorIdx]), NAME_X+nlen+2, CURSOR_Y, 0);
 
 			if (++m_cursorIdxDelay > CURSOR_DELAY)
 			{
@@ -496,16 +498,17 @@ void ModuleCaptainCreation::Draw()
 		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,COMMUNICATION_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.communication);
 		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,MEDICAL_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.medical);
 
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_DURABILITY_X,PLUS_DURABILITY_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_LEARNRATE_X,PLUS_LEARNRATE_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_SCIENCE_X,PLUS_SCIENCE_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_NAVIGATION_X,PLUS_NAVIGATION_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_TACTICS_X,PLUS_TACTICS_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_ENGINEERING_X,PLUS_ENGINEERING_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_COMMUNICATION_X,PLUS_COMMUNICATION_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
-			blit(m_plusBtn,g_game->GetBackBuffer(),0,0,PLUS_MEDICAL_X,PLUS_MEDICAL_Y,al_get_bitmap_width(m_plusBtn),al_get_bitmap_height(m_plusBtn));
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_DURABILITY_X, PLUS_DURABILITY_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_LEARNRATE_X, PLUS_LEARNRATE_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_SCIENCE_X, PLUS_SCIENCE_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_NAVIGATION_X, PLUS_NAVIGATION_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_TACTICS_X, PLUS_TACTICS_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_ENGINEERING_X, PLUS_ENGINEERING_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_COMMUNICATION_X, PLUS_COMMUNICATION_Y, 0);
+			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_MEDICAL_X, PLUS_MEDICAL_Y, 0);
 
-			blit(m_resetBtn,g_game->GetBackBuffer(),0,0,RESET_X,RESET_Y,al_get_bitmap_width(m_resetBtn),al_get_bitmap_height(m_resetBtn));
+			al_draw_bitmap_region(m_resetBtn, 0, 0, al_get_bitmap_width(m_resetBtn), al_get_bitmap_height(m_resetBtn), RESET_X, RESET_Y, 0);
 
 			if ((m_availPts == 0) &&
 				(m_availProfPts == 0) &&
@@ -522,7 +525,7 @@ void ModuleCaptainCreation::Draw()
 
 			if (m_mouseOverImg != NULL)
 			{
-			blit(m_mouseOverImg,g_game->GetBackBuffer(),0,0,m_mouseOverImgX,m_mouseOverImgY,al_get_bitmap_width(m_mouseOverImg),al_get_bitmap_height(m_mouseOverImg));
+			al_draw_bitmap_region(m_mouseOverImg, 0, 0, al_get_bitmap_width(m_mouseOverImg), al_get_bitmap_height(m_mouseOverImg), m_mouseOverImgX, m_mouseOverImgY, 0);
 			}
 			for(int i=0; i<8; i++){
 				m_minusBtns[i]->Run(g_game->GetBackBuffer());

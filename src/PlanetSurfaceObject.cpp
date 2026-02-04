@@ -328,15 +328,15 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 	if (!scaled && !rotated && !UseAlpha)
 	{
 		//draw normally
-		masked_blit(image, dest, fx, fy, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), frameWidth, frameHeight);
+		al_set_target_bitmap(dest); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 		return;
 	}
 	else if (!scaled && !rotated && UseAlpha)
 	{
 		scrapFrame = create_bitmap(frameWidth, frameHeight);
 
-		blit(image, scrapFrame, fx, fy, 0, 0, frameWidth, frameHeight);
-		draw_trans_sprite(dest, scrapFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y  - g_game->gameState->player->posPlanet.y));
+		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
+		al_set_target_bitmap(dest); al_draw_bitmap(scrapFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 		
 		destroy_bitmap(scrapFrame);
 		return;
@@ -347,15 +347,17 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		
 		finalFrame = create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
 
-		stretch_blit(image, finalFrame, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale));
-		//masked_stretch_blit(image, finalFrame, fx, fy, frameWidth, frameHeight, 0, 0, frameWidth * scale, frameHeight * scale);
-
+		al_set_target_bitmap(finalFrame); al_draw_scaled_bitmap(image, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale), 0);
 
 		//draw rotated image in scale frame onto rotate frame 
 		//adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-		//rotate_sprite(finalFrame, scrapFrame, (int)x, (int)y, itofix((int)(angle / 0.7f / 2.0f)));
-
-		rotate_sprite(dest, finalFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), itofix((int)(angle / 0.7f / 2.0f)));
+		al_set_target_bitmap(dest); 
+		{ 
+			float _cx = al_get_bitmap_width(finalFrame) / 2.0f; 
+			float _cy = al_get_bitmap_height(finalFrame) / 2.0f; 
+			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			al_draw_rotated_bitmap(finalFrame, _cx, _cy, (int)(x - g_game->gameState->player->posPlanet.x) + _cx, (int)(y - g_game->gameState->player->posPlanet.y) + _cy, _angle_rad, 0); 
+		}
 
 
 		destroy_bitmap(finalFrame);
@@ -368,17 +370,22 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		finalFrame = create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
 		
 		//Scale paste
-		stretch_blit(image, finalFrame, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale));
+		al_set_target_bitmap(finalFrame); al_draw_scaled_bitmap(image, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale), 0);
 	}
 	else if (!scaled && rotated && !UseAlpha)
 	{
 		scrapFrame = create_bitmap(frameWidth, frameHeight);
 
-		blit(image, scrapFrame, fx, fy, 0, 0, frameWidth, frameHeight);
+		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 
 		//adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-		//rotate_sprite(finalFrame, scrapFrame, 0, 0, itofix((int)(angle / 0.7f / 2.0f)));
-		rotate_sprite(dest, scrapFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), itofix((int)(angle / 0.7f / 2.0f)));
+		al_set_target_bitmap(dest); 
+		{ 
+			float _cx = al_get_bitmap_width(scrapFrame) / 2.0f; 
+			float _cy = al_get_bitmap_height(scrapFrame) / 2.0f; 
+			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, (int)(x - g_game->gameState->player->posPlanet.x) + _cx, (int)(y - g_game->gameState->player->posPlanet.y) + _cy, _angle_rad, 0); 
+		}
 
 		destroy_bitmap(scrapFrame);
 
@@ -398,12 +405,17 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		}
 		
 
-		blit(image, scrapFrame, fx, fy, 0, 0, frameWidth, frameHeight);
+		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 		clear_bitmap(finalFrame);
 
 		//adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
-		rotate_sprite(finalFrame, scrapFrame, 0, 0, itofix((int)(angle / 0.7f / 2.0f)));
-		//rotate_sprite(dest, scrapFrame, (int)x - g_game->gameState->player->posPlanet.x, (int)y - g_game->gameState->player->posPlanet.y, itofix((int)(angle / 0.7f / 2.0f)));
+		al_set_target_bitmap(finalFrame); 
+		{ 
+			float _cx = al_get_bitmap_width(scrapFrame) / 2.0f; 
+			float _cy = al_get_bitmap_height(scrapFrame) / 2.0f; 
+			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, 0 + _cx, 0 + _cy, _angle_rad, 0); 
+		}
 
 		destroy_bitmap(scrapFrame);
 	}
@@ -411,11 +423,12 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 	if (!UseAlpha)
 	{
 		//draw normally
-		masked_blit(finalFrame, dest, 0, 0, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), (int)(frameWidth * scale), (int)(frameHeight * scale));
+		al_set_target_bitmap(dest); al_draw_bitmap_region(finalFrame, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale), (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 	}
 	else
 	{
-		draw_trans_sprite(dest, finalFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y));
+		al_set_target_bitmap(dest);
+		al_draw_tinted_bitmap(finalFrame, al_map_rgba_f(1, 1, 1, 0.5f), (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 	}
 
 	destroy_bitmap(finalFrame);

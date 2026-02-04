@@ -115,7 +115,7 @@ void ModuleInterstellar::Draw()
 	ship->Draw(g_game->GetBackBuffer());
 
 	//draw message window gui
-	//blit(img_messages, g_game->GetBackBuffer(), 0, 0, gmx, gmy, gmw, gmh);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_messages, 0, 0, gmw, gmh, gmx, gmy, 0);
 	text->Draw(g_game->GetBackBuffer());
 
 	//JJH - added CrossModuleAngle so that ship's heading stays consistent between entering/leaving systems.  Checking Encounters next :-)... 

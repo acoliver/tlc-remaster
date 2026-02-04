@@ -1024,13 +1024,13 @@ bool ModuleCrewHire::Init()
 	{
 		//create a normal image for each crew position button
 		posNormImages[i] = create_bitmap(al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm));
-		blit(catbtn_norm, posNormImages[i], 0, 0, 0, 0, al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm));
+		al_set_target_bitmap(posNormImages[i]); al_draw_bitmap_region(catbtn_norm, 0, 0, al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm), 0, 0, 0);
 		//create an over image for each crew position button
 		posOverImages[i] = create_bitmap(al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over));
-		blit(catbtn_over, posOverImages[i], 0, 0, 0, 0, al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over));
+		al_set_target_bitmap(posOverImages[i]); al_draw_bitmap_region(catbtn_over, 0, 0, al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over), 0, 0, 0);
 		//create a disabled image for each crew position button
 		posDisImages[i] = create_bitmap(al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis));
-		blit(catbtn_dis, posDisImages[i], 0, 0, 0, 0, al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis));
+		al_set_target_bitmap(posDisImages[i]); al_draw_bitmap_region(catbtn_dis, 0, 0, al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis), 0, 0, 0);
 
 		//Create and initialize the new button
 		m_PositionBtns[i] = new Button( posNormImages[i], posOverImages[i], posDisImages[i],
@@ -1039,14 +1039,14 @@ bool ModuleCrewHire::Init()
 		if (m_PositionBtns[i] == NULL)	return false;
 		if (!m_PositionBtns[i]->IsInitialized())	return false;
 		
-		blit(icons_small, temp, 30 * i, 0, 0, 0, 30, 30);
-		draw_trans_sprite(m_PositionBtns[i]->GetImgNormal(), temp, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap_region(icons_small, 30 * i, 0, 30, 30, 0, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap(m_PositionBtns[i]->GetImgNormal(), 0, 0, 0);
 		
-		blit(icons_small_green, temp, 30 * i, 0, 0, 0, 30, 30);
-		draw_trans_sprite(m_PositionBtns[i]->GetImgMouseOver(), temp, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap_region(icons_small_green, 30 * i, 0, 30, 30, 0, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap(m_PositionBtns[i]->GetImgMouseOver(), 0, 0, 0);
 
-		blit(icons_small_red, temp, 30 * i, 0, 0, 0, 30, 30);
-		draw_trans_sprite(m_PositionBtns[i]->GetImgDisabled(), temp, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap_region(icons_small_red, 30 * i, 0, 30, 30, 0, 0, 0);
+		al_set_target_bitmap(temp); al_draw_bitmap(m_PositionBtns[i]->GetImgDisabled(), 0, 0, 0);
 
 	alfont_textout_ex(m_PositionBtns[i]->GetImgNormal(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
 	alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
@@ -1078,7 +1078,7 @@ void ModuleCrewHire::Update()
 
 void ModuleCrewHire::Draw()
 {
-	blit(m_background, g_game->GetBackBuffer(), 0, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0);
 
 	switch (currentScreen)
 	{
@@ -1259,7 +1259,7 @@ void ModuleCrewHire::DrawOfficerInfo(Officer *officer)
         "learning",
         "durability" };
 
-	draw_sprite(g_game->GetBackBuffer(), m_miniSkills, SKILLICONS_X, SKILLICONS_Y);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap(m_miniSkills, SKILLICONS_X, SKILLICONS_Y, 0);
 
 	stats->Draw(g_game->GetBackBuffer());
 

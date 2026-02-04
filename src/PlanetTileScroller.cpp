@@ -181,12 +181,13 @@ BITMAP *PlanetTileScroller::GenerateTile(int BaseTileSet, int TileX, int TileY)
 	{
 		tile = create_bitmap(tileWidth, tileHeight);
 		BITMAP *scratch = create_bitmap(tileWidth, tileHeight);
+		al_set_target_bitmap(tile);
 		if (variation == 0)
-			blit(tiles[BaseTileSet]->getTiles(), tile, 0, 0, 0, 0, tileWidth, tileHeight);
+			al_draw_bitmap_region(tiles[BaseTileSet]->getTiles(), 0, 0, tileWidth, tileHeight, 0, 0, 0);
 		else if (variation == 1)
-			blit(tiles[BaseTileSet]->getTiles(), tile, 3 * tileWidth, 3 * tileHeight, 0, 0, tileWidth, tileHeight);
+			al_draw_bitmap_region(tiles[BaseTileSet]->getTiles(), 3 * tileWidth, 3 * tileHeight, tileWidth, tileHeight, 0, 0, 0);
 		else
-			blit(tiles[BaseTileSet]->getTiles(), tile, 256 + ((int)((variation-2)%4) * tileWidth), ((int)((variation-2)/4) * tileHeight), 0, 0, tileWidth, tileHeight);
+			al_draw_bitmap_region(tiles[BaseTileSet]->getTiles(), 256 + ((int)((variation-2)%4) * tileWidth), ((int)((variation-2)/4) * tileHeight), tileWidth, tileHeight, 0, 0, 0);
 
 		int pdValues[4];
 		pdValues[0] = pointData[pdIndexes[0]];
@@ -209,8 +210,10 @@ BITMAP *PlanetTileScroller::GenerateTile(int BaseTileSet, int TileX, int TileY)
 					}
 				}
 
-				blit(tiles[pdValues[i]]->getTiles(), scratch, (int)(accessoryType%4) * tileWidth, (int)(accessoryType/4) * tileHeight, 0, 0, tileWidth, tileHeight);
-				draw_trans_sprite(tile, scratch, 0, 0);
+				al_set_target_bitmap(scratch);
+				al_draw_bitmap_region(tiles[pdValues[i]]->getTiles(), (int)(accessoryType%4) * tileWidth, (int)(accessoryType/4) * tileHeight, tileWidth, tileHeight, 0, 0, 0);
+				al_set_target_bitmap(tile);
+				al_draw_bitmap(scratch, 0, 0, 0);
 			}
 		}
 		destroy_bitmap(scratch);
@@ -288,7 +291,8 @@ void PlanetTileScroller::UpdateScrollBuffer()
 	{
 		for (int x=0; x <= cols && x + tilex < tilesAcross; ++x)	
 		{
-			blit(tileData[tdIndex(tilex + x,tiley + y)], scrollbuffer, 0, 0, x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+			al_set_target_bitmap(scrollbuffer);
+			al_draw_bitmap_region(tileData[tdIndex(tilex + x,tiley + y)], 0, 0, tileWidth, tileHeight, x * tileWidth, y * tileHeight, 0);
 			//if (pointData[pdIndex(tilex + x, tiley + y)] == 0)
 			//{
 			//	circlefill(scrollbuffer, x * tileWidth, y * tileHeight, 4, RED);
@@ -315,8 +319,10 @@ void PlanetTileScroller::DrawScrollWindow(BITMAP *Dest, int X, int Y, int Width,
     int partialy = (int)scrollY % tileHeight;
     
 	//draw the scroll buffer to the destination bitmap
-    if (scrollbuffer)
-	    blit(scrollbuffer, Dest, partialx, partialy, X, Y, Width, Height);
+    if (scrollbuffer) {
+	    al_set_target_bitmap(Dest);
+	    al_draw_bitmap_region(scrollbuffer, partialx, partialy, Width, Height, X, Y, 0);
+    }
 }
 
 

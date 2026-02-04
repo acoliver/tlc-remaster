@@ -1719,7 +1719,7 @@ void ModuleEncounter::Draw()
 		static int gmy = (int)g_game->getGlobalNumber("GUI_MESSAGE_POS_Y");
 		static int gmw = (int)g_game->getGlobalNumber("GUI_MESSAGE_WIDTH");
 		static int gmh = (int)g_game->getGlobalNumber("GUI_MESSAGE_HEIGHT");
-		masked_blit(img_messages, g_game->GetBackBuffer(), 0, 0, gmx, gmy, gmw, gmh);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_messages, 0, 0, gmw, gmh, gmx, gmy, 0);
 
 		//draw message and list boxes
 		(bFlagDialogue) ? dialogue->Draw(g_game->GetBackBuffer()) : text->Draw(g_game->GetBackBuffer());
@@ -1727,12 +1727,12 @@ void ModuleEncounter::Draw()
 		//draw socket gui
 		//static int gsx = (int)g_game->getGlobalNumber("GUI_SOCKET_POS_X");
 		//static int gsy = (int)g_game->getGlobalNumber("GUI_SOCKET_POS_Y");
-		//masked_blit(img_socket, g_game->GetBackBuffer(), 0, 0, gsx, gsy, img_socket->w, img_socket->h);
+		//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_socket, 0, 0, img_socket->w, img_socket->h, gsx, gsy, 0);
 
 		// draw the aux gui
 		static int gax = (int)g_game->getGlobalNumber("GUI_AUX_POS_X");
 		static int gay = (int)g_game->getGlobalNumber("GUI_AUX_POS_Y");
-		masked_blit(img_aux, g_game->GetBackBuffer(), 0, 0, gax, gay, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_aux, 0, 0, al_get_bitmap_width(img_aux), al_get_bitmap_height(img_aux), gax, gay, 0);
 	}
 
     if (g_game->getGlobalBoolean("DEBUG_MODE") == true)
@@ -1794,14 +1794,14 @@ void ModuleEncounter::Encounter_Draw()
 	{
 		static int gvx = (int)g_game->getGlobalNumber("GUI_VIEWER_POS_X");
 		static int gvy = (int)g_game->getGlobalNumber("GUI_VIEWER_POS_Y");
-		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, gvx, gvy, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer));
-		blit(img_alien_portrait, g_game->GetBackBuffer(), 0, 0, gvx+108, gvy+34, al_get_bitmap_width(img_alien_portrait), al_get_bitmap_height(img_alien_portrait));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_viewer, 0, 0, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer), gvx, gvy, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_alien_portrait, 0, 0, al_get_bitmap_width(img_alien_portrait), al_get_bitmap_height(img_alien_portrait), gvx+108, gvy+34, 0);
 
 		//draw gui schematic window with ship schematic
 		static int gvrx = (int)g_game->getGlobalNumber("GUI_RIGHT_VIEWER_POS_X");
 		static int gvry = (int)g_game->getGlobalNumber("GUI_RIGHT_VIEWER_POS_Y");
-		masked_blit(img_rightviewer, g_game->GetBackBuffer(), 0, 0, gvrx, gvry, al_get_bitmap_width(img_rightviewer), al_get_bitmap_height(img_rightviewer));
-		blit(img_alien_schematic, g_game->GetBackBuffer(), 0, 0, gvrx+34, gvry+34, al_get_bitmap_width(img_alien_schematic), al_get_bitmap_height(img_alien_schematic));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_rightviewer, 0, 0, al_get_bitmap_width(img_rightviewer), al_get_bitmap_height(img_rightviewer), gvrx, gvry, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_alien_schematic, 0, 0, al_get_bitmap_width(img_alien_schematic), al_get_bitmap_height(img_alien_schematic), gvrx+34, gvry+34, 0);
 	}
 }
 
@@ -2927,7 +2927,7 @@ void ModuleEncounter::DrawMinimap()
 
 
 	//draw minimap
-	blit(minimap, g_game->GetBackBuffer(), 0, 0, asx, asy, asw, ash);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(minimap, 0, 0, asw, ash, asx, asy, 0);
 }
 
 

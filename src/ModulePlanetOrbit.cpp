@@ -675,7 +675,7 @@ void ModulePlanetOrbit::Update()
 	}
 	else {
 		//restore original topography
-		blit( pbody->planetScannerMap, pbody->planetTopography,0,0,0,0, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography));
+		al_set_target_bitmap(pbody->planetTopography); al_draw_bitmap_region(pbody->planetScannerMap, 0, 0, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography), 0, 0, 0);
 	}
 
 
@@ -697,8 +697,8 @@ void ModulePlanetOrbit::Update()
 
 void ModulePlanetOrbit::Draw()
 {
-	//blit(background, g_game->GetBackBuffer(), 0, 0, 0, 0, background->w, background->h-200);
-    draw_trans_sprite(g_game->GetBackBuffer(), background, 0, 0);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(background, 0, 0, background->w, background->h-200, 0, 0, 0);
+    al_set_target_bitmap(background); al_draw_bitmap(g_game->GetBackBuffer(), 0, 0, 0);
 
 	//draw gui viewer
 	//static int gvl = (int)g_game->getGlobalNumber("GUI_VIEWER_LEFT");
@@ -709,7 +709,7 @@ void ModulePlanetOrbit::Draw()
 	//	if (gui_viewer_x <= gvl || gui_viewer_x >= gvr)
 	//		gui_viewer_sliding = false;
 	//}
-	//masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, gui_viewer_x, gui_viewer_y, img_viewer->w, img_viewer->h);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_viewer, 0, 0, img_viewer->w, img_viewer->h, gui_viewer_x, gui_viewer_y, 0);
 
     //clear aux window
 	static int asx = (int)g_game->getGlobalNumber("AUX_SCREEN_X");
@@ -724,7 +724,7 @@ void ModulePlanetOrbit::Draw()
 
 
     //draw topography map of planet in the aux window
-    blit( pbody->planetTopography, g_game->GetBackBuffer(), 0, 0, asx, asy, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography) );
+    al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(pbody->planetTopography, 0, 0, al_get_bitmap_width(pbody->planetTopography), al_get_bitmap_height(pbody->planetTopography), asx, asy, 0 );
 
 
 
@@ -741,7 +741,7 @@ void ModulePlanetOrbit::Draw()
 
 
     //draw planet lightmap overlay 
-    draw_trans_sprite(g_game->GetBackBuffer(), pbody->lightmapOverlay, cx+pbody->lightmapOffsetX, cy+pbody->lightmapOffsetY);
+    al_set_target_bitmap(pbody->lightmapOverlay); al_draw_bitmap(g_game->GetBackBuffer(), cx+pbody->lightmapOffsetX, cy+pbody->lightmapOffsetY, 0);
 
 
 

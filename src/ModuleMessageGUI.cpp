@@ -75,10 +75,10 @@ void ModuleMessageGUI::Update(){}
 void ModuleMessageGUI::Draw()
 {
 	//draw message gui
-	masked_blit(img_message, g_game->GetBackBuffer(), 0, 0, gmx, gmy, al_get_bitmap_width(img_message), al_get_bitmap_height(img_message));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_message, 0, 0, al_get_bitmap_width(img_message), al_get_bitmap_height(img_message), gmx, gmy, 0);
 
 	//draw socket gui
-	//masked_blit(img_socket, g_game->GetBackBuffer(), 0, 0, gsx, gsy, img_socket->w, img_socket->h);
+	//al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(img_socket, 0, 0, img_socket->w, img_socket->h, gsx, gsy, 0);
 
 
     // <<<<<<< THIS SHOULD BE MOVED INTO THE AUX DRAW >>>>>>>>>

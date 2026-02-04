@@ -64,10 +64,13 @@ void ModuleSideViewer::Draw()
       }
 	}
 
-	if (img_viewer)
-		masked_blit(img_viewer, g_game->GetBackBuffer(), 0, 0, m_x, m_y, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer));
-	else
+	if (img_viewer) {
+		al_set_target_bitmap(g_game->GetBackBuffer()); 
+		al_draw_bitmap_region(img_viewer, 0, 0, al_get_bitmap_width(img_viewer), al_get_bitmap_height(img_viewer), m_x, m_y, 0);
+	}
+	else {
 		TRACE("*** Error in ModuleSideViewer::Draw: img_viewer is null");
+	}
 
 }
 

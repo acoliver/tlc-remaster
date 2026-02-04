@@ -136,9 +136,7 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
     this->planetTexture256 = (BITMAP*)create_bitmap(256,256);
 
     //copy source HD image onto downscaled orbit texture 
-    stretch_blit(this->planetTexture, this->planetTexture256, 
-        0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER,
-        0, 0, 256, 256);
+    al_set_target_bitmap(this->planetTexture256); al_draw_scaled_bitmap(this->planetTexture, 0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER, 0, 0, 256, 256, 0);
 
     //create the planet orbit renderer object
     this->planetRenderObj = new TexturedSphere(256);
@@ -161,9 +159,7 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
     this->planetTexture500 = (BITMAP*)create_bitmap(500,500);
 
     //copy source HD image onto downscaled surface image
-    stretch_blit(this->planetTexture, this->planetTexture500, 
-        0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER,
-        0, 0, 500, 500);
+    al_set_target_bitmap(this->planetTexture500); al_draw_scaled_bitmap(this->planetTexture, 0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER, 0, 0, 500, 500, 0);
 
     //
     // use the generated texture to create the minimap for sensor animation
@@ -178,9 +174,7 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 	clear_bitmap(this->planetTopography);
 
 	//scale planet texture onto topography, cutting skewed N/S poles (drop 10 pixels from top/bottom)
- 	stretch_blit(this->planetTexture, this->planetTopography, 
-        0, 10, al_get_bitmap_width(this->planetTexture), al_get_bitmap_height(this->planetTexture)-20, 
-        1, 1, al_get_bitmap_width(this->planetTopography)-2, al_get_bitmap_height(this->planetTopography)-2);
+ 	al_set_target_bitmap(this->planetTopography); al_draw_scaled_bitmap(this->planetTexture, 0, 10, al_get_bitmap_width(this->planetTexture), al_get_bitmap_height(this->planetTexture)-20, 1, 1, al_get_bitmap_width(this->planetTopography)-2, al_get_bitmap_height(this->planetTopography), 0-2);
 
     //just in case of a duplicate call...
     if (this->planetScannerMap!=NULL)
@@ -190,7 +184,7 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
     }
 	//now create a scratch image as a duplicate of topography used for sensor scans
     this->planetScannerMap = create_bitmap(asw, ash);
-    draw_sprite(this->planetScannerMap, this->planetTopography, 0, 0);
+    al_set_target_bitmap(this->planetScannerMap); al_draw_bitmap(this->planetTopography, 0, 0, 0);
 
 
     return true;

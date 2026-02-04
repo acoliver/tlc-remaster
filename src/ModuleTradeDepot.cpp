@@ -640,7 +640,8 @@ void ModuleTradeDepot::Draw()
 
    BITMAP* canvas = g_game->GetBackBuffer();
 
-	blit(m_background,canvas,0,0,0,0,al_get_bitmap_width(screen),al_get_bitmap_height(screen));
+	al_set_target_bitmap(canvas);
+	al_draw_bitmap_region(m_background, 0, 0, al_get_bitmap_width(screen), al_get_bitmap_height(screen), 0, 0, 0);
 
    alfont_set_font_size(g_game->font10,LIST_TEXTHEIGHT);
    m_playerListValue->Draw(canvas);
@@ -671,12 +672,13 @@ void ModuleTradeDepot::Draw()
 
    if (m_tradeMode == TM_PROMPTING)
    {
-      blit(m_promptBackground,canvas,0,0,PROMPTBG_X,PROMPTBG_Y,al_get_bitmap_width(m_promptBackground),al_get_bitmap_height(m_promptBackground));
+      al_set_target_bitmap(canvas);
+      al_draw_bitmap_region(m_promptBackground, 0, 0, al_get_bitmap_width(m_promptBackground), al_get_bitmap_height(m_promptBackground), PROMPTBG_X, PROMPTBG_Y, 0);
       alfont_set_font_size(g_game->font10,PROMPT_VAL_TEXTHEIGHT);
       alfont_textout(canvas,g_game->font10,m_promptText.c_str(),QTYTEXT_X+PROMPTBG_X,QTYTEXT_Y+PROMPTBG_Y,color_to_int(PROMPT_TEXT_COLOR));
 
 	int nlen = alfont_text_length(g_game->font10,m_promptText.c_str());
-      blit(m_cursor[m_cursorIdx],canvas,0,0,QTYTEXT_X+PROMPTBG_X+nlen+2,CURSOR_Y+PROMPTBG_Y,al_get_bitmap_width(m_cursor[m_cursorIdx]),al_get_bitmap_height(m_cursor[m_cursorIdx]));
+      al_draw_bitmap_region(m_cursor[m_cursorIdx], 0, 0, al_get_bitmap_width(m_cursor[m_cursorIdx]), al_get_bitmap_height(m_cursor[m_cursorIdx]), QTYTEXT_X+PROMPTBG_X+nlen+2, CURSOR_Y+PROMPTBG_Y, 0);
 
 	if (++m_cursorIdxDelay > CURSOR_DELAY)
 	{
@@ -707,24 +709,25 @@ void ModuleTradeDepot::Draw()
    //case logic
    //447,443
    if(portrait_string == ""){
+	al_set_target_bitmap(canvas);
 	switch(item_to_display){
 		case IT_ARTIFACT:
-			blit(item_portrait[0],canvas,0,0,447,443,128,128);
+			al_draw_bitmap_region(item_portrait[0], 0, 0, 128, 128, 447, 443, 0);
 			break;
 		//case IT_SPECIALTYGOOD:
-		//	blit(item_portrait[1],canvas,0,0,447,443,128,128);
+		//	al_draw_bitmap_region(item_portrait[1], 0, 0, 128, 128, 447, 443, 0);
 		//	break;
 		case IT_MINERAL:
-			blit(item_portrait[2],canvas,0,0,447,443,128,128);
+			al_draw_bitmap_region(item_portrait[2], 0, 0, 128, 128, 447, 443, 0);
 			break;
 		case IT_LIFEFORM:
-			blit(item_portrait[3],canvas,0,0,447,443,128,128);
+			al_draw_bitmap_region(item_portrait[3], 0, 0, 128, 128, 447, 443, 0);
 			break;
 		case IT_TRADEITEM:
-			blit(item_portrait[4],canvas,0,0,447,443,128,128);
+			al_draw_bitmap_region(item_portrait[4], 0, 0, 128, 128, 447, 443, 0);
 			break;
 		//case IT_SHIPUPGRADE:
-		//	blit(item_portrait[5],canvas,0,0,447,443,128,128);
+		//	al_draw_bitmap_region(item_portrait[5], 0, 0, 128, 128, 447, 443, 0);
 		//	break;
 		case IT_INVALID:
 		default:
@@ -735,7 +738,8 @@ void ModuleTradeDepot::Draw()
 	   std::string temp_string = "data/tradedepot/" + portrait_string;
 	   temp_bmp = load_bitmap(temp_string.c_str(),NULL);
 	   if (temp_bmp) {
-		blit(temp_bmp,canvas,0,0,447,443,128,128);
+		al_set_target_bitmap(canvas);
+		al_draw_bitmap_region(temp_bmp, 0, 0, 128, 128, 447, 443, 0);
 		destroy_bitmap(temp_bmp);
 	   }
 	   else {

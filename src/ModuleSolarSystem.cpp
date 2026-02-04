@@ -992,14 +992,14 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
 
                 BITMAP* scratch = (BITMAP*)create_bitmap(256,256);
                 clear_to_color(scratch, (255 << 16) | (0 << 8) | 255);
-                masked_blit( planetImage, scratch, 0, 0, 0, 0, 256, 256 );
+                al_set_target_bitmap(scratch); al_draw_bitmap_region(planetImage, 0, 0, 256, 256, 0, 0, 0);
 
 
                 //grab the tilescroller source image for modification
                 BITMAP* tileImage = this->scroller->GetTileImage();
 
                 int tile = planets[i].tilenum;
-		        draw_sprite( tileImage, scratch, 256*tile, 0 );
+		        al_set_target_bitmap(tileImage); al_draw_bitmap(scratch, 256*tile, 0, 0);
 
                 destroy_bitmap(scratch);
 

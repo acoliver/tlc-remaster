@@ -168,112 +168,17 @@ inline void clear(ALLEGRO_BITMAP *bmp) {
 }
 
 /*
- * Blitting Functions
+ * Blitting Functions - CONVERTED
  * 
- * Allegro 4 uses blit(src, dest, sx, sy, dx, dy, w, h)
- * Allegro 5 uses al_draw_bitmap_region(src, sx, sy, w, h, dx, dy, flags)
+ * All blit/masked_blit/stretch_blit/draw_sprite/rotate_sprite calls have been
+ * converted to native Allegro 5 functions. The macros have been removed.
  * 
- * Key difference: A5 draws to current target, not to a dest parameter
+ * Use the following Allegro 5 functions directly:
+ * - al_set_target_bitmap() + al_draw_bitmap_region()
+ * - al_set_target_bitmap() + al_draw_scaled_bitmap()
+ * - al_set_target_bitmap() + al_draw_bitmap()
+ * - al_set_target_bitmap() + al_draw_rotated_bitmap()
  */
-
-/* Helper: Set target and draw (use sparingly, prefer explicit target management) */
-#define blit(src, dest, sx, sy, dx, dy, w, h) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap_region(src, sx, sy, w, h, dx, dy, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define masked_blit(src, dest, sx, sy, dx, dy, w, h) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap_region(src, sx, sy, w, h, dx, dy, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define stretch_blit(src, dest, sx, sy, sw, sh, dx, dy, dw, dh) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_scaled_bitmap(src, sx, sy, sw, sh, dx, dy, dw, dh, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define masked_stretch_blit(src, dest, sx, sy, sw, sh, dx, dy, dw, dh) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_scaled_bitmap(src, sx, sy, sw, sh, dx, dy, dw, dh, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-/* Sprite drawing */
-#define draw_sprite(dest, src, x, y) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap(src, x, y, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define draw_sprite_h_flip(dest, src, x, y) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap(src, x, y, ALLEGRO_FLIP_HORIZONTAL); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define draw_sprite_v_flip(dest, src, x, y) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap(src, x, y, ALLEGRO_FLIP_VERTICAL); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-#define draw_sprite_vh_flip(dest, src, x, y) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap(src, x, y, ALLEGRO_FLIP_HORIZONTAL | ALLEGRO_FLIP_VERTICAL); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-/* Transparent sprite drawing (uses alpha blending) */
-#define draw_trans_sprite(dest, src, x, y) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        al_draw_bitmap(src, x, y, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
-
-/*
- * Rotated sprite drawing
- * 
- * Allegro 4: rotate_sprite(dest, src, x, y, angle_fixed)
- *   - angle is 16.16 fixed point (256 = full rotation)
- * 
- * Allegro 5: al_draw_rotated_bitmap(src, cx, cy, dx, dy, angle_radians, flags)
- *   - angle is in radians (2π = full rotation)
- *   - cx, cy is center of rotation within sprite
- *   - dx, dy is destination position
- * 
- * Conversion: fixed angle / 256 * 2π radians
- */
-#define rotate_sprite(dest, src, x, y, angle_fixed) \
-    do { \
-        ALLEGRO_BITMAP *_old = al_get_target_bitmap(); \
-        al_set_target_bitmap(dest); \
-        float cx = al_get_bitmap_width(src) / 2.0f; \
-        float cy = al_get_bitmap_height(src) / 2.0f; \
-        float angle_rad = ((float)fixtof(angle_fixed)) * ALLEGRO_PI * 2.0f / 256.0f; \
-        al_draw_rotated_bitmap(src, cx, cy, x + cx, y + cy, angle_rad, 0); \
-        al_set_target_bitmap(_old); \
-    } while(0)
 
 /*=============================================================================
  * COLOR COMPATIBILITY LAYER

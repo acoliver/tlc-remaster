@@ -1184,7 +1184,7 @@ void ModuleShipConfig::display() const
 		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, shipName.c_str(), MENU_PATH_X+80, MENU_PATH_Y, color_to_int(WHITE), color_to_int(BLACK));
 
 		int nlen = alfont_text_length(g_game->font32, shipName.c_str());
-		blit(m_cursor,g_game->GetBackBuffer(),0,0,MENU_PATH_X+80+nlen+2,MENU_PATH_Y,al_get_bitmap_width(m_cursor),al_get_bitmap_height(m_cursor));
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_cursor, 0, 0, al_get_bitmap_width(m_cursor), al_get_bitmap_height(m_cursor), MENU_PATH_X+80+nlen+2, MENU_PATH_Y, 0);
 		
 	}
 	else
@@ -1194,7 +1194,7 @@ void ModuleShipConfig::display() const
 	}
 
 	//draw ship schematic
-	draw_trans_sprite(g_game->GetBackBuffer(), shipImage, 586, 548);
+	al_set_target_bitmap(shipImage); al_draw_bitmap(g_game->GetBackBuffer(), 586, 548, 0);
 
 	//static
 	int i=0;
@@ -1286,7 +1286,7 @@ void ModuleShipConfig::Update(){}
 void ModuleShipConfig::Draw()
 {
 	//blit the background image
-	blit(shipConfig, g_game->GetBackBuffer(), 0, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(shipConfig, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0);
 
 	//step through active buttons
 	for(int i=0; i<buttonsActive; ++i)

@@ -319,7 +319,7 @@ void ModuleStarmap::Draw()
 {
 	Module::Draw();	
 	if(viewer_offset_y > -VIEWER_TARGET_OFFSET){
-		masked_blit(gui_starmap,g_game->GetBackBuffer(),0,0,120,viewer_offset_y,VIEWER_WIDTH,VIEWER_HEIGHT);	
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(gui_starmap, 0, 0, VIEWER_WIDTH, VIEWER_HEIGHT, 120, viewer_offset_y, 0);	
 		flux_iter i = g_game->dataMgr->flux.begin();
 		while(i != g_game->dataMgr->flux.end() ){
 			if((*i)->VISIBLE() == true){
@@ -347,8 +347,8 @@ void ModuleStarmap::Draw()
 		int fontColor = (0 << 16) | (0 << 8) | 0;
 		clear_to_color(text,(255 << 16) | (0 << 8) | 255);
 
-		masked_blit(starview,g_game->GetBackBuffer(),0,0,new_x_offset, new_y_offset,MAP_WIDTH,MAP_HEIGHT);
-		masked_blit(flux_view,g_game->GetBackBuffer(),0,0,new_x_offset, new_y_offset,MAP_WIDTH,MAP_HEIGHT);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starview, 0, 0, MAP_WIDTH, MAP_HEIGHT, new_x_offset, new_y_offset, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(flux_view, 0, 0, MAP_WIDTH, MAP_HEIGHT, new_x_offset, new_y_offset, 0);
 
 		//display status info
 		if(g_game->gameState->player->isLost() == false){
@@ -411,7 +411,7 @@ void ModuleStarmap::Draw()
 			}
 		}
 		//draw generated text
-		masked_blit(text,g_game->GetBackBuffer(),0,0,120+X_OFFSET/2,viewer_offset_y,VIEWER_WIDTH,VIEWER_HEIGHT);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(text, 0, 0, VIEWER_WIDTH, VIEWER_HEIGHT, 120+X_OFFSET/2, viewer_offset_y, 0);
 	
 	if(map_active){
 		if(viewer_offset_y < -30){
