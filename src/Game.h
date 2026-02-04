@@ -237,6 +237,9 @@ private:
 	//primary drawing surface for all modules
 	BITMAP *m_backbuffer;
 
+	//Allegro 5 display window
+	ALLEGRO_DISPLAY *m_display;
+
 	//the same as the primary surface, except it doesn't have a mouse on it
 	//BITMAP *m_backbufferWithoutMouse;
 

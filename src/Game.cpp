@@ -84,6 +84,7 @@ Game::Game()
     m_pause = false;
     m_keepRunning = true;
     m_backbuffer = NULL;
+    m_display = NULL;
     desktop_width = 0;
     desktop_height = 0;
     desktop_colordepth = 0;
@@ -752,61 +753,43 @@ bool Game::Initialize_Graphics()
     //try to get user-selected fullscreen toggle from settings screen
     bool fullscreen = g_game->getGlobalBoolean("FULLSCREEN");
 
-#ifdef TLC_PLATFORM_WINDOWS
+    // Destroy existing display if present (for settings changes)
+    if (m_display) {
+        al_destroy_display(m_display);
+        m_display = NULL;
+        _tlc_display = NULL;
+        _tlc_screen = NULL;
+    }
+
+    // Set display flags
+    int display_flags = ALLEGRO_OPENGL;
     if (fullscreen) {
-        gfxmode = GFX_DIRECTX_ACCEL;
+        display_flags |= ALLEGRO_FULLSCREEN_WINDOW;
     }
-    else {
-        gfxmode = GFX_DIRECTX_WIN;
-        //width=SCREEN_WIDTH; height=SCREEN_HEIGHT;
-    }
-#else
-    // DirectX modes are Windows-only. Use Allegro's cross-platform autodetect.
-    (void)fullscreen;
-    gfxmode = GFX_AUTODETECT;
-#endif
 
-    int fallbackMode = gfxmode;
-#if defined(TLC_PLATFORM_WINDOWS)
-    fallbackMode = GFX_AUTODETECT;
-    #ifdef GFX_AUTODETECT_WINDOWED
-    if (!fullscreen)
+    al_set_new_display_flags(display_flags);
+
+    // Try to create display with requested resolution
+    m_display = al_create_display(actual_width, actual_height);
+    if (!m_display)
     {
-        fallbackMode = GFX_AUTODETECT_WINDOWED;
-    }
-    #endif
-#else
-    fallbackMode = GFX_AUTODETECT;
-#endif
-    
-    //set text mode to reset graphics
-    set_gfx_mode(GFX_TEXT,0,0,0,0);
-
-    //try to set graphics mode
-	if (set_gfx_mode(gfxmode, actual_width, actual_height, 0, 0) != 0)
-	{
-        debug << "Video mode failed (" << resolution << "), attempting fallback driver..." << endl;
-        if (fallbackMode != gfxmode)
-        {
-            if (set_gfx_mode(fallbackMode, actual_width, actual_height, 0, 0) == 0)
-            {
-                debug << "Using fallback graphics driver" << endl;
-                debug << "Refresh rate: " << get_refresh_rate() << endl;
-                goto graphics_ok;
-            }
-        }
         debug << "Video mode failed (" << resolution << "), attempting default mode..." << endl;
         actual_width = SCREEN_WIDTH;
         actual_height = SCREEN_HEIGHT;
-        if (set_gfx_mode(fallbackMode, actual_width, actual_height, 0, 0) != 0)
+        m_display = al_create_display(actual_width, actual_height);
+        if (!m_display)
         {
-            debug << "Fatal Error: Unable to set graphics mode" << endl;
+            debug << "Fatal Error: Unable to create display" << endl;
             return false;
         }
-	}
-    debug << "Refresh rate: " << get_refresh_rate() << endl;
+    }
 
-graphics_ok:
+    // Set global pointers for compatibility layer
+    _tlc_display = m_display;
+    _tlc_screen = al_get_backbuffer(m_display);
+    
+    debug << "Display created: " << actual_width << "x" << actual_height << endl;
+    debug << "Refresh rate: " << get_refresh_rate() << endl;
 
 
 
@@ -831,52 +814,48 @@ graphics_ok:
     
 
    /*
-     * Retrieve complete list of resolutions supported by DirectX driver and
-     * populate the global Game::VideoModes list for use in the Settings screen.
-     * Minimum is 1024x768 since downscaling does not work properly--most UI
-     * code is based on SCREEN_WIDTH/SCREEN_HEIGHT assumptions, such as the mouse.
+     * Populate the global Game::VideoModes list for use in the Settings screen.
+     * In Allegro 5, we enumerate available display modes using al_get_num_display_modes
+     * and al_get_display_mode. Minimum is 1024x768 since downscaling does not work 
+     * properly--most UI code is based on SCREEN_WIDTH/SCREEN_HEIGHT assumptions.
      */
     if (videomodes.size() == 0)
     {
-#ifdef TLC_PLATFORM_WINDOWS
-        GFX_MODE_LIST *list = NULL;
-        list = get_gfx_mode_list(GFX_DIRECTX_ACCEL);
-        if (list == NULL)
+        int num_modes = al_get_num_display_modes();
+        debug << "Enumerating " << num_modes << " display modes..." << endl;
+        
+        for (int i = 0; i < num_modes; i++)
         {
-            debug << "Warning: get_gfx_mode_list returned NULL" << endl;
-        }
-        else
-        {
-            for (int i = list->num_modes; i >= 0; i--)
+            ALLEGRO_DISPLAY_MODE mode_info;
+            if (al_get_display_mode(i, &mode_info))
             {
-                //add to list only if bpp matches detected desktop color depth
-                if (list->mode[i].bpp == desktop_colordepth)
+                // Filter for acceptable resolutions (min 1024x768)
+                if (mode_info.width >= 1024 && mode_info.height >= 768)
                 {
                     VideoMode mode;
-                    mode.bpp = list->mode[i].bpp;
-                    mode.width = list->mode[i].width;
-                    mode.height = list->mode[i].height;
-                    if (mode.width>=1024 && mode.height>=768)
-                        videomodes.push_back(mode);
+                    mode.bpp = 32;  // A5 always uses 32-bit color
+                    mode.width = mode_info.width;
+                    mode.height = mode_info.height;
+                    videomodes.push_back(mode);
                 }
             }
-            destroy_gfx_mode_list(list);
-
-            debug << "Detected video modes:" << endl;
-            for (VideoModeIterator mode = videomodes.begin(); mode != videomodes.end(); ++mode)
-            {
-                debug << mode->bpp << "," << mode->width << "," << mode->height << endl;
-            }
         }
-#else
-        // Allegro's gfx mode list is driver-specific; DirectX is Windows-only.
-        // Provide a reasonable minimal list so the Settings UI has options.
-        VideoMode mode;
-        mode.bpp = desktop_colordepth;
-        mode.width = desktop_width;
-        mode.height = desktop_height;
-        videomodes.push_back(mode);
-#endif
+        
+        // If no modes found, add desktop resolution as fallback
+        if (videomodes.size() == 0)
+        {
+            VideoMode mode;
+            mode.bpp = 32;
+            mode.width = desktop_width;
+            mode.height = desktop_height;
+            videomodes.push_back(mode);
+        }
+        
+        debug << "Detected video modes:" << endl;
+        for (VideoModeIterator mode = videomodes.begin(); mode != videomodes.end(); ++mode)
+        {
+            debug << mode->bpp << "," << mode->width << "," << mode->height << endl;
+        }
     }
 
     return true;
@@ -895,7 +874,38 @@ bool Game::InitGame()
 	debug << p_title << " v" << p_version << endl;
 
 	debug << "Firing up Allegro..." << endl;
-	if (allegro_init() != 0) {
+	if (!al_init()) {
+		return false;
+	}
+
+	// Initialize all required Allegro 5 addons
+	if (!al_init_image_addon()) {
+		g_game->message("Error initializing image addon");
+		return false;
+	}
+
+	if (!al_init_font_addon()) {
+		g_game->message("Error initializing font addon");
+		return false;
+	}
+
+	if (!al_init_ttf_addon()) {
+		g_game->message("Error initializing TTF addon");
+		return false;
+	}
+
+	if (!al_init_primitives_addon()) {
+		g_game->message("Error initializing primitives addon");
+		return false;
+	}
+
+	if (!al_install_audio()) {
+		g_game->message("Error initializing audio");
+		return false;
+	}
+
+	if (!al_init_acodec_addon()) {
+		g_game->message("Error initializing audio codecs");
 		return false;
 	}
 
@@ -1046,6 +1056,14 @@ void Game::DestroyGame()
 		m_backbuffer = NULL;
 	}
 
+	if (m_display != NULL)
+	{
+		al_destroy_display(m_display);
+		m_display = NULL;
+		_tlc_display = NULL;
+		_tlc_screen = NULL;
+	}
+
 	if (m_mouseButtons != NULL)
 	{
 		delete [] m_mouseButtons;
@@ -1066,7 +1084,7 @@ void Game::DestroyGame()
 
 	debug << "\nShutdown completed." << endl;
 
-	allegro_exit();
+	al_uninstall_system();
 	alfont_exit();
 
 }
@@ -1277,11 +1295,21 @@ void Game::RunGame()
     //
 	//Copy back buffer to the screen (with resolution scaling)
     //
-    int cx = (actual_width-scale_width)/2;
-    stretch_blit( m_backbuffer, screen, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, cx, 0, scale_width, scale_height );
-
-	//slow down!
-//	rest(1);
+    // Set display backbuffer as render target
+    al_set_target_backbuffer(m_display);
+    
+    // Calculate centered position for scaled output
+    int cx = (actual_width - scale_width) / 2;
+    int cy = 0;
+    
+    // Draw the backbuffer scaled to the display
+    al_draw_scaled_bitmap(m_backbuffer, 
+        0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+        cx, cy, scale_width, scale_height, 
+        0);
+    
+    // Present the frame
+    al_flip_display();
 }
 
 

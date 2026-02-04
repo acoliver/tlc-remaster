@@ -96,12 +96,6 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
 #define END_OF_MAIN()
 #endif
 
-/* allegro_init() - Replaced by al_init() in Allegro 5 */
-#define allegro_init() (al_init() ? 0 : -1)
-
-/* allegro_exit() - Clean shutdown */
-#define allegro_exit() al_uninstall_system()
-
 /* allegro_message() - Show message box */
 #define allegro_message(...) \
     do { \
@@ -489,55 +483,7 @@ extern int SCREEN_W, SCREEN_H;
  * DISPLAY/GRAPHICS MODE COMPATIBILITY
  *===========================================================================*/
 
-/* Graphics mode constants */
-#define GFX_TEXT 0
-#define GFX_AUTODETECT 1
-#define GFX_AUTODETECT_FULLSCREEN 2
-#define GFX_AUTODETECT_WINDOWED 3
-
-/* Display creation - simplified version of set_gfx_mode 
- * Returns 0 on success, -1 on failure (like A4)
- */
-inline int set_gfx_mode(int mode, int w, int h, int v_w, int v_h) {
-    (void)v_w; (void)v_h; /* virtual width/height not used in A5 */
-    
-    if (mode == GFX_TEXT) {
-        /* Text mode - destroy current display if any */
-        if (_tlc_display) {
-            al_destroy_display(_tlc_display);
-            _tlc_display = NULL;
-            _tlc_screen = NULL;
-        }
-        return 0;
-    }
-    
-    /* Destroy existing display */
-    if (_tlc_display) {
-        al_destroy_display(_tlc_display);
-    }
-    
-    /* Set display flags based on mode */
-    int flags = 0;
-    if (mode == GFX_AUTODETECT_FULLSCREEN) {
-        flags = ALLEGRO_FULLSCREEN;
-    } else if (mode == GFX_AUTODETECT_WINDOWED) {
-        flags = ALLEGRO_WINDOWED;
-    }
-    /* GFX_AUTODETECT - let Allegro choose */
-    
-    al_set_new_display_flags(flags);
-    _tlc_display = al_create_display(w, h);
-    
-    if (!_tlc_display) {
-        return -1;
-    }
-    
-    _tlc_screen = al_get_backbuffer(_tlc_display);
-    SCREEN_W = w;
-    SCREEN_H = h;
-    
-    return 0;
-}
+/* Graphics mode constants (no longer used - kept for reference only) */
 
 /* Desktop/display info */
 inline int get_desktop_resolution(int *w, int *h) {
