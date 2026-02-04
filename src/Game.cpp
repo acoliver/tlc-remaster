@@ -677,7 +677,9 @@ void Game::Run()
 	//set window caption with title, version
 	std::ostringstream s;
 	s << p_title << " (V" << p_version << ")";
-	set_window_title(s.str().c_str());
+	if (_tlc_display) {
+		al_set_window_title(_tlc_display, s.str().c_str());
+	}
 
 
 	debug << "\nLaunching game loop..." << endl;
@@ -954,10 +956,8 @@ bool Game::InitGame()
 	}
 
 	debug << "Firing up timers..." << endl;
-	if (install_timer() != 0) {
-		g_game->message("Error initializing timer system");
-		return false;
-	}
+	// Allegro 5 timers don't require global installation
+	// Timers are created individually with al_create_timer as needed
 
 	debug << "Firing up sound system..." << endl;
 	audioSystem = new AudioSystem();

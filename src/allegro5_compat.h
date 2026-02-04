@@ -46,8 +46,6 @@
 #include <allegro5/allegro_acodec.h>    /* Audio codecs (WAV, OGG, etc.) */
 #include <allegro5/allegro_native_dialog.h> /* Native message boxes */
 
-#include <cstdio>  /* For snprintf in allegro_message */
-
 /*=============================================================================
  * TYPE COMPATIBILITY LAYER
  *===========================================================================*/
@@ -97,14 +95,6 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
 #ifndef END_OF_MAIN
 #define END_OF_MAIN()
 #endif
-
-/* allegro_message() - Show message box */
-#define allegro_message(...) \
-    do { \
-        char _msg[1024]; \
-        snprintf(_msg, sizeof(_msg), __VA_ARGS__); \
-        al_show_native_message_box(NULL, "Message", "", _msg, NULL, 0); \
-    } while(0)
 
 #endif
 
@@ -294,9 +284,6 @@ struct ALFONT_FONT;
  * SYSTEM COMPATIBILITY
  *===========================================================================*/
 
-/* Timer/delay functions */
-#define rest(ms) al_rest((ms) / 1000.0)
-
 /* Fixed-point math (Allegro 5 removed fixed-point, use float) */
 #define itofix(x) ((x) << 16)
 #define fixtoi(x) ((x) >> 16)
@@ -359,12 +346,6 @@ inline void set_alpha_blender() {
     al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 }
 
-inline void set_window_title(const char *title) {
-    if (_tlc_display) {
-        al_set_window_title(_tlc_display, title);
-    }
-}
-
 inline int get_refresh_rate() {
     return 60; /* Default, could query actual rate */
 }
@@ -381,11 +362,6 @@ inline int install_keyboard() {
 inline int install_mouse() {
     if (!al_install_mouse()) return -1;
     return al_get_mouse_num_buttons(); /* Return button count like A4 */
-}
-
-inline int install_timer() {
-    /* A5 doesn't need explicit timer installation, timers just work */
-    return 0;
 }
 
 /* Mouse cursor control */

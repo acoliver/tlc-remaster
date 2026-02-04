@@ -80,7 +80,8 @@
 
     // MessageBox fallback for non-Windows
     #ifndef TLC_PLATFORM_WINDOWS
-        #define MessageBox(hwnd, text, caption, type) allegro_message("%s", text)
+        #define MessageBox(hwnd, text, caption, type) \
+            al_show_native_message_box(NULL, "Message", caption, text, NULL, 0)
     #endif
 #endif
 

@@ -846,7 +846,7 @@ void ModuleInterstellar::Update()
 	if (flag_launchEncounter)
 	{
 		//pause for encounter sound clip
-		rest(2500);
+		al_rest(2.5);
 		g_game->modeMgr->LoadModule(MODULE_ENCOUNTER);
 		return;
 	}

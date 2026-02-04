@@ -18,7 +18,7 @@ PlayerShip::PlayerShip()
 	this->ship = new Sprite();
 	this->ship->load("data/is_ship.bmp");
 	if (!this->ship) {
-		allegro_message("Error loading is_ship");
+		al_show_native_message_box(NULL, "Error", "Loading Error", "Error loading is_ship", NULL, 0);
 	}
 	this->ship->setWidth(64);
 	this->ship->setHeight(64);

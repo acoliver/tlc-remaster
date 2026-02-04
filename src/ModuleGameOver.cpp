@@ -41,7 +41,7 @@ void ModuleGameOver::OnKeyReleased(int keyCode)
 	//Module::OnKeyReleased(keyCode);
 
 	if (keyCode == KEY_ESC) {
-		rest(500);
+		al_rest(0.5);
 		g_game->modeMgr->LoadModule(MODULE_TITLESCREEN);
 		return;
 	}
