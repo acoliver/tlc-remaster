@@ -13,9 +13,9 @@ list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # ─────────────────────────────────────────────────────────────────────────────
 # Allegro 5 Migration Options
 # ─────────────────────────────────────────────────────────────────────────────
-# USE_ALLEGRO_LEGACY: When ON (default), uses Allegro Legacy for backward compatibility
-# When OFF, uses native Allegro 5 with compatibility layer (allegro5_compat.h)
-option(USE_ALLEGRO_LEGACY "Use Allegro Legacy for Allegro 4 API compatibility" ON)
+# USE_ALLEGRO_LEGACY: When ON, uses Allegro Legacy for backward compatibility (deprecated)
+# When OFF (default), uses native Allegro 5 with compatibility layer (allegro5_compat.h)
+option(USE_ALLEGRO_LEGACY "Use Allegro Legacy for Allegro 4 API compatibility (deprecated)" OFF)
 
 if(USE_ALLEGRO_LEGACY)
     find_package(AllegroLegacy REQUIRED)

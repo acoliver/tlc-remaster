@@ -57,7 +57,11 @@ int main(int argc, char **argv)
 		{
 			printf("Starflight: The Lost Colony\n");
 			printf("Version: 1.0.0-dev (macOS port)\n");
+#ifdef TLC_USING_ALLEGRO_LEGACY
 			printf("Built with Allegro Legacy\n");
+#else
+			printf("Built with native Allegro 5\n");
+#endif
 			debug.Print("main: --version");
 
 			return 0;

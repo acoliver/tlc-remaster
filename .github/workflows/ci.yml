@@ -69,58 +69,18 @@ jobs:
       # ─────────────────────────────────────────────────────────────────────────
       # Clone Dependencies
       # ─────────────────────────────────────────────────────────────────────────
-      - name: Clone Allegro Legacy
-        run: |
-          git clone https://github.com/acoliver/Allegro-Legacy.git deps/allegro-legacy
-
+      # NOTE: Allegro Legacy is no longer needed as of Phase 2 (native Allegro 5 mode)
+      # The legacy library is retained in deps/ for optional fallback use
+      
       - name: Clone libnoise
         run: |
           git clone https://github.com/eXpl0it3r/libnoise.git deps/libnoise
 
       # ─────────────────────────────────────────────────────────────────────────
-      # Build Allegro Legacy
+      # Build Allegro Legacy (OPTIONAL - only if USE_ALLEGRO_LEGACY=ON)
       # ─────────────────────────────────────────────────────────────────────────
-      - name: Build Allegro Legacy (Linux)
-        if: matrix.platform == 'linux'
-        run: |
-          cd deps/allegro-legacy
-          mkdir -p build && cd build
-          cmake .. -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-          ninja
-
-      - name: Build Allegro Legacy (macOS)
-        if: matrix.platform == 'macos'
-        run: |
-          # Get Allegro5 paths from pkg-config
-          ALLEGRO_CFLAGS=$(pkg-config --cflags allegro-5 allegro_main-5 allegro_image-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_audio-5 allegro_acodec-5)
-          ALLEGRO_INCLUDE=$(echo $ALLEGRO_CFLAGS | sed 's/-I//g' | tr ' ' ';')
-          
-          cd deps/allegro-legacy
-          mkdir -p build && cd build
-          cmake .. -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-            -DCMAKE_C_FLAGS="$ALLEGRO_CFLAGS" \
-            -DCMAKE_CXX_FLAGS="$ALLEGRO_CFLAGS"
-          ninja
-
-      - name: Build Allegro Legacy (Windows)
-        if: matrix.platform == 'windows'
-        run: |
-          cd deps/allegro-legacy
-          mkdir build
-          cd build
-          cmake .. `
-            -DCMAKE_BUILD_TYPE=Release `
-            -DCMAKE_POLICY_VERSION_MINIMUM=3.5 `
-            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" `
-            -DCMAKE_PREFIX_PATH="$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows" `
-            -DCMAKE_C_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
-            -DCMAKE_CXX_FLAGS="/I$env:VCPKG_INSTALLATION_ROOT/installed/x64-windows/include" `
-            -DSHARED=OFF
-          cmake --build . --config Release
+      # Allegro Legacy build steps removed - project now uses native Allegro 5
+      # To re-enable legacy mode, set -DUSE_ALLEGRO_LEGACY=ON in CMake configure
 
       # ─────────────────────────────────────────────────────────────────────────
       # Build Game
