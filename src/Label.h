@@ -11,7 +11,7 @@ class Label
 {
 public:
 	//Label(std::string Text, int X, int Y, int Width, int Height);
-	Label(std::string Text, int X, int Y, int Width, int Height, int Color, ALFONT_FONT *Font);
+	Label(std::string Text, int X, int Y, int Width, int Height, ALLEGRO_COLOR Color, ALFONT_FONT *Font);
 
 	~Label();
 
@@ -23,7 +23,7 @@ public:
 	int GetY()							const { return yPos; }
 	int GetWidth()						const { return width; }
 	int GetHeight()						const { return height; }
-	int GetColor()						const { return color; }
+	ALLEGRO_COLOR GetColor()			const { return color; }
 	std::string GetText()				const { return text; }
 	ALFONT_FONT* GetFont()				const { return alFont; }
 	
@@ -39,7 +39,7 @@ public:
 	//These are in the cpp so they may be easily changed to automatically call the Refresh function when used
 	void SetWidth(int Width);
 	void SetHeight(int Height);
-	void SetColor(int Color);
+	void SetColor(ALLEGRO_COLOR Color);
 	void SetText(std::string Text);
 	void SetFont(ALFONT_FONT *Font);
 
@@ -54,7 +54,7 @@ private:
 	int					yPos;
 	int					width;
 	int					height;
-	int					color;
+	ALLEGRO_COLOR		color;
 	std::string			text;
 	ALFONT_FONT			*alFont;
 	BITMAP				*image;

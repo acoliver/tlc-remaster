@@ -3,6 +3,7 @@
 
 #include "env.h"
 #include "env.h"
+#include "Game.h"
 #include <alfont.h>
 #include <string>
 #include <list>
@@ -16,7 +17,7 @@ enum ScrollBoxType {
 
 struct ColoredString {
 	std::string String;
-	int Color;
+	ALLEGRO_COLOR Color;
 };
 
 class ScrollBox
@@ -112,7 +113,7 @@ public:
 	void OnMouseWheelDown(int x, int y);
 	void OnMouseWheelUp(int x, int y);
 	void OnMouseClick(int button, int x, int y);
-	void Write(std::string text, int  color = makecol(255,255,255));
+	void Write(std::string text, ALLEGRO_COLOR color = al_map_rgb(255,255,255));
 	void Write(ColoredString String);
 	void ScrollToBottom();
 	void ScrollToTop();
@@ -127,20 +128,20 @@ public:
 	void SetSelectedIndex(int index);
 	void SetParent(ScrollBox *parent);
 
-	int ColorControls;
-	int ColorBackground;
-    int ColorItemBorder;
-	int ColorHover;
-	int ColorSelectedBackground;
-	int ColorSelectedHighlight;
-    int ColorSelectedText;
-    void SetColorBackground(int color) { ColorBackground = color; };
-    void SetColorControls(int color) { ColorControls = color; };
-    void SetColorHover(int color) { ColorHover = color; };
-    void SetColorSelectedBackground(int color) { ColorSelectedBackground = color; };
-    void SetColorSelectedHighlight(int color) { ColorSelectedHighlight = color; };
-    void SetColorItemBorder(int color) { ColorItemBorder = color; };
-    void SetColorSelectedText(int color) { ColorSelectedText = color; };
+	ALLEGRO_COLOR ColorControls;
+	ALLEGRO_COLOR ColorBackground;
+    ALLEGRO_COLOR ColorItemBorder;
+	ALLEGRO_COLOR ColorHover;
+	ALLEGRO_COLOR ColorSelectedBackground;
+	ALLEGRO_COLOR ColorSelectedHighlight;
+    ALLEGRO_COLOR ColorSelectedText;
+    void SetColorBackground(ALLEGRO_COLOR color) { ColorBackground = color; };
+    void SetColorControls(ALLEGRO_COLOR color) { ColorControls = color; };
+    void SetColorHover(ALLEGRO_COLOR color) { ColorHover = color; };
+    void SetColorSelectedBackground(ALLEGRO_COLOR color) { ColorSelectedBackground = color; };
+    void SetColorSelectedHighlight(ALLEGRO_COLOR color) { ColorSelectedHighlight = color; };
+    void SetColorItemBorder(ALLEGRO_COLOR color) { ColorItemBorder = color; };
+    void SetColorSelectedText(ALLEGRO_COLOR color) { ColorSelectedText = color; };
     void PaintNormalImage();
     void PaintHoverImage();
     void PaintSelectedImage();

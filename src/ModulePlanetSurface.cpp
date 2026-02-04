@@ -34,6 +34,7 @@
 
 
 #include "env.h"
+#include "allegro5_compat.h"
 #include "ModulePlanetSurface.h"
 #include "TileScroller.h"
 #include "PlayerShipSprite.h"
@@ -487,11 +488,11 @@ void ModulePlanetSurface::OnEvent(Event *event)
                     //else if (y > 31500) y = 31500;
                     cinematicShip->setX(x);
 					cinematicShip->setY(y);
-					cinematicShip->setFaceAngle(playerShip->getFaceAngle());
-					cinematicShip->setScale(playerShip->getScale());
-					cinematicShip->setSpeed(4);
+				cinematicShip->setFaceAngle(playerShip->getFaceAngle());
+				cinematicShip->setScale(playerShip->getScale());
+				cinematicShip->setSpeed(4);
 
-					PostMessage("Returning to Orbit", GREEN, 2, 6);
+				PostMessage("Returning to Orbit", color_to_int(GREEN), 2, 6);
 				}
 
 			}
@@ -775,7 +776,7 @@ bool ModulePlanetSurface::Init()
 
 
 	//clear screen
-	rectfill(g_game->GetBackBuffer(), 0, 0, SCREEN_W-1, SCREEN_H-1, BLACK);
+	rectfill(g_game->GetBackBuffer(), 0, 0, SCREEN_W-1, SCREEN_H-1, color_to_int(BLACK));
 
     //load the message gui
     img_messages = (BITMAP*)load_bitmap("data/messagegui/gui_messagewindow.bmp",NULL);
@@ -1827,15 +1828,16 @@ bool ModulePlanetSurface::fabAcidic()
 		return false;
 	}
 
-	int color, r, g, b, tile;
+	unsigned char r, g, b;
+	int tile;
 	for (int y=0; y < 500; y++) {
 		for (int x=0; x < 500; x++) {
+
 			//test colors found on planet texture to determine which planet tiles to draw
-			//color = getpixel(surface, x, y);
-            color = getpixel( this->pbody->planetTexture500, x, y );
-			r = getr(color);
-			g = getg(color);
-			b = getb(color);
+
+			//ALLEGRO_COLOR acolor = al_get_pixel(surface, x, y);
+            ALLEGRO_COLOR acolor = al_get_pixel( this->pbody->planetTexture500, x, y );
+			al_unmap_rgb(acolor, &r, &g, &b);
 
 			tile = 0;
 
@@ -1880,7 +1882,7 @@ void ModulePlanetSurface::Update()
 	else if (y > 0) sprintf(sLat, "%iN", y);
 
 	//print position on top gui
-	rectfill(img_gauges, 640, 10, 772, 38, makecol(50,50,50));
+	rectfill(img_gauges, 640, 10, 772, 38, (50 << 16) | (50 << 8) | 50);
 	sprintf(s, "%s,%s", sLat, sLong);
 	//g_game->setFontSize(24);
 	g_game->Print24(img_gauges, 645, 12, s, LTGREEN);
@@ -1954,7 +1956,7 @@ void ModulePlanetSurface::Update()
 
 void ModulePlanetSurface::Draw()
 {
-	clear_to_color(g_game->GetBackBuffer(), BLACK);
+	clear_to_color(g_game->GetBackBuffer(), color_to_int(BLACK));
 
 	if (vibration > 0)
 		vibration -= 10;
@@ -2244,16 +2246,16 @@ void ModulePlanetSurface::drawMinimap()
 	//draw the player's position on the minimap
 	float x =  playerShip->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap) ;
 	float y =  playerShip->getY() / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap) ;
-	circlefill(minimap, x , y, 3, LTRED);
-	circle(minimap, x , y, 3, BLACK);
+	circlefill(minimap, x , y, 3, color_to_int(LTRED));
+	circle(minimap, x , y, 3, color_to_int(BLACK));
 
 	//draw terrain vehicle on minimap
 	if (vessel_mode > 0)
 	{
 		x = ( playerTV->getX() ) / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap);
 		y = ( playerTV->getY() ) / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap);
-		circlefill(minimap, x, y, 3, YELLOW);
-		circle(minimap, x, y, 3, BLACK);
+		circlefill(minimap, x, y, 3, color_to_int(YELLOW));
+		circle(minimap, x, y, 3, color_to_int(BLACK));
 	}
 
 	//draw lifeforms and minerals on minimap
@@ -2266,17 +2268,17 @@ void ModulePlanetSurface::drawMinimap()
         {
 		    switch (objtype)
 		    {
-			    case 0: color = makecol(30,180,30); break; //lifeform
-			    case 1: color = makecol(120,100,50); break; //mineral
-			    //case 2: color = makecol(0,0,255); break; //artifact
-                //case 3: color = makecol(30,255,255); break; //ruin
-			    //default: color = makecol(0,0,0); break;
+			    case 0: color = (30 << 16) | (180 << 8) | 30; break; //lifeform
+			    case 1: color = (120 << 16) | (100 << 8) | 50; break; //mineral
+			    //case 2: color = (0 << 16) | (0 << 8) | 255; break; //artifact
+                //case 3: color = (30 << 16) | (255 << 8) | 255; break; //ruin
+			    //default: color = (0 << 16) | (0 << 8) | 0; break;
 		    }
 
-		    x = surfaceObjects[i]->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap);
-		    y = surfaceObjects[i]->getY() / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap);
-		    circlefill(minimap, x, y, 2, color );
-		    circle(minimap, x, y, 2, BLACK);
+		x = surfaceObjects[i]->getX() / ( scroller->getTilesAcross() * scroller->getTileWidth() ) * al_get_bitmap_width(minimap);
+		y = surfaceObjects[i]->getY() / ( scroller->getTilesDown() * scroller->getTileHeight() ) * al_get_bitmap_height(minimap);
+		circlefill(minimap, x, y, 2, color );
+		circle(minimap, x, y, 2, color_to_int(BLACK));
         }
 	}
 
@@ -2309,21 +2311,21 @@ void ModulePlanetSurface::PostMessage(std::string text)
 
 void ModulePlanetSurface::PostMessage(std::string text, int color)
 {
-	messages->Write(text, color);
+	messages->Write(text, int_to_al_color(color));
 	messages->ScrollToBottom();
 }
 
 void ModulePlanetSurface::PostMessage(std::string text, int color, int blanksBefore)
 {
 	for (int i=0; i < blanksBefore; ++i) messages->Write("");
-	messages->Write(text, color);
+	messages->Write(text, int_to_al_color(color));
 	messages->ScrollToBottom();
 }
 
 void ModulePlanetSurface::PostMessage(std::string text, int color, int blanksBefore, int blanksAfter)
 {
 	for (int i=0; i < blanksBefore; ++i) messages->Write("");
-	messages->Write(text, color);
+	messages->Write(text, int_to_al_color(color));
 	for (int i=0; i < blanksAfter; ++i) messages->Write("");
 	messages->ScrollToBottom();
 }
@@ -2655,7 +2657,7 @@ int L_PostMessage(lua_State* luaVM)
 	}
 
 	if (i >= 3)
-		g_game->PlanetSurfaceHolder->messages->Write( text, makecol(rgb[0], rgb[1], rgb[2]) );
+		g_game->PlanetSurfaceHolder->messages->Write( text, al_map_rgb(rgb[0], rgb[1], rgb[2]) );
 	else
 		g_game->PlanetSurfaceHolder->messages->Write( text );
 	g_game->PlanetSurfaceHolder->messages->ScrollToBottom();
@@ -2896,16 +2898,16 @@ int L_AttackTV(lua_State* luaVM)
 		g_game->PlanetSurfaceHolder->playerTV->setHealth( (int)(g_game->PlanetSurfaceHolder->playerTV->getHealth() - realdamage) );
 		g_game->PlanetSurfaceHolder->vibration = 20;
 
-		int health = g_game->PlanetSurfaceHolder->playerTV->getHealth();
+	int health = g_game->PlanetSurfaceHolder->playerTV->getHealth();
 
-		if (health < 25)
-			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! THE T.V. IS IN CRITICAL CONDITION! GET US OUT OF HERE!", RED, 0, 5);
-		else if (health < 50)
-			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US! DO SOMETHING QUICK!", RED, 0, 5);
-		else if (health < 75)
-			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US!", RED, 0, 6);
-		else
-			g_game->PlanetSurfaceHolder->PostMessage("Captain, we are under attack!", RED, 0, 6);
+	if (health < 25)
+		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! THE T.V. IS IN CRITICAL CONDITION! GET US OUT OF HERE!", color_to_int(RED), 0, 5);
+	else if (health < 50)
+		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US! DO SOMETHING QUICK!", color_to_int(RED), 0, 5);
+	else if (health < 75)
+		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US!", color_to_int(RED), 0, 6);
+	else
+		g_game->PlanetSurfaceHolder->PostMessage("Captain, we are under attack!", color_to_int(RED), 0, 6);
 	}
 
 	return 0;

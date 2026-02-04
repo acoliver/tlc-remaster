@@ -160,7 +160,10 @@ void Sprite::DrawScaled(BITMAP *dest, int dest_w, int dest_h)
     
 	if (this->DebugOutline) 
     {
-		rect( dest, (int)this->x, (int)this->y, (int)this->x + dest_w, (int)y + dest_h, BLUE );
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)this->x, (int)this->y, (int)this->x + dest_w, (int)y + dest_h, BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 }
 
@@ -173,7 +176,10 @@ void Sprite::DrawRotated(BITMAP *dest, int angle)
 
 	if (this->DebugOutline) 
     {
-        rect( dest, (int)this->x, (int)this->y, (int)this->x + this->getWidth(), (int)this->y + this->getHeight(), BLUE);
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)this->x, (int)this->y, (int)this->x + this->getWidth(), (int)this->y + this->getHeight(), BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 }
 
@@ -182,7 +188,7 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
     if (!this->image) return;
 
     BITMAP* temp = create_bitmap(this->getWidth(), this->getHeight());
-    clear_to_color(temp, makecol(255,0,255));
+    clear_to_color(temp, (255 << 16) | (0 << 8) | 255);
 
 
     //draw SCALED image onto temp image
@@ -199,7 +205,10 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
 
 	if (this->DebugOutline) 
     {
-		rect( dest, (int)this->x, (int)this->y, (int)this->x + temp_w, (int)y + temp_h, BLUE );
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)this->x, (int)this->y, (int)this->x + temp_w, (int)y + temp_h, BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 
     destroy_bitmap(temp);
@@ -236,7 +245,10 @@ void Sprite::DrawFrame(BITMAP *dest, bool UseAlpha)
 	
 	if (DebugOutline) 
     {
-		rect(dest, (int)x, (int)y, (int)x + frameWidth, (int)y + frameHeight, BLUE);
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)x, (int)y, (int)x + frameWidth, (int)y + frameHeight, BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 }
 
@@ -252,7 +264,10 @@ void Sprite::DrawFrameScaled(BITMAP *dest, int dest_w, int dest_h)
     
 	if (DebugOutline) 
     {
-		rect(dest, (int)x, (int)y, (int)x + dest_w, (int)y + dest_h, BLUE);
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)x, (int)y, (int)x + dest_w, (int)y + dest_h, BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 }
 
@@ -279,7 +294,10 @@ void Sprite::DrawFrameRotated(BITMAP *dest, int angle)
 
 	if (DebugOutline) 
     {
-		rect(dest, (int)x, (int)y, (int)x + frameWidth, (int)y + frameHeight, BLUE);
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(dest);
+		al_draw_rectangle((int)x, (int)y, (int)x + frameWidth, (int)y + frameHeight, BLUE, 1.0f);
+		al_set_target_bitmap(_old);
 	}
 }
 

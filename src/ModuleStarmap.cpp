@@ -7,6 +7,7 @@
 
 #include "env.h"
 #include "env.h"
+#include "allegro5_compat.h"
 #include "Util.h"
 #include "ModuleStarmap.h"
 #include "GameState.h"
@@ -171,18 +172,18 @@ bool ModuleStarmap::Init()
 	star_label = new Label("",0,0,100,22,ORANGE,g_game->font18);
 
 	starview = create_bitmap(MAP_WIDTH, MAP_HEIGHT);
-	clear_to_color(starview,BLACK);
+	clear_to_color(starview,color_to_int(BLACK));
 
 	flux_view = create_bitmap(MAP_WIDTH, MAP_HEIGHT);
-	clear_to_color(flux_view,makecol(255,0,255));
+	clear_to_color(flux_view,(255 << 16) | (0 << 8) | 255);
 
 	text = create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
-	clear_to_color(text,makecol(255,0,255));
+	clear_to_color(text,(255 << 16) | (0 << 8) | 255);
 
 	ratioX = (float)MAP_WIDTH / 250.0f;
 	ratioY = (float)MAP_HEIGHT / 220.0f;
 
-	clear_to_color(starview,makecol(0,0,0));
+	clear_to_color(starview,(0 << 16) | (0 << 8) | 0);
 
 
 	//flux_sprite = new Sprite();
@@ -210,7 +211,7 @@ bool ModuleStarmap::Init()
 						(int)( (*i)->TILE().Y * ratioY),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 2 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 2),
-						makecol(0,170,255));
+						(0 << 16) | (170 << 8) | 255);
 				//}
 				flux_sprite.setX((*i)->TILE().X * ratioX - 4);
 				flux_sprite.setY((*i)->TILE().Y * ratioY - 4);
@@ -328,7 +329,7 @@ void ModuleStarmap::Draw()
 						(int)( (*i)->TILE().Y * ratioY - 4 ),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 4 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 4 ),
-						makecol(0,170,255));
+						(0 << 16) | (170 << 8) | 255);
 					(*i)->rLINE_DRAWN() = true;
 				}
 				if((*i)->DRAWN() == false){
@@ -343,8 +344,8 @@ void ModuleStarmap::Draw()
 		int new_x_offset = 120+X_OFFSET;
 		int new_y_offset = Y_OFFSET+viewer_offset_y;
 		int text_y = 480;
-		int fontColor = makecol(0,0,0);
-		clear_to_color(text,makecol(255,0,255));
+		int fontColor = (0 << 16) | (0 << 8) | 0;
+		clear_to_color(text,(255 << 16) | (0 << 8) | 255);
 
 		masked_blit(starview,g_game->GetBackBuffer(),0,0,new_x_offset, new_y_offset,MAP_WIDTH,MAP_HEIGHT);
 		masked_blit(flux_view,g_game->GetBackBuffer(),0,0,new_x_offset, new_y_offset,MAP_WIDTH,MAP_HEIGHT);
@@ -374,7 +375,7 @@ void ModuleStarmap::Draw()
 		
 
 			circle(g_game->GetBackBuffer(), (int)(playerPos.x * ratioX + new_x_offset), 
-			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, makecol(0,255,0));
+			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, (0 << 16) | (255 << 8) | 0);
 		}
 
 		// destination
@@ -390,7 +391,7 @@ void ModuleStarmap::Draw()
 			textprintf_centre_ex(text, g_game->font12, 310, text_y, fontColor, -1, "%.0f", m_destPos.x );
 			textprintf_centre_ex(text, g_game->font12, 380, text_y, fontColor, -1, "%.0f", m_destPos.y );
 			circle(g_game->GetBackBuffer(), (int)(m_destPos.x * ratioX + new_x_offset), 
-			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, makecol(255,0,0));
+			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, (255 << 16) | (0 << 8) | 0);
 		}
 		//else if the mouse cursor is near a starsystem, we want to print the coordinates 
 		//of that starsystem instead of the actual coordinates under the mouse pointer

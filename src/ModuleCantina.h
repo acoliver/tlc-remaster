@@ -54,10 +54,10 @@ private:
 	Label *questReward;
 
 	std::string label1, label2, label3, label4;
-	int labelcolor, textcolor;
+	ALLEGRO_COLOR labelcolor, textcolor;
 	bool selectedQuestCompleted;
 	std::string requirementLabel;
-	int requirementColor;
+	ALLEGRO_COLOR requirementColor;
 
 };
 

@@ -666,7 +666,7 @@ void ModulePlanetOrbit::Update()
 		    r.top = rand() % ph;
 		    r.right = r.left + 4;
 		    r.bottom = r.top + 4;
-		    int color = makecol(100+rand() % 155, 0, 100+rand() % 155);
+		    int color = ((100+rand() % 155) << 16) | (0 << 8) | (100+rand() % 155);
 		    rectfill(pbody->planetTopography, r.left, r.top, r.right, r.bottom, color);
         }
 
@@ -716,7 +716,7 @@ void ModulePlanetOrbit::Draw()
 	static int asy = (int)g_game->getGlobalNumber("AUX_SCREEN_Y");
 	static int asw = (int)g_game->getGlobalNumber("AUX_SCREEN_WIDTH");
 	static int ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
-	rectfill(g_game->GetBackBuffer(), asx, asy, asx + asw, asy + ash, makecol(0,0,0));
+	rectfill(g_game->GetBackBuffer(), asx, asy, asx + asw, asy + ash, (0 << 16) | (0 << 8) | 0);
 
     //draw message window
     text->Draw(g_game->GetBackBuffer());

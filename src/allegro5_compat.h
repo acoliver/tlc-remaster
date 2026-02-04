@@ -309,6 +309,20 @@ inline ALLEGRO_COLOR int_to_al_color_alpha(int c) {
     return al_map_rgba(getr(c), getg(c), getb(c), geta(c));
 }
 
+/* Convert ALLEGRO_COLOR to packed int (for alfont compatibility) */
+inline int pack_color(ALLEGRO_COLOR c) {
+    unsigned char r, g, b;
+    al_unmap_rgb(c, &r, &g, &b);
+    return makecol(r, g, b);
+}
+
+/* Alias for pack_color - more descriptive name when converting colors for alfont */
+inline int color_to_int(ALLEGRO_COLOR c) {
+    unsigned char r, g, b;
+    al_unmap_rgb(c, &r, &g, &b);
+    return makecol(r, g, b);
+}
+
 /*=============================================================================
  * DRAWING PRIMITIVES COMPATIBILITY
  *===========================================================================*/

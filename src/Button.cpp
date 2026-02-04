@@ -14,7 +14,7 @@ Button::Button(std::string initImgFileNormal, std::string initImgFileMouseOver, 
 , clickEvent(initClickEvent)
 , fontPtr(NULL)
 , buttonText("")
-, textColor(0)
+, textColor(al_map_rgb(0,0,0))
 , buttonSound(initButtonSound)
 , enabled(initEnabled)
 , visible(initVisible)
@@ -35,7 +35,7 @@ Button::Button(std::string initImgFileNormal, std::string initImgFileMouseOver, 
 
 Button::Button(std::string initImgFileNormal, std::string initImgFileMouseOver, std::string initImgFileDisabled,
 		int initX, int initY, int initMouseOverEvent, int initClickEvent, ALFONT_FONT *initFontPtr, std::string initButtonText,
-		int initTextColor, std::string initButtonSound /*= ""*/, bool initEnabled /*= true*/, bool initVisible /*= true*/)
+		ALLEGRO_COLOR initTextColor, std::string initButtonSound /*= ""*/, bool initEnabled /*= true*/, bool initVisible /*= true*/)
 : initialized(false)
 , deleteBitmaps(true)
 , x(initX)
@@ -73,7 +73,7 @@ Button::Button(BITMAP *initImgBMPNormal, BITMAP *initImgBMPMouseOver, BITMAP *in
 , clickEvent(initClickEvent)
 , fontPtr(NULL)
 , buttonText("")
-, textColor(0)
+, textColor(al_map_rgb(0,0,0))
 , buttonSound(initButtonSound)
 , enabled(initEnabled)
 , visible(initVisible)
@@ -89,7 +89,7 @@ Button::Button(BITMAP *initImgBMPNormal, BITMAP *initImgBMPMouseOver, BITMAP *in
 }
 
 Button::Button(BITMAP *initImgBMPNormal, BITMAP *initImgBMPMouseOver, BITMAP *initImgBMPDisabled, int initX, int initY, 
-	int initMouseOverEvent, int initClickEvent, ALFONT_FONT *initFontPtr, std::string initButtonText, int initTextColor, 
+	int initMouseOverEvent, int initClickEvent, ALFONT_FONT *initFontPtr, std::string initButtonText, ALLEGRO_COLOR initTextColor, 
 	std::string initButtonSound /*= ""*/, bool initEnabled /*= true*/, bool initVisible /*= true*/)
 : initialized(false)
 , deleteBitmaps(false)
@@ -128,7 +128,7 @@ int	Button::GetClickEvent()				const { return clickEvent; }
 bool Button::IsEnabled()				const { return enabled; }
 bool Button::IsVisible()				const { return visible; }
 std::string Button::GetButtonText()		const { return buttonText; }
-int	Button::GetTextColor()				const { return textColor; }
+ALLEGRO_COLOR Button::GetTextColor()	const { return textColor; }
 bool Button::IsInitialized()			const { return initialized; }
 int	Button::GetWidth()					const { if(initialized) return al_get_bitmap_width(imgNormal); return 0; }
 int	Button::GetHeight()					const { if(initialized) return al_get_bitmap_height(imgNormal); return 0; }
@@ -155,7 +155,7 @@ void Button::SetClickEvent(int initClickEvent)			{ clickEvent = initClickEvent; 
 void Button::SetEnabled(bool initEnabled)				{ enabled = initEnabled; }
 void Button::SetVisible(bool initVisible)				{ visible = initVisible; }
 void Button::SetButtonText(std::string initButtonText)	{ buttonText = initButtonText; }
-void Button::SetTextColor(int initTextColor)			{ textColor = initTextColor; }
+void Button::SetTextColor(ALLEGRO_COLOR initTextColor)	{ textColor = initTextColor; }
 void Button::SetHighlight(bool initHighlight)			{ highlight = initHighlight; }
 
 void Button::Destroy()
@@ -217,7 +217,7 @@ bool Button::Run(BITMAP *canvas, bool trans)
 		int textX = x + GetWidth()/2;
 		int textY = y + GetHeight()/2 - alfont_get_font_height(fontPtr)/2;
 
-		alfont_textout_centre_ex(canvas, fontPtr, buttonText.c_str(), textX, textY, textColor, -1);
+		alfont_textout_centre_ex(canvas, fontPtr, buttonText.c_str(), textX, textY, color_to_int(textColor), 0);
 	}
 
    if (mouseIsOverButton)

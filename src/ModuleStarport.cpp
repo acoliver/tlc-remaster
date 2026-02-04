@@ -12,6 +12,7 @@
 #include <sstream>
 #include <exception>
 #include "env.h"
+#include "allegro5_compat.h"
 #include "ModuleStarport.h"
 #include "Sprite.h"
 #include "AudioSystem.h"
@@ -516,7 +517,7 @@ void ModuleStarport::Draw()
 	}
 
 	//clear background
-	clear_to_color(g_game->GetBackBuffer(), BLACK);
+	clear_to_color(g_game->GetBackBuffer(), color_to_int(BLACK));
 
 	//update and draw doors
 	drawDoors();

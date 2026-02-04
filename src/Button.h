@@ -39,7 +39,7 @@ public:
 		int initClickEvent, 
 		ALFONT_FONT *initFontPtr, 
 		std::string initButtonText, 
-		int initTextColor, 
+		ALLEGRO_COLOR initTextColor, 
 		std::string initButtonSound = "", 
 		bool initEnabled = true, 
 		bool initVisible = true);
@@ -66,7 +66,7 @@ public:
 		int initClickEvent, 
 		ALFONT_FONT *initFontPtr, 
 		std::string initButtonText,
-		int initTextColor, 
+		ALLEGRO_COLOR initTextColor, 
 		std::string initButtonSound = "", 
 		bool initEnabled = true, 
 		bool initVisible = true);
@@ -85,7 +85,7 @@ public:
 	bool IsEnabled() const;
 	bool IsVisible() const;
 	std::string GetButtonText() const;
-	int	GetTextColor() const;
+	ALLEGRO_COLOR GetTextColor() const;
 	bool IsInitialized() const;
 	int	GetWidth() const;
 	int	GetHeight() const;
@@ -103,7 +103,7 @@ public:
 	void SetEnabled(bool enabled);
 	void SetVisible(bool visible);	
 	void SetButtonText(std::string initButtonText);	
-	void SetTextColor(int initTextColor);  	
+	void SetTextColor(ALLEGRO_COLOR initTextColor);  	
 	void SetHighlight(bool initHighlight);	
 
 	//functions
@@ -133,7 +133,7 @@ private:
 	int				lastMouseX;
 	int				lastMouseY;
 	ALFONT_FONT		*fontPtr;
-	int				textColor;
+	ALLEGRO_COLOR	textColor;
 
 	//private functions
 

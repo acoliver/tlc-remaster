@@ -54,11 +54,11 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 	else
 		sbBuffer = create_bitmap(sbWidth, sbLines * sbFontHeight);
 
-    ColorControls = makecol(64, 64, 64);
-	ColorBackground = makecol(32, 32, 32);
-	ColorHover = makecol(128, 128, 128);
-	ColorSelectedHighlight = makecol(64, 64, 128);
-	ColorSelectedBackground = makecol(32, 32, 64);
+    ColorControls = al_map_rgb(64, 64, 64);
+	ColorBackground = al_map_rgb(32, 32, 32);
+	ColorHover = al_map_rgb(128, 128, 128);
+	ColorSelectedHighlight = al_map_rgb(64, 64, 128);
+	ColorSelectedBackground = al_map_rgb(32, 32, 64);
 
 	sbScrollIncrement = (float)((sbLines * sbFontHeight)-sbHeight) / (sbScrollBarMax - sbScrollBarMin);
 
@@ -77,7 +77,7 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 		tempLBI.selected = false;
 		tempLBI.hover = false;
 		tempLBI.text.String = "";
-		tempLBI.text.Color = makecol(0,0,0);
+		tempLBI.text.Color = al_map_rgb(0,0,0);
 		for (int a = 0; a < sbLines; a++)
 		{
 			sbListBoxItems.push_back(tempLBI);
@@ -86,7 +86,7 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 	else if (sbScrollBoxType == SB_TEXT)
 	{
 		ColoredString temp;
-		temp.Color = makecol(0, 0, 0);
+		temp.Color = al_map_rgb(0, 0, 0);
 		temp.String = "";
 		for (int a = 0; a < sbLines; a++)
 		{
@@ -98,22 +98,37 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 void ScrollBox::ScrollBox::PaintNormalImage()
 {
     clear_bitmap(sbNormal);
-	rect(sbNormal, 0, 0, al_get_bitmap_width(sbNormal)-1, al_get_bitmap_height(sbNormal)-1, ColorItemBorder);
-	rectfill(sbNormal, 1, 1, al_get_bitmap_width(sbNormal) - 2, al_get_bitmap_height(sbNormal) - 2, ColorBackground);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(sbNormal);
+		al_draw_rectangle(0, 0, al_get_bitmap_width(sbNormal)-1, al_get_bitmap_height(sbNormal)-1, ColorItemBorder, 1.0f);
+		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbNormal) - 2, al_get_bitmap_height(sbNormal) - 2, ColorBackground);
+		al_set_target_bitmap(_old);
+	}
 }
 
 void ScrollBox::ScrollBox::PaintHoverImage()
 {
     clear_bitmap(sbHover);
-	rect(sbHover, 0, 0, al_get_bitmap_width(sbHover)-1, al_get_bitmap_height(sbHover)-1, ColorItemBorder);
-	rectfill(sbHover, 1, 1, al_get_bitmap_width(sbHover) - 2, al_get_bitmap_height(sbHover) - 2, ColorControls);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(sbHover);
+		al_draw_rectangle(0, 0, al_get_bitmap_width(sbHover)-1, al_get_bitmap_height(sbHover)-1, ColorItemBorder, 1.0f);
+		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbHover) - 2, al_get_bitmap_height(sbHover) - 2, ColorControls);
+		al_set_target_bitmap(_old);
+	}
 }
 
 void ScrollBox::ScrollBox::PaintSelectedImage()
 {
     clear_bitmap(sbSelected);
-	rect(sbSelected, 0, 0, al_get_bitmap_width(sbSelected)-1, al_get_bitmap_height(sbSelected)-1, ColorSelectedHighlight);
-	rectfill(sbSelected, 1, 1, al_get_bitmap_width(sbSelected) - 2, al_get_bitmap_height(sbSelected) - 2, ColorSelectedBackground);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(sbSelected);
+		al_draw_rectangle(0, 0, al_get_bitmap_width(sbSelected)-1, al_get_bitmap_height(sbSelected)-1, ColorSelectedHighlight, 1.0f);
+		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbSelected) - 2, al_get_bitmap_height(sbSelected) - 2, ColorSelectedBackground);
+		al_set_target_bitmap(_old);
+	}
 }
 
 ScrollBox::ScrollBox::~ScrollBox()
@@ -176,40 +191,45 @@ void ScrollBox::ScrollBox::Draw(BITMAP *buffer)
 	if (sbRedraw)
 	{
 		//Clear buffer
-		clear_to_color(sbBuffer, BLACK);
+		{
+			ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+			al_set_target_bitmap(sbBuffer);
+			al_clear_to_color(BLACK);
+			al_set_target_bitmap(_old);
+		}
 		int a = 0;
 		if (sbScrollBoxType == SB_TEXT)
 		{
-			for(std::list<ColoredString>::iterator myIt = sbTextLines.begin(); myIt != sbTextLines.end(); myIt++)
-			{
-				alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
-                    (*myIt).Color,-1,(*myIt).String.c_str());
-				a++;
-			}
+		for(std::list<ColoredString>::iterator myIt = sbTextLines.begin(); myIt != sbTextLines.end(); myIt++)
+		{
+			alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
+                color_to_int((*myIt).Color), 0, (*myIt).String.c_str());
+			a++;
+		}
 		}
 		else if (sbScrollBoxType == SB_LIST)
 		{
-            int color;
+            ALLEGRO_COLOR color;
 			for(std::list<ListBoxItem>::iterator myIt = sbListBoxItems.begin(); myIt != sbListBoxItems.end(); myIt++)
 			{
 				if ((*myIt).selected)
                 {
 					blit((*myIt).bSelected, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
-                    color = ColorSelectedText;
-                }
-				else if ((*myIt).hover)
-                {
-					blit((*myIt).bHover, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
-                    color = (*myIt).text.Color;
-                }
-				else
-                {
-					blit((*myIt).bNormal, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
-                    color = (*myIt).text.Color;
-                }
+            color = ColorSelectedText;
+            }
+			else if ((*myIt).hover)
+            {
+				blit((*myIt).bHover, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
+                color = (*myIt).text.Color;
+            }
+			else
+            {
+				blit((*myIt).bNormal, sbBuffer, 0, 0, 0, sbFontHeight * a, sbWidth, sbHeight);
+                color = (*myIt).text.Color;
+            }
 
-				alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
-                    color,-1,(*myIt).text.String.c_str());
+			alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
+                color_to_int(color), 0, (*myIt).text.String.c_str());
 				a++;
 			}
 		}
@@ -539,7 +559,7 @@ bool ScrollBox::ScrollBox::isInsideOffset(int x, int y, AREA area)
 		return false;
 }
 
-void ScrollBox::ScrollBox::Write(std::string text, int color)
+void ScrollBox::ScrollBox::Write(std::string text, ALLEGRO_COLOR color)
 {
 	ColoredString output = {text, color};
 
@@ -606,28 +626,35 @@ void ScrollBox::ScrollBox::Write(ColoredString text)
 
 void ScrollBox::ScrollBox::drawDownArrow(BITMAP *buffer)
 {
-	int highlightColor;
+	ALLEGRO_COLOR highlightColor;
 	if (sbIsOverDown && !sbDragging)
 		highlightColor = ColorHover;
 	else
 		highlightColor = ColorControls;
 
-	rect(buffer, getLinkedX() + sbDownRect.left, getLinkedY() + sbDownRect.top, getLinkedX() + sbDownRect.right, getLinkedY() + sbDownRect.bottom, highlightColor);
-	rectfill(buffer, getLinkedX() + sbDownRect.left+1, getLinkedY() + sbDownRect.top+1, getLinkedX() + sbDownRect.right-1, getLinkedY() + sbDownRect.bottom-1, ColorBackground);
-	line(buffer, getLinkedX() + sbDownRect.left + (sbDownRect.right-sbDownRect.left)/2,
-		getLinkedY() + sbDownRect.bottom - (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.left + (sbDownRect.right - sbDownRect.left)/4,
-		getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, highlightColor);
-	line(buffer, getLinkedX() + sbDownRect.left + (sbDownRect.right - sbDownRect.left)/4,
-		getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.right - (sbDownRect.right - sbDownRect.left)/4,
-		getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, highlightColor);
-	line(buffer, getLinkedX() + sbDownRect.right - (sbDownRect.right - sbDownRect.left)/4,
-		getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.left + (sbDownRect.right-sbDownRect.left)/2,
-		getLinkedY() + sbDownRect.bottom - (sbDownRect.bottom - sbDownRect.top)/4, highlightColor);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(buffer);
+		al_draw_rectangle(getLinkedX() + sbDownRect.left, getLinkedY() + sbDownRect.top, getLinkedX() + sbDownRect.right, getLinkedY() + sbDownRect.bottom, highlightColor, 1.0f);
+		al_draw_filled_rectangle(getLinkedX() + sbDownRect.left+1, getLinkedY() + sbDownRect.top+1, getLinkedX() + sbDownRect.right-1, getLinkedY() + sbDownRect.bottom-1, ColorBackground);
+		
+		al_draw_line(getLinkedX() + sbDownRect.left + (sbDownRect.right-sbDownRect.left)/2,
+			getLinkedY() + sbDownRect.bottom - (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.left + (sbDownRect.right - sbDownRect.left)/4,
+			getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbDownRect.left + (sbDownRect.right - sbDownRect.left)/4,
+			getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.right - (sbDownRect.right - sbDownRect.left)/4,
+			getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbDownRect.right - (sbDownRect.right - sbDownRect.left)/4,
+			getLinkedY() + sbDownRect.top + (sbDownRect.bottom - sbDownRect.top)/4, getLinkedX() + sbDownRect.left + (sbDownRect.right-sbDownRect.left)/2,
+			getLinkedY() + sbDownRect.bottom - (sbDownRect.bottom - sbDownRect.top)/4, highlightColor, 1.0f);
+		
+		al_set_target_bitmap(_old);
+	}
 }
 
 void ScrollBox::ScrollBox::drawScrollBar(BITMAP *buffer)
 {
-	int highlightColor;
+	ALLEGRO_COLOR highlightColor;
 	if (sbIsOverBar || sbDragging)
 		highlightColor = ColorHover;
 	else
@@ -635,46 +662,65 @@ void ScrollBox::ScrollBox::drawScrollBar(BITMAP *buffer)
 
 	int half = (sbScrollRect.right - sbScrollRect.left)/2;
 	int third = (sbScrollRect.right - sbScrollRect.left)/3;
-	rect(buffer, getLinkedX() + sbScrollRect.left, getLinkedY() + sbScrollRect.top, 
-        getLinkedX() + sbScrollRect.right, getLinkedY() + sbScrollRect.bottom, highlightColor);
-	rectfill(buffer, getLinkedX() + sbScrollRect.left + 1, getLinkedY() + sbScrollRect.top + 1,
-		getLinkedX() + sbScrollRect.right - 1, getLinkedY() + sbScrollRect.bottom - 1, ColorBackground);
-	line(buffer, getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half - 2,
-		getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half - 2, highlightColor);
-	line(buffer, getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half,
-		getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half , highlightColor);
-	line(buffer, getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half + 2,
-		getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half + 2, highlightColor);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(buffer);
+		al_draw_rectangle(getLinkedX() + sbScrollRect.left, getLinkedY() + sbScrollRect.top, 
+			getLinkedX() + sbScrollRect.right, getLinkedY() + sbScrollRect.bottom, highlightColor, 1.0f);
+		al_draw_filled_rectangle(getLinkedX() + sbScrollRect.left + 1, getLinkedY() + sbScrollRect.top + 1,
+			getLinkedX() + sbScrollRect.right - 1, getLinkedY() + sbScrollRect.bottom - 1, ColorBackground);
+		
+		al_draw_line(getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half - 2,
+			getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half - 2, highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half,
+			getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half , highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbScrollRect.left + third, getLinkedY() + sbScrollRect.top + half + 2,
+			getLinkedX() + sbScrollRect.right - third, getLinkedY() + sbScrollRect.top + half + 2, highlightColor, 1.0f);
+		
+		al_set_target_bitmap(_old);
+	}
 }
 
 void ScrollBox::ScrollBox::drawTrack(BITMAP *buffer)
 {
 	int half = (sbTrackRect.right - sbTrackRect.left)/2;
-	rect(buffer, getLinkedX() + sbTrackRect.left, getLinkedY() + sbTrackRect.top, getLinkedX() + sbTrackRect.right, getLinkedY() + sbTrackRect.bottom, ColorControls);
-	rectfill(buffer, getLinkedX() + sbTrackRect.left + 1, getLinkedY() + sbTrackRect.top + 1, getLinkedX() + sbTrackRect.right - 1, getLinkedY() + sbTrackRect.bottom - 1, ColorBackground);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(buffer);
+		al_draw_rectangle(getLinkedX() + sbTrackRect.left, getLinkedY() + sbTrackRect.top, getLinkedX() + sbTrackRect.right, getLinkedY() + sbTrackRect.bottom, ColorControls, 1.0f);
+		al_draw_filled_rectangle(getLinkedX() + sbTrackRect.left + 1, getLinkedY() + sbTrackRect.top + 1, getLinkedX() + sbTrackRect.right - 1, getLinkedY() + sbTrackRect.bottom - 1, ColorBackground);
+		al_set_target_bitmap(_old);
+	}
 	//line(buffer, getLinkedX() + sbTrackRect.left + half, getLinkedY() + sbTrackRect.top, getLinkedX() + sbTrackRect.left + half,
 	//	getLinkedY() + sbTrackRect.bottom, ColorControls);
 }
 
 void ScrollBox::ScrollBox::drawUpArrow(BITMAP *buffer)
 {
-	int highlightColor;
+	ALLEGRO_COLOR highlightColor;
 	if (sbIsOverUp && !sbDragging)
 		highlightColor = ColorHover;
 	else
 		highlightColor = ColorControls;
 
-	rect(buffer, getLinkedX() + sbUpRect.left, getLinkedY() + sbUpRect.top, getLinkedX() + sbUpRect.right, getLinkedY() + sbUpRect.bottom, highlightColor);
-	rectfill(buffer, getLinkedX() + sbUpRect.left+1, getLinkedY() + sbUpRect.top+1, getLinkedX() + sbUpRect.right-1, getLinkedY() + sbUpRect.bottom-1, ColorBackground);
-	line(buffer, getLinkedX() + sbUpRect.left + (sbUpRect.right-sbUpRect.left)/2,
-		getLinkedY() + sbUpRect.top + (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.left + (sbUpRect.right - sbUpRect.left)/4,
-		getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, highlightColor);
-	line(buffer, getLinkedX() + sbUpRect.left + (sbUpRect.right - sbUpRect.left)/4,
-		getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.right - (sbUpRect.right - sbUpRect.left)/4,
-		getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, highlightColor);
-	line(buffer, getLinkedX() + sbUpRect.right - (sbUpRect.right - sbUpRect.left)/4,
-		getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.left + (sbUpRect.right-sbUpRect.left)/2,
-		getLinkedY() + sbUpRect.top + (sbUpRect.bottom - sbUpRect.top)/4, highlightColor);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(buffer);
+		al_draw_rectangle(getLinkedX() + sbUpRect.left, getLinkedY() + sbUpRect.top, getLinkedX() + sbUpRect.right, getLinkedY() + sbUpRect.bottom, highlightColor, 1.0f);
+		al_draw_filled_rectangle(getLinkedX() + sbUpRect.left+1, getLinkedY() + sbUpRect.top+1, getLinkedX() + sbUpRect.right-1, getLinkedY() + sbUpRect.bottom-1, ColorBackground);
+		
+		al_draw_line(getLinkedX() + sbUpRect.left + (sbUpRect.right-sbUpRect.left)/2,
+			getLinkedY() + sbUpRect.top + (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.left + (sbUpRect.right - sbUpRect.left)/4,
+			getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbUpRect.left + (sbUpRect.right - sbUpRect.left)/4,
+			getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.right - (sbUpRect.right - sbUpRect.left)/4,
+			getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, highlightColor, 1.0f);
+		al_draw_line(getLinkedX() + sbUpRect.right - (sbUpRect.right - sbUpRect.left)/4,
+			getLinkedY() + sbUpRect.bottom - (sbUpRect.bottom - sbUpRect.top)/4, getLinkedX() + sbUpRect.left + (sbUpRect.right-sbUpRect.left)/2,
+			getLinkedY() + sbUpRect.top + (sbUpRect.bottom - sbUpRect.top)/4, highlightColor, 1.0f);
+		
+		al_set_target_bitmap(_old);
+	}
 }
 
 void ScrollBox::ScrollBox::ScrollToBottom()
@@ -738,7 +784,7 @@ void ScrollBox::ScrollBox::setLines(int lines)
 		tempLBI.selected = false;
 		tempLBI.hover = false;
 		tempLBI.text.String = "";
-		tempLBI.text.Color = makecol(0,0,0);
+		tempLBI.text.Color = al_map_rgb(0,0,0);
 		for (int a = 0; a < sbLines; a++)
 		{
 			sbListBoxItems.push_back(tempLBI);
@@ -748,7 +794,7 @@ void ScrollBox::ScrollBox::setLines(int lines)
 	{
 		sbTextLines.clear();
 		ColoredString temp;
-		temp.Color = makecol(0, 0, 0);
+		temp.Color = al_map_rgb(0, 0, 0);
 		temp.String = "";
 		for (int a = 0; a < sbLines; a++)
 		{
@@ -775,7 +821,7 @@ void ScrollBox::ScrollBox::Clear()
                tempLBI.selected = false;
                tempLBI.hover = false;
                tempLBI.text.String = "";
-               tempLBI.text.Color = makecol(0,0,0);
+               tempLBI.text.Color = al_map_rgb(0,0,0);
                for (int a = 0; a < sbLines; a++)
                {
                        sbListBoxItems.push_back(tempLBI);
@@ -787,7 +833,7 @@ void ScrollBox::ScrollBox::Clear()
        {
                sbTextLines.clear();
                ColoredString temp;
-               temp.Color = makecol(0, 0, 0);
+               temp.Color = al_map_rgb(0, 0, 0);
                temp.String = "";
                for (int a = 0; a < sbLines; a++)
                {

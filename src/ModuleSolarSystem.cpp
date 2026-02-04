@@ -10,6 +10,7 @@
 #include <string>
 #include <exception>
 #include "env.h"
+#include "allegro5_compat.h"
 #include "ModuleSolarSystem.h"
 #include "Button.h"
 #include "ModeMgr.h"
@@ -748,7 +749,7 @@ void ModuleSolarSystem::updateMiniMap()
 	static int ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
 
 	//clear aux window
-	rectfill(g_game->GetBackBuffer(), asx, asy, asx + asw, asy + ash , makecol(0,0,0));
+	rectfill(g_game->GetBackBuffer(), asx, asy, asx + asw, asy + ash , (0 << 16) | (0 << 8) | 0);
 
 	//draw ellipses representing planetary orbits
 	int rx,ry,cx,cy;
@@ -761,7 +762,7 @@ void ModuleSolarSystem::updateMiniMap()
 			cy = asy + ash / 2;
 			rx = (int)( (2 + i) * 8.9 );
 			ry = (int)( (2 + i) * 8.9 );
-			ellipse(g_game->GetBackBuffer(), cx, cy, rx, ry, makecol(12,12,24));
+			ellipse(g_game->GetBackBuffer(), cx, cy, rx, ry, (12 << 16) | (12 << 8) | 24);
 		}
 	}
 
@@ -769,7 +770,7 @@ void ModuleSolarSystem::updateMiniMap()
 	int systemCenterTileX = scroller->GetTilesAcross() / 2;
 	int systemCenterTileY = scroller->GetTilesDown() / 2;
 
-	int color;
+	ALLEGRO_COLOR color;
 	switch(star->spectralClass) {
 		case SC_A: color = WHITE; break;
 		case SC_B: color = LTBLUE; break;
@@ -784,33 +785,33 @@ void ModuleSolarSystem::updateMiniMap()
     //draw the sun at the center
 	float starx = (int)(asx + systemCenterTileX * 2.3);
 	float stary = (int)(asy + systemCenterTileY * 2.3);
-	circlefill(g_game->GetBackBuffer(), starx, stary, 8, color);
+	circlefill(g_game->GetBackBuffer(), starx, stary, 8, color_to_int(color));
 
 	//draw planets in aux window
-	color = 0;
+	int planet_color = 0;
 	int planet=-1, px=0, py=0;
 	for (int i = 0; i < star->GetNumPlanets(); i++)  
     {
-			planet = planets[i].tilenum;
-			if (planet > 0) 
+		planet = planets[i].tilenum;
+		if (planet > 0) 
+        {
+			switch(planet) 
             {
-				switch(planet) 
-                {
-					//case 1: color = makecol(255,182,0);	planets[i].radius = 8;		break; //sun
-					case 2: color = makecol(100,0,100);	planets[i].radius = 5;		break; //gas giant
-					case 3: color = makecol(160,12,8);	planets[i].radius = 2;		break; //molten
-					case 4: color = makecol(200,200,255); planets[i].radius = 2;	break; //frozen
-					case 5: color = makecol(30,100,240); planets[i].radius = 2;		break; //oceanic
-					case 6: color = makecol(134,67,30);	planets[i].radius = 2;		break; //rocky
-					case 7: color = makecol(95,93,93);	planets[i].radius = 1;		break; //asteroid
-					case 8: color = makecol(55,147,84);	planets[i].radius = 2;		break; //acidic
-					default: color = makecol(90,90,90);	planets[i].radius = 1;		break; //none
-				}
-				px = (int)(asx + planets[i].tilex * 2.28);
-				py = (int)(asy + planets[i].tiley * 2.28);
-				circlefill(g_game->GetBackBuffer(), px, py, planets[i].radius, color);
+				//case 1: planet_color = (255 << 16) | (182 << 8) | 0;	planets[i].radius = 8;		break; //sun
+				case 2: planet_color = (100 << 16) | (0 << 8) | 100;	planets[i].radius = 5;		break; //gas giant
+				case 3: planet_color = (160 << 16) | (12 << 8) | 8;	planets[i].radius = 2;		break; //molten
+				case 4: planet_color = (200 << 16) | (200 << 8) | 255; planets[i].radius = 2;	break; //frozen
+				case 5: planet_color = (30 << 16) | (100 << 8) | 240; planets[i].radius = 2;		break; //oceanic
+				case 6: planet_color = (134 << 16) | (67 << 8) | 30;	planets[i].radius = 2;		break; //rocky
+				case 7: planet_color = (95 << 16) | (93 << 8) | 93;	planets[i].radius = 1;		break; //asteroid
+				case 8: planet_color = (55 << 16) | (147 << 8) | 84;	planets[i].radius = 2;		break; //acidic
+				default: planet_color = (90 << 16) | (90 << 8) | 90;	planets[i].radius = 1;		break; //none
 			}
+			px = (int)(asx + planets[i].tilex * 2.28);
+			py = (int)(asy + planets[i].tiley * 2.28);
+			circlefill(g_game->GetBackBuffer(), px, py, planets[i].radius, planet_color);
 		}
+	}
 
 	//draw text
 	if(m_bOver_Planet == true)
@@ -822,7 +823,7 @@ void ModuleSolarSystem::updateMiniMap()
 	//draw player's location on minimap
 	float fx = asx + g_game->gameState->player->posSystem.x / 256 * 2.3;
 	float fy = asy + g_game->gameState->player->posSystem.y / 256 * 2.3;
-	rect(g_game->GetBackBuffer(), (int)fx-1, (int)fy-1, (int)fx+2, (int)fy+2, BLUE);
+	rect(g_game->GetBackBuffer(), (int)fx-1, (int)fy-1, (int)fx+2, (int)fy+2, color_to_int(BLUE));
 }
 
 bool ModuleSolarSystem::LoadStarSystem(int id)
@@ -976,7 +977,7 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
                 {
                     g_game->fatalerror("LoadStarSystem: error creating planet image");
                 }
-                clear_to_color(planetImage, makecol(255,0,255));
+                clear_to_color(planetImage, (255 << 16) | (0 << 8) | 255);
                 
 
                 //rotate planet randomly
@@ -990,7 +991,7 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
 
 
                 BITMAP* scratch = (BITMAP*)create_bitmap(256,256);
-                clear_to_color(scratch, makecol(255,0,255));
+                clear_to_color(scratch, (255 << 16) | (0 << 8) | 255);
                 masked_blit( planetImage, scratch, 0, 0, 0, 0, 256, 256 );
 
 

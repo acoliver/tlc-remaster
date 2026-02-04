@@ -14,7 +14,8 @@
 #include <string>
 #include <vector>
 #include <alfont.h>
-#include "ScrollBox.h"
+// Forward declaration to break circular dependency
+namespace ScrollBox { class ScrollBox; }
 #include "Timer.h"
 #include "Sprite.h"
 #include "LogFile.h"
@@ -31,46 +32,42 @@
 
 //COMMON RGB COLORS
 //
-// COLOR SYSTEM MIGRATION NOTES:
-// These macros currently use makecol() which is compatible with both:
-// - Allegro Legacy (current): makecol() returns int color value
-// - Allegro 5 (future): makecol is #defined to al_map_rgb() in allegro5_compat.h
-//
-// When fully migrated to native Allegro 5, these will return ALLEGRO_COLOR structs.
-// The compatibility layer in allegro5_compat.h handles the transition transparently.
+// COLOR SYSTEM: Migrated to Allegro 5 native colors
+// These macros now return ALLEGRO_COLOR structs using al_map_rgb().
 //
 // Transparent pink (255,0,255) usage: In Allegro 4, magenta was used as a mask color.
 // In Allegro 5, use al_convert_mask_to_alpha() after loading bitmaps, or clear to
 // al_map_rgba(0,0,0,0) for fully transparent surfaces.
 //
-#define BLACK			makecol(0,0,0)
-#define GRAY1			makecol(232,232,232)
-#define DGRAY           makecol(120,120,120)
-#define WHITE			makecol(255,255,255)
-#define BLUE			makecol(0,0,255)
-#define LTBLUE			makecol(150,150,255)
-#define SKYBLUE			makecol(0,216,255)
-#define DODGERBLUE		makecol(30,144,255)
-#define ROYALBLUE		makecol(39,64,139)
-#define PURPLE			makecol(212, 72,255)
-#define RED				makecol(255,0,0)
-#define LTRED			makecol(255,150,150)
-#define ORANGE			makecol(255,165,0)
-#define DKORANGE		makecol(255,140,0)
-#define BRTORANGE		makecol(255,120,0)
-#define YELLOW			makecol(250,250,0)
-#define LTYELLOW		makecol(255,255,0)
-#define GREEN			makecol(0,255,0)
-#define LTGREEN			makecol(150,255,150)
-#define PINEGREEN		makecol(80,170,80)
-#define STEEL			makecol(159,182,205)
-#define KHAKI			makecol(238,230,133)
-#define DKKHAKI			makecol(139,134,78)
+#define BLACK			al_map_rgb(0,0,0)
+#define GRAY			al_map_rgb(160,160,160)
+#define GRAY1			al_map_rgb(232,232,232)
+#define DGRAY           al_map_rgb(120,120,120)
+#define WHITE			al_map_rgb(255,255,255)
+#define BLUE			al_map_rgb(0,0,255)
+#define LTBLUE			al_map_rgb(150,150,255)
+#define SKYBLUE			al_map_rgb(0,216,255)
+#define DODGERBLUE		al_map_rgb(30,144,255)
+#define ROYALBLUE		al_map_rgb(39,64,139)
+#define PURPLE			al_map_rgb(212, 72,255)
+#define RED				al_map_rgb(255,0,0)
+#define LTRED			al_map_rgb(255,150,150)
+#define ORANGE			al_map_rgb(255,165,0)
+#define DKORANGE		al_map_rgb(255,140,0)
+#define BRTORANGE		al_map_rgb(255,120,0)
+#define YELLOW			al_map_rgb(250,250,0)
+#define LTYELLOW		al_map_rgb(255,255,0)
+#define GREEN			al_map_rgb(0,255,0)
+#define LTGREEN			al_map_rgb(150,255,150)
+#define PINEGREEN		al_map_rgb(80,170,80)
+#define STEEL			al_map_rgb(159,182,205)
+#define KHAKI			al_map_rgb(238,230,133)
+#define DKKHAKI			al_map_rgb(139,134,78)
 
-#define GREEN2			makecol(71,161,91)
-#define RED2			makecol(110,26,15)
-#define YELLOW2			makecol(232,238,106)
-#define GOLD			makecol(255,216,0)
+#define GREEN2			al_map_rgb(71,161,91)
+#define RED2			al_map_rgb(110,26,15)
+#define YELLOW2			al_map_rgb(232,238,106)
+#define GOLD			al_map_rgb(255,216,0)
 
 #define FLUX_SCANNER_ID 2
 
@@ -123,7 +120,7 @@ public:
 		std::string initText = "",
 		int initWidth = 400,
 		int initHeight = 300,
-		int initTextColor = WHITE,
+		ALLEGRO_COLOR initTextColor = WHITE,
 		int initX = SCREEN_WIDTH/2,
 		int initY = SCREEN_HEIGHT/2,
 		bool initCentered = true,
@@ -153,26 +150,26 @@ public:
 	ALFONT_FONT *font24;
 	ALFONT_FONT *font32;
 
-	void PrintDefault(BITMAP *dest,int x,int y, std::string text,int color = WHITE);
-	void Print(BITMAP *dest,ALFONT_FONT *_font, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow = false);
-	void Print12(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
-	void Print18(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
-	void Print20(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
-	void Print22(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
-	void Print24(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
-	void Print32(BITMAP *dest, int x,int y,std::string text, int color = makecol(255,255,255), bool shadow=false);
+	void PrintDefault(BITMAP *dest,int x,int y, std::string text,ALLEGRO_COLOR color = WHITE);
+	void Print(BITMAP *dest,ALFONT_FONT *_font, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow = false);
+	void Print12(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
+	void Print18(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
+	void Print20(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
+	void Print22(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
+	void Print24(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
+	void Print32(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color = WHITE, bool shadow=false);
 
 	//shared print to ScrollBox in GUI modules
 	struct TimedText
 	{
 		std::string text;
-		int color;
+		ALLEGRO_COLOR color;
 		long delay;
 	};
 	std::vector<TimedText> messages;
     ScrollBox::ScrollBox *g_scrollbox;
-	void printout(ScrollBox::ScrollBox *scroll, std::string text, int color=WHITE, long delay=-1);
-	int MsgColors[NUM_MSGTYPES];
+	void printout(ScrollBox::ScrollBox *scroll, std::string text, ALLEGRO_COLOR color=WHITE, long delay=-1);
+	ALLEGRO_COLOR MsgColors[NUM_MSGTYPES];
 	void PrintMsg(MsgType msgtype, OfficerType officertype, std::string msg, int delay);
 
    //used to retrieve global values from script file globals.lua

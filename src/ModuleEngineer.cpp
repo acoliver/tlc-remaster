@@ -109,7 +109,7 @@ bool ModuleEngineer::Init()
 	}
 	
 	text = create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
-	clear_to_color(text,makecol(255,0,255));
+	tlc_clear_to_transparent(text);
 
 	//load button images
 	img_button_repair = al_load_bitmap("data/engineer/aux_repair.bmp");
@@ -121,15 +121,15 @@ bool ModuleEngineer::Init()
 
 	//Create and initialize the crew buttons
 	button[0] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
-							700+X_OFFSET, 135 , 0, EVENT_REPAIR_LASERS, g_game->font22,"", makecol(255,255,255), "click");
+							700+X_OFFSET, 135 , 0, EVENT_REPAIR_LASERS, g_game->font22,"", al_map_rgb(255,255,255), "click");
 	button[1] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
-							150+X_OFFSET, 180 , 0, EVENT_REPAIR_MISSILES, g_game->font22,"", makecol(255,255,255), "click");
+							150+X_OFFSET, 180 , 0, EVENT_REPAIR_MISSILES, g_game->font22,"", al_map_rgb(255,255,255), "click");
 	button[2] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
-							683+X_OFFSET, 230 , 0, EVENT_REPAIR_HULL, g_game->font22,"", makecol(255,255,255), "click");
+							683+X_OFFSET, 230 , 0, EVENT_REPAIR_HULL, g_game->font22,"", al_map_rgb(255,255,255), "click");
 	button[3] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
-							670+X_OFFSET, 325 , 0, EVENT_REPAIR_SHIELDS, g_game->font22,"", makecol(255,255,255), "click");
+							670+X_OFFSET, 325 , 0, EVENT_REPAIR_SHIELDS, g_game->font22,"", al_map_rgb(255,255,255), "click");
 	button[4] = new Button(img_button_repair,img_button_repair_over,img_button_repair,
-							150+X_OFFSET, 385 , 0, EVENT_REPAIR_ENGINES, g_game->font22,"", makecol(255,255,255), "click");
+							150+X_OFFSET, 385 , 0, EVENT_REPAIR_ENGINES, g_game->font22,"", al_map_rgb(255,255,255), "click");
 
 	for(int i = 0; i < 5; i++){
 		if (button[i] == NULL){return false;}
@@ -309,21 +309,21 @@ void ModuleEngineer::Draw()
 		
 	percentage =  g_game->gameState->getShip().getEngineIntegrity() / 100.0f;
 	masked_blit(img_bar_engine, g_game->GetBackBuffer(),0,0, 170+X_OFFSET, 385+viewer_offset_y, al_get_bitmap_width(img_bar_engine) * percentage, al_get_bitmap_height(img_bar_base)); //engines
-		line(g_game->GetBackBuffer(), 407+X_OFFSET, 104+viewer_offset_y, 560+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
-		line(g_game->GetBackBuffer(), 560+X_OFFSET, 130+viewer_offset_y, 690+X_OFFSET, 130+viewer_offset_y, GREEN); //laser line
+		al_draw_line(407+X_OFFSET, 104+viewer_offset_y, 560+X_OFFSET, 130+viewer_offset_y, GREEN, 1); //laser line
+		al_draw_line(560+X_OFFSET, 130+viewer_offset_y, 690+X_OFFSET, 130+viewer_offset_y, GREEN, 1); //laser line
 
-		line(g_game->GetBackBuffer(), 410+X_OFFSET, 175+viewer_offset_y, 175+X_OFFSET, 175+viewer_offset_y, GREEN); //missile line
+		al_draw_line(410+X_OFFSET, 175+viewer_offset_y, 175+X_OFFSET, 175+viewer_offset_y, GREEN, 1); //missile line
 
-		line(g_game->GetBackBuffer(), 405+X_OFFSET, 250+viewer_offset_y, 540+X_OFFSET, 225+viewer_offset_y, GREEN); //hull line
-		line(g_game->GetBackBuffer(), 540+X_OFFSET, 225+viewer_offset_y, 675+X_OFFSET, 225+viewer_offset_y, GREEN); //hull line
+		al_draw_line(405+X_OFFSET, 250+viewer_offset_y, 540+X_OFFSET, 225+viewer_offset_y, GREEN, 1); //hull line
+		al_draw_line(540+X_OFFSET, 225+viewer_offset_y, 675+X_OFFSET, 225+viewer_offset_y, GREEN, 1); //hull line
 
-		line(g_game->GetBackBuffer(), 395+X_OFFSET, 235+viewer_offset_y, 280+X_OFFSET, 265+viewer_offset_y, GREEN); //armor line
-		line(g_game->GetBackBuffer(), 280+X_OFFSET, 265+viewer_offset_y, 155+X_OFFSET, 265+viewer_offset_y, GREEN); //armor line
+		al_draw_line(395+X_OFFSET, 235+viewer_offset_y, 280+X_OFFSET, 265+viewer_offset_y, GREEN, 1); //armor line
+		al_draw_line(280+X_OFFSET, 265+viewer_offset_y, 155+X_OFFSET, 265+viewer_offset_y, GREEN, 1); //armor line
 
-		line(g_game->GetBackBuffer(), 408+X_OFFSET, 320+viewer_offset_y, 660+X_OFFSET, 320+viewer_offset_y, GREEN); //shield line
+		al_draw_line(408+X_OFFSET, 320+viewer_offset_y, 660+X_OFFSET, 320+viewer_offset_y, GREEN, 1); //shield line
 
-		line(g_game->GetBackBuffer(), 408+X_OFFSET, 355+viewer_offset_y, 275+X_OFFSET, 380+viewer_offset_y, GREEN); //engine line
-		line(g_game->GetBackBuffer(), 275+X_OFFSET, 380+viewer_offset_y, 170+X_OFFSET, 380+viewer_offset_y, GREEN); //engine line
+		al_draw_line(408+X_OFFSET, 355+viewer_offset_y, 275+X_OFFSET, 380+viewer_offset_y, GREEN, 1); //engine line
+		al_draw_line(275+X_OFFSET, 380+viewer_offset_y, 170+X_OFFSET, 380+viewer_offset_y, GREEN, 1); //engine line
 		button[0]->SetY(135 + viewer_offset_y);
 		button[1]->SetY(180 + viewer_offset_y);
 		button[2]->SetY(230 + viewer_offset_y);
@@ -340,7 +340,7 @@ void ModuleEngineer::Draw()
 	float repair_time, repair_rate = 0;
 	float repair_skill = g_game->gameState->CalcEffectiveSkill(SKILL_ENGINEERING);
 
-	clear_to_color(text,makecol(255,0,255));
+	tlc_clear_to_transparent(text);
 	s = "LASERS: " + ship.getLaserClassString();
 	if(ship.partInRepair == PART_LASERS){
 		if(ship.getLaserIntegrity() < 100 && ship.getLaserIntegrity() > 0){
@@ -358,9 +358,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The lasers are now fully functional!", BLUE, 5000);
 		}
-		textout_ex(text, g_game->font22, s.c_str(), 580, 115, LTGREEN, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 580, 115, color_to_int(LTGREEN), -1);
 	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 580, 115, LTBLUE, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 580, 115, color_to_int(LTBLUE), -1);
 	}
 
 	s = "MISSILES: " + ship.getMissileLauncherClassString();
@@ -380,9 +380,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The missile system is now fully functional!", BLUE,5000);
 		}
-		textout_ex(text, g_game->font22, s.c_str(), 175, 160, LTGREEN, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 175, 160, color_to_int(LTGREEN), -1);
 	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 175, 160, LTBLUE, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 175, 160, color_to_int(LTBLUE), -1);
 	}
 
 	s = "HULL";
@@ -402,13 +402,13 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The hull is now fully repaired!", BLUE, 5000);
 		}
-		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTGREEN, -1);
+		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, color_to_int(LTGREEN), -1);
 	}else{
-		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTBLUE, -1);
+		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, color_to_int(LTBLUE), -1);
 	}
 
 	s = "ARMOR: " + ship.getArmorClassString();
-	textout_ex(text, g_game->font22, s.c_str(), 155, 250, LTBLUE, -1);
+	textout_ex(text, g_game->font22, s.c_str(), 155, 250, color_to_int(LTBLUE), -1);
 
 	s = "SHIELDS: " + ship.getShieldClassString();
 	if(ship.partInRepair == PART_SHIELDS){
@@ -429,9 +429,9 @@ void ModuleEngineer::Draw()
 			ship.setShieldCapacity(ship.getMaxShieldCapacity());
 			g_game->printout(g_game->g_scrollbox, eng + "The shields are now fully functional!", BLUE,5000);
 		}
-		textout_ex(text, g_game->font22, s.c_str(), 550, 305, LTGREEN, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 550, 305, color_to_int(LTGREEN), -1);
 	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 550, 305, LTBLUE, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 550, 305, color_to_int(LTBLUE), -1);
 	}
 
 	s = "ENGINES: " + ship.getEngineClassString();
@@ -451,9 +451,9 @@ void ModuleEngineer::Draw()
 			ship.partInRepair = PART_NONE;
 			g_game->printout(g_game->g_scrollbox, eng + "The engines are now fully repaired!", BLUE, 5000);
 		}
-		textout_ex(text, g_game->font22, s.c_str(), 170, 365, LTGREEN, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 170, 365, color_to_int(LTGREEN), -1);
 	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 170, 365, LTBLUE, -1);
+		textout_ex(text, g_game->font22, s.c_str(), 170, 365, color_to_int(LTBLUE), -1);
 	}
 	g_game->gameState->setShip(ship);
 	masked_blit(text, g_game->GetBackBuffer(), 0, 0, X_OFFSET, viewer_offset_y, VIEWER_WIDTH, VIEWER_HEIGHT);

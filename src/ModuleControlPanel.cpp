@@ -28,7 +28,7 @@ using namespace std;
 #define CP_COMMAND_TOOLTIP_Y GUI_CONTROLPANEL_POS_Y + 270
 
 
-#define TRANSPARENTCLR makecol(255,0,255)
+#define TRANSPARENTCLR al_map_rgb(255,0,255)
 
 ModuleControlPanel::ModuleControlPanel(void)
 {
@@ -732,7 +732,7 @@ void ModuleControlPanel::OnEvent(Event * event){}
 // CommandButton
 //******************************************************************************
 
-#define CMDBUTTON_LABEL_CLR			makecol(0,0,0)
+#define CMDBUTTON_LABEL_CLR			al_map_rgb(0,0,0)
 
 BITMAP* ModuleControlPanel::CommandButton::imgBackground = NULL;
 BITMAP* ModuleControlPanel::CommandButton::imgBackgroundDisabled = NULL;
@@ -912,13 +912,13 @@ void ModuleControlPanel::CommandButton::Render(BITMAP *canvas, BITMAP *imgBackgr
 #define OFFICER_MOUSEOVERTIP_SPACEFROMBTN_X		3
 #define OFFICER_MOUSEOVERTIP_SPACEFROMBTN_Y		0
 #define OFFICER_MOUSEOVERTIP_BORDER_THICKNESS	2
-#define OFFICER_MOUSEOVERTIP_BORDER_CLR			makecol(0,0,0)
-#define OFFICER_MOUSEOVERTIP_BACKGROUND_CLR		makecol(200,200,200)
-#define OFFICER_MOUSEOVERTIP_TEXT_CLR			makecol(255,255,0)
+#define OFFICER_MOUSEOVERTIP_BORDER_CLR			al_map_rgb(0,0,0)
+#define OFFICER_MOUSEOVERTIP_BACKGROUND_CLR		al_map_rgb(200,200,200)
+#define OFFICER_MOUSEOVERTIP_TEXT_CLR			al_map_rgb(255,255,0)
 #define OFFICER_MOUSEOVERTIP_INNER_SPACING		5
 #define OFFICER_MOUSEOVERTIP_BAR_HEIGHT			10
-#define OFFICER_MOUSEOVERTIP_HEALTH_CLR			makecol(255,0,0)
-#define OFFICER_MOUSEOVERTIP_LABEL_CLR			makecol(255,255,255)
+#define OFFICER_MOUSEOVERTIP_HEALTH_CLR			al_map_rgb(255,0,0)
+#define OFFICER_MOUSEOVERTIP_LABEL_CLR			al_map_rgb(255,255,255)
 #define OFFICER_MOUSEOVERTIP_TEXTOFFSET_X		6
 #define OFFICER_MOUSEOVERTIP_TEXTOFFSET_Y		6
 
@@ -993,7 +993,7 @@ void ModuleControlPanel::OfficerButton::RenderMouseOver(BITMAP *canvas)
 	static int y = CP_OFFICER_TOOLTIP_Y;
 
 	// clear background
-	rectfill(canvas, x, y, x+155, y+32, makecol(57,59,134));
+	rectfill(canvas, x, y, x+155, y+32, color_to_int(al_map_rgb(57,59,134)));
 
 	// draw tooltip of crew position/name
 	g_game->Print18(canvas, x + 5, y, officer->GetTitle().c_str(), OFFICER_MOUSEOVERTIP_TEXT_CLR);
@@ -1023,7 +1023,7 @@ void ModuleControlPanel::OfficerButton::RenderSelected(BITMAP *canvas)
 	static int y = CP_OFFICER_TOOLTIP_Y;
 
 	// clear background
-	rectfill(canvas, x, y, x+155, y+32, makecol(57,59,134));
+	rectfill(canvas, x, y, x+155, y+32, color_to_int(al_map_rgb(57,59,134)));
 
     // draw tooltip of crew position/name
 	g_game->Print18(canvas, x + 5, y, officer->GetTitle().c_str(), OFFICER_MOUSEOVERTIP_TEXT_CLR);

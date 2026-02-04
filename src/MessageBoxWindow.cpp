@@ -16,7 +16,7 @@ MessageBoxWindow::MessageBoxWindow(
 	std::string initText,
 	int initX, int initY, 
 	int initWidth, int initHeight, 
-	int initTextColor, 
+	ALLEGRO_COLOR initTextColor, 
 	bool initCentered) : 
         heading(initheading),
 		text(initText),
@@ -87,7 +87,7 @@ int MessageBoxWindow::GetX()								const { return x; }
 int MessageBoxWindow::GetY()								const { return y; }
 int MessageBoxWindow::GetWidth()							const { return width; }
 int MessageBoxWindow::GetHeight()							const { return height; }
-int MessageBoxWindow::GetTextColor()						const { return textColor; }
+ALLEGRO_COLOR MessageBoxWindow::GetTextColor()				const { return textColor; }
 bool MessageBoxWindow::IsCentered()							const { return centered; }
 bool MessageBoxWindow::IsVisible()							const { return visible; }
 
@@ -98,7 +98,7 @@ void MessageBoxWindow::SetX(int initX)						{ x = initX; labelText->SetX(x); lab
 void MessageBoxWindow::SetY(int initY)						{ y = initY; labelText->SetY(y); labelText->Refresh(); }
 void MessageBoxWindow::SetWidth(int initWidth)				{ width = initWidth; }
 void MessageBoxWindow::SetHeight(int initHeight)			{ height = initHeight; }
-void MessageBoxWindow::SetTextColor(int initTextColor)		{ textColor = initTextColor; }
+void MessageBoxWindow::SetTextColor(ALLEGRO_COLOR initTextColor) { textColor = initTextColor; }
 void MessageBoxWindow::SetCentered(bool initCentered)		{ centered = initCentered; }
 void MessageBoxWindow::SetVisible(bool visibility)			{ visible = visibility; }
 

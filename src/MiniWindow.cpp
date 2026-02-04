@@ -77,7 +77,7 @@ void MiniWindow::Draw(BITMAP *destination)
 //Draws the box at the specified x/y position
 void MiniWindow::Draw(BITMAP *destination, int x, int y)
 {
-	int PINK = makecol(255,0,255);
+	int PINK = (255 << 16) | (0 << 8) | 255;
 	if (mwCorner == NULL || mwSide == NULL || mwInterior == NULL)
 	{
 		textout_ex(destination, g_game->font12, "Bitmaps not established", x, y, PINK, 01);

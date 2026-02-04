@@ -1,4 +1,5 @@
 
+#include "allegro5_compat.h"
 #include "PlanetSurfaceObject.h"
 #include "ModulePlanetSurface.h"
 #include "Sprite.h"
@@ -64,7 +65,7 @@ PlanetSurfaceObject::PlanetSurfaceObject() :
 	threshold1(0),
 	threshold2(0),
 	threshold3(0),
-	minimapColor(BRTORANGE),
+	minimapColor(color_to_int(BRTORANGE)),
 	minimapSize(1)
 {
 	defaultAnim = new Animation(0, 1, 0);
@@ -127,7 +128,7 @@ PlanetSurfaceObject::PlanetSurfaceObject(lua_State* LuaVM, std::string ScriptNam
 	threshold1(0),
 	threshold2(0),
 	threshold3(0),
-	minimapColor(BRTORANGE),
+	minimapColor(color_to_int(BRTORANGE)),
 	minimapSize(1)
 {
 	defaultAnim = new Animation(0, 1, 0);
@@ -302,7 +303,7 @@ void PlanetSurfaceObject::TimedUpdate()
 void PlanetSurfaceObject::Draw()
 {
 	if (selected)
-		ellipse(g_game->GetBackBuffer(), (int)(getXOffset() - g_game->gameState->player->posPlanet.x), (int)(getYOffset() - g_game->gameState->player->posPlanet.y), (int)(width * scale)/2, (int)(height * scale)/2, GREEN);
+		ellipse(g_game->GetBackBuffer(), (int)(getXOffset() - g_game->gameState->player->posPlanet.x), (int)(getYOffset() - g_game->gameState->player->posPlanet.y), (int)(width * scale)/2, (int)(height * scale)/2, color_to_int(GREEN));
 
 	Draw(g_game->GetBackBuffer());
 	//rect(g_game->GetBackBuffer(), getXOffset() - g_game->gameState->player->posPlanet.x - getColHalfWidth(), getYOffset() - g_game->gameState->player->posPlanet.y  - getColHalfHeight(), getXOffset() - g_game->gameState->player->posPlanet.x + getColHalfWidth(), getYOffset() - g_game->gameState->player->posPlanet.y + getColHalfHeight(), RED);

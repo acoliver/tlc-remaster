@@ -198,7 +198,7 @@ void Game::ShowMessageBoxWindow(
 	std::string initText,
 	int initWidth,
 	int initHeight,
-	int initTextColor,
+	ALLEGRO_COLOR initTextColor,
 	int initX,
 	int initY,
 	bool initCentered,
@@ -1252,7 +1252,6 @@ void Game::RunGame()
     //display debug info on the upper-left corner of screen
     if (g_game->getGlobalBoolean("DEBUG_MODE") && g_game->getGlobalBoolean("DEBUG_CORE"))
     {
-        int GRAY = makecol(160,160,160);
         ostringstream oss(""); 
 		int y = 3;  int x = 3;
 	    // x == 0 doesn't quite work on the Trade Depot Screen - made it a 3 - jjh
@@ -1688,42 +1687,42 @@ bool Game::InitializeModules()
 
 
 
-void Game::PrintDefault(BITMAP *dest,int x,int y, std::string text,int color)
+void Game::PrintDefault(BITMAP *dest,int x,int y, std::string text,ALLEGRO_COLOR color)
 {
 	// Use font12 as the default font for PrintDefault
-	alfont_textprintf_ex(dest, font12, x, y, color, -1, text.c_str());
+	alfont_textprintf_ex(dest, font12, x, y, color_to_int(color), 0, text.c_str());
 }
 
-void Game::Print(BITMAP *dest, ALFONT_FONT *_font, int x,int y,std::string text, int color, bool shadow)
+void Game::Print(BITMAP *dest, ALFONT_FONT *_font, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	if (shadow) {
-		alfont_textprintf_ex(dest, _font, x+2, y+2, BLACK, -1, text.c_str());
+		alfont_textprintf_ex(dest, _font, x+2, y+2, color_to_int(BLACK), 0, text.c_str());
 	}
-	alfont_textprintf_ex(dest, _font, x, y, color, -1, text.c_str());
+	alfont_textprintf_ex(dest, _font, x, y, color_to_int(color), 0, text.c_str());
 }
 
-void Game::Print12(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print12(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font12, x, y, text, color, shadow);
 }
 
-void Game::Print18(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print18(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font18, x, y, text, color, shadow);
 }
-void Game::Print20(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print20(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font20, x, y, text, color, shadow);
 }
-void Game::Print22(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print22(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font22, x, y, text, color, shadow);
 }
-void Game::Print24(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print24(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font24, x, y, text, color, shadow);
 }
-void Game::Print32(BITMAP *dest, int x,int y,std::string text, int color, bool shadow)
+void Game::Print32(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	Print(dest, font32, x, y, text, color, shadow);
 }
@@ -1734,7 +1733,7 @@ printing out repeatedly, which occurs frequently in state-based timed sections o
 called repeatedly, where we don't want messages printing repeatedly. Default delay of -1 causes
 message to print only once (until ScrollBox is cleared). delay of 0 forces printout.
  **/
-void Game::printout(ScrollBox::ScrollBox *scroll, string str, int color, long delay)
+void Game::printout(ScrollBox::ScrollBox *scroll, string str, ALLEGRO_COLOR color, long delay)
 {
 	bool found = false;
 
@@ -1788,7 +1787,7 @@ void Game::printout(ScrollBox::ScrollBox *scroll, string str, int color, long de
 void Game::PrintMsg(MsgType msgtype, OfficerType officertype, std::string msg, int delay)
 {
 	std::string buf(msg), s;
-	int color = MsgColors[msgtype];
+	ALLEGRO_COLOR color = MsgColors[msgtype];
 	Officer *tempOfficer = gameState->getCurrentOfficerByType(officertype);
 
 	s = tempOfficer->getLastName() + "-> ";

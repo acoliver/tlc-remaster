@@ -86,13 +86,13 @@ bool ModuleQuestLog::Init()
 	log_active = false;
 
 	//create quest name label
-	int questTitleColor = makecol(255,84,0);
+	ALLEGRO_COLOR questTitleColor = al_map_rgb(255,84,0);
 	questName = new Label(g_game->questMgr->getName(), 
 		viewer_offset_x+NAME_X, viewer_offset_y+NAME_Y, NAME_W, NAME_H, questTitleColor, g_game->font22);
 	questName->Refresh();
 
 	//create quest description label
-	int questTextColor = makecol(255,255,255);
+	ALLEGRO_COLOR questTextColor = al_map_rgb(255,255,255);
 	questDesc = new Label(g_game->questMgr->getShort(), 
 		viewer_offset_x+DESC_X, viewer_offset_y+DESC_Y, DESC_W, DESC_H, questTextColor, g_game->font22);
 	questDesc->Refresh();
@@ -142,7 +142,7 @@ void ModuleQuestLog::Draw()
 
 		//display quest completion status
 		string metstr;
-		int metcolor;
+		ALLEGRO_COLOR metcolor;
 		if (g_game->gameState->getQuestCompleted()) {
 			metstr = "(COMPLETE)";
 			metcolor = GREEN;

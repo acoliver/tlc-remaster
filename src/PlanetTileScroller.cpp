@@ -1,6 +1,7 @@
 
 #include "env.h"
 #include "env.h"
+#include "allegro5_compat.h"
 #include <string.h>
 #include "Util.h"
 #include "Game.h"
@@ -273,7 +274,7 @@ void PlanetTileScroller::UpdateScrollBuffer()
 	if ( (!scrollbuffer) ) return;
 	if (tileWidth < 1 || tileHeight < 1) return;
 
-	clear_to_color(scrollbuffer, BLUE);
+	clear_to_color(scrollbuffer, color_to_int(BLUE));
 	//calculate starting tile position
 	int tilex = (int)scrollX / tileWidth;
 	int tiley = (int)scrollY / tileHeight;

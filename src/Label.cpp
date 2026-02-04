@@ -15,7 +15,7 @@
 //	image = create_bitmap(Width, Height);
 //}
 
-Label::Label(std::string Text, int X, int Y, int Width, int Height, int Color, ALFONT_FONT *Font) :
+Label::Label(std::string Text, int X, int Y, int Width, int Height, ALLEGRO_COLOR Color, ALFONT_FONT *Font) :
 	text(Text),
 	xPos(X),
 	yPos(Y),
@@ -38,7 +38,10 @@ Label::~Label()
 
 void Label::Refresh()
 {
-	clear_to_color(image, makecol(255,0,255));
+	ALLEGRO_BITMAP *old = al_get_target_bitmap();
+	al_set_target_bitmap(image);
+	al_clear_to_color(al_map_rgba(0,0,0,0));
+	al_set_target_bitmap(old);
 
     //handle wrapping
 	if (alfont_text_length(alFont, text.c_str()) > width)
@@ -60,23 +63,23 @@ void Label::Refresh()
 			{
 				myIt++;
 			}
-			if (myIt != spacePos.begin())
-				myIt--;
+		if (myIt != spacePos.begin())
+			myIt--;
 
-			alfont_textprintf_ex(image, alFont, 0, h, color,-1,(text.substr(startpos, (*myIt) - startpos)).c_str());
-			h += alfont_get_font_height(alFont);
-			
-			if (h > height) break;
+		alfont_textprintf_ex(image, alFont, 0, h, color_to_int(color), 0, (text.substr(startpos, (*myIt) - startpos)).c_str());
+		h += alfont_get_font_height(alFont);
+		
+		if (h > height) break;
 
-			startpos = (*myIt)+1;
-			myIt++;
-		}
+		startpos = (*myIt)+1;
+		myIt++;
 	}
-	else
-	{
+}
+else
+{
         //print entire message on one line
-		alfont_textprintf_ex(image, alFont, 0, 0, color, -1, text.c_str());
-	}
+	alfont_textprintf_ex(image, alFont, 0, 0, color_to_int(color), 0, text.c_str());
+}
 }
 
 void Label::Draw(BITMAP *Canvas)
@@ -94,7 +97,7 @@ void Label::SetHeight(int Height)
 	height = Height;
 }
 
-void Label::SetColor(int Color)
+void Label::SetColor(ALLEGRO_COLOR Color)
 {
 	color = Color;
 }

@@ -20,16 +20,6 @@ struct ALFONT_FONT {
     ALLEGRO_FONT* a5_font;
 };
 
-// Convert packed RGB int color (0x00RRGGBB from makecol) to ALLEGRO_COLOR
-static ALLEGRO_COLOR a4_color_to_a5(int a4_color)
-{
-    // Colors are packed as 0x00RRGGBB by makecol() in allegro5_compat.h
-    const int r = (a4_color >> 16) & 0xFF;
-    const int g = (a4_color >> 8) & 0xFF;
-    const int b = a4_color & 0xFF;
-    return al_map_rgb(r, g, b);
-}
-
 static void alfont_reload_if_needed(ALFONT_FONT* f)
 {
     if (!f) {
@@ -161,6 +151,18 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
         return;
     }
 
+    // Convert int colors to ALLEGRO_COLOR
+    unsigned char r = (color >> 16) & 0xFF;
+    unsigned char g = (color >> 8) & 0xFF;
+    unsigned char b = color & 0xFF;
+    ALLEGRO_COLOR a5_color = al_map_rgb(r, g, b);
+    
+    unsigned char bg_r = (bg >> 16) & 0xFF;
+    unsigned char bg_g = (bg >> 8) & 0xFF;
+    unsigned char bg_b = bg & 0xFF;
+    unsigned char bg_a = (bg >> 24) & 0xFF;
+    ALLEGRO_COLOR a5_bg = al_map_rgba(bg_r, bg_g, bg_b, bg_a);
+
     // Draw text directly onto the Allegro 4 bitmap's pixel buffer
     // We need to use Allegro 4's textout functions or draw to a temp A5 bitmap
     // and blit the result back.
@@ -182,8 +184,8 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
     al_set_target_bitmap(temp);
     
     // Clear with transparent or background color
-    if (bg != -1) {
-        al_clear_to_color(a4_color_to_a5(bg));
+    if (bg_a > 0) {
+        al_clear_to_color(a5_bg);
     } else {
         al_clear_to_color(al_map_rgba(0, 0, 0, 0));
     }
@@ -196,7 +198,7 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
         draw_x = (float)(text_w - 2);
     }
     
-    al_draw_text(font->a5_font, a4_color_to_a5(color), draw_x, 0, flags, text);
+    al_draw_text(font->a5_font, a5_color, draw_x, 0, flags, text);
     
     al_set_target_bitmap(prev);
     
@@ -228,7 +230,7 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
                     int bmp_x = dest_x + px;
                     int bmp_y = y + py;
                     if (bmp_x >= 0 && bmp_x < al_get_bitmap_width(bmp) && bmp_y >= 0 && bmp_y < al_get_bitmap_height(bmp)) {
-                        putpixel(bmp, bmp_x, bmp_y, makecol(r, g, b));
+                        putpixel(bmp, bmp_x, bmp_y, (r << 16) | (g << 8) | b);
                     }
                 }
             }
@@ -242,7 +244,7 @@ static void alfont_draw_text_common(BITMAP* bmp, ALFONT_FONT* font, const char* 
 
 void alfont_textout(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color)
 {
-    alfont_draw_text_common(bmp, font, text, x, y, color, -1, 0);
+    alfont_draw_text_common(bmp, font, text, x, y, color, 0, 0);
 }
 
 void alfont_textout_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg)
@@ -252,7 +254,7 @@ void alfont_textout_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, 
 
 void alfont_textout_centre(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color)
 {
-    alfont_draw_text_common(bmp, font, text, x, y, color, -1, ALLEGRO_ALIGN_CENTRE);
+    alfont_draw_text_common(bmp, font, text, x, y, color, 0, ALLEGRO_ALIGN_CENTRE);
 }
 
 void alfont_textout_centre_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg)
@@ -262,7 +264,7 @@ void alfont_textout_centre_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, 
 
 void alfont_textout_right(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color)
 {
-    alfont_draw_text_common(bmp, font, text, x, y, color, -1, ALLEGRO_ALIGN_RIGHT);
+    alfont_draw_text_common(bmp, font, text, x, y, color, 0, ALLEGRO_ALIGN_RIGHT);
 }
 
 void alfont_textout_right_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg)
@@ -287,7 +289,7 @@ void alfont_textprintf(BITMAP* bmp, ALFONT_FONT* font, int x, int y, int color, 
 {
     va_list args;
     va_start(args, format);
-    alfont_vprintf(bmp, font, x, y, color, -1, 0, format, args);
+    alfont_vprintf(bmp, font, x, y, color, 0, 0, format, args);
     va_end(args);
 }
 

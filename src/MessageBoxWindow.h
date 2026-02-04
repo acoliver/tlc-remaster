@@ -17,7 +17,7 @@ public:
 		int initY, 
 		int initWidth, 
 		int initHeight, 
-		int initTextColor, 
+		ALLEGRO_COLOR initTextColor, 
 		bool initCentered);
 
 	~MessageBoxWindow();
@@ -28,7 +28,7 @@ public:
 	int GetY() const;
 	int GetWidth() const;
 	int GetHeight() const;
-	int GetTextColor() const;
+	ALLEGRO_COLOR GetTextColor() const;
 	bool IsCentered() const;
 	bool IsVisible() const;
 
@@ -38,7 +38,7 @@ public:
 	void SetY(int initY);
 	void SetWidth(int initWidth);
 	void SetHeight(int initHeight);
-	void SetTextColor(int initTextColor);
+	void SetTextColor(ALLEGRO_COLOR initTextColor);
 	void SetCentered(bool initCentered);
 	void SetVisible(bool visibility);
 
@@ -66,7 +66,7 @@ private:
 	int 			y;
 	int 			width;
 	int 			height;
-	int				textColor;
+	ALLEGRO_COLOR	textColor;
 	bool			centered;
 	bool			visible;
 	Label			*labelText;

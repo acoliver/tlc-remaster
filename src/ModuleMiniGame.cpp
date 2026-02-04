@@ -115,7 +115,7 @@ void ModuleMiniGame::Update()
 
 void ModuleMiniGame::Draw()
 {
-	textout_ex(window, g_game->font24, "HELLO WORLD", 10, 10, WHITE, -1);
+	textout_ex(window, g_game->font24, "HELLO WORLD", 10, 10, color_to_int(WHITE), -1);
 	
 	
 }

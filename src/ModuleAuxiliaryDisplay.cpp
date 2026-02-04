@@ -113,7 +113,7 @@ bool ModuleAuxiliaryDisplay::Init()
 	debug << "  ModuleAuxiliaryDisplay Initialize" << endl;
 
 	//create a new color
-	HEADING_COLOR = makecol(0,168,168);
+	HEADING_COLOR = al_map_rgb(0,168,168);
 
 
 	canvas = g_game->GetBackBuffer();
@@ -248,18 +248,18 @@ void ModuleAuxiliaryDisplay::updateAll()
 		g_game->Print20(canvas, x, y, "DAMAGE:", HEADING_COLOR);
 		os.str("");
 		int damage = 0; //ship.getHullIntegrity();
-		int damage_color = SKYBLUE;
+		ALLEGRO_COLOR damage_color = SKYBLUE;
 		if (damage > 66) {
 			os << "HEAVY";
-			damage_color = makecol(240,0,0); //red
+			damage_color = al_map_rgb(240,0,0); //red
 		}
 		else if (damage > 33) {
 			os << "MODERATE";
-			damage_color = makecol(240,240,0); //yellow
+			damage_color = al_map_rgb(240,240,0); //yellow
 		}
 		else if (damage > 0) {
 			os << "LIGHT";
-			damage_color = makecol(0,200,0); //green
+			damage_color = al_map_rgb(0,200,0); //green
 		}
 		else {
 			os << "NONE";
@@ -304,14 +304,24 @@ void ModuleAuxiliaryDisplay::updateAll()
 
 		//shield bar is 48 pixels tall
 		int shield = ship.getShieldClass();
-		rectfill(g_game->GetBackBuffer(),asx+2,asy+95,asx+12,asy+95-shield*8,RED);
-		rect(g_game->GetBackBuffer(),asx+2,asy+95,asx+12,asy+95-48,STEEL);
+		{
+			ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_filled_rectangle(asx+2, asy+95, asx+12, asy+95-shield*8, RED);
+			al_draw_rectangle(asx+2, asy+95, asx+12, asy+95-48, STEEL, 1.0f);
+			al_set_target_bitmap(_old);
+		}
 		g_game->Print18(canvas,asx+2,asy+96,"S",STEEL);
 
 		//armor bar is 48 pixels tall
 		int armor = ship.getArmorClass();
-		rectfill(g_game->GetBackBuffer(),asx+56,asy+95,asx+66,asy+95-armor*8,YELLOW);
-		rect(g_game->GetBackBuffer(),asx+56,asy+95,asx+66,asy+95-48,STEEL);
+		{
+			ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+			al_set_target_bitmap(g_game->GetBackBuffer());
+			al_draw_filled_rectangle(asx+56, asy+95, asx+66, asy+95-armor*8, YELLOW);
+			al_draw_rectangle(asx+56, asy+95, asx+66, asy+95-48, STEEL, 1.0f);
+			al_set_target_bitmap(_old);
+		}
 		g_game->Print18(canvas,asx+56,asy+96,"A",STEEL);
 
 	}
@@ -320,24 +330,24 @@ void ModuleAuxiliaryDisplay::updateAll()
 
 void ModuleAuxiliaryDisplay::updateCap()
 {
-	int HEADING_COLOR = makecol(0,168,168);
+	ALLEGRO_COLOR HEADING_COLOR_LOCAL = HEADING_COLOR;
 	Ship ship = g_game->gameState->getShip();
 	ProfessionType profession;
 	std::ostringstream os;
 	int x = asx,y = asy+130;
 
 	//captain's name
-    g_game->Print18(canvas,x,y, "CAPTAIN:", HEADING_COLOR);
+    g_game->Print18(canvas,x,y, "CAPTAIN:", HEADING_COLOR_LOCAL);
     g_game->Print18(canvas, x+75, y, g_game->gameState->officerCap->getLastName(), SKYBLUE);
 
 	//ship name
 	os.str(""); y+=20;
-    g_game->Print18(canvas,x,y,"SHIP:", HEADING_COLOR);
+    g_game->Print18(canvas,x,y,"SHIP:", HEADING_COLOR_LOCAL);
 	g_game->Print18(canvas, x+75, y, "MSS " + ship.getName(), SKYBLUE);
 
 	//ship type
 	os.str(""); y += 20;
-	g_game->Print18(canvas, x, y, "TYPE:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "TYPE:", HEADING_COLOR_LOCAL);
 	profession = g_game->gameState->getProfession();
 	switch(profession)
 	{
@@ -350,7 +360,7 @@ void ModuleAuxiliaryDisplay::updateCap()
 
 	//credits
 	os.str(""); y+=20;
-	g_game->Print18(canvas, x, y, "CREDITS:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "CREDITS:", HEADING_COLOR_LOCAL);
 	os << g_game->gameState->getCredits();
 	g_game->Print18(canvas, x+75, y, os.str(), SKYBLUE);
 
@@ -369,7 +379,7 @@ void ModuleAuxiliaryDisplay::updateSci()
 
 void ModuleAuxiliaryDisplay::updateNav()
 {
-	int HEADING_COLOR = makecol(0,168,168);
+	ALLEGRO_COLOR HEADING_COLOR_LOCAL = HEADING_COLOR;
 	ostringstream os;
 	int x = asx,y = asy+130;
 	char s[255];
@@ -383,14 +393,14 @@ void ModuleAuxiliaryDisplay::updateNav()
 
 	//galactic location
 	y+=18;
-	g_game->Print18(canvas, x, y, "COORD:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "COORD:", HEADING_COLOR_LOCAL);
 	// offset of 4 tiles on the x axis and 2 tiles on the y axis
 	sprintf(s,"%.0f %.0f", galacticx/128 +4, galacticy/128 +2);
 	g_game->Print20(canvas, x+66, y, s, SKYBLUE);
 
 	//speed status
 	y+=18;
-	g_game->Print18(canvas, x, y, "SPEED:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "SPEED:", HEADING_COLOR_LOCAL);
 	sprintf(s,"%.1f", g_game->gameState->player->getCurrentSpeed());
 	g_game->Print20(canvas, x+66, y, s, SKYBLUE);
 
@@ -400,7 +410,7 @@ void ModuleAuxiliaryDisplay::updateNav()
 	if (race != ALIEN_NONE)
 	{
 		y+=18;
-		g_game->Print18(canvas, x, y, "REGION:", HEADING_COLOR);
+		g_game->Print18(canvas, x, y, "REGION:", HEADING_COLOR_LOCAL);
 		g_game->Print18(canvas, x+66, y, race_str, SKYBLUE);
 	}
 
@@ -412,7 +422,8 @@ void ModuleAuxiliaryDisplay::updateNav()
 
 void ModuleAuxiliaryDisplay::PrintSystemStatus(int x,int y,int value)
 {
-    int color, x2;
+    ALLEGRO_COLOR color;
+    int x2;
     string status;
 	if(value <= 0){
 		color = BLACK;
@@ -502,19 +513,19 @@ void ModuleAuxiliaryDisplay::updateTac()
 	g_game->Print20(canvas, x, y, os.str(), SKYBLUE);
 
 	y += 18;
-	g_game->Print18(canvas, x, y, "ARMOR:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "ARMOR:", this->HEADING_COLOR);
     g_game->Print18(canvas, x+72, y, ship.getArmorClassString(), SKYBLUE);
 
 	y += 18;
-	g_game->Print18(canvas, x, y, "SHIELD:", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "SHIELD:", this->HEADING_COLOR);
     g_game->Print18(canvas, x+72, y, ship.getShieldClassString(), SKYBLUE);
 
 	y += 18;
-	g_game->Print18(canvas, x, y, "LASER: ", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "LASER: ", this->HEADING_COLOR);
     g_game->Print18(canvas, x+72, y, ship.getLaserClassString(), SKYBLUE);
 
 	y += 18;
-	g_game->Print18(canvas, x, y, "MISSILE: ", HEADING_COLOR);
+	g_game->Print18(canvas, x, y, "MISSILE: ", this->HEADING_COLOR);
     g_game->Print18(canvas, x+72, y, ship.getMissileLauncherClassString(), SKYBLUE);
 }
 
@@ -549,7 +560,7 @@ void ModuleAuxiliaryDisplay::updateMed()
 }
 
 void ModuleAuxiliaryDisplay::medical_display(Officer* officer_data, int x, int y, std::string additional_data){
-	int text_color = 0;
+	ALLEGRO_COLOR text_color;
 	std::string status = "";
 	int x2 = 0;
 	std::ostringstream os;
@@ -613,7 +624,7 @@ void ModuleAuxiliaryDisplay::DrawBackground()
 void ModuleAuxiliaryDisplay::DrawContent()
 {
 	//clear the "lcd" portion of the screen with darkgreen
-	static int lcdcolor = makecol(20,40,0);
+	static int lcdcolor = (20 << 16) | (40 << 8) | 0;
 	rectfill(canvas, asx, asy, asx+asw, asy+ash, lcdcolor);
 
 	updateAll();

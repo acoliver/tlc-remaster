@@ -756,25 +756,25 @@ bool ModuleCrewHire::Init()
 
 
 	//Load label for title
-	title = new Label("Welcome to Crew Match v.0.3!", 28, 170, 456, 30, makecol(0,255,128), g_game->font32);
+	title = new Label("Welcome to Crew Match v.0.3!", 28, 170, 456, 30, al_map_rgb(0,255,128), g_game->font32);
 	title->Refresh();
 
 	//Load label for slogan
-	slogan = new Label("Where you can hire the finest galatic crew!", 28, 200, 456, 40, makecol(0,255,255), g_game->font22);
+	slogan = new Label("Where you can hire the finest galatic crew!", 28, 200, 456, 40, al_map_rgb(0,255,255), g_game->font22);
 	slogan->Refresh();
  
 	//Load label for directions
 	directions = new Label("Click on your crew members to the right to reassign or fire them. You can also browse for future employees by clicking on the Hire More Crew Members button",
-		28, 240, 456, 408, makecol(0,255,255), g_game->font18);
+		28, 240, 456, 408, al_map_rgb(0,255,255), g_game->font18);
 	directions->Refresh();
 
 	//Load label for hiremoreDirections
 	hiremoreDirections = new Label("On the right is a list potential galatic faring employees. You can view their statistics by clicking on them.",
-		28, 240, 456, 408, makecol(0,255,255), g_game->font18);
+		28, 240, 456, 408, al_map_rgb(0,255,255), g_game->font18);
 	hiremoreDirections->Refresh();
 
 	//Load label for stats
-	stats = new Label("                  - Statistics -", 28, 170, 456, 30, makecol(0,255,128), g_game->font32);
+	stats = new Label("                  - Statistics -", 28, 170, 456, 30, al_map_rgb(0,255,128), g_game->font32);
 	stats->Refresh();
 
 	//setup unassignedCrew scrollbox
@@ -906,12 +906,12 @@ bool ModuleCrewHire::Init()
 	}
 
 	//Create escape button for the module
-	m_exitBtn = new Button(exit_btn_norm,exit_btn_over,NULL,EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_EXIT_CLICK, g_game->font24, "Exit", makecol(255,0,0),"click");
+	m_exitBtn = new Button(exit_btn_norm,exit_btn_over,NULL,EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_EXIT_CLICK, g_game->font24, "Exit", al_map_rgb(255,0,0),"click");
 	if (m_exitBtn == NULL) return false;
 	if (!m_exitBtn->IsInitialized()) return false;
 
 	//Create and initialize the Back button for the module
-	m_backBtn = new Button(exit_btn_norm,exit_btn_over,NULL,EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_BACK_CLICK, g_game->font24, "Back", makecol(255,0,0),"click");
+	m_backBtn = new Button(exit_btn_norm,exit_btn_over,NULL,EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_BACK_CLICK, g_game->font24, "Back", al_map_rgb(255,0,0),"click");
 	if (m_backBtn == NULL) return false;
 	if (!m_backBtn->IsInitialized()) return false;
 
@@ -935,8 +935,10 @@ bool ModuleCrewHire::Init()
 	}
 
 	//Create and initialize the HireMore button for the module
-	m_hiremoreBtn = new Button(btn2_norm,btn2_over,btn2_dis,HIREMOREBTN_X,HIREMOREBTN_Y,EVENT_NONE,EVENT_HIREMORE_CLICK, g_game->font24, "Hire More Crew Members", makecol(0,255,255),"click");
+	m_hiremoreBtn = new Button(btn2_norm,btn2_over,btn2_dis,HIREMOREBTN_X,HIREMOREBTN_Y,EVENT_NONE,EVENT_HIREMORE_CLICK, g_game->font24, "Hire More Crew Members", al_map_rgb(0,255,255),"click");
 	if (m_hiremoreBtn == NULL)
+		return false;
+	if (!m_hiremoreBtn->IsInitialized())
 		return false;
 	if (!m_hiremoreBtn->IsInitialized())
 		return false;
@@ -961,17 +963,17 @@ bool ModuleCrewHire::Init()
 	}
 
 	//Create and initialize the Hire button for the module
-	m_hireBtn = new Button(btn_norm,btn_over,btn_dis,HIREBTN_X,HIREBTN_Y,EVENT_NONE,EVENT_HIRE_CLICK, g_game->font24, "Hire", makecol(0,255,255),"click");
+	m_hireBtn = new Button(btn_norm,btn_over,btn_dis,HIREBTN_X,HIREBTN_Y,EVENT_NONE,EVENT_HIRE_CLICK, g_game->font24, "Hire", al_map_rgb(0,255,255),"click");
 	if (m_hireBtn == NULL)	return false;
 	if (!m_hireBtn->IsInitialized()) return false;
 
 	//Create and initialize the Fire button for the module
-	m_fireBtn = new Button(btn_norm,btn_over,btn_dis,FIREBTN_X,FIREBTN_Y,EVENT_NONE,EVENT_FIRE_CLICK, g_game->font24, "Fire", makecol(0,255,255),"click");
+	m_fireBtn = new Button(btn_norm,btn_over,btn_dis,FIREBTN_X,FIREBTN_Y,EVENT_NONE,EVENT_FIRE_CLICK, g_game->font24, "Fire", al_map_rgb(0,255,255),"click");
 	if (m_fireBtn == NULL)	return false;
 	if (!m_fireBtn->IsInitialized())	return false;
 
 	//Create and initialize the Assign Position button for the module
-	m_unassignBtn = new Button(btn_norm,btn_over,btn_dis,UNASSIGNBTN_X,UNASSIGNBTN_Y,EVENT_NONE,EVENT_UNASSIGN_CLICK, g_game->font24, "Unassign", makecol(0,255,255),"click");
+	m_unassignBtn = new Button(btn_norm,btn_over,btn_dis,UNASSIGNBTN_X,UNASSIGNBTN_Y,EVENT_NONE,EVENT_UNASSIGN_CLICK, g_game->font24, "Unassign", al_map_rgb(0,255,255),"click");
 	if (m_unassignBtn == NULL)	return false;
 	if (!m_unassignBtn->IsInitialized())	return false;
 
@@ -1046,9 +1048,9 @@ bool ModuleCrewHire::Init()
 		blit(icons_small_red, temp, 30 * i, 0, 0, 0, 30, 30);
 		draw_trans_sprite(m_PositionBtns[i]->GetImgDisabled(), temp, 0, 0);
 
-		alfont_textout_ex(m_PositionBtns[i]->GetImgNormal(), g_game->font24, positions[i], 35, 4, makecol(0,255,255), -1);
-		alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, makecol(0,255,255), -1);
-		alfont_textout_ex(m_PositionBtns[i]->GetImgDisabled(), g_game->font24, positions[i], 35, 4, makecol(0,255,255), -1);
+	alfont_textout_ex(m_PositionBtns[i]->GetImgNormal(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
+	alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
+	alfont_textout_ex(m_PositionBtns[i]->GetImgDisabled(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
 	}
 	destroy_bitmap(temp);
 
@@ -1208,11 +1210,11 @@ void ModuleCrewHire::Draw()
 			m_hiremoreBtn->Run(g_game->GetBackBuffer());
 			unassignedCrew->Draw(g_game->GetBackBuffer());
 
-			for (int i=0; i < (int)tOfficers.size(); i++)
-			{
-				if (tOfficers[i]->GetOfficerType() != OFFICER_NONE)
-					alfont_textout_ex(g_game->GetBackBuffer(), g_game->font24, tOfficers[i]->name.c_str(),CREWPOSITION_X, CREWPOSITION_Y +((tOfficers[i]->GetOfficerType()-1)*CREWSPACING), ((tOfficers[i]->GetOfficerType()-1) == selectedPosition ?  makecol(0,255,255) : makecol(255,255,255)), -1);
-			}
+		for (int i=0; i < (int)tOfficers.size(); i++)
+		{
+			if (tOfficers[i]->GetOfficerType() != OFFICER_NONE)
+				alfont_textout_ex(g_game->GetBackBuffer(), g_game->font24, tOfficers[i]->name.c_str(),CREWPOSITION_X, CREWPOSITION_Y +((tOfficers[i]->GetOfficerType()-1)*CREWSPACING), color_to_int(((tOfficers[i]->GetOfficerType()-1) == selectedPosition ?  al_map_rgb(0,255,255) : al_map_rgb(255,255,255))), -1);
+		}
 			break;
 
 		case UNEMPLOYEED_SCREEN:

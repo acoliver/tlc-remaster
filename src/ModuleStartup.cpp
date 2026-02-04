@@ -116,7 +116,7 @@ int ModuleStartup::fadeout(BITMAP *dest, BITMAP *source, int speed)
 		blit(fader, dest, 0,0, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source));
 	}
 	else {
-		rectfill(dest, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source), makecol(0,0,0));
+		rectfill(dest, 0,0, al_get_bitmap_width(source), al_get_bitmap_height(source), (0 << 16) | (0 << 8) | 0);
 		loop = 255;
 		retval = 1;
 	}

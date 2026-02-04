@@ -59,7 +59,7 @@ public:
 	void place_flux_tile(bool visible, int tile);
     void PrintSystemStatus(int x,int y,int value);
 
-   	int HEADING_COLOR;
+   	ALLEGRO_COLOR HEADING_COLOR;
 
 
 };

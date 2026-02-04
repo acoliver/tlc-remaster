@@ -17,7 +17,7 @@ using namespace std;
 #define TEXTHEIGHT_GAME_NAME 30
 #define TEXTHEIGHT_GAME_PROFESSION 20
 #define TEXTHEIGHT_BTN_TITLES 30
-#define TEXTCOL makecol(0,255,255)
+#define TEXTCOL al_map_rgb(0,255,255)
 
 #define BACKBTN_X 52
 #define BACKBTN_Y 698
@@ -626,10 +626,10 @@ void ModuleCaptainsLounge::Draw()
 			str= g_game->gameState->officerDoc->name;			y+= dy;
 			g_game->Print20(g_game->GetBackBuffer(), x,y, "Medical: ", TEXTCOL);
 			g_game->Print20(g_game->GetBackBuffer(), x+140,y, str.c_str(), TEXTCOL);
-		}
-
-		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"SAVE",BTN_SAVECAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
 	}
+
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"SAVE",BTN_SAVECAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
+}
 	else
 	{
 		g_game->Print32(g_game->GetBackBuffer(),x+62,y,"( None )",TEXTCOL);
@@ -686,20 +686,20 @@ void ModuleCaptainsLounge::Draw()
 
 	//modules should not be calling alfont functions directly--use the engine
 
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"NEW",BTN_NEWCAPTAIN_X+(m_newCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"DEL",BTN_DELCAPTAIN_X+(m_delCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"LOAD",BTN_SELCAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"NEW",BTN_NEWCAPTAIN_X+(m_newCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"DEL",BTN_DELCAPTAIN_X+(m_delCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"LOAD",BTN_SELCAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
 
 	if (m_modalPromptActive)
 	{
 		blit(m_modalPromptBackground,g_game->GetBackBuffer(),0,0,MODALPROMPT_BG_X,MODALPROMPT_BG_Y,al_get_bitmap_width(m_modalPromptBackground),al_get_bitmap_height(m_modalPromptBackground));
 
-		int y = MODALPROMPT_START_Y;
-		for (vector<string>::iterator i = m_modalPromptStrings.begin(); i != m_modalPromptStrings.end(); ++i)
-		{
-			alfont_textout_centre(g_game->GetBackBuffer(),g_game->font32,(*i).c_str(),SCREEN_WIDTH/2,y,TEXTCOL);
-			y += TEXTHEIGHT_MODALPROMPT + 2;
-		}
+	int y = MODALPROMPT_START_Y;
+	for (vector<string>::iterator i = m_modalPromptStrings.begin(); i != m_modalPromptStrings.end(); ++i)
+	{
+		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font32,(*i).c_str(),SCREEN_WIDTH/2,y,color_to_int(TEXTCOL));
+		y += TEXTHEIGHT_MODALPROMPT + 2;
+	}
 
 		m_yesBtn->Run(g_game->GetBackBuffer());
 		m_noBtn->Run(g_game->GetBackBuffer());

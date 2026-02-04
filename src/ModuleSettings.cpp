@@ -16,6 +16,7 @@
 #include "DataMgr.h"
 #include "ModeMgr.h"
 #include "AudioSystem.h"
+#include "ScrollBox.h"
 #include "ModuleSettings.h"
 
 using namespace std;
@@ -113,14 +114,14 @@ bool ModuleSettings::Init()
     	40, 100, 200, 230, EVENT_RES_CHANGE);
     resScrollbox->setLines(g_game->videomodes.size());
 	resScrollbox->DrawScrollBar(true);
-    resScrollbox->SetColorBackground(makecol(30,30,30));
-    resScrollbox->SetColorItemBorder(makecol(40,40,40));
-    resScrollbox->SetColorControls(makecol(130,130,130));
+    resScrollbox->SetColorBackground(al_map_rgb(30,30,30));
+    resScrollbox->SetColorItemBorder(al_map_rgb(40,40,40));
+    resScrollbox->SetColorControls(al_map_rgb(130,130,130));
     resScrollbox->PaintNormalImage();
-    resScrollbox->SetColorHover(makecol(160,160,160));
+    resScrollbox->SetColorHover(al_map_rgb(160,160,160));
     resScrollbox->PaintHoverImage();
-    resScrollbox->SetColorSelectedBackground(makecol(80,80,160));
-    resScrollbox->SetColorSelectedHighlight(makecol(160,160,255));
+    resScrollbox->SetColorSelectedBackground(al_map_rgb(80,80,160));
+    resScrollbox->SetColorSelectedHighlight(al_map_rgb(160,160,255));
     resScrollbox->PaintSelectedImage();
 
     chosenResolution = g_game->getGlobalString("RESOLUTION");
