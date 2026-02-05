@@ -560,11 +560,11 @@ void ModulePlanetSurface::Close()
 
 	try 
     {
-        if (img_messages!=NULL) { delete img_messages; img_messages=NULL; }
-	    //if (img_socket!=NULL)   { delete img_socket; img_socket=NULL; }
-	    if (img_gauges!=NULL)   { delete img_gauges; img_gauges=NULL; }
-	    if (img_aux!=NULL)      { delete img_aux; img_aux=NULL; }
-	    if (img_control!=NULL)  { delete img_control; img_control=NULL; }
+        if (img_messages!=NULL) { al_destroy_bitmap(img_messages); img_messages=NULL; }
+	    //if (img_socket!=NULL)   { al_destroy_bitmap(img_socket); img_socket=NULL; }
+	    if (img_gauges!=NULL)   { al_destroy_bitmap(img_gauges); img_gauges=NULL; }
+	    if (img_aux!=NULL)      { al_destroy_bitmap(img_aux); img_aux=NULL; }
+	    if (img_control!=NULL)  { al_destroy_bitmap(img_control); img_control=NULL; }
 
 	    if (!Static) { delete Static; Static=NULL; }
 	    if (!Fuel) { delete Fuel; Fuel=NULL; }
@@ -600,7 +600,7 @@ void ModulePlanetSurface::Close()
 
 		for (portraitsIt = portraits.begin(); portraitsIt != portraits.end(); ++portraitsIt)
 		{
-			destroy_bitmap(portraitsIt->second);
+			al_destroy_bitmap(portraitsIt->second);
 			portraitsIt->second = NULL;
 		}
 		portraits.clear();
@@ -780,7 +780,7 @@ bool ModulePlanetSurface::Init()
 	al_draw_filled_rectangle(0, 0, SCREEN_W-1+1, SCREEN_H-1+1, BLACK);
 
     //load the message gui
-    img_messages = (BITMAP*)load_bitmap("data/messagegui/gui_messagewindow.bmp",NULL);
+    img_messages = al_load_bitmap("data/messagegui/gui_messagewindow.bmp");
     if (!img_messages) 
     {
 		g_game->message("Planet: Error loading messagewindow");
@@ -789,7 +789,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the socket gui
 	//img_socket = (BITMAP*)psdata[GUI_SOCKET_BMP].dat;
- //   img_socket = (BITMAP*)load_bitmap("data/messagegui/gui_socket.bmp",NULL);
+ //   img_socket = al_load_bitmap("data/messagegui/gui_socket.bmp");
 	//if (!img_socket) {
 	//	g_game->message("Planet: Error loading gui_socket");
 	//	return false;
@@ -797,22 +797,22 @@ bool ModulePlanetSurface::Init()
 
 	//load the gauges gui
 	//img_gauges = (BITMAP*)psdata[GUI_GAUGES_BMP].dat;
-    img_gauges = (BITMAP*)load_bitmap("data/messagegui/gui_gauges.bmp",NULL);
+    img_gauges = al_load_bitmap("data/messagegui/gui_gauges.bmp");
 	if (!img_gauges) {
 		g_game->message("Planet: Error loading gui_gauges");
 		return false;
 	}
 
 	//load the aux gui
-	img_aux = (BITMAP*)load_bitmap("data/messagegui/gui_aux.bmp",NULL);
+	img_aux = al_load_bitmap("data/messagegui/gui_aux.bmp");
 	if (!img_aux) {
 		g_game->message("Planet: Error loading gui_aux");
 		return false;
 	}
 
 	//load the control gui
-	//img_control = (BITMAP*)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
-    img_control = (BITMAP*)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
+	//img_control = al_load_bitmap("data/controlpanel/gui_controlpanel.bmp");
+    img_control = al_load_bitmap("data/controlpanel/gui_controlpanel.bmp");
 	if (!img_control) {
 		g_game->message("Planet: Error loading gui_controlpanel");
 		return false;
@@ -820,7 +820,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the static
 	//Static = (BITMAP*)psdata[STATIC_TGA].dat;
-    Static = (BITMAP*)load_bitmap("data/planetsurface/static.tga",NULL);
+    Static = al_load_bitmap("data/planetsurface/static.tga");
 	if (!Static) {
 		g_game->message("Planet: Error loading static.tga");
 		return false;
@@ -828,7 +828,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the fuel graphic
 	//Fuel = (BITMAP*)psdata[FUEL_BAR_BMP].dat;
-    Fuel = (BITMAP*)load_bitmap("data/planetsurface/fuel_bar.bmp",NULL);
+    Fuel = al_load_bitmap("data/planetsurface/fuel_bar.bmp");
 	if (!Fuel) {
 		g_game->message("Planet: Error loading fuel_bar");
 		return false;
@@ -836,7 +836,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the fuel graphic
 	//FuelBar = (BITMAP*)psdata[ELEMENT_GAUGE_ORANGE_BMP].dat;
-    FuelBar = (BITMAP*)load_bitmap("data/planetsurface/Element_Gauge_Orange.bmp",NULL);
+    FuelBar = al_load_bitmap("data/planetsurface/Element_Gauge_Orange.bmp");
 	if (!FuelBar) {
 		g_game->message("Planet: Error loading element_gauge_orange");
 		return false;
@@ -844,7 +844,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the armor graphic
 	//Armor = (BITMAP*)psdata[ARMOR_BAR_BMP].dat;
-    Armor = (BITMAP*)load_bitmap("data/planetsurface/armor_bar.bmp",NULL);
+    Armor = al_load_bitmap("data/planetsurface/armor_bar.bmp");
 	if (!Armor) {
 		g_game->message("Planet: Error loading armor_bar");
 		return false;
@@ -852,7 +852,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the armor graphic
 	//ArmorBar = (BITMAP*)psdata[ELEMENT_GAUGE_RED_BMP].dat;
-    ArmorBar = (BITMAP*)load_bitmap("data/planetsurface/Element_Gauge_Red.bmp",NULL);
+    ArmorBar = al_load_bitmap("data/planetsurface/Element_Gauge_Red.bmp");
 	if (!ArmorBar) {
 		g_game->message("Planet: Error loading element_gauge_red");
 		return false;
@@ -860,7 +860,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the hull graphic
 	//Hull = (BITMAP*)psdata[HULL_BAR_BMP].dat;
-    Hull = (BITMAP*)load_bitmap("data/planetsurface/hull_bar.bmp",NULL);
+    Hull = al_load_bitmap("data/planetsurface/hull_bar.bmp");
 	if (!Hull) {
 		g_game->message("Planet: Error loading hull_bar");
 		return false;
@@ -868,7 +868,7 @@ bool ModulePlanetSurface::Init()
 
 	//load the hull graphic
 	//HullBar = (BITMAP*)psdata[ELEMENT_GAUGE_GREEN_BMP].dat;
-    HullBar = (BITMAP*)load_bitmap("data/planetsurface/Element_Gauge_Green.bmp",NULL);
+    HullBar = al_load_bitmap("data/planetsurface/Element_Gauge_Green.bmp");
 	if (!HullBar) {
 		g_game->message("Planet: Error loading element_gauge_green");
 		return false;
@@ -876,7 +876,7 @@ bool ModulePlanetSurface::Init()
 
 	//load timer bar fill
 	//Timer_BarFill = (BITMAP*)psdata[ELEMENT_BIGGAUGE_YELLOW_BMP].dat;
-    Timer_BarFill = (BITMAP*)load_bitmap("data/planetsurface/Element_BigGauge_Yellow.bmp",NULL);
+    Timer_BarFill = al_load_bitmap("data/planetsurface/Element_BigGauge_Yellow.bmp");
 	if (!Timer_BarFill) {
 		g_game->message("Planet: Error loading element_biggauge_yellow");
 		return false;
@@ -884,7 +884,7 @@ bool ModulePlanetSurface::Init()
 
 	//load timer bar empty
 	//Timer_BarEmpty = (BITMAP*)psdata[ELEMENT_BIGGAUGE_EMPTY_BMP].dat;
-    Timer_BarEmpty = (BITMAP*)load_bitmap("data/planetsurface/Element_BigGauge_Empty.bmp",NULL);
+    Timer_BarEmpty = al_load_bitmap("data/planetsurface/Element_BigGauge_Empty.bmp");
 	if (!Timer_BarEmpty) {
 		g_game->message("Planet: Error loading element_biggauge_empty");
 		return false;
@@ -892,7 +892,7 @@ bool ModulePlanetSurface::Init()
 
 	//load lifeforms HP bar
 	//HP_Bar = (BITMAP*)psdata[ELEMENT_SMALLGAUGE_GREEN_BMP].dat;
-    HP_Bar = (BITMAP*)load_bitmap("data/planetsurface/Element_SmallGauge_Green.bmp",NULL);
+    HP_Bar = al_load_bitmap("data/planetsurface/Element_SmallGauge_Green.bmp");
 	if (!HP_Bar) {
 		g_game->message("Planet: Error loading element_smallgauge_green");
 		return false;
@@ -903,21 +903,21 @@ bool ModulePlanetSurface::Init()
 
 	//Load Cargo Images
 	//Cargo = (BITMAP*)psdata[CARGO_BAR_BMP].dat;
-    Cargo = (BITMAP*)load_bitmap("data/planetsurface/cargo_bar.bmp",NULL);
+    Cargo = al_load_bitmap("data/planetsurface/cargo_bar.bmp");
 	if (!Cargo) {
 		g_game->message("Planet: Error loading cargo_bar");
 		return false;
 	}
 
 	//CargoMouseOver = (BITMAP*)psdata[CARGO_BAR_MO_BMP].dat;
-    CargoMouseOver = (BITMAP*)load_bitmap("data/planetsurface/cargo_bar_mo.bmp",NULL);
+    CargoMouseOver = al_load_bitmap("data/planetsurface/cargo_bar_mo.bmp");
 	if (!CargoMouseOver) {
 		g_game->message("Planet: Error loading cargo_bar_mo");
 		return false;
 	}
 
 	//Cargo_BarFill = (BITMAP*)psdata[ELEMENT_GAUGE_PURPLE_BMP].dat;
-    Cargo_BarFill = (BITMAP*)load_bitmap("data/planetsurface/Element_Gauge_Purple.bmp",NULL);
+    Cargo_BarFill = al_load_bitmap("data/planetsurface/Element_Gauge_Purple.bmp");
 	if (!Cargo_BarFill) {
 		g_game->message("Planet: Error loading element_gauge_purple");
 		return false;
@@ -957,28 +957,28 @@ bool ModulePlanetSurface::Init()
 
 	//Load command btn images
 	//btnNormal = (BITMAP*)psdata[COMMAND_BUTTON_BG_BMP].dat;
-    btnNormal = (BITMAP*)load_bitmap("data/planetsurface/command_button_bg.bmp",NULL);
+    btnNormal = al_load_bitmap("data/planetsurface/command_button_bg.bmp");
 	if (!btnNormal) {
 		g_game->message("Planet: Error loading command_button_bg");
 		return false;
 	}
 
 	//btnDisabled = (BITMAP*)psdata[COMMAND_BUTTON_BG_DISABLED_BMP].dat;
-    btnDisabled = (BITMAP*)load_bitmap("data/planetsurface/command_button_bg_disabled.bmp",NULL);
+    btnDisabled = al_load_bitmap("data/planetsurface/command_button_bg_disabled.bmp");
 	if (!btnDisabled) {
 		g_game->message("Planet: Error loading command_button_bg_disabled");
 		return false;
 	}
 
 	//btnMouseOver = (BITMAP*)psdata[COMMAND_BUTTON_BG_MO_BMP].dat;
-    btnMouseOver = (BITMAP*)load_bitmap("data/planetsurface/command_button_bg_mo.bmp",NULL);
+    btnMouseOver = al_load_bitmap("data/planetsurface/command_button_bg_mo.bmp");
 	if (!btnMouseOver) {
 		g_game->message("Planet: Error loading command_button_bg_mo");
 		return false;
 	}
 
 	//btnSelect = (BITMAP*)psdata[COMMAND_BUTTON_BG_SELECT_BMP].dat;
-    btnSelect = (BITMAP*)load_bitmap("data/planetsurface/command_button_bg_select.bmp",NULL);
+    btnSelect = al_load_bitmap("data/planetsurface/command_button_bg_select.bmp");
 	if (!btnSelect) {
 		g_game->message("Planet: Error loading command_button_bg_select");
 		return false;
@@ -1010,28 +1010,28 @@ bool ModulePlanetSurface::Init()
 
 	//Load big command btn images
 	//btnBigNormal = (BITMAP*)psdata[COMMAND_BIGBUTTON_BG_BMP].dat;
-    btnBigNormal = (BITMAP*)load_bitmap("data/planetsurface/command_bigbutton_bg.bmp",NULL);
+    btnBigNormal = al_load_bitmap("data/planetsurface/command_bigbutton_bg.bmp");
 	if (!btnBigNormal) {
 		g_game->message("Planet: Error loading command_bigbutton_bg");
 		return false;
 	}
 
 	//btnBigDisabled = (BITMAP*)psdata[COMMAND_BIGBUTTON_BG_DISABLED_BMP].dat;
-    btnBigDisabled = (BITMAP*)load_bitmap("data/planetsurface/command_bigbutton_bg_disabled.bmp",NULL);
+    btnBigDisabled = al_load_bitmap("data/planetsurface/command_bigbutton_bg_disabled.bmp");
 	if (!btnBigDisabled) {
 		g_game->message("Planet: Error loading command_bigbutton_bg_disabled");
 		return false;
 	}
 
 	//btnBigMouseOver = (BITMAP*)psdata[COMMAND_BIGBUTTON_BG_MO_BMP].dat;
-    btnBigMouseOver = (BITMAP*)load_bitmap("data/planetsurface/command_bigbutton_bg_mo.bmp",NULL);
+    btnBigMouseOver = al_load_bitmap("data/planetsurface/command_bigbutton_bg_mo.bmp");
 	if (!btnBigMouseOver) {
 		g_game->message("Planet: Error loading command_bigbutton_bg_mo");
 		return false;
 	}
 
 	//btnBigSelect = (BITMAP*)psdata[COMMAND_BIGBUTTON_BG_SELECT_BMP].dat;
-    btnBigSelect = (BITMAP*)load_bitmap("data/planetsurface/command_bigbutton_bg_select.bmp",NULL);
+    btnBigSelect = al_load_bitmap("data/planetsurface/command_bigbutton_bg_select.bmp");
 	if (!btnBigSelect) {
 		g_game->message("Planet: Error loading command_bigbutton_bg_select");
 		return false;
@@ -1077,7 +1077,7 @@ bool ModulePlanetSurface::Init()
 	asx = (int)g_game->getGlobalNumber("AUX_SCREEN_X");
 	asy = (int)g_game->getGlobalNumber("AUX_SCREEN_Y");
 
-	minimap = create_bitmap(asw, ash);
+	minimap = al_create_bitmap(asw, ash);
 
 
 
@@ -1300,32 +1300,32 @@ bool ModulePlanetSurface::fabTilemap()
 bool ModulePlanetSurface::fabAsteroid()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ASH_TGA].dat, 16);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/TileSet_Ash.tga",NULL), 16)) 
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/TileSet_Ash.tga"), 16)) 
     {
         debug << "Planet: error loading tileset_ash" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ICE_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Ice.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Ice.tga"), 16))
     {
         debug << "Planet: error loading tileset_ice" << endl;
         return false;
     }
     
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_DARK_TGA].dat, 16, false);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_rock_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_STARS_TGA].dat, 16, false);//4
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Stars.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Stars.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_stars" << endl;
         return false;
@@ -1371,25 +1371,25 @@ bool ModulePlanetSurface::fabAsteroid()
 bool ModulePlanetSurface::fabRocky()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_DARK_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_rock_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_DIRT_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Dirt.tga"), 16))
     {
         debug << "Planet: error loading tileset_dirt" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_DESERT_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Desert.tga"), 16))
     {
         debug << "Planet: error loading tileset_desert" << endl;
         return false;
@@ -1450,25 +1450,25 @@ bool ModulePlanetSurface::fabRocky()
 bool ModulePlanetSurface::fabFrozen()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_WATER_DARK_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Water_Dark.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_water_dark" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ICE_TGA].dat, 16);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Ice.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Ice.tga"), 16))
     {
         debug << "Planet: error loading tileset_ice" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_SNOW_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Snow.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Snow.tga"), 16))
     {
         debug << "Planet: error loading tileset_snow" << endl;
         return false;
@@ -1525,7 +1525,7 @@ bool ModulePlanetSurface::fabFrozen()
 
 bool ModulePlanetSurface::fabOceanic()
 {
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Dark.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Water_Dark.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_water_dark " << endl;
         return false;
@@ -1534,43 +1534,43 @@ bool ModulePlanetSurface::fabOceanic()
 
 	if(planet->temperature == PTMP_TEMPERATE)
     {
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Mud.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Mud.tga"), 16))
         {
             debug << "Planet: error loading tileset_mud" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Light.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Water_Mid.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Snow.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Snow.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_snow" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
@@ -1578,43 +1578,43 @@ bool ModulePlanetSurface::fabOceanic()
         
 	}
 	else if(planet->temperature == PTMP_SEARING){
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Desert.tga"), 16))
         {
             debug << "Planet: error loading tileset_desert" << endl;
             return false;
         }
 
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dead.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Dead.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_dead" << endl;
             return false;
         }
        
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Light.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Water_Mid.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Dirt.tga"), 16))
         {
             debug << "Planet: error loading tileset_dirt" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
@@ -1622,43 +1622,43 @@ bool ModulePlanetSurface::fabOceanic()
         
 	}
 	else{ //if(planet->temperature == PTMP_TROPICAL){
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Desert.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Desert.tga"), 16))
         {
             debug << "Planet: error loading tileset_desert" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Light.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Light.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Grass_Dark.tga"), 16))
         {
             debug << "Planet: error loading tileset_grass_dark" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Water_Mid.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Water_Mid.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_water_mid" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Dirt.tga",NULL), 16))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Dirt.tga"), 16))
         {
             debug << "Planet: error loading tileset_dirt" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_light" << endl;
             return false;
         }
         
-        if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga",NULL), 16, false))
+        if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Dark.tga"), 16, false))
         {
             debug << "Planet: error loading tileset_rock_dark" << endl;
             return false;
@@ -1721,25 +1721,25 @@ bool ModulePlanetSurface::fabOceanic()
 bool ModulePlanetSurface::fabMolten()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_LAVA_TGA].dat, 16, false);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Lava.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Lava.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_lava" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_MAGMA_TGA].dat, 16, false);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Magma.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Magma.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_magma" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ASH_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/TileSet_Ash.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/TileSet_Ash.tga"), 16))
     {
         debug << "Planet: error loading tileset_ash" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_ROCK_LIGHT_TGA].dat, 16);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Rock_Light.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Rock_Light.tga"), 16))
     {
         debug << "Planet: error loading tileset_rock_light" << endl;
         return false;
@@ -1798,25 +1798,25 @@ bool ModulePlanetSurface::fabMolten()
 bool ModulePlanetSurface::fabAcidic()
 {
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_GRASS_TGA].dat, 16, true);//0
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Grass.tga",NULL), 16, true))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Gas_Grass.tga"), 16, true))
     {
         debug << "Planet: error loading tileset_gas_grass" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ACID_2_TGA].dat, 16, false);//1
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Acid_2.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Gas_Acid_2.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_gas_acid_2" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ROCK_1_TGA].dat, 16);//2
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Rock_1.tga",NULL), 16))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Gas_Rock_1.tga"), 16))
     {
         debug << "Planet: error loading tileset_gas_rock_1" << endl;
         return false;
     }
 	//scroller->LoadTileSet( (BITMAP*)psdata[TILESET_GAS_ROCK_2_TGA].dat, 16, false);//3
-    if (!scroller->LoadTileSet( (BITMAP*)load_bitmap("data/planetsurface/Tileset_Gas_Rock_2.tga",NULL), 16, false))
+    if (!scroller->LoadTileSet( al_load_bitmap("data/planetsurface/Tileset_Gas_Rock_2.tga"), 16, false))
     {
         debug << "Planet: error loading tileset_gas_rock_2" << endl;
         return false;
@@ -1958,7 +1958,7 @@ void ModulePlanetSurface::Update()
 
 void ModulePlanetSurface::Draw()
 {
-	clear_to_color(g_game->GetBackBuffer(), color_to_int(BLACK));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_clear_to_color(BLACK);
 
 	if (vibration > 0)
 		vibration -= 10;
@@ -2236,7 +2236,7 @@ void ModulePlanetSurface::Draw()
 
 void ModulePlanetSurface::drawMinimap()
 {
-	clear_bitmap(minimap);
+	al_set_target_bitmap(minimap); al_clear_to_color(al_map_rgb(0,0,0));
 
 	//draw the planet scanner image
 	//al_set_target_bitmap(minimap); al_draw_scaled_bitmap(surface, 0, 0, surface->w, surface->h, 0, 0, al_get_bitmap_width(minimap), al_get_bitmap_height(minimap), 0);
@@ -2343,7 +2343,7 @@ void ModulePlanetSurface::LoadPortrait(std::string name, std::string filepath)
 	//Only load a portrait once
 	if ( portraitsIt == portraits.end() )
 	{
-		BITMAP *portrait = load_bitmap( filepath.c_str(), NULL);
+		BITMAP *portrait = al_load_bitmap( filepath.c_str());
 
 		//Make sure the image load just fine
 		if (portrait != NULL && name != "")

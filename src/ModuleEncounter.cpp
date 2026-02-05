@@ -325,7 +325,7 @@ bool ModuleEncounter::Init()
 	scroller->LoadTileImage("data/spacetravel/ip_tiles.tga");
     
     //load the message gui
-	img_messages = (BITMAP*)load_bitmap("data/messagegui/gui_messagewindow.bmp",NULL);
+	img_messages = al_load_bitmap("data/messagegui/gui_messagewindow.bmp");
 	if (!img_messages) {
 		g_game->message("Encounter: error loading img_messages");
 		return false;
@@ -339,14 +339,14 @@ bool ModuleEncounter::Init()
 	//}
 
 	//load the aux gui
-	img_aux = (BITMAP*)load_bitmap("data/messagegui/gui_aux.bmp",NULL);
+	img_aux = al_load_bitmap("data/messagegui/gui_aux.bmp");
 	if (!img_aux) {
 		g_game->message("error loading img_aux");
 		return false;
 	}
 
 	//load the gui viewer screen
-	img_viewer = (BITMAP*)load_bitmap("data/messagegui/gui_viewer.bmp",NULL);
+	img_viewer = al_load_bitmap("data/messagegui/gui_viewer.bmp");
 	if (!img_viewer) {
 		g_game->message("error loading gui_viewer");
 		return false;
@@ -384,7 +384,7 @@ bool ModuleEncounter::Init()
 	}
 
 	//clear screen
-	clear_to_color(g_game->GetBackBuffer(), color_to_int(al_map_rgb(0, 0, 0)));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	//shortcuts to crew last names to simplify code
 	//FIXME: these will get stale when someone get killed
@@ -455,7 +455,7 @@ bool ModuleEncounter::Encounter_Init()
 	dialogCensor.insert( make_pair("[ALIEN]", alienName) );
 
 	//load the right gui viewer
-	img_rightviewer = (BITMAP*)load_bitmap("data/messagegui/gui_viewer_right.bmp",NULL);
+	img_rightviewer = al_load_bitmap("data/messagegui/gui_viewer_right.bmp");
 	if (!img_rightviewer) {
 		g_game->message("Encounter: error loading gui_viewer_right");
 		return false;
@@ -568,7 +568,7 @@ bool ModuleEncounter::Encounter_Init()
 
 	//load the alien's portrait image
     filename << "data/encounter/" << portraitFile;
-	img_alien_portrait = (BITMAP*)load_bitmap(filename.str().c_str(),NULL);
+	img_alien_portrait = al_load_bitmap(filename.str().c_str());
 	if (!img_alien_portrait) {
 		g_game->message("Encounter: Error loading portrait " + portraitFile);
 		return false;
@@ -576,7 +576,7 @@ bool ModuleEncounter::Encounter_Init()
 
 	//load the alien ship's schematic image
     filename2 << "data/encounter/" << schematicFile;
-	img_alien_schematic = (BITMAP*)load_bitmap(filename2.str().c_str(),NULL);
+	img_alien_schematic = al_load_bitmap(filename2.str().c_str());
 	if (!img_alien_schematic) {
 		g_game->message("Encounter: Error loading schematic " + schematicFile);
 		return false;
@@ -584,7 +584,7 @@ bool ModuleEncounter::Encounter_Init()
 
 	//load the alien ship's animated sprite image
     filename3 << "data/encounter/" << spriteFile;
-	img_alien_ship = (BITMAP*)load_bitmap(filename3.str().c_str(),NULL);
+	img_alien_ship = al_load_bitmap(filename3.str().c_str());
 	if (!img_alien_ship) {
 		g_game->message("Encounter: Error loading ship sprite " + spriteFile);
 		return false;
@@ -617,49 +617,49 @@ bool ModuleEncounter::Combat_Init()
 	ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
 	asx = (int)g_game->getGlobalNumber("AUX_SCREEN_X");
 	asy = (int)g_game->getGlobalNumber("AUX_SCREEN_Y");
-	minimap = create_bitmap(asw, ash);
+	minimap = al_create_bitmap(asw, ash);
 
 	//load small asteroids
-	img_smlasteroid = (BITMAP*)load_bitmap("data/encounter/smlasteroid.bmp",NULL);
+	img_smlasteroid = al_load_bitmap("data/encounter/smlasteroid.bmp");
 	if (!img_smlasteroid) {
 		g_game->message("error loading img_smlasteroid");
 		return false;
 	}
-	img_bigasteroid = (BITMAP*)load_bitmap("data/encounter/bigasteroid.bmp",NULL);
+	img_bigasteroid = al_load_bitmap("data/encounter/bigasteroid.bmp");
 	if (!img_bigasteroid) {
 		g_game->message("error loading img_bigasteroid");
 		return false;
 	}
 
 	//load weapon images
-	img_laserbeam = (BITMAP*)load_bitmap("data/encounter/laser_beam.bmp",NULL);
+	img_laserbeam = al_load_bitmap("data/encounter/laser_beam.bmp");
 	if (!img_laserbeam) {
 		g_game->message("error loading img_laserbeam");
 		return false;
 	}
-	img_plasma = (BITMAP*)load_bitmap("data/encounter/weapon_plasma_32.tga",NULL);
+	img_plasma = al_load_bitmap("data/encounter/weapon_plasma_32.tga");
 	if (!img_plasma) {
 		g_game->message("error loading weapon_player_primary");
 		return false;
 	}
-	img_redbolt = (BITMAP*)load_bitmap("data/encounter/red_bolt.bmp",NULL);
+	img_redbolt = al_load_bitmap("data/encounter/red_bolt.bmp");
 	if (!img_redbolt) {
 		g_game->message("error loading img_redbolt");
 		return false;
 	}
 
 	//load explosions
-	img_bigexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_128.tga",NULL);
+	img_bigexplosion = al_load_bitmap("data/encounter/explosion_30_128.tga");
 	if (!img_bigexplosion) {
 		g_game->message("error loading img_bigexplosion");
 		return false;
 	}
-	img_medexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_64.tga",NULL);
+	img_medexplosion = al_load_bitmap("data/encounter/explosion_30_64.tga");
 	if (!img_medexplosion) {
 		g_game->message("error loading img_medexplosion");
 		return false;
 	}
-	img_smlexplosion = (BITMAP*)load_bitmap("data/encounter/explosion_30_48.tga",NULL);
+	img_smlexplosion = al_load_bitmap("data/encounter/explosion_30_48.tga");
 	if (!img_smlexplosion) {
 		g_game->message("error loading img_smlexplosion");
 		return false;
@@ -672,22 +672,22 @@ bool ModuleEncounter::Combat_Init()
 	snd_explosion = g_game->audioSystem->Load("data/encounter/hit2.wav");
 
 	//load powerups
-	img_powerup_health = (BITMAP*)load_bitmap("data/encounter/powerup_health.tga",NULL);
+	img_powerup_health = al_load_bitmap("data/encounter/powerup_health.tga");
 	if (!img_powerup_health) {
 		g_game->message("error loading img_powerup_health");
 		return false;
 	}
-	img_powerup_shield = (BITMAP*)load_bitmap("data/encounter/powerup_shield.tga",NULL);
+	img_powerup_shield = al_load_bitmap("data/encounter/powerup_shield.tga");
 	if (!img_powerup_shield) {
 		g_game->message("error loading img_powerup_shield");
 		return false;
 	}
-	img_powerup_armor = (BITMAP*)load_bitmap("data/encounter/powerup_armor.tga",NULL);
+	img_powerup_armor = al_load_bitmap("data/encounter/powerup_armor.tga");
 	if (!img_powerup_armor) {
 		g_game->message("error loading img_powerup_armor");
 		return false;
 	}
-	img_powerup_mineral = (BITMAP*)load_bitmap("data/encounter/powerup_mineral.tga",NULL);
+	img_powerup_mineral = al_load_bitmap("data/encounter/powerup_mineral.tga");
 	if (!img_powerup_mineral) {
 		g_game->message("error loading img_powerup_mineral");
 		return false;
@@ -2885,7 +2885,7 @@ void ModuleEncounter::adjustVerticalCoords(int delta)
 
 void ModuleEncounter::DrawMinimap()
 {
-	clear_to_color(minimap, color_to_int(al_map_rgb(0, 0, 0)));
+	al_set_target_bitmap(minimap); al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	for (int i=0; i < (int)combatObjects.size(); i++)
 	{

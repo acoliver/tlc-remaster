@@ -29,10 +29,10 @@ MessageBoxWindow::MessageBoxWindow(
 		visible(true)
 {
 	if (bg == NULL)
-		bg = load_bitmap("data/gui/trans_bg.tga", NULL);
+		bg = al_load_bitmap("data/gui/trans_bg.tga");
 	
 	if (bar == NULL)
-		bar = load_bitmap("data/gui/messagebox_bar.bmp", NULL);
+		bar = al_load_bitmap("data/gui/messagebox_bar.bmp");
 
 	if (button1 == NULL)
 	{
@@ -194,7 +194,7 @@ void MessageBoxWindow::Draw()
 		bottom = y + height;
 	}
 
-	BITMAP *temp = create_bitmap(width, height);
+	BITMAP *temp = al_create_bitmap(width, height);
 	al_set_target_bitmap(temp); al_draw_scaled_bitmap(bg, 0, 0, al_get_bitmap_width(bg), al_get_bitmap_height(bg), 0, 0, width, height, 0);
 	al_set_target_bitmap(backBuffer); al_draw_bitmap(temp, left, top, 0); 
 
@@ -204,7 +204,7 @@ void MessageBoxWindow::Draw()
 	al_set_target_bitmap(backBuffer); al_draw_scaled_bitmap(bar, 0, 0, al_get_bitmap_width(bar), al_get_bitmap_height(bar), left, top, al_get_bitmap_width(temp), al_get_bitmap_height(bar), 0);
 	al_set_target_bitmap(backBuffer); al_draw_scaled_bitmap(bar, 0, 0, al_get_bitmap_width(bar), al_get_bitmap_height(bar), left, top + al_get_bitmap_height(temp) - al_get_bitmap_height(bar), al_get_bitmap_width(temp), al_get_bitmap_height(bar), 0);
 
-	destroy_bitmap(temp);
+	al_destroy_bitmap(temp);
 
     if (labelHeading)
         labelHeading->Draw(backBuffer);

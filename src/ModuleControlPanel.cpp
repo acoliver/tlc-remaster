@@ -49,7 +49,7 @@ bool ModuleControlPanel::Init()
 	
 
 	//load background image
-	controlPanelBackgroundImg = (BITMAP *)load_bitmap("data/controlpanel/gui_controlpanel.bmp",NULL);
+	controlPanelBackgroundImg = (BITMAP *)al_load_bitmap("data/controlpanel/gui_controlpanel.bmp");
 	if (controlPanelBackgroundImg == NULL) 
     {
 		g_game->message("Error loading controlpanel background");
@@ -474,7 +474,7 @@ void ModuleControlPanel::Close()
 {
 	try {
 
-        destroy_bitmap(controlPanelBackgroundImg);
+        al_destroy_bitmap(controlPanelBackgroundImg);
 
 
 		for (vector<OfficerButton*>::iterator i = officerButtons.begin(); i != officerButtons.end(); ++i)
@@ -757,28 +757,28 @@ ModuleControlPanel::CommandButton::~CommandButton(){}
 
 bool ModuleControlPanel::CommandButton::InitCommon()
 {
-	imgBackground = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg.bmp",NULL);
+	imgBackground = (BITMAP*)al_load_bitmap("data/controlpanel/command_button_bg.bmp");
 	if (imgBackground == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundDisabled = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_disabled.bmp",NULL);
+	imgBackgroundDisabled = (BITMAP*)al_load_bitmap("data/controlpanel/command_button_bg_disabled.bmp");
 	if (imgBackgroundDisabled == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundMouseOver = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_mo.bmp",NULL);
+	imgBackgroundMouseOver = (BITMAP*)al_load_bitmap("data/controlpanel/command_button_bg_mo.bmp");
 	if (imgBackgroundMouseOver == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgBackgroundSelected = (BITMAP*)load_bitmap("data/controlpanel/command_button_bg_select.bmp",NULL);
+	imgBackgroundSelected = (BITMAP*)al_load_bitmap("data/controlpanel/command_button_bg_select.bmp");
 	if (imgBackgroundSelected == NULL) 
     {
 		g_game->message("Error in control panel");
@@ -800,7 +800,7 @@ int ModuleControlPanel::CommandButton::GetCommonHeight()
 
 bool ModuleControlPanel::CommandButton::InitButton()
 {
-	imgCmdIcon = (BITMAP*)load_bitmap(imgFileCmdIcon.c_str(),NULL);
+	imgCmdIcon = (BITMAP*)al_load_bitmap(imgFileCmdIcon.c_str());
 	if (imgCmdIcon == NULL) 
     {
 		g_game->message("Error in control panel");
@@ -814,7 +814,7 @@ void ModuleControlPanel::CommandButton::DestroyButton()
 {
 	if (imgCmdIcon != NULL)
 	{
-		destroy_bitmap(imgCmdIcon);
+		al_destroy_bitmap(imgCmdIcon);
 		imgCmdIcon = NULL;
 	}
 }
@@ -823,25 +823,25 @@ void ModuleControlPanel::CommandButton::DestroyCommon()
 {
 	if (imgBackground != NULL)
 	{
-		destroy_bitmap(imgBackground);
+		al_destroy_bitmap(imgBackground);
 		imgBackground = NULL;
 	}
 
 	if (imgBackgroundDisabled != NULL)
 	{
-		destroy_bitmap(imgBackgroundDisabled);
+		al_destroy_bitmap(imgBackgroundDisabled);
 		imgBackgroundDisabled = NULL;
 	}
 
 	if (imgBackgroundMouseOver != NULL)
 	{
-		destroy_bitmap(imgBackgroundMouseOver);
+		al_destroy_bitmap(imgBackgroundMouseOver);
 		imgBackgroundMouseOver = NULL;
 	}
 
 	if (imgBackgroundSelected != NULL)
 	{
-		destroy_bitmap(imgBackgroundSelected);
+		al_destroy_bitmap(imgBackgroundSelected);
 		imgBackgroundSelected = NULL;
 	}
 }
@@ -947,14 +947,14 @@ bool ModuleControlPanel::OfficerButton::InitCommon()
 
 bool ModuleControlPanel::OfficerButton::InitButton()
 {
-	imgMouseOver = (BITMAP*)load_bitmap(imgFileMouseOver.c_str(),NULL);
+	imgMouseOver = (BITMAP*)al_load_bitmap(imgFileMouseOver.c_str());
 	if (imgMouseOver == NULL) 
     {
 		g_game->message("Error in control panel");
 		return false;
 	}
 
-	imgSelected = (BITMAP*)load_bitmap(imgFileSelected.c_str(),NULL);
+	imgSelected = (BITMAP*)al_load_bitmap(imgFileSelected.c_str());
 	if (imgSelected == NULL) 
     {
 		g_game->message("Error in control panel");
@@ -1054,12 +1054,12 @@ void ModuleControlPanel::OfficerButton::DestroyButton()
 {
 	if (imgMouseOver != NULL)
 	{
-		destroy_bitmap(imgMouseOver);
+		al_destroy_bitmap(imgMouseOver);
 		imgMouseOver = NULL;
 	}
 	if (imgSelected != NULL)
 	{
-		destroy_bitmap(imgSelected);
+		al_destroy_bitmap(imgSelected);
 		imgSelected = NULL;
 	}
 

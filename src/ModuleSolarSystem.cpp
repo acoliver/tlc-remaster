@@ -342,7 +342,7 @@ bool ModuleSolarSystem::Init()
     //switching to rendered planets but load ip_tiles for convenience
     //10 planets max at 256x256, 10 columns
 
-    BITMAP *tileImage = (BITMAP*)load_bitmap("data/spacetravel/ip_tiles.bmp",NULL);
+	BITMAP *tileImage = al_load_bitmap("data/spacetravel/ip_tiles.bmp");
     //BITMAP *tileImage = (BITMAP*)create_bitmap(256*10, 256*1);
 	if (!tileImage) 
     {
@@ -977,12 +977,12 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
                 //render planet onto scratch image, then copy to the tilescroller source image
 
                 BITMAP *planetImage = NULL;
-                planetImage = (BITMAP*)create_bitmap(256,256);
+	planetImage = al_create_bitmap(256,256);
                 if (!planetImage) 
                 {
                     g_game->fatalerror("LoadStarSystem: error creating planet image");
                 }
-                clear_to_color(planetImage, (255 << 16) | (0 << 8) | 255);
+                al_set_target_bitmap(planetImage); al_clear_to_color(al_map_rgb(255, 0, 255));
                 
 
                 //rotate planet randomly
@@ -995,8 +995,8 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
                 pb->planetRenderObj->Draw( planetImage, 0, 0, rotation, pb->planetRadius, cx, cy );
 
 
-                BITMAP* scratch = (BITMAP*)create_bitmap(256,256);
-                clear_to_color(scratch, (255 << 16) | (0 << 8) | 255);
+	BITMAP* scratch = al_create_bitmap(256,256);
+                al_set_target_bitmap(scratch); al_clear_to_color(al_map_rgb(255, 0, 255));
                 al_set_target_bitmap(scratch); al_draw_bitmap_region(planetImage, 0, 0, 256, 256, 0, 0, 0);
 
 
@@ -1006,7 +1006,7 @@ bool ModuleSolarSystem::LoadStarSystem(int id)
                 int tile = planets[i].tilenum;
 		        al_set_target_bitmap(tileImage); al_draw_bitmap(scratch, 256*tile, 0, 0);
 
-                destroy_bitmap(scratch);
+	al_destroy_bitmap(scratch);
 
 
                 //copy the source image back into the tilescroller

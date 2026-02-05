@@ -207,7 +207,7 @@ int PlanetSurfaceObject::load(const char *filename)
 
 	if (it == graphics.end())
 	{
-		this->image = load_bitmap(filename, NULL);
+		this->image = al_load_bitmap(filename);
 		if (!this->image) {
 			std::string msg = "Error loading sprite file ";
 			msg += filename; 
@@ -335,19 +335,19 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 	}
 	else if (!scaled && !rotated && UseAlpha)
 	{
-		scrapFrame = create_bitmap(frameWidth, frameHeight);
+		scrapFrame = al_create_bitmap(frameWidth, frameHeight);
 
 		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 		al_set_target_bitmap(dest); al_draw_bitmap(scrapFrame, (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 		
-		destroy_bitmap(scrapFrame);
+		al_destroy_bitmap(scrapFrame);
 		return;
 	}
 	else if (scaled && rotated && !UseAlpha)
 	{
 		//scrapFrame = create_bitmap(frameWidth, frameHeight);
 		
-		finalFrame = create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
+		finalFrame = al_create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
 
 		al_set_target_bitmap(finalFrame); al_draw_scaled_bitmap(image, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale), 0);
 
@@ -362,21 +362,21 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		}
 
 
-		destroy_bitmap(finalFrame);
+		al_destroy_bitmap(finalFrame);
 		//destroy_bitmap(scrapFrame);
 
 		return;
 	}
 	else if (scaled && !rotated)
 	{
-		finalFrame = create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
+		finalFrame = al_create_bitmap((int)(frameWidth * scale), (int)(frameHeight * scale));
 		
 		//Scale paste
 		al_set_target_bitmap(finalFrame); al_draw_scaled_bitmap(image, fx, fy, frameWidth, frameHeight, 0, 0, (int)(frameWidth * scale), (int)(frameHeight * scale), 0);
 	}
 	else if (!scaled && rotated && !UseAlpha)
 	{
-		scrapFrame = create_bitmap(frameWidth, frameHeight);
+		scrapFrame = al_create_bitmap(frameWidth, frameHeight);
 
 		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 
@@ -389,26 +389,26 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, (int)(x - g_game->gameState->player->posPlanet.x) + _cx, (int)(y - g_game->gameState->player->posPlanet.y) + _cy, _angle_rad, 0); 
 		}
 
-		destroy_bitmap(scrapFrame);
+		al_destroy_bitmap(scrapFrame);
 
 		return;
 	}
 	else if (!scaled && rotated && UseAlpha)
 	{
-		scrapFrame = create_bitmap(frameWidth, frameHeight);
+		scrapFrame = al_create_bitmap(frameWidth, frameHeight);
 
 		if (frameWidth < frameHeight)
 		{
-			finalFrame = create_bitmap(frameHeight, frameHeight);
+			finalFrame = al_create_bitmap(frameHeight, frameHeight);
 		}
 		else
 		{
-			finalFrame = create_bitmap(frameWidth, frameWidth);
+			finalFrame = al_create_bitmap(frameWidth, frameWidth);
 		}
 		
 
 		al_set_target_bitmap(scrapFrame); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
-		clear_bitmap(finalFrame);
+		al_set_target_bitmap(finalFrame); al_clear_to_color(al_map_rgb(0,0,0));
 
 		//adjust for Allegro's 16.16 fixed trig (256 / 360 = 0.7) then divide by 2 radians
 		al_set_target_bitmap(finalFrame); 
@@ -419,7 +419,7 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, 0 + _cx, 0 + _cy, _angle_rad, 0); 
 		}
 
-		destroy_bitmap(scrapFrame);
+		al_destroy_bitmap(scrapFrame);
 	}
 
 	if (!UseAlpha)
@@ -433,7 +433,7 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		al_draw_tinted_bitmap(finalFrame, al_map_rgba_f(1, 1, 1, 0.5f), (int)(x - g_game->gameState->player->posPlanet.x), (int)(y - g_game->gameState->player->posPlanet.y), 0);
 	}
 
-	destroy_bitmap(finalFrame);
+	al_destroy_bitmap(finalFrame);
 }
 
 bool PlanetSurfaceObject::CheckCollision(PlanetSurfaceObject * otherPSO)
@@ -688,7 +688,7 @@ void PlanetSurfaceObject::EmptyGraphics()
 
 	for (it = graphics.begin(); it != graphics.end(); ++it)
 	{
-		destroy_bitmap(it->second);
+		al_destroy_bitmap(it->second);
 		it->second = NULL;
 	}
 	graphics.clear();

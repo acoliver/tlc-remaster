@@ -838,7 +838,7 @@ void ModuleBank::Close(){
 	try {
         if (bmp_bank_background != NULL)
         {
-            delete bmp_bank_background;
+            al_destroy_bitmap(bmp_bank_background);
             bmp_bank_background=NULL;
         }
 		if (m_help_window != NULL)

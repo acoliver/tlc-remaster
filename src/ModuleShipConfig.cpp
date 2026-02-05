@@ -124,7 +124,7 @@ bool ModuleShipConfig::Init()
 	//load background image
     shipConfig=NULL;
 	//shipConfig = (BITMAP*)scdata[SHIPCONFIG_BMP].dat;
-    shipConfig = (BITMAP*)load_bitmap("data/shipconfig/ShipConfig.bmp",NULL);
+    shipConfig = (BITMAP*)al_load_bitmap("data/shipconfig/ShipConfig.bmp");
 	if (!shipConfig) 
     {
 		debug << "ShipConfig: Error loading background" << endl;

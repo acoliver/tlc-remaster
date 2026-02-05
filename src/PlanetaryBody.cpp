@@ -50,32 +50,32 @@ PlanetaryBody::~PlanetaryBody(void)
     }
     if (this->planetTexture256)
     {
-        destroy_bitmap(this->planetTexture256);
+        al_destroy_bitmap(this->planetTexture256);
         this->planetTexture256=NULL;
     }
     if (this->planetTexture500)
     {
-        destroy_bitmap(this->planetTexture500);
+        al_destroy_bitmap(this->planetTexture500);
         this->planetTexture500=NULL;
     }
     if (this->lightmapOverlay) 
     {
-        destroy_bitmap(this->lightmapOverlay);
+        al_destroy_bitmap(this->lightmapOverlay);
         this->lightmapOverlay=NULL;
     }
 	if (this->planetTopography) 
     {
-        destroy_bitmap(this->planetTopography);
+        al_destroy_bitmap(this->planetTopography);
         this->planetTopography=NULL;
     }
     if (this->planetScannerMap) 
     {
-        destroy_bitmap(this->planetScannerMap);
+        al_destroy_bitmap(this->planetScannerMap);
         this->planetScannerMap=NULL;
     }
     if (this->planetTexture) 
     {
-        destroy_bitmap(this->planetTexture);
+        al_destroy_bitmap(this->planetTexture);
         this->planetTexture = NULL;
     }
 }
@@ -101,12 +101,12 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
     //shouldn't happen, but just in case of a repeat call...
     if (this->planetTexture!=NULL)
     {
-        delete this->planetTexture;
+        al_destroy_bitmap(this->planetTexture);
     }
     this->planetTexture=NULL;
 
     //try to find planet texture file PREVIOUSLY saved...
-    this->planetTexture = (BITMAP*)load_bitmap(renderFilename.c_str(), NULL);
+    this->planetTexture = al_load_bitmap(renderFilename.c_str());
 
     //TEXTURE FILE NOT FOUND--generate a new one
 	if (!this->planetTexture) 
@@ -115,7 +115,7 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 	    this->CreateTexture(this->planetType, TEX_SIZE_RENDER, TEX_SIZE_RENDER, this->randomness, renderFilename);
 
         //load newly generated planet texture
-        this->planetTexture = (BITMAP*)load_bitmap(renderFilename.c_str(), NULL);
+        this->planetTexture = al_load_bitmap(renderFilename.c_str());
 	    if (!this->planetTexture) 
         {
 		    g_game->message("PlanetOrbit: Error loading planet texture: " + renderFilename);
@@ -130,10 +130,10 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 
     if (this->planetTexture256!=NULL)
     {
-        delete this->planetTexture256;
+        al_destroy_bitmap(this->planetTexture256);
         this->planetTexture256=NULL;
     }
-    this->planetTexture256 = (BITMAP*)create_bitmap(256,256);
+    this->planetTexture256 = al_create_bitmap(256,256);
 
     //copy source HD image onto downscaled orbit texture 
     al_set_target_bitmap(this->planetTexture256); al_draw_scaled_bitmap(this->planetTexture, 0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER, 0, 0, 256, 256, 0);
@@ -153,10 +153,10 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 
     if (this->planetTexture500!=NULL)
     {
-        delete this->planetTexture500;
+        al_destroy_bitmap(this->planetTexture500);
         this->planetTexture500=NULL;
     }
-    this->planetTexture500 = (BITMAP*)create_bitmap(500,500);
+    this->planetTexture500 = al_create_bitmap(500,500);
 
     //copy source HD image onto downscaled surface image
     al_set_target_bitmap(this->planetTexture500); al_draw_scaled_bitmap(this->planetTexture, 0, 0, TEX_SIZE_RENDER, TEX_SIZE_RENDER, 0, 0, 500, 500, 0);
@@ -170,8 +170,8 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
 	static int ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
 
     //create planet topography bitmap for minimap
-	this->planetTopography = create_bitmap(asw, ash);
-	clear_bitmap(this->planetTopography);
+	this->planetTopography = al_create_bitmap(asw, ash);
+	al_set_target_bitmap(this->planetTopography); al_clear_to_color(al_map_rgb(0,0,0));
 
 	//scale planet texture onto topography, cutting skewed N/S poles (drop 10 pixels from top/bottom)
  	al_set_target_bitmap(this->planetTopography); al_draw_scaled_bitmap(this->planetTexture, 0, 10, al_get_bitmap_width(this->planetTexture), al_get_bitmap_height(this->planetTexture)-20, 1, 1, al_get_bitmap_width(this->planetTopography)-2, al_get_bitmap_height(this->planetTopography), 0-2);
@@ -179,11 +179,11 @@ bool PlanetaryBody::CreatePlanetTextures(int starid, int planetid)
     //just in case of a duplicate call...
     if (this->planetScannerMap!=NULL)
     {
-        delete this->planetScannerMap;
+        al_destroy_bitmap(this->planetScannerMap);
         this->planetScannerMap=NULL;
     }
 	//now create a scratch image as a duplicate of topography used for sensor scans
-    this->planetScannerMap = create_bitmap(asw, ash);
+    this->planetScannerMap = al_create_bitmap(asw, ash);
     al_set_target_bitmap(this->planetScannerMap); al_draw_bitmap(this->planetTopography, 0, 0, 0);
 
 

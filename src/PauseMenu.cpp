@@ -20,7 +20,7 @@ PauseMenu::PauseMenu()
 	enabled = false;
 
 	if (bg == NULL)
-		bg = load_bitmap("data/pausemenu/pausemenu_bg.tga", NULL);
+		bg = al_load_bitmap("data/pausemenu/pausemenu_bg.tga");
 
 	//get location of dialog
 	x = 512-al_get_bitmap_width(bg)/2;
@@ -86,7 +86,7 @@ PauseMenu::PauseMenu()
 PauseMenu::~PauseMenu()
 {
 	display = false;
-	if (bg != NULL) destroy_bitmap(bg);
+	if (bg != NULL) al_destroy_bitmap(bg);
 	if (button1 != NULL) delete button1;
 	if (button2 != NULL) delete button2;
 	if (button3 != NULL) delete button3;

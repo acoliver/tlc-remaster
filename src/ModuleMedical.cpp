@@ -391,7 +391,7 @@ bool ModuleMedical::Init()
 
 
     //CREW LIST VIEWER (right side)
-	img_crewlist_viewer = load_bitmap("data/medical/medical_gui_viewer_right.bmp",NULL);
+	img_crewlist_viewer = al_load_bitmap("data/medical/medical_gui_viewer_right.bmp");
 	if (!img_crewlist_viewer) {
 		debug << "Medical: Error loading medical_gui_viewer_right image" << endl;
 		return false;
@@ -400,7 +400,7 @@ bool ModuleMedical::Init()
 
 
     //CREW HEALTH VIEWER (left side)
-	img_crewhealth_viewer = load_bitmap("data/medical/medical_gui_viewer_left.bmp",NULL);
+	img_crewhealth_viewer = al_load_bitmap("data/medical/medical_gui_viewer_left.bmp");
 	if (!img_crewhealth_viewer) 
     {
 		g_game->message("Medical: Error loading medical_gui_viewer_left image");
@@ -410,7 +410,7 @@ bool ModuleMedical::Init()
 
 
     //CREW SKILLS VIEWER (left side)
-	img_crewskills_viewer = load_bitmap("data/medical/medical_gui_viewer.bmp",NULL);
+	img_crewskills_viewer = al_load_bitmap("data/medical/medical_gui_viewer.bmp");
 	if (!img_crewskills_viewer) 
     {
 		g_game->message("Medical: Error loading medical_gui_viewer image");
@@ -492,17 +492,17 @@ void ModuleMedical::Close()
 	try {
         if (img_crewlist_viewer!=NULL)
         {
-            delete img_crewlist_viewer;
+            al_destroy_bitmap(img_crewlist_viewer);
             img_crewlist_viewer=NULL;
         }
         if (img_crewhealth_viewer!=NULL)
         {
-            delete img_crewhealth_viewer;
+            al_destroy_bitmap(img_crewhealth_viewer);
             img_crewhealth_viewer=NULL;
         }
         if (img_crewskills_viewer!=NULL)
         {
-            delete img_crewskills_viewer;
+            al_destroy_bitmap(img_crewskills_viewer);
             img_crewskills_viewer=NULL;
         }
 

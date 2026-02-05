@@ -24,14 +24,14 @@ Label::Label(std::string Text, int X, int Y, int Width, int Height, ALLEGRO_COLO
 	color(Color),
 	alFont(Font)
 {
-	image = create_bitmap(Width, Height);
+	image = al_create_bitmap(Width, Height);
 }
 
 Label::~Label()
 {
 	if (image != NULL)
 	{
-		destroy_bitmap(image);
+		al_destroy_bitmap(image);
 		image = NULL;
 	}
 }

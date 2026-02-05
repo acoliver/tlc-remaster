@@ -227,7 +227,7 @@ bool ModuleCantina::Init()
 		case PROFESSION_SCIENTIFIC:
 			//m_background = (BITMAP*)candata[RESEARCHLAB_BACKGROUND_BMP].dat;			
             m_background=NULL;
-            m_background = (BITMAP*)load_bitmap("data/cantina/researchlab_background.bmp",NULL);
+            m_background = (BITMAP*)al_load_bitmap("data/cantina/researchlab_background.bmp");
 			m_turninBtn->SetButtonText("Breakthrough!");
 			m_exitBtn->SetButtonText("Terminate");
 			label1 = "PROJECT TITLE";
@@ -239,7 +239,7 @@ bool ModuleCantina::Init()
 			break;
 		case PROFESSION_MILITARY:
 			//m_background = (BITMAP*)candata[MILITARYOPS_BACKGROUND_BMP].dat;			
-            m_background = (BITMAP*)load_bitmap("data/cantina/militaryops_background.bmp",NULL);
+            m_background = (BITMAP*)al_load_bitmap("data/cantina/militaryops_background.bmp");
 			m_turninBtn->SetButtonText("Accomplished!");
 			m_exitBtn->SetButtonText("Dismissed");
 			label1 = "MISSION CODENAME";
@@ -251,7 +251,7 @@ bool ModuleCantina::Init()
 			break;
 		default:
 			//m_background = (BITMAP*)candata[CANTINA_BACKGROUND_BMP].dat;			
-            m_background = (BITMAP*)load_bitmap("data/cantina/cantina_background.bmp",NULL);
+            m_background = (BITMAP*)al_load_bitmap("data/cantina/cantina_background.bmp");
 			m_turninBtn->SetButtonText("Pay Up!");
 			m_exitBtn->SetButtonText("Scram");
 			label1 = "JOB NAME";

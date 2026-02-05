@@ -55,7 +55,7 @@ bool ModuleSettings::Init()
 	cmd_selected = 0;
 	button_selected = 0;
 
-	background = load_bitmap("data/settings/background.tga",NULL);
+	background = al_load_bitmap("data/settings/background.tga");
 	if (!background) {
 		g_game->message("Settings: Error loading background");
 		return false;
@@ -64,9 +64,9 @@ bool ModuleSettings::Init()
 	BITMAP *imgNorm=NULL, *imgOver=NULL; 
 	g_game->audioSystem->Load("data/cantina/buttonclick.ogg", "click");
 
-    //exit button
-	imgNorm = load_bitmap("data/settings/button1.tga",0);
-	imgOver = load_bitmap("data/settings/button.tga",0);
+	//exit button
+	imgNorm = al_load_bitmap("data/settings/button1.tga");
+	imgOver = al_load_bitmap("data/settings/button.tga");
 	btn_exit = new Button(
 		imgNorm, imgOver, NULL, 
 		10, SCREEN_HEIGHT-al_get_bitmap_height(imgNorm)-10, 
@@ -138,13 +138,13 @@ bool ModuleSettings::Init()
 
     //create fullscreen toggle
     BITMAP *toggleImage=NULL;
-    toggleImage = (BITMAP*)load_bitmap("data/settings/button32_normal.bmp",NULL);
+    toggleImage = al_load_bitmap("data/settings/button32_normal.bmp");
     if (!toggleImage) {
         g_game->fatalerror("Settings: Error loading toggle image\n");
         return false;
     }
     BITMAP *toggleImageOver=NULL;
-    toggleImageOver = (BITMAP*)load_bitmap("data/settings/button32_over.bmp",NULL);
+    toggleImageOver = al_load_bitmap("data/settings/button32_over.bmp");
     if (!toggleImageOver) {
         g_game->fatalerror("Settings: Error loading toggle image\n");
         return false;
@@ -192,7 +192,7 @@ void ModuleSettings::Close()
 		}
 		// Removed duplicate btn_fullscreen destroy (was already destroyed above)
 		if(background != NULL){
-			destroy_bitmap(background);
+			al_destroy_bitmap(background);
 			background = NULL;
 		}
 		if(resScrollbox != NULL){

@@ -171,19 +171,19 @@ bool ModuleStarmap::Init()
 	m_bOver_Star = false;
 	star_label = new Label("",0,0,100,22,ORANGE,g_game->font18);
 
-	starview = create_bitmap(MAP_WIDTH, MAP_HEIGHT);
-	clear_to_color(starview,color_to_int(BLACK));
+	starview = al_create_bitmap(MAP_WIDTH, MAP_HEIGHT);
+	al_set_target_bitmap(starview); al_clear_to_color(BLACK);
 
-	flux_view = create_bitmap(MAP_WIDTH, MAP_HEIGHT);
-	clear_to_color(flux_view,(255 << 16) | (0 << 8) | 255);
+	flux_view = al_create_bitmap(MAP_WIDTH, MAP_HEIGHT);
+	al_set_target_bitmap(flux_view); al_clear_to_color(al_map_rgb(255, 0, 255));
 
-	text = create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
-	clear_to_color(text,(255 << 16) | (0 << 8) | 255);
+	text = al_create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
+	al_set_target_bitmap(text); al_clear_to_color(al_map_rgb(255, 0, 255));
 
 	ratioX = (float)MAP_WIDTH / 250.0f;
 	ratioY = (float)MAP_HEIGHT / 220.0f;
 
-	clear_to_color(starview,(0 << 16) | (0 << 8) | 0);
+	al_set_target_bitmap(starview); al_clear_to_color(al_map_rgb(0, 0, 0));
 
 
 	//flux_sprite = new Sprite();
@@ -268,7 +268,7 @@ void ModuleStarmap::Close()
 	
 	try {
 		if (starview != NULL){
-			destroy_bitmap(starview);
+			al_destroy_bitmap(starview);
 			starview = NULL;
 		}
 		if (gui_starmap != NULL){
@@ -276,12 +276,12 @@ void ModuleStarmap::Close()
 			gui_starmap = NULL;
 		}
 		if (text != NULL){
-			destroy_bitmap(text);
+			al_destroy_bitmap(text);
 			text = NULL;
 		}
 
 		if (flux_view != NULL){
-			destroy_bitmap(flux_view);
+			al_destroy_bitmap(flux_view);
 			flux_view = NULL;
 		}
 
@@ -345,7 +345,7 @@ void ModuleStarmap::Draw()
 		int new_y_offset = Y_OFFSET+viewer_offset_y;
 		int text_y = 480;
 		int fontColor = (0 << 16) | (0 << 8) | 0;
-		clear_to_color(text,(255 << 16) | (0 << 8) | 255);
+		al_set_target_bitmap(text); al_clear_to_color(al_map_rgb(255, 0, 255));
 
 		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starview, 0, 0, MAP_WIDTH, MAP_HEIGHT, new_x_offset, new_y_offset, 0);
 		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(flux_view, 0, 0, MAP_WIDTH, MAP_HEIGHT, new_x_offset, new_y_offset, 0);

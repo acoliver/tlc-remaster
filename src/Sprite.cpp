@@ -64,21 +64,21 @@ Sprite::~Sprite()
     {
 		if (this->image != NULL) 
         {
-			destroy_bitmap(this->image);
+			al_destroy_bitmap(this->image);
 			this->image = NULL;
 		}
 	}
 			
 	if (this->frame != NULL) 
     {
-        destroy_bitmap(this->frame);
+        al_destroy_bitmap(this->frame);
         this->frame = NULL;
     }
 }
 
 bool Sprite::load(const char *filename) 
 {
-	this->image = load_bitmap(filename, NULL);
+	this->image = al_load_bitmap(filename);
 	if (!this->image) 
 	{
 		std::ostringstream s;
@@ -118,7 +118,7 @@ bool Sprite::setImage(BITMAP *source)
 	//if old image exists, it must be freed first
 	if (this->image && bLoaded) 
     {
-		destroy_bitmap(this->image);
+		al_destroy_bitmap(this->image);
 		this->image = NULL;
 	}
 	
@@ -193,8 +193,13 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
 {
     if (!this->image) return;
 
-    BITMAP* temp = create_bitmap(this->getWidth(), this->getHeight());
-    clear_to_color(temp, (255 << 16) | (0 << 8) | 255);
+    BITMAP* temp = al_create_bitmap(this->getWidth(), this->getHeight());
+    {
+        ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+        al_set_target_bitmap(temp);
+        al_clear_to_color(al_map_rgb(255, 0, 255));
+        al_set_target_bitmap(_old);
+    }
 
 
     //draw SCALED image onto temp image
@@ -223,7 +228,7 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
 		al_set_target_bitmap(_old);
 	}
 
-    destroy_bitmap(temp);
+    al_destroy_bitmap(temp);
 }
 
 
@@ -246,13 +251,13 @@ void Sprite::DrawFrame(BITMAP *dest, bool UseAlpha)
 	} 
 	else {
 		//paste frame onto scratch image using alpha channel
-		BITMAP *temp = create_bitmap(frameWidth, frameHeight);
+		BITMAP *temp = al_create_bitmap(frameWidth, frameHeight);
 		al_set_target_bitmap(temp); al_draw_bitmap_region(image, fx, fy, frameWidth, frameHeight, 0, 0, 0);
 		ALLEGRO_BITMAP* prev_target = al_get_target_bitmap();
 		al_set_target_bitmap(dest);
 		al_draw_bitmap(temp, (int)x, (int)y, 0);
 		al_set_target_bitmap(prev_target);
-		destroy_bitmap(temp);
+		al_destroy_bitmap(temp);
 	}
 	
 	if (DebugOutline) 
@@ -292,7 +297,7 @@ void Sprite::DrawFrameRotated(BITMAP *dest, int angle)
     //create scratch frame if necessary
     if (!frame) 
     {
-        frame = create_bitmap(frameWidth, frameHeight);
+        frame = al_create_bitmap(frameWidth, frameHeight);
     }
 
     //first, draw frame normally but send it to the scratch frame image

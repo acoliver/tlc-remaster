@@ -40,7 +40,7 @@ void PlanetTileScroller::Destroy()
 {
    if (scrollbuffer) 
    {
-	   destroy_bitmap(scrollbuffer);
+	   al_destroy_bitmap(scrollbuffer);
 	   scrollbuffer = NULL;
    }
 
@@ -50,7 +50,7 @@ void PlanetTileScroller::Destroy()
 	   {
 		   //if tile images were loaded from bitmap file, then we must free them
 		   //but if a pointer to a data file bitmap was used, do not free the memory!
-			if (!loadedFromDataFile) destroy_bitmap(tiles[i]->tiles);
+			if (!loadedFromDataFile) al_destroy_bitmap(tiles[i]->tiles);
 
 		   delete tiles[i];
 		   tiles[i] = NULL;
@@ -84,7 +84,7 @@ void PlanetTileScroller::ClearTileImageCache()
 {
 	for (cacheIt = tileImageCache.begin(); cacheIt != tileImageCache.end(); ++cacheIt)
 	{
-		destroy_bitmap(cacheIt->second);
+		al_destroy_bitmap(cacheIt->second);
 		cacheIt->second = NULL;
 	}
 	tileImageCache.clear();
@@ -107,7 +107,7 @@ void PlanetTileScroller::PurgePrimaryImages()
 bool PlanetTileScroller::LoadTileSet(char *FileName, int Variations, bool GroundNavigation, bool AirNavigation)
 {
 	BITMAP *tileSetImage = NULL; 
-	tileSetImage = load_bitmap(FileName, NULL);
+	tileSetImage = al_load_bitmap(FileName);
 	if (!tileSetImage) {
 		g_game->message("error loading tileSetImage");
 		return false;
@@ -179,8 +179,8 @@ BITMAP *PlanetTileScroller::GenerateTile(int BaseTileSet, int TileX, int TileY)
 	BITMAP *tile = FindTile(key);
 	if (tile == NULL)
 	{
-		tile = create_bitmap(tileWidth, tileHeight);
-		BITMAP *scratch = create_bitmap(tileWidth, tileHeight);
+		tile = al_create_bitmap(tileWidth, tileHeight);
+		BITMAP *scratch = al_create_bitmap(tileWidth, tileHeight);
 		al_set_target_bitmap(tile);
 		if (variation == 0)
 			al_draw_bitmap_region(tiles[BaseTileSet]->getTiles(), 0, 0, tileWidth, tileHeight, 0, 0, 0);
@@ -216,7 +216,7 @@ BITMAP *PlanetTileScroller::GenerateTile(int BaseTileSet, int TileX, int TileY)
 				al_draw_bitmap(scratch, 0, 0, 0);
 			}
 		}
-		destroy_bitmap(scratch);
+		al_destroy_bitmap(scratch);
 		tileImageCache[key] = tile;
 	}
 
@@ -263,8 +263,8 @@ int PlanetTileScroller::CreateScrollBuffer(int Width, int Height)
 	windowWidth = Width;
 	windowHeight = Height;
 	if (scrollbuffer != NULL) 
-		delete scrollbuffer;
-	scrollbuffer = create_bitmap(Width + (tileWidth * 2), Height + (tileHeight * 2));
+		al_destroy_bitmap(scrollbuffer);
+	scrollbuffer = al_create_bitmap(Width + (tileWidth * 2), Height + (tileHeight * 2));
 	return (scrollbuffer != NULL);
 }
 
@@ -277,7 +277,12 @@ void PlanetTileScroller::UpdateScrollBuffer()
 	if ( (!scrollbuffer) ) return;
 	if (tileWidth < 1 || tileHeight < 1) return;
 
-	clear_to_color(scrollbuffer, color_to_int(BLUE));
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(scrollbuffer);
+		al_clear_to_color(BLUE);
+		al_set_target_bitmap(_old);
+	}
 	//calculate starting tile position
 	int tilex = (int)scrollX / tileWidth;
 	int tiley = (int)scrollY / tileHeight;

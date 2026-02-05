@@ -32,18 +32,18 @@ ModuleStartup::~ModuleStartup(){}
 
 bool ModuleStartup::Init()
 {
-    m_background = (BITMAP*)load_bitmap("data/startup/space_1280.bmp",NULL);
+	m_background = al_load_bitmap("data/startup/space_1280.bmp");
 
 
 	//load copyright screen
-	copyright = (BITMAP*)load_bitmap("data/startup/startup_copyrights.bmp",NULL);
+	copyright = al_load_bitmap("data/startup/startup_copyrights.bmp");
 	if (!copyright) {
 		g_game->message("Startup: Error loading startup_copyrights");
 		return false;
 	}
 
 	//create fader scratch pad
-	fader = create_bitmap(SCREEN_W, SCREEN_H);
+	fader = al_create_bitmap(SCREEN_W, SCREEN_H);
 
 	return true;
 }
@@ -53,22 +53,22 @@ void ModuleStartup::Close()
 	try {
         if (fader!=NULL)
         {
-		    destroy_bitmap(fader);
+		    al_destroy_bitmap(fader);
             fader=NULL;
         }
         if (scratchpad!=NULL)
         {
-            destroy_bitmap(scratchpad);
+            al_destroy_bitmap(scratchpad);
             scratchpad=NULL;
         }
         if (copyright!=NULL)
         {
-            destroy_bitmap(copyright);
+            al_destroy_bitmap(copyright);
             copyright=NULL;
         }
         if (m_background!=NULL)
         {
-            destroy_bitmap(m_background);
+            al_destroy_bitmap(m_background);
             m_background=NULL;
         }
 	}

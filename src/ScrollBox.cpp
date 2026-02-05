@@ -50,9 +50,9 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 	sbScrollStart = sbScrollBarPos;
 	sbFontHeight = alfont_text_height(sbFont);
 	if (sbLines * sbFontHeight < sbHeight)
-		sbBuffer = create_bitmap(sbWidth, sbHeight);
+		sbBuffer = al_create_bitmap(sbWidth, sbHeight);
 	else
-		sbBuffer = create_bitmap(sbWidth, sbLines * sbFontHeight);
+		sbBuffer = al_create_bitmap(sbWidth, sbLines * sbFontHeight);
 
     ColorControls = al_map_rgb(64, 64, 64);
 	ColorBackground = al_map_rgb(32, 32, 32);
@@ -64,9 +64,9 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 
 	if (sbScrollBoxType == SB_LIST)
 	{
-		sbNormal = create_bitmap(sbWidth - 16, sbFontHeight);
-		sbHover = create_bitmap(sbWidth - 16, sbFontHeight);
-		sbSelected = create_bitmap(sbWidth - 16, sbFontHeight);
+		sbNormal = al_create_bitmap(sbWidth - 16, sbFontHeight);
+		sbHover = al_create_bitmap(sbWidth - 16, sbFontHeight);
+		sbSelected = al_create_bitmap(sbWidth - 16, sbFontHeight);
         PaintNormalImage();
         PaintHoverImage();
         PaintSelectedImage();
@@ -97,10 +97,10 @@ ScrollBox::ScrollBox::ScrollBox(ALFONT_FONT *Font, ScrollBoxType initScrollBoxTy
 
 void ScrollBox::ScrollBox::PaintNormalImage()
 {
-    clear_bitmap(sbNormal);
 	{
 		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
 		al_set_target_bitmap(sbNormal);
+		al_clear_to_color(al_map_rgb(0,0,0));
 		al_draw_rectangle(0, 0, al_get_bitmap_width(sbNormal)-1, al_get_bitmap_height(sbNormal)-1, ColorItemBorder, 1.0f);
 		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbNormal) - 2, al_get_bitmap_height(sbNormal) - 2, ColorBackground);
 		al_set_target_bitmap(_old);
@@ -109,10 +109,10 @@ void ScrollBox::ScrollBox::PaintNormalImage()
 
 void ScrollBox::ScrollBox::PaintHoverImage()
 {
-    clear_bitmap(sbHover);
 	{
 		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
 		al_set_target_bitmap(sbHover);
+		al_clear_to_color(al_map_rgb(0,0,0));
 		al_draw_rectangle(0, 0, al_get_bitmap_width(sbHover)-1, al_get_bitmap_height(sbHover)-1, ColorItemBorder, 1.0f);
 		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbHover) - 2, al_get_bitmap_height(sbHover) - 2, ColorControls);
 		al_set_target_bitmap(_old);
@@ -121,10 +121,10 @@ void ScrollBox::ScrollBox::PaintHoverImage()
 
 void ScrollBox::ScrollBox::PaintSelectedImage()
 {
-    clear_bitmap(sbSelected);
 	{
 		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
 		al_set_target_bitmap(sbSelected);
+		al_clear_to_color(al_map_rgb(0,0,0));
 		al_draw_rectangle(0, 0, al_get_bitmap_width(sbSelected)-1, al_get_bitmap_height(sbSelected)-1, ColorSelectedHighlight, 1.0f);
 		al_draw_filled_rectangle(1, 1, al_get_bitmap_width(sbSelected) - 2, al_get_bitmap_height(sbSelected) - 2, ColorSelectedBackground);
 		al_set_target_bitmap(_old);
@@ -143,27 +143,27 @@ ScrollBox::ScrollBox::~ScrollBox()
 	}
 	if (sbNormal != NULL)
 	{
-		destroy_bitmap(sbNormal);
+		al_destroy_bitmap(sbNormal);
 		sbNormal = NULL;
 	}
 	if (sbHover != NULL)
 	{
-		destroy_bitmap(sbHover);
+		al_destroy_bitmap(sbHover);
 		sbHover = NULL;
 	}
 	if (sbSelected != NULL)
 	{
-		destroy_bitmap(sbSelected);
+		al_destroy_bitmap(sbSelected);
 		sbSelected = NULL;
 	}
 	if (sbScrollBar != 0)
 	{
-		destroy_bitmap(sbScrollBar);
+		al_destroy_bitmap(sbScrollBar);
 		sbScrollBar = NULL;
 	}
 	if (sbBuffer != 0)
 	{
-		destroy_bitmap(sbBuffer);
+		al_destroy_bitmap(sbBuffer);
 		sbBuffer = NULL;
 	}
 }
@@ -768,11 +768,11 @@ void ScrollBox::ScrollBox::setLines(int lines)
       sbLinkedBox->setLines(lines);
 
 	sbLines = lines;
-	destroy_bitmap(sbBuffer);
+	al_destroy_bitmap(sbBuffer);
 	if (sbLines * sbFontHeight < sbHeight)
-		sbBuffer = create_bitmap(sbWidth, sbHeight);
+		sbBuffer = al_create_bitmap(sbWidth, sbHeight);
 	else
-		sbBuffer = create_bitmap(sbWidth, sbLines * sbFontHeight);
+		sbBuffer = al_create_bitmap(sbWidth, sbLines * sbFontHeight);
 	sbScrollIncrement = (float)((sbLines * sbFontHeight)-sbHeight) / (sbScrollBarMax - sbScrollBarMin);
 	if (sbScrollBoxType == SB_LIST)
 	{

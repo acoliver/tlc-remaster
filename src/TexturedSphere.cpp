@@ -24,7 +24,7 @@ TexturedSphere::~TexturedSphere()
     if (!textureWasSet)
     {
         if (source_bmp != NULL) 
-            destroy_bitmap(source_bmp);
+            al_destroy_bitmap(source_bmp);
     }
 
     if (coord_transform_table != NULL) 
@@ -40,12 +40,12 @@ bool TexturedSphere::LoadTexture(string bmpfile)
     //destroy bitmap if it was previously loaded
     if (source_bmp != NULL)
     {
-        destroy_bitmap(source_bmp);
+        al_destroy_bitmap(source_bmp);
         source_bmp = NULL;
     }
 
     source_bmp = NULL;
-    source_bmp = (BITMAP*)load_bitmap(bmpfile.c_str(),NULL);
+    source_bmp = al_load_bitmap(bmpfile.c_str());
     if (!source_bmp) return false;
 
     //assuming texture file was loaded, then generate the map
@@ -58,7 +58,7 @@ bool TexturedSphere::SetTexture(BITMAP *new_texture)
     //destroy bitmap if it was previously created
     if (source_bmp != NULL)
     {
-        destroy_bitmap(source_bmp);
+        al_destroy_bitmap(source_bmp);
         source_bmp = NULL;
     }
 

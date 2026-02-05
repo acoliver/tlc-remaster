@@ -680,9 +680,9 @@ void ModuleCrewHire::Close()
 	//delete the crew position button images
 	for (int i=0; i < 8; i++)
 	{
-		destroy_bitmap(posNormImages[i]);
-		destroy_bitmap(posOverImages[i]);
-		destroy_bitmap(posDisImages[i]);
+		al_destroy_bitmap(posNormImages[i]);
+		al_destroy_bitmap(posOverImages[i]);
+		al_destroy_bitmap(posDisImages[i]);
 	}
 
 	if (m_exitBtn)	{
@@ -885,7 +885,7 @@ bool ModuleCrewHire::Init()
 
 
 	//load the background
-    m_background = (BITMAP*)al_load_bitmap("data/crewhire/personel_background.bmp");
+    m_background = al_load_bitmap("data/crewhire/personel_background.bmp");
 	if (!m_background) 
 	{
 		g_game->message("CrewHire: Error loading personel_background");
@@ -893,13 +893,13 @@ bool ModuleCrewHire::Init()
 	}
 
 	// Load exit button bitmaps
-	exit_btn_norm = (BITMAP*)al_load_bitmap("data/crewhire/generic_exit_btn_norm.bmp");
+	exit_btn_norm = al_load_bitmap("data/crewhire/generic_exit_btn_norm.bmp");
 	if (!exit_btn_norm) {
 		g_game->message("CrewHire: Error loading exit button normal");
 		return false;
 	}
 	
-	exit_btn_over = (BITMAP*)al_load_bitmap("data/crewhire/generic_exit_btn_over.bmp");
+	exit_btn_over = al_load_bitmap("data/crewhire/generic_exit_btn_over.bmp");
 	if (!exit_btn_over) {
 		g_game->message("CrewHire: Error loading exit button over");
 		return false;
@@ -916,19 +916,19 @@ bool ModuleCrewHire::Init()
 	if (!m_backBtn->IsInitialized()) return false;
 
 	// Load button2 bitmaps
-	btn2_norm = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn2.bmp");
+	btn2_norm = al_load_bitmap("data/crewhire/personel_Btn2.bmp");
 	if (!btn2_norm) {
 		g_game->message("CrewHire: Error loading button2 normal");
 		return false;
 	}
 	
-	btn2_over = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn2_hov.bmp");
+	btn2_over = al_load_bitmap("data/crewhire/personel_Btn2_hov.bmp");
 	if (!btn2_over) {
 		g_game->message("CrewHire: Error loading button2 over");
 		return false;
 	}
 	
-	btn2_dis = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn2_dis.bmp");
+	btn2_dis = al_load_bitmap("data/crewhire/personel_Btn2_dis.bmp");
 	if (!btn2_dis) {
 		g_game->message("CrewHire: Error loading button2 disabled");
 		return false;
@@ -944,19 +944,19 @@ bool ModuleCrewHire::Init()
 		return false;
 
 	// Load button bitmaps
-	btn_norm = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn.bmp");
+	btn_norm = al_load_bitmap("data/crewhire/personel_Btn.bmp");
 	if (!btn_norm) {
 		g_game->message("CrewHire: Error loading button normal");
 		return false;
 	}
 	
-	btn_over = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn_hov.bmp");
+	btn_over = al_load_bitmap("data/crewhire/personel_Btn_hov.bmp");
 	if (!btn_over) {
 		g_game->message("CrewHire: Error loading button over");
 		return false;
 	}
 	
-	btn_dis = (BITMAP*)al_load_bitmap("data/crewhire/personel_Btn_dis.bmp");
+	btn_dis = al_load_bitmap("data/crewhire/personel_Btn_dis.bmp");
 	if (!btn_dis) {
 		g_game->message("CrewHire: Error loading button disabled");
 		return false;
@@ -978,58 +978,58 @@ bool ModuleCrewHire::Init()
 	if (!m_unassignBtn->IsInitialized())	return false;
 
 	// Load icon bitmaps
-	icons_small = (BITMAP*)al_load_bitmap("data/crewhire/Icons_small.tga");
+	icons_small = al_load_bitmap("data/crewhire/Icons_small.tga");
 	if (!icons_small) {
 		g_game->message("CrewHire: Error loading small icons");
 		return false;
 	}
 	
-	icons_small_green = (BITMAP*)al_load_bitmap("data/crewhire/Icons_small_Green.tga");
+	icons_small_green = al_load_bitmap("data/crewhire/Icons_small_Green.tga");
 	if (!icons_small_green) {
 		g_game->message("CrewHire: Error loading small green icons");
 		return false;
 	}
 	
-	icons_small_red = (BITMAP*)al_load_bitmap("data/crewhire/Icons_small_Red.tga");
+	icons_small_red = al_load_bitmap("data/crewhire/Icons_small_Red.tga");
 	if (!icons_small_red) {
 		g_game->message("CrewHire: Error loading small red icons");
 		return false;
 	}
 
 	// Load category button bitmaps
-	catbtn_norm = (BITMAP*)al_load_bitmap("data/crewhire/personel_catBtn.bmp");
+	catbtn_norm = al_load_bitmap("data/crewhire/personel_catBtn.bmp");
 	if (!catbtn_norm) {
 		g_game->message("CrewHire: Error loading category button normal");
 		return false;
 	}
 	
-	catbtn_over = (BITMAP*)al_load_bitmap("data/crewhire/personel_catBtn_hov.bmp");
+	catbtn_over = al_load_bitmap("data/crewhire/personel_catBtn_hov.bmp");
 	if (!catbtn_over) {
 		g_game->message("CrewHire: Error loading category button over");
 		return false;
 	}
 	
-	catbtn_dis = (BITMAP*)al_load_bitmap("data/crewhire/personel_catBtn_dis.bmp");
+	catbtn_dis = al_load_bitmap("data/crewhire/personel_catBtn_dis.bmp");
 	if (!catbtn_dis) {
 		g_game->message("CrewHire: Error loading category button disabled");
 		return false;
 	}
 
 	//create crew buttons	
-	BITMAP *temp = create_bitmap(30,30);
+	BITMAP *temp = al_create_bitmap(30,30);
 
 	char positions[8][20] = {"- Captain - ", "- Science -","- Navigation -","- Engineering -","- Communication -","- Medical -","- Tactical -","- Unassigned -"};
 
 	for (int i=0; i < 8; i++)
 	{
 		//create a normal image for each crew position button
-		posNormImages[i] = create_bitmap(al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm));
+		posNormImages[i] = al_create_bitmap(al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm));
 		al_set_target_bitmap(posNormImages[i]); al_draw_bitmap_region(catbtn_norm, 0, 0, al_get_bitmap_width(catbtn_norm), al_get_bitmap_height(catbtn_norm), 0, 0, 0);
 		//create an over image for each crew position button
-		posOverImages[i] = create_bitmap(al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over));
+		posOverImages[i] = al_create_bitmap(al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over));
 		al_set_target_bitmap(posOverImages[i]); al_draw_bitmap_region(catbtn_over, 0, 0, al_get_bitmap_width(catbtn_over), al_get_bitmap_height(catbtn_over), 0, 0, 0);
 		//create a disabled image for each crew position button
-		posDisImages[i] = create_bitmap(al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis));
+		posDisImages[i] = al_create_bitmap(al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis));
 		al_set_target_bitmap(posDisImages[i]); al_draw_bitmap_region(catbtn_dis, 0, 0, al_get_bitmap_width(catbtn_dis), al_get_bitmap_height(catbtn_dis), 0, 0, 0);
 
 		//Create and initialize the new button
@@ -1052,10 +1052,10 @@ bool ModuleCrewHire::Init()
 	alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
 	alfont_textout_ex(m_PositionBtns[i]->GetImgDisabled(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
 	}
-	destroy_bitmap(temp);
+	al_destroy_bitmap(temp);
 
 	
-	m_miniSkills = (BITMAP*)load_bitmap("data/crewhire/personel_miniPositions.bmp",NULL);
+	m_miniSkills = al_load_bitmap("data/crewhire/personel_miniPositions.bmp");
 	if (!m_miniSkills) {
 		g_game->message("CrewHire: Error loading personel_miniPositions");
 		return false;

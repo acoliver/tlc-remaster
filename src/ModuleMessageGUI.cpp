@@ -28,7 +28,7 @@ ModuleMessageGUI::~ModuleMessageGUI(){}
 bool ModuleMessageGUI::Init()
 {
 	//load the gauges gui
-    img_message = (BITMAP*)load_bitmap("data/messagegui/gui_messagewindow.bmp",NULL);
+	img_message = al_load_bitmap("data/messagegui/gui_messagewindow.bmp");
     //img_socket = (BITMAP*)load_bitmap("data/messagegui/gui_socket.bmp",NULL);
     if (!img_message)
     {
@@ -53,7 +53,7 @@ void ModuleMessageGUI::Close()
     {
         if (img_message!=NULL)
         {
-            delete img_message;
+            al_destroy_bitmap(img_message);
             img_message=NULL;
         }
         //if (img_socket!=NULL)

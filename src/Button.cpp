@@ -25,9 +25,9 @@ Button::Button(std::string initImgFileNormal, std::string initImgFileMouseOver, 
 , lastMouseY(0)
 , highlight(false)
 {
-	imgNormal = load_bitmap(initImgFileNormal.c_str(), NULL);
-	imgMouseOver = load_bitmap(initImgFileMouseOver.c_str(), NULL);
-	imgDisabled = load_bitmap(initImgFileDisabled.c_str(), NULL);
+	imgNormal = al_load_bitmap(initImgFileNormal.c_str());
+	imgMouseOver = al_load_bitmap(initImgFileMouseOver.c_str());
+	imgDisabled = al_load_bitmap(initImgFileDisabled.c_str());
 
 	if(imgNormal != NULL /*&& imgMouseOver != NULL && imgDisabled != NULL*/)
 		initialized = true;
@@ -55,9 +55,9 @@ Button::Button(std::string initImgFileNormal, std::string initImgFileMouseOver, 
 , lastMouseY(0)
 , highlight(false)
 {
-	imgNormal = load_bitmap(initImgFileNormal.c_str(), NULL);
-	imgMouseOver = load_bitmap(initImgFileMouseOver.c_str(), NULL);
-	imgDisabled = load_bitmap(initImgFileDisabled.c_str(), NULL);
+	imgNormal = al_load_bitmap(initImgFileNormal.c_str());
+	imgMouseOver = al_load_bitmap(initImgFileMouseOver.c_str());
+	imgDisabled = al_load_bitmap(initImgFileDisabled.c_str());
 
 	if(imgNormal != NULL /*&& imgMouseOver != NULL && imgDisabled != NULL*/)
 		initialized = true;
@@ -164,19 +164,19 @@ void Button::Destroy()
 	{
 		if (imgNormal != NULL)
 		{
-		  destroy_bitmap(imgNormal);
+		  al_destroy_bitmap(imgNormal);
 		  imgNormal = NULL;
 		}
 
 		if (imgMouseOver != NULL)
 		{
-		  destroy_bitmap(imgMouseOver);
+		  al_destroy_bitmap(imgMouseOver);
 		  imgMouseOver = NULL;
 		}
 
 		if (imgDisabled != NULL)
 		{
-		  destroy_bitmap(imgDisabled);
+		  al_destroy_bitmap(imgDisabled);
 		  imgDisabled = NULL;
 		}
 	}

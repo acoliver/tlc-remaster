@@ -1309,7 +1309,7 @@ void ModuleInterstellar::identifyStar()
 	}
 
 	//BITMAP *img = (BITMAP*)isdata[IS_TILES_BMP].dat;
-    BITMAP *img = (BITMAP*)load_bitmap("data/spacetravel/is_tiles.bmp",NULL);
+	BITMAP *img = al_load_bitmap("data/spacetravel/is_tiles.bmp");
 	if (!img) {
 		g_game->message("InterstellarTravel: Error loading is_tiles");
 		return false;

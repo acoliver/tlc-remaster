@@ -101,7 +101,7 @@ bool ModuleQuestLog::Init()
 	//load window GUI
 	//window = (BITMAP*)qldata[QUEST_VIEWER_BMP].dat;
     window=NULL;
-    window=(BITMAP*)load_bitmap("data/questviewer/quest_viewer.bmp",NULL);
+	window=al_load_bitmap("data/questviewer/quest_viewer.bmp");
     if (!window) 
     {
 		debug << "Error loading quest viewer image" << endl;

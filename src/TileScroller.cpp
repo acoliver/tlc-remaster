@@ -30,13 +30,13 @@ void TileScroller::Destroy()
 {
 	if (this->scrollbuffer) 
 	{
-		destroy_bitmap(this->scrollbuffer);
+		al_destroy_bitmap(this->scrollbuffer);
 		this->scrollbuffer = NULL;
 	}
 
 	if (this->bLoaded && this->tiles) 
 	{
-		destroy_bitmap(this->tiles);
+		al_destroy_bitmap(this->tiles);
 		this->tiles = NULL;
 	}
 }
@@ -68,7 +68,7 @@ void TileScroller::SetTileImage(BITMAP *image)
 	if (!image) return;
 	
 	//if tile image was previously loaded, free it's memory
-	if (this->bLoaded && this->tiles) { destroy_bitmap(tiles); }
+	if (this->bLoaded && this->tiles) { al_destroy_bitmap(tiles); }
 	
 	if (image) 
     {
@@ -80,7 +80,7 @@ void TileScroller::SetTileImage(BITMAP *image)
 
 bool TileScroller::LoadTileImage(char *filename)
 {
-	this->tiles = (BITMAP*)load_bitmap(filename, NULL);
+	this->tiles = (BITMAP*)al_load_bitmap(filename);
 	if (this->tiles) 
 		this->bLoaded = true;
 	else 
@@ -93,7 +93,7 @@ bool TileScroller::CreateScrollBuffer(int width,int height)
 {
     this->windowwidth = width;
     this->windowheight = height;
-    this->scrollbuffer = (BITMAP*)create_bitmap(width + this->tilewidth * 2, height + this->tileheight * 2);
+    this->scrollbuffer = (BITMAP*)al_create_bitmap(width + this->tilewidth * 2, height + this->tileheight * 2);
     return (this->scrollbuffer != NULL);
 }
 

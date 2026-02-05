@@ -108,7 +108,7 @@ bool ModuleEngineer::Init()
 		return false;
 	}
 	
-	text = create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
+	text = al_create_bitmap(VIEWER_WIDTH, VIEWER_HEIGHT);
 	tlc_clear_to_transparent(text);
 
 	//load button images
@@ -158,7 +158,7 @@ void ModuleEngineer::Close()
 {
 	try {
 		if (text) {
-			destroy_bitmap(text);
+			al_destroy_bitmap(text);
 			text = NULL;
 		}
 

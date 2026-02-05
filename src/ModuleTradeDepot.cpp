@@ -202,10 +202,10 @@ bool ModuleTradeDepot::Init()
 	portrait_string= "";
 
     for (int n=0; n<6; n++) item_portrait[n] = NULL;
-    item_portrait[0] = load_bitmap("data/tradedepot/T_AlienArtifact.tga",NULL); // IT_ARTIFACT
-	item_portrait[2] = load_bitmap("data/tradedepot/T_Gems.tga",NULL);			// IT_MINERAL
-	item_portrait[3] = load_bitmap("data/tradedepot/T_Rabid_Vertruk.tga",NULL);	// IT_LIFEFORM
-	item_portrait[4] = load_bitmap("data/tradedepot/T_Seeds.tga",NULL);			// IT_TRADEITEM
+    item_portrait[0] = al_load_bitmap("data/tradedepot/T_AlienArtifact.tga"); // IT_ARTIFACT
+	item_portrait[2] = al_load_bitmap("data/tradedepot/T_Gems.tga");			// IT_MINERAL
+	item_portrait[3] = al_load_bitmap("data/tradedepot/T_Rabid_Vertruk.tga");	// IT_LIFEFORM
+	item_portrait[4] = al_load_bitmap("data/tradedepot/T_Seeds.tga");			// IT_TRADEITEM
 
 	BITMAP *imgNormal, *imgMO;
 
@@ -326,7 +326,7 @@ bool ModuleTradeDepot::Init()
     //load gui images
     m_background=NULL;
 	//m_background = (BITMAP*)tddata[TRADEDEPOT_BACKGROUND_BMP].dat;
-    m_background=(BITMAP*)load_bitmap("data/tradedepot/tradedepot_background.bmp",NULL);
+    m_background=(BITMAP*)al_load_bitmap("data/tradedepot/tradedepot_background.bmp");
 	if (m_background == NULL)
     {
         debug << "tradedepot: error loading background" << endl;
@@ -736,11 +736,11 @@ void ModuleTradeDepot::Draw()
    }else{
 	   BITMAP* temp_bmp;
 	   std::string temp_string = "data/tradedepot/" + portrait_string;
-	   temp_bmp = load_bitmap(temp_string.c_str(),NULL);
+	   temp_bmp = al_load_bitmap(temp_string.c_str());
 	   if (temp_bmp) {
 		al_set_target_bitmap(canvas);
 		al_draw_bitmap_region(temp_bmp, 0, 0, 128, 128, 447, 443, 0);
-		destroy_bitmap(temp_bmp);
+		al_destroy_bitmap(temp_bmp);
 	   }
 	   else {
 		   string s = "TradeDepot: ERROR! " + temp_string + " not found!";
@@ -756,7 +756,7 @@ void ModuleTradeDepot::Close()
 	try {
         if (m_background != NULL)
         {
-            delete m_background;
+            al_destroy_bitmap(m_background);
             m_background=NULL;
         }
 
@@ -802,7 +802,7 @@ void ModuleTradeDepot::Close()
            // New NULL setting in Init makes this work now
            if (item_portrait[i]) 
            {
-		        destroy_bitmap(item_portrait[i]);
+		al_destroy_bitmap(item_portrait[i]);
                 item_portrait[i] = NULL;
            }
 	   }

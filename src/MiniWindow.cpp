@@ -42,17 +42,17 @@ MiniWindow::MiniWindow(int x, int y, int width, int height, std::string cornerFi
 
 void MiniWindow::LoadCornerImage(std::string filename) 
 { 
-	mwCorner = load_bitmap(filename.c_str(), NULL); 
+	mwCorner = al_load_bitmap(filename.c_str()); 
 }
 
 void MiniWindow::LoadSideImage(std::string filename) 
 { 
-	mwSide = load_bitmap(filename.c_str(), NULL); 
+	mwSide = al_load_bitmap(filename.c_str()); 
 }
 
 void MiniWindow::LoadInteriorImage(std::string filename)
 {
-	mwInterior = load_bitmap(filename.c_str(), NULL);
+	mwInterior = al_load_bitmap(filename.c_str());
 }
 
 void MiniWindow::SetPos(int x, int y) 
@@ -85,8 +85,13 @@ void MiniWindow::Draw(BITMAP *destination, int x, int y)
 	}
 
 	//create scratch pad
-	BITMAP *buffer = create_bitmap(mwWidth, mwHeight);
-	clear_to_color(buffer, PINK);
+	BITMAP *buffer = al_create_bitmap(mwWidth, mwHeight);
+	{
+		ALLEGRO_BITMAP *_old = al_get_target_bitmap();
+		al_set_target_bitmap(buffer);
+		al_clear_to_color(al_map_rgb(255, 0, 255));
+		al_set_target_bitmap(_old);
+	}
 	
 	//draw top/bottom sides
 	for (int a = al_get_bitmap_width(mwCorner); a < mwWidth; a += al_get_bitmap_width(mwSide))
@@ -151,5 +156,5 @@ void MiniWindow::Draw(BITMAP *destination, int x, int y)
 	al_set_target_bitmap(destination); al_draw_bitmap(buffer, x, y, 0);
 	
 	//delete scratchpad
-	destroy_bitmap(buffer);
+	al_destroy_bitmap(buffer);
 }

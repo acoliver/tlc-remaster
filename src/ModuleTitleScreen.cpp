@@ -45,7 +45,7 @@ bool ModuleTitleScreen::Init()
 	//to this module in the game:
 	g_game->SetTimePaused(true);
 
-    m_background = (BITMAP*)load_bitmap("data/titlescreen/title_background.bmp",NULL);
+    m_background = (BITMAP*)al_load_bitmap("data/titlescreen/title_background.bmp");
 	if (!m_background) {
 		g_game->fatalerror("Titlescreen: Error loading background");
 		return 0;
@@ -55,8 +55,8 @@ bool ModuleTitleScreen::Init()
 	BITMAP *imgNormal=NULL, *imgMouseOver=NULL;
 
 	//create title button
-	imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_normal.tga",NULL);
-    imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_over.tga",NULL);
+	imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_normal.tga");
+    imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;
@@ -64,8 +64,8 @@ bool ModuleTitleScreen::Init()
 	btnTitle = new Button(imgNormal,imgMouseOver,NULL,0,100,0,0);
 
 	//create new game button
-    imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_newgame_normal.tga",NULL);
-    imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_newgame_over.tga",NULL);
+    imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_newgame_normal.tga");
+    imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_newgame_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;
@@ -73,8 +73,8 @@ bool ModuleTitleScreen::Init()
 	btnNewGame = new Button(imgNormal,imgMouseOver,NULL,mainmenu_x,mainmenu_y,0,700);
 
 	//create load button
-	imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_loadgame_normal.tga",NULL);
-	imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_loadgame_over.tga",NULL);
+	imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_loadgame_normal.tga");
+	imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_loadgame_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;
@@ -82,8 +82,8 @@ bool ModuleTitleScreen::Init()
 	btnLoadGame = new Button(imgNormal, imgMouseOver,NULL,mainmenu_x,mainmenu_y+60,0,701);
 
 	//create settings button
-	imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_settings_normal.tga",NULL);
-	imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_settings_over.tga",NULL);
+	imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_settings_normal.tga");
+	imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_settings_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;
@@ -91,8 +91,8 @@ bool ModuleTitleScreen::Init()
 	btnSettings = new Button(imgNormal,imgMouseOver,NULL,mainmenu_x,mainmenu_y+120,0,702);
 
 	//create credits button
-	imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_credits_normal.tga",NULL);
-	imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_credits_over.tga",NULL);
+	imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_credits_normal.tga");
+	imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_credits_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;
@@ -100,8 +100,8 @@ bool ModuleTitleScreen::Init()
 	btnCredits = new Button(imgNormal,imgMouseOver,NULL,mainmenu_x,mainmenu_y+180,0,703);
 
 	//create quit button
-	imgNormal = (BITMAP*)load_bitmap("data/titlescreen/title_quit_normal.tga",NULL);
-	imgMouseOver = (BITMAP*)load_bitmap("data/titlescreen/title_quit_over.tga",NULL);
+	imgNormal = (BITMAP*)al_load_bitmap("data/titlescreen/title_quit_normal.tga");
+	imgMouseOver = (BITMAP*)al_load_bitmap("data/titlescreen/title_quit_over.tga");
 	if (!imgNormal || !imgMouseOver) {
 		g_game->message("TitleScreen: error loading button images");
 		return false;

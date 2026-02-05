@@ -88,15 +88,15 @@ bool ModuleCargoWindow::Init()
 	debug << "  ModuleCargoWindow: initializing..." << endl;
 
 	//load the window "skin"
-    img_viewer = (BITMAP*)load_bitmap("data/messagegui/gui_viewer.bmp",NULL);
+	img_viewer = al_load_bitmap("data/messagegui/gui_viewer.bmp");
 	if (img_viewer == NULL) {
 		g_game->message("CargoWindow: Error loading gui_viewer");
 		return false;
 	}
 
 	//jettison button
-	BITMAP *btnNorm = (BITMAP*)load_bitmap("data/cargohold/cargo_btn.bmp",NULL);
-    BITMAP *btnOver = (BITMAP*)load_bitmap("data/cargohold/cargo_btn_mo.bmp",NULL);
+	BITMAP *btnNorm = al_load_bitmap("data/cargohold/cargo_btn.bmp");
+	BITMAP *btnOver = al_load_bitmap("data/cargohold/cargo_btn_mo.bmp");
     if (btnNorm == NULL || btnOver == NULL) {
 		g_game->message("CargoWindow: Error loading button images");
 		return false;

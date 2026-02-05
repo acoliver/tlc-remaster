@@ -517,7 +517,7 @@ void ModuleStarport::Draw()
 	}
 
 	//clear background
-	clear_to_color(g_game->GetBackBuffer(), color_to_int(BLACK));
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_clear_to_color(BLACK);
 
 	//update and draw doors
 	drawDoors();

@@ -268,7 +268,7 @@ void ModulePlanetOrbit::Close()
 
 	try {
         if (background) {
-            destroy_bitmap(background);
+	al_destroy_bitmap(background);
             background=NULL;
         }
         //if (img_viewer) {
@@ -331,7 +331,7 @@ bool ModulePlanetOrbit::Init()
 	//rectfill(g_game->GetBackBuffer(), 0, 0, SCREEN_W-1, SCREEN_H-1, BLACK);
 
     //load the background
-    background = (BITMAP*)load_bitmap("data/planetorbit/starfield.tga",NULL);
+	background = al_load_bitmap("data/planetorbit/starfield.tga");
     if (!background) 
     {
         g_game->fatalerror("PlanetOrbit: Error loading background");
@@ -432,7 +432,7 @@ bool ModulePlanetOrbit::Init()
     //load planet lightmap overlay
     pbody->lightmapFilename = "data/planetorbit/" + pbody->lightmapFilename;
     pbody->lightmapOverlay=NULL;
-    pbody->lightmapOverlay = (BITMAP*)load_bitmap(pbody->lightmapFilename.c_str(),NULL);
+    pbody->lightmapOverlay = al_load_bitmap(pbody->lightmapFilename.c_str());
     if (!pbody->lightmapOverlay) {
         g_game->fatalerror("PlanetOrbit: error loading lightmap_overlay");
         return false;

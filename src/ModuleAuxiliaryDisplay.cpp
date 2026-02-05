@@ -98,7 +98,7 @@ void ModuleAuxiliaryDisplay::Close()
 	}
 
 	if (img_aux) {
-		destroy_bitmap(img_aux);
+		al_destroy_bitmap(img_aux);
 		img_aux = NULL;
 	}
 
@@ -130,7 +130,7 @@ bool ModuleAuxiliaryDisplay::Init()
 
 
 	//load the aux gui
-	img_aux = (BITMAP*)load_bitmap("data/messagegui/gui_aux.bmp",NULL);
+	img_aux = (BITMAP*)al_load_bitmap("data/messagegui/gui_aux.bmp");
 	if (!img_aux) {
 		g_game->message("Aux: Error loading gui_aux");
 		return false;

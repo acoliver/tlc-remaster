@@ -32,11 +32,11 @@ bool ModuleTopGUI::Init()
 	ggy = (int)g_game->getGlobalNumber("GUI_GAUGES_POS_Y");
 
 	//load the gauges gui
-	img_gauges = load_bitmap("data/topgui/topgauge.tga", NULL);
-	img_fuel_gauge = load_bitmap("data/topgui/Element_Gauge_Orange.bmp", NULL);
-	img_hull_gauge = load_bitmap("data/topgui/Element_Gauge_Green.bmp", NULL);
-	img_shield_gauge = load_bitmap("data/topgui/Element_Gauge_Blue.bmp", NULL);
-	img_armor_gauge = load_bitmap("data/topgui/Element_Gauge_Red.bmp", NULL);
+	img_gauges = al_load_bitmap("data/topgui/topgauge.tga");
+	img_fuel_gauge = al_load_bitmap("data/topgui/Element_Gauge_Orange.bmp");
+	img_hull_gauge = al_load_bitmap("data/topgui/Element_Gauge_Green.bmp");
+	img_shield_gauge = al_load_bitmap("data/topgui/Element_Gauge_Blue.bmp");
+	img_armor_gauge = al_load_bitmap("data/topgui/Element_Gauge_Red.bmp");
 
     if (!img_gauges || !img_fuel_gauge || !img_hull_gauge || !img_shield_gauge || !img_armor_gauge)
     {
@@ -53,27 +53,27 @@ void ModuleTopGUI::Close()
     {
         if (img_gauges!=NULL)
         {
-		    delete img_gauges;
+		    al_destroy_bitmap(img_gauges);
             img_gauges=NULL;
         }
         if (img_fuel_gauge!=NULL)
         {
-            delete img_fuel_gauge;
+            al_destroy_bitmap(img_fuel_gauge);
             img_fuel_gauge=NULL;
         }
         if (img_armor_gauge!=NULL)
         {
-            delete img_armor_gauge;
+            al_destroy_bitmap(img_armor_gauge);
             img_armor_gauge=NULL;
         }
         if (img_hull_gauge!=NULL)
         {
-            delete img_hull_gauge;
+            al_destroy_bitmap(img_hull_gauge);
             img_hull_gauge=NULL;
         }
         if (img_shield_gauge!=NULL)
         {
-            delete img_shield_gauge;
+            al_destroy_bitmap(img_shield_gauge);
             img_shield_gauge=NULL;
         }
 	}
