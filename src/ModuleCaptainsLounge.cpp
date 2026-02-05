@@ -497,7 +497,8 @@ void ModuleCaptainsLounge::Draw()
 	//static bool displayHelp = true;
 
 	//draw background
-	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_background, 0, 0, al_get_display_width(al_get_current_display()), al_get_display_height(al_get_current_display()), 0, 0, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_draw_bitmap(m_background, 0, 0, 0);
 
 	m_backBtn->Run(g_game->GetBackBuffer());
     m_launchBtn->Run(g_game->GetBackBuffer());
@@ -692,7 +693,8 @@ void ModuleCaptainsLounge::Draw()
 
 	if (m_modalPromptActive)
 	{
-		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_modalPromptBackground, 0, 0, al_get_bitmap_width(m_modalPromptBackground), al_get_bitmap_height(m_modalPromptBackground), MODALPROMPT_BG_X, MODALPROMPT_BG_Y, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer());
+		al_draw_bitmap(m_modalPromptBackground, MODALPROMPT_BG_X, MODALPROMPT_BG_Y, 0);
 
 	int y = MODALPROMPT_START_Y;
 	for (vector<string>::iterator i = m_modalPromptStrings.begin(); i != m_modalPromptStrings.end(); ++i)
@@ -751,8 +753,8 @@ void ModuleCaptainsLounge::OnMouseReleased(int button, int x, int y)
 
 	if (m_modalPromptActive)
 	{
-		m_yesBtn->OnMouseReleased(button,x,y);
-		m_noBtn->OnMouseReleased(button,x,y);
+		if (m_yesBtn) m_yesBtn->OnMouseReleased(button,x,y);
+		if (m_noBtn) m_noBtn->OnMouseReleased(button,x,y);
 
 		return;
 	}
@@ -760,14 +762,13 @@ void ModuleCaptainsLounge::OnMouseReleased(int button, int x, int y)
 	//heinous anus - avoiding -> on bad variables after leaving the module
 	for (int i = 0; i < CAPTAINSLOUNGE_NUMSLOTS; i++)
 	{
-		m_delCaptBtns[i]->OnMouseReleased(button,x,y);
-		m_selCaptBtns[i]->OnMouseReleased(button,x,y);
-		m_saveCaptBtns[i]->OnMouseReleased(button,x,y);
-		if(m_newCaptBtns[i]->OnMouseReleased(button,x,y) )
-			return;
+		if (m_delCaptBtns[i] && m_delCaptBtns[i]->OnMouseReleased(button,x,y)) return;
+		if (m_selCaptBtns[i] && m_selCaptBtns[i]->OnMouseReleased(button,x,y)) return;
+		if (m_saveCaptBtns[i] && m_saveCaptBtns[i]->OnMouseReleased(button,x,y)) return;
+		if (m_newCaptBtns[i] && m_newCaptBtns[i]->OnMouseReleased(button,x,y)) return;
 	}
-	m_backBtn->OnMouseReleased(button,x,y);
-    m_launchBtn->OnMouseReleased(button,x,y);
+	if (m_backBtn && m_backBtn->OnMouseReleased(button,x,y)) return;
+    if (m_launchBtn) m_launchBtn->OnMouseReleased(button,x,y);
 }
 
 void ModuleCaptainsLounge::OnMouseWheelUp(int x, int y){}

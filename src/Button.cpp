@@ -231,6 +231,7 @@ bool Button::Run(BITMAP *canvas, bool trans)
 
 bool Button::OnMouseMove(int initX, int initY)
 {
+   if (!initialized || !imgNormal) return false;
    lastMouseX = initX;
    lastMouseY = initY;
 	
@@ -239,9 +240,7 @@ bool Button::OnMouseMove(int initX, int initY)
 
 bool Button::OnMouseReleased(int button, int initX, int initY)
 {
-	if (!this) return false;
-
-   if (!initialized)
+   if (!initialized || !imgNormal)
 	  return false;
 
    if (!visible)
@@ -271,11 +270,9 @@ bool Button::OnMouseReleased(int button, int initX, int initY)
 
 bool Button::PtInBtn(int initX, int initY)
 {
-	try {	
-		if ((initX >= x) && (initX < (x + al_get_bitmap_width(imgNormal))) && (initY >= y) && (initY < (y + al_get_bitmap_height(imgNormal))) )
-			return true;
-	}
-	catch(...) { }
+	if (!imgNormal) return false;
+	if ((initX >= x) && (initX < (x + al_get_bitmap_width(imgNormal))) && (initY >= y) && (initY < (y + al_get_bitmap_height(imgNormal))) )
+		return true;
 
    return false;
 }

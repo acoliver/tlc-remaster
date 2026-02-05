@@ -131,8 +131,8 @@ Game::Game()
 Game::~Game()
 {
 	//delete messagebox globals
-	destroy_bitmap(MessageBoxWindow::bg);
-	destroy_bitmap(MessageBoxWindow::bar);
+	al_destroy_bitmap(MessageBoxWindow::bg);
+	al_destroy_bitmap(MessageBoxWindow::bar);
 	if (MessageBoxWindow::button1 != NULL)
 		delete MessageBoxWindow::button1;
 	if (MessageBoxWindow::button2 != NULL)
@@ -718,10 +718,8 @@ bool Game::Initialize_Graphics()
         get_desktop_resolution(&desktop_width, &desktop_height);
         debug << "Desktop resolution: " << desktop_width << " x " << desktop_height << endl;
 
-        //this will probably be used regardless of resolution settings
-        desktop_colordepth = desktop_color_depth();
-	    set_color_depth(desktop_colordepth);
-	    set_alpha_blender();
+        desktop_colordepth = al_get_display_option(al_get_current_display(), ALLEGRO_COLOR_SIZE);
+        if (desktop_colordepth == 0) desktop_colordepth = 32;
         debug << "Desktop color depth: " << desktop_colordepth << endl;
     }
     else
@@ -790,8 +788,13 @@ bool Game::Initialize_Graphics()
     _tlc_display = m_display;
     _tlc_screen = al_get_backbuffer(m_display);
     
+    // Compute initial screen scaling so mouse coords are valid from first frame
+    screen_scaling = (double)actual_height / (double)SCREEN_HEIGHT;
+    scale_height = (int)((double)SCREEN_HEIGHT * screen_scaling);
+    scale_width = (int)((double)SCREEN_WIDTH * screen_scaling);
+    
     debug << "Display created: " << actual_width << "x" << actual_height << endl;
-    debug << "Refresh rate: " << get_refresh_rate() << endl;
+    debug << "Refresh rate: " << al_get_display_refresh_rate(m_display) << endl;
 
 
 
@@ -804,11 +807,11 @@ bool Game::Initialize_Graphics()
     if (m_backbuffer) 
     {
         debug << "Destroying old backbuffer " << al_get_bitmap_width(m_backbuffer) << "," << al_get_bitmap_height(m_backbuffer) << "..." << endl;
-        destroy_bitmap(m_backbuffer);
+        al_destroy_bitmap(m_backbuffer);
         m_backbuffer = NULL;
     }
     debug << "Creating back buffer " << SCREEN_WIDTH << "," << SCREEN_HEIGHT << "..." << endl;
-	m_backbuffer = create_bitmap(SCREEN_WIDTH,SCREEN_HEIGHT);
+	m_backbuffer = al_create_bitmap(SCREEN_WIDTH,SCREEN_HEIGHT);
 	if (!m_backbuffer) {
         debug << "Error creating back buffer" << endl;
         return false;
@@ -924,26 +927,26 @@ bool Game::InitGame()
     }
 
 	debug << "Firing up keyboard and mouse handlers..." << endl;
-	if (install_keyboard() != 0) {
+	if (!al_install_keyboard()) {
 		g_game->message("Error initializing keyboard");
 		return false;
 	}
 	memset(m_prevKeyState,0,256);
-	m_numMouseButtons = install_mouse();
-	debug << "install_mouse returned: " << m_numMouseButtons << " buttons" << endl;
-	if (m_numMouseButtons < 0) {
+	if (!al_install_mouse()) {
 		g_game->message("Error initializing mouse");
 		return false;
 	}
+	m_numMouseButtons = al_get_mouse_num_buttons();
+	debug << "al_get_mouse_num_buttons returned: " << m_numMouseButtons << " buttons" << endl;
 	// Ensure we have at least 3 buttons for left/middle/right
 	if (m_numMouseButtons < 3) {
-		debug << "Warning: install_mouse returned only " << m_numMouseButtons << " buttons, forcing to 3" << endl;
+		debug << "Warning: al_get_mouse_num_buttons returned only " << m_numMouseButtons << " buttons, forcing to 3" << endl;
 		m_numMouseButtons = 3;
 	}
 	
-	// Hide the OS cursor immediately after install_mouse
+	// Hide the OS cursor immediately after al_install_mouse
 	// This needs to happen before graphics are fully set up
-	show_os_cursor(MOUSE_CURSOR_NONE);
+	al_hide_mouse_cursor(al_get_current_display());
 	m_mouseButtons = new bool[m_numMouseButtons+1];
 	m_prevMouseButtons = new bool[m_numMouseButtons+1];
 	m_mousePressedLocs = new MousePos[m_numMouseButtons+1];
@@ -1052,7 +1055,7 @@ void Game::DestroyGame()
 
 	if (m_backbuffer != NULL)
 	{
-		destroy_bitmap(m_backbuffer);
+		al_destroy_bitmap(m_backbuffer);
 		m_backbuffer = NULL;
 	}
 
@@ -1128,14 +1131,12 @@ void Game::RunGame()
 	if (globalTimer.getTimer() < timeStart + (int)fps_delay)
 	{
 		//slow down core loop
-		//rest(1);
         fps_delay = 1000.0f / frameRate;
 
         if (g_game->getGlobalBoolean("UNLIMITED_FRAMERATE") == false)
         {
+            al_rest(0.001);
 		    return;
-        }
-        else {
         }
 	}
 	else
@@ -1161,7 +1162,11 @@ void Game::RunGame()
 		frameRate = coreCounter;
 		coreCounter = 0;
 	}
-        
+
+	// Clear the internal backbuffer each frame
+	al_set_target_bitmap(m_backbuffer);
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
 	if (!m_pause)
 	{
 		//call update on all modules
@@ -1218,14 +1223,8 @@ void Game::RunGame()
             //keep the mouse cursor image on the screen
             ALLEGRO_MOUSE_STATE current_mouse_state;
             al_get_mouse_state(&current_mouse_state);
-            int cw = cursor->getWidth(); 
-            int ch = cursor->getHeight(); 
-            int mx = current_mouse_state.x; 
-            //if (mx < 0) mx = 0; 
-            //if (mx > SCREEN_WIDTH - cw) mx = SCREEN_WIDTH - cw; 
-            int my = current_mouse_state.y; 
-            //if (my < 0) my = 0; 
-            //if (my > SCREEN_HEIGHT - ch) my = SCREEN_HEIGHT - ch; 
+            int mx = (int)((double)current_mouse_state.x / screen_scaling);
+            int my = (int)((double)current_mouse_state.y / screen_scaling);
 			cursor->setX(mx); 
 			cursor->setY(my); 
 			cursor->Draw(m_backbuffer); 
@@ -1300,6 +1299,7 @@ void Game::RunGame()
     //
     // Set display backbuffer as render target
     al_set_target_backbuffer(m_display);
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     
     // Calculate centered position for scaled output
     int cx = (actual_width - scale_width) / 2;
@@ -1354,8 +1354,9 @@ void Game::UpdateMouse()
 	ALLEGRO_MOUSE_STATE mouseState;
 	al_get_mouse_state(&mouseState);
 
-	int current_mouse_x = mouseState.x;
-	int current_mouse_y = mouseState.y;
+	// Scale from display coordinates to internal 1024x768 coordinates
+	int current_mouse_x = (screen_scaling > 0) ? (int)((double)mouseState.x / screen_scaling) : mouseState.x;
+	int current_mouse_y = (screen_scaling > 0) ? (int)((double)mouseState.y / screen_scaling) : mouseState.y;
 	int current_mouse_z = mouseState.z;
 	int current_mouse_b = mouseState.buttons;
 
@@ -1391,8 +1392,9 @@ void Game::UpdateMouse()
 			debug << "Mouse button " << button << " RELEASED at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
 			OnMouseReleased(button, current_mouse_x, current_mouse_y);
 
-			if ((m_mousePressedLocs[button].x == current_mouse_x) &&
-				 (m_mousePressedLocs[button].y == current_mouse_y))
+			int dx = m_mousePressedLocs[button].x - current_mouse_x;
+			int dy = m_mousePressedLocs[button].y - current_mouse_y;
+			if ((dx * dx + dy * dy) < 25)
 			{
 				debug << "Mouse CLICK at (" << current_mouse_x << "," << current_mouse_y << ")" << endl;
 				OnMouseClick(button,current_mouse_x,current_mouse_y);

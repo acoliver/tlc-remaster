@@ -339,11 +339,26 @@ bool ModuleCaptainCreation::Init()
 		return false;
 	}
 
-	// Note: MINUS button assets are missing from data directory
-	// Setting to NULL - minus buttons may not be functional without these assets
-	m_minusBtnNorm = NULL;
-	m_minusBtnOver = NULL;
-	m_minusBtnDis = NULL;
+	m_minusBtnNorm = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_minus.bmp");
+	if (m_minusBtnNorm == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading minus button");
+		return false;
+	}
+
+	m_minusBtnOver = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_minus_mouseover.bmp");
+	if (m_minusBtnOver == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading minus button mouseover");
+		return false;
+	}
+
+	m_minusBtnDis = (BITMAP*)al_load_bitmap("data/captaincreation/captaincreation_minus_disabled.bmp");
+	if (m_minusBtnDis == NULL)
+	{
+		g_game->message("CaptainCreation: Error loading minus button disabled");
+		return false;
+	}
 	
 	m_minusBtns[0] = new Button(m_minusBtnNorm, m_minusBtnOver, m_minusBtnDis,
 							 PLUS_DURABILITY_X + 42, PLUS_DURABILITY_Y, EVENT_NONE, EVENT_MINUS + 0,"");
