@@ -115,7 +115,8 @@ void ModuleMiniGame::Update()
 
 void ModuleMiniGame::Draw()
 {
-	textout_ex(window, g_game->font24, "HELLO WORLD", 10, 10, color_to_int(WHITE), -1);
+	al_set_target_bitmap(window);
+	al_draw_text((ALLEGRO_FONT*)g_game->font24, WHITE, 10, 10, 0, "HELLO WORLD");
 	
 	
 }

@@ -1175,15 +1175,15 @@ void ModuleShipConfig::display() const
 	if (menuPath.back() == Repair)
 	{
 		std::string temp = "Total Repair Cost: " + Util::ToString(repairCost) + " MU";
-		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, temp.c_str(), MENU_PATH_X, MENU_PATH_Y, color_to_int(WHITE), color_to_int(BLACK));
+		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, temp.c_str(), MENU_PATH_X, MENU_PATH_Y, WHITE, BLACK);
 	}
 	else if (menuPath.back() == Name)		
 	{
 		//print "MSS"
-		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "MSS", MENU_PATH_X, MENU_PATH_Y, color_to_int(WHITE), color_to_int(BLACK));
+		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "MSS", MENU_PATH_X, MENU_PATH_Y, WHITE, BLACK);
 
 		//print ship name
-		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, shipName.c_str(), MENU_PATH_X+80, MENU_PATH_Y, color_to_int(WHITE), color_to_int(BLACK));
+		alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, shipName.c_str(), MENU_PATH_X+80, MENU_PATH_Y, WHITE, BLACK);
 
 		int nlen = alfont_text_length(g_game->font32, shipName.c_str());
 		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(m_cursor, 0, 0, al_get_bitmap_width(m_cursor), al_get_bitmap_height(m_cursor), MENU_PATH_X+80+nlen+2, MENU_PATH_Y, 0);
@@ -1192,7 +1192,7 @@ void ModuleShipConfig::display() const
 	else
 	{
 		if(menuPath.size() > 1)
-			alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, convertMenuPathToString().c_str(), MENU_PATH_X, MENU_PATH_Y, color_to_int(WHITE), color_to_int(BLACK));
+			alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, convertMenuPathToString().c_str(), MENU_PATH_X, MENU_PATH_Y, WHITE, BLACK);
 	}
 
 	//draw ship schematic
@@ -1200,20 +1200,20 @@ void ModuleShipConfig::display() const
 
 	//static
 	int i=0;
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Ship Name: MSS",	STATIC_SHIPNAME_X-10, SHIPNAME_Y, color_to_int(WHITE), color_to_int(BLACK));	
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Cargo Pods",		STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Engine",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Shield",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Armor",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Missile",		STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Laser",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Hull Integrity",	STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK));
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Credits",		STATIC_CREDITS_X, CREDITS_Y, color_to_int(WHITE), color_to_int(BLACK));
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Ship Name: MSS",	STATIC_SHIPNAME_X-10, SHIPNAME_Y, WHITE, BLACK);	
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Cargo Pods",		STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Engine",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Shield",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Armor",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Missile",		STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Laser",			STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Hull Integrity",	STATIC_READOUT_X, READOUT_Y+(i++)*READOUT_SPACING, WHITE, BLACK);
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, "Credits",		STATIC_CREDITS_X, CREDITS_Y, WHITE, BLACK);
 
 	//dynamic
 	int j=0;
-	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, g_game->gameState->m_ship.getName().c_str(), DYNAMIC_SHIPNAME_X+90, SHIPNAME_Y, color_to_int(WHITE), color_to_int(BLACK)); 
-	alfont_textprintf_right_ex(g_game->GetBackBuffer(), g_game->font32, DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK), "%d", g_game->gameState->m_ship.getCargoPodCount() );
+	alfont_textout_ex(g_game->GetBackBuffer(), g_game->font32, g_game->gameState->m_ship.getName().c_str(), DYNAMIC_SHIPNAME_X+90, SHIPNAME_Y, WHITE, BLACK); 
+	alfont_textprintf_right_ex(g_game->GetBackBuffer(), g_game->font32, DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, WHITE, BLACK, "%d", g_game->gameState->m_ship.getCargoPodCount() );
 
     //display class level of engine
     ALLEGRO_COLOR color = WHITE;
@@ -1223,7 +1223,7 @@ void ModuleShipConfig::display() const
     else color = WHITE;
     alfont_textout_right_ex(g_game->GetBackBuffer(), g_game->font32, 
         g_game->gameState->m_ship.getEngineClassString().c_str(), 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(color), color_to_int(BLACK));
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color, BLACK);
 
     //display class level of shield
     health = g_game->gameState->m_ship.getShieldIntegrity();
@@ -1232,7 +1232,7 @@ void ModuleShipConfig::display() const
     else color = WHITE;
 	alfont_textout_right_ex(g_game->GetBackBuffer(), g_game->font32, 
         g_game->gameState->m_ship.getShieldClassString().c_str(), 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(color), color_to_int(BLACK));
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color, BLACK);
 
     //display class level of armor
     health = g_game->gameState->m_ship.getArmorIntegrity();
@@ -1241,7 +1241,7 @@ void ModuleShipConfig::display() const
     else color = WHITE;
 	alfont_textout_right_ex(g_game->GetBackBuffer(), g_game->font32, 
         g_game->gameState->m_ship.getArmorClassString().c_str(), 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(color), color_to_int(BLACK));
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color, BLACK);
 
     //display class level of missile
     health = g_game->gameState->m_ship.getMissileLauncherIntegrity();
@@ -1250,7 +1250,7 @@ void ModuleShipConfig::display() const
     else color = WHITE;
     alfont_textout_right_ex(g_game->GetBackBuffer(), g_game->font32, 
         g_game->gameState->m_ship.getMissileLauncherClassString().c_str(), 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(color), color_to_int(BLACK));
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color, BLACK);
 
     //display class level of laser
     health = g_game->gameState->m_ship.getLaserIntegrity();
@@ -1259,7 +1259,7 @@ void ModuleShipConfig::display() const
     else color = WHITE;
 	alfont_textout_right_ex(g_game->GetBackBuffer(), g_game->font32, 
         g_game->gameState->m_ship.getLaserClassString().c_str(), 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(color), color_to_int(BLACK));
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color, BLACK);
 
 	//this should clear up any hull init problem
     health = g_game->gameState->m_ship.getHullIntegrity();
@@ -1272,12 +1272,12 @@ void ModuleShipConfig::display() const
 
     //print hull integrity
 	alfont_textprintf_right_ex(g_game->GetBackBuffer(), g_game->font32, 
-        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, color_to_int(WHITE), color_to_int(BLACK), "%.0f", 
+        DYNAMIC_READOUT_X, READOUT_Y+(j++)*READOUT_SPACING, WHITE, BLACK, "%.0f", 
         g_game->gameState->m_ship.getHullIntegrity() );
 
     //print credits
 	alfont_textprintf_right_ex(g_game->GetBackBuffer(), g_game->font32, 
-        DYNAMIC_CREDITS_X, CREDITS_Y, color_to_int(WHITE), color_to_int(BLACK), "%d", 
+        DYNAMIC_CREDITS_X, CREDITS_Y, WHITE, BLACK, "%d", 
         g_game->gameState->m_credits );
 
 }

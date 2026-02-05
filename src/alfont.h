@@ -27,15 +27,15 @@ int alfont_get_font_height(ALFONT_FONT* font);
 
 int alfont_text_length(ALFONT_FONT* font, const char* text);
 
-void alfont_textout(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color);
-void alfont_textout_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg);
-void alfont_textout_centre(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color);
-void alfont_textout_centre_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg);
-void alfont_textout_right(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color);
-void alfont_textout_right_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, int color, int bg);
+void alfont_textout(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color);
+void alfont_textout_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg);
+void alfont_textout_centre(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color);
+void alfont_textout_centre_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg);
+void alfont_textout_right(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color);
+void alfont_textout_right_ex(BITMAP* bmp, ALFONT_FONT* font, const char* text, int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg);
 
-void alfont_textprintf(BITMAP* bmp, ALFONT_FONT* font, int x, int y, int color, const char* format, ...);
-void alfont_textprintf_ex(BITMAP* bmp, ALFONT_FONT* font, int x, int y, int color, int bg, const char* format, ...);
-void alfont_textprintf_right_ex(BITMAP* bmp, ALFONT_FONT* font, int x, int y, int color, int bg, const char* format, ...);
+void alfont_textprintf(BITMAP* bmp, ALFONT_FONT* font, int x, int y, ALLEGRO_COLOR color, const char* format, ...);
+void alfont_textprintf_ex(BITMAP* bmp, ALFONT_FONT* font, int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg, const char* format, ...);
+void alfont_textprintf_right_ex(BITMAP* bmp, ALFONT_FONT* font, int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg, const char* format, ...);
 
 #endif // ALFONT_H

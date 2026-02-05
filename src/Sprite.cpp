@@ -94,7 +94,7 @@ bool Sprite::load(const char *filename)
 	this->frameWidth = this->width;
 	this->frameHeight = this->height;
 	
-	set_alpha_blender();
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
     return true;
 }
 
@@ -129,7 +129,7 @@ bool Sprite::setImage(BITMAP *source)
 	this->frameHeight = al_get_bitmap_height(source);
 	this->bLoaded = false;
 	
-	set_alpha_blender();
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
 }
@@ -176,7 +176,7 @@ void Sprite::DrawRotated(BITMAP *dest, int angle)
     { 
         float _cx = al_get_bitmap_width(this->image) / 2.0f; 
         float _cy = al_get_bitmap_height(this->image) / 2.0f; 
-        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
         al_draw_rotated_bitmap(this->image, _cx, _cy, (int)this->x + _cx, (int)this->y + _cy, _angle_rad, 0); 
     }
 
@@ -208,7 +208,7 @@ void Sprite::DrawScaledRotated(BITMAP *dest, double scaling, int angle)
     { 
         float _cx = al_get_bitmap_width(this->image) / 2.0f; 
         float _cy = al_get_bitmap_height(this->image) / 2.0f; 
-        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
         al_draw_rotated_bitmap(this->image, _cx, _cy, 0 + _cx, 0 + _cy, _angle_rad, 0); 
     }
 
@@ -311,7 +311,7 @@ void Sprite::DrawFrameRotated(BITMAP *dest, int angle)
     { 
         float _cx = al_get_bitmap_width(frame) / 2.0f; 
         float _cy = al_get_bitmap_height(frame) / 2.0f; 
-        float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+        float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
         al_draw_rotated_bitmap(frame, _cx, _cy, (int)x + _cx, (int)y + _cy, _angle_rad, 0); 
     }
 

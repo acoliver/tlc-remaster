@@ -200,43 +200,44 @@ void ScrollBox::ScrollBox::Draw(BITMAP *buffer)
 		int a = 0;
 		if (sbScrollBoxType == SB_TEXT)
 		{
-		for(std::list<ColoredString>::iterator myIt = sbTextLines.begin(); myIt != sbTextLines.end(); myIt++)
+	for(std::list<ColoredString>::iterator myIt = sbTextLines.begin(); myIt != sbTextLines.end(); myIt++)
+	{
+		alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
+            (*myIt).Color, al_map_rgba(0, 0, 0, 0), (*myIt).String.c_str());
+		a++;
+	}
+	}
+	else if (sbScrollBoxType == SB_LIST)
+	{
+        ALLEGRO_COLOR color;
+		for(std::list<ListBoxItem>::iterator myIt = sbListBoxItems.begin(); myIt != sbListBoxItems.end(); myIt++)
 		{
-			alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
-                color_to_int((*myIt).Color), 0, (*myIt).String.c_str());
+			if ((*myIt).selected)
+            {
+				al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bSelected, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
+        color = ColorSelectedText;
+        }
+		else if ((*myIt).hover)
+        {
+			al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bHover, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
+            color = (*myIt).text.Color;
+        }
+		else
+        {
+			al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bNormal, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
+            color = (*myIt).text.Color;
+        }
+
+		alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
+            color, al_map_rgba(0, 0, 0, 0), (*myIt).text.String.c_str());
 			a++;
 		}
-		}
-		else if (sbScrollBoxType == SB_LIST)
-		{
-            ALLEGRO_COLOR color;
-			for(std::list<ListBoxItem>::iterator myIt = sbListBoxItems.begin(); myIt != sbListBoxItems.end(); myIt++)
-			{
-				if ((*myIt).selected)
-                {
-					al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bSelected, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
-            color = ColorSelectedText;
-            }
-			else if ((*myIt).hover)
-            {
-				al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bHover, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
-                color = (*myIt).text.Color;
-            }
-			else
-            {
-				al_set_target_bitmap(sbBuffer); al_draw_bitmap_region((*myIt).bNormal, 0, 0, sbWidth, sbHeight, 0, sbFontHeight * a, 0);
-                color = (*myIt).text.Color;
-            }
-
-			alfont_textprintf_ex(sbBuffer, sbFont, sbLeftPad, sbFontHeight * a + sbTopPad, 
-                color_to_int(color), 0, (*myIt).text.String.c_str());
-				a++;
-			}
-		}
+	}
 		sbRedraw = false;
 	}
 	//Draw buffer to screen
-	al_set_target_bitmap(buffer); al_draw_bitmap_region(sbBuffer, 0, sbWindowClipY, sbWidth - 16, sbHeight, sbX, sbY, 0);
+	int contentWidth = sbDrawBar ? (sbWidth - 16) : sbWidth;
+	al_set_target_bitmap(buffer); al_draw_bitmap_region(sbBuffer, 0, sbWindowClipY, contentWidth, sbHeight, sbX, sbY, 0);
 	//Draw buttons to buffer
 	if (sbDrawBar)
 	{

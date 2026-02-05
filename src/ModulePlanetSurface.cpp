@@ -492,7 +492,7 @@ void ModulePlanetSurface::OnEvent(Event *event)
 				cinematicShip->setScale(playerShip->getScale());
 				cinematicShip->setSpeed(4);
 
-				PostMessage("Returning to Orbit", color_to_int(GREEN), 2, 6);
+				PostMessage("Returning to Orbit", GREEN, 2, 6);
 				}
 
 			}
@@ -777,7 +777,7 @@ bool ModulePlanetSurface::Init()
 
 	//clear screen
 	al_set_target_bitmap(g_game->GetBackBuffer());
-	al_draw_filled_rectangle(0, 0, SCREEN_W-1+1, SCREEN_H-1+1, BLACK);
+	al_draw_filled_rectangle(0, 0, SCREEN_WIDTH-1+1, SCREEN_HEIGHT-1+1, BLACK);
 
     //load the message gui
     img_messages = al_load_bitmap("data/messagegui/gui_messagewindow.bmp");
@@ -1884,7 +1884,7 @@ void ModulePlanetSurface::Update()
 
 	//print position on top gui
 	al_set_target_bitmap(img_gauges);
-	al_draw_filled_rectangle(640, 10, 772+1, 38+1, int_to_al_color((50 << 16) | (50 << 8) | 50));
+	al_draw_filled_rectangle(640, 10, 772+1, 38+1, al_map_rgb(50, 50, 50));
 	sprintf(s, "%s,%s", sLat, sLong);
 	//g_game->setFontSize(24);
 	g_game->Print24(img_gauges, 645, 12, s, LTGREEN);
@@ -2315,23 +2315,23 @@ void ModulePlanetSurface::PostMessage(std::string text)
 	messages->ScrollToBottom();
 }
 
-void ModulePlanetSurface::PostMessage(std::string text, int color)
+void ModulePlanetSurface::PostMessage(std::string text, ALLEGRO_COLOR color)
 {
-	messages->Write(text, int_to_al_color(color));
+	messages->Write(text, color);
 	messages->ScrollToBottom();
 }
 
-void ModulePlanetSurface::PostMessage(std::string text, int color, int blanksBefore)
+void ModulePlanetSurface::PostMessage(std::string text, ALLEGRO_COLOR color, int blanksBefore)
 {
 	for (int i=0; i < blanksBefore; ++i) messages->Write("");
-	messages->Write(text, int_to_al_color(color));
+	messages->Write(text, color);
 	messages->ScrollToBottom();
 }
 
-void ModulePlanetSurface::PostMessage(std::string text, int color, int blanksBefore, int blanksAfter)
+void ModulePlanetSurface::PostMessage(std::string text, ALLEGRO_COLOR color, int blanksBefore, int blanksAfter)
 {
 	for (int i=0; i < blanksBefore; ++i) messages->Write("");
-	messages->Write(text, int_to_al_color(color));
+	messages->Write(text, color);
 	for (int i=0; i < blanksAfter; ++i) messages->Write("");
 	messages->ScrollToBottom();
 }
@@ -2904,16 +2904,17 @@ int L_AttackTV(lua_State* luaVM)
 		g_game->PlanetSurfaceHolder->playerTV->setHealth( (int)(g_game->PlanetSurfaceHolder->playerTV->getHealth() - realdamage) );
 		g_game->PlanetSurfaceHolder->vibration = 20;
 
-	int health = g_game->PlanetSurfaceHolder->playerTV->getHealth();
+		int health = g_game->PlanetSurfaceHolder->playerTV->getHealth();
 
-	if (health < 25)
-		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! THE T.V. IS IN CRITICAL CONDITION! GET US OUT OF HERE!", color_to_int(RED), 0, 5);
-	else if (health < 50)
-		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US! DO SOMETHING QUICK!", color_to_int(RED), 0, 5);
-	else if (health < 75)
-		g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US!", color_to_int(RED), 0, 6);
-	else
-		g_game->PlanetSurfaceHolder->PostMessage("Captain, we are under attack!", color_to_int(RED), 0, 6);
+		if (health < 25)
+			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! THE T.V. IS IN CRITICAL CONDITION! GET US OUT OF HERE!", RED, 0, 5);
+		else if (health < 50)  //low attack health
+			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US! DO SOMETHING QUICK!", RED, 0, 5);
+		else if (health < 75)  //not in terrain vehicle
+			g_game->PlanetSurfaceHolder->PostMessage("CAPTAIN! A LIFEFORM IS ATTACKING US!", RED, 0, 6);
+		else
+			g_game->PlanetSurfaceHolder->PostMessage("Captain, we are under attack!", RED, 0, 6);
+
 	}
 
 	return 0;
@@ -3501,7 +3502,14 @@ int L_GetMinimapColor(lua_State* luaVM)
 {
 	if (g_game->PlanetSurfaceHolder->psObjectHolder != NULL)
 	{
-		lua_pushnumber( luaVM, g_game->PlanetSurfaceHolder->psObjectHolder->getMinimapColor() );
+		ALLEGRO_COLOR color = g_game->PlanetSurfaceHolder->psObjectHolder->getMinimapColor();
+		unsigned char r = 0;
+		unsigned char g = 0;
+		unsigned char b = 0;
+		unsigned char a = 0;
+		al_unmap_rgba(color, &r, &g, &b, &a);
+		int packedColor = (r << 16) | (g << 8) | b;
+		lua_pushnumber(luaVM, packedColor);
 	}
 
 	return 1;
@@ -3836,7 +3844,11 @@ int L_SetMinimapColor(lua_State* luaVM)
 {
 	if (g_game->PlanetSurfaceHolder->psObjectHolder != NULL)
 	{
-		g_game->PlanetSurfaceHolder->psObjectHolder->setMinimapColor( (int)lua_tonumber(luaVM, -1));
+		int packedColor = (int)lua_tonumber(luaVM, -1);
+		unsigned char r = (packedColor >> 16) & 0xFF;
+		unsigned char g = (packedColor >> 8) & 0xFF;
+		unsigned char b = packedColor & 0xFF;
+		g_game->PlanetSurfaceHolder->psObjectHolder->setMinimapColor(al_map_rgb(r, g, b));
 		lua_pop(luaVM, 1);
 	}
 

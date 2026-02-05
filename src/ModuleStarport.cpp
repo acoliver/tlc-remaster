@@ -203,6 +203,7 @@ bool ModuleStarport::Init()
 		debug << "Starport: Error loading background" << endl;
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(starport);
 
 	//load door
 	BITMAP *door_img = al_load_bitmap("data/starport/starport_door.bmp");
@@ -404,7 +405,7 @@ void ModuleStarport::drawDoors()
 		else
 		{
 			//draw this door if it's in view
-			if (doors[a].right > g_game->gameState->player->posStarport.x && doors[a].left < g_game->gameState->player->posStarport.x + al_get_bitmap_width(screen))
+			if (doors[a].right > g_game->gameState->player->posStarport.x && doors[a].left < g_game->gameState->player->posStarport.x + SCREEN_WIDTH)
 			{
 				//draw left door frame
 				door->setCurrFrame(0);
@@ -523,13 +524,13 @@ void ModuleStarport::Draw()
 	drawDoors();
 
 	//draw starport top section
-	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 0, al_get_bitmap_width(screen), 348, 0, 0, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 0, SCREEN_WIDTH, 348, 0, 0, 0);
 
 	//draw starport floor section
-	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 585, al_get_bitmap_width(screen), 183, 0, 585, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 585, SCREEN_WIDTH, 183, 0, 585, 0);
 
 	//draw starport middle section
-	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 348, al_get_bitmap_width(screen), 237, 0, 348, 0);
+	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 348, SCREEN_WIDTH, 237, 0, 348, 0);
 
 
 	//draw avatar
@@ -550,7 +551,7 @@ void ModuleStarport::Draw()
 		door->DrawFrame(g_game->GetBackBuffer());
 
 		//draw starport center section
-		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 348, al_get_bitmap_width(screen), 237, 0, 348, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starport, g_game->gameState->player->posStarport.x, 348, SCREEN_WIDTH, 237, 0, 348, 0);
 	}
 
 	if(g_game->gameState->player->hasOverdueLoan() && g_game->gameState->player->hasHyperspacePermit()){

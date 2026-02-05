@@ -66,7 +66,7 @@ void Label::Refresh()
 		if (myIt != spacePos.begin())
 			myIt--;
 
-		alfont_textprintf_ex(image, alFont, 0, h, color_to_int(color), 0, (text.substr(startpos, (*myIt) - startpos)).c_str());
+		alfont_textprintf_ex(image, alFont, 0, h, color, al_map_rgba(0, 0, 0, 0), (text.substr(startpos, (*myIt) - startpos)).c_str());
 		h += alfont_get_font_height(alFont);
 		
 		if (h > height) break;
@@ -78,7 +78,7 @@ void Label::Refresh()
 else
 {
         //print entire message on one line
-	alfont_textprintf_ex(image, alFont, 0, 0, color_to_int(color), 0, text.c_str());
+	alfont_textprintf_ex(image, alFont, 0, 0, color, al_map_rgba(0, 0, 0, 0), text.c_str());
 }
 }
 

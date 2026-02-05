@@ -277,17 +277,7 @@ void ModuleCrewHire::OnEvent(Event *event)
     case EVENT_EXIT_CLICK:
 		{
 			playBtnClick = true;
-			bool passedCheck = true;
-			for (int i=0; i < (int)tOfficers.size(); i++)
-			{
-				if (tOfficers[i]->GetOfficerType() == OFFICER_NONE)
-				{
-					passedCheck = false;
-				}
-			}
-
-			if (passedCheck)
-				exitToStarportCommons = true;
+			exitToStarportCommons = true;
 		}
 		break;
 
@@ -751,6 +741,7 @@ bool ModuleCrewHire::Init()
 	selectedPosition = -1; //Set the selectedPosition to none
 	selectedEntryLastRun = -1;//Set the crew listbox selection previous run to unselected
 	selectedOfficer = NULL;
+	coloredString.Color = WHITE;
 
 	g_game->audioSystem->Load("data/crewhire/buttonclick.ogg", "click");
 
@@ -788,7 +779,7 @@ bool ModuleCrewHire::Init()
 	unemployeed->setLines(25);
 
 	//setup unemployeed type column scrollbox
-	unemployeedType = new ScrollBox::ScrollBox(g_game->font24, ScrollBox::SB_LIST, (int)(UNEMPLOYEED_X + UNEMPLOYEED_WIDTH * .66),UNEMPLOYEED_Y,UNEMPLOYEED_WIDTH/3,UNEMPLOYEED_HEIGHT, EVENT_UNEMPLOYEEDLISTBOX_CLICK);
+	unemployeedType = new ScrollBox::ScrollBox(g_game->font24, ScrollBox::SB_LIST, (int)(UNEMPLOYEED_X + UNEMPLOYEED_WIDTH * .64),UNEMPLOYEED_Y,UNEMPLOYEED_WIDTH/3,UNEMPLOYEED_HEIGHT, EVENT_UNEMPLOYEEDLISTBOX_CLICK);
 	unemployeedType->DrawScrollBar(false);
 	unemployeedType->setLines(25);
     unemployeedType->LinkBox(unemployeed);
@@ -891,6 +882,7 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading personel_background");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(m_background);
 
 	// Load exit button bitmaps
 	exit_btn_norm = al_load_bitmap("data/crewhire/generic_exit_btn_norm.bmp");
@@ -898,12 +890,14 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading exit button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(exit_btn_norm);
 	
 	exit_btn_over = al_load_bitmap("data/crewhire/generic_exit_btn_over.bmp");
 	if (!exit_btn_over) {
 		g_game->message("CrewHire: Error loading exit button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(exit_btn_over);
 
 	//Create escape button for the module
 	m_exitBtn = new Button(exit_btn_norm,exit_btn_over,NULL,EXITBTN_X,EXITBTN_Y,EVENT_NONE,EVENT_EXIT_CLICK, g_game->font24, "Exit", al_map_rgb(255,0,0),"click");
@@ -921,18 +915,21 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading button2 normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn2_norm);
 	
 	btn2_over = al_load_bitmap("data/crewhire/personel_Btn2_hov.bmp");
 	if (!btn2_over) {
 		g_game->message("CrewHire: Error loading button2 over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn2_over);
 	
 	btn2_dis = al_load_bitmap("data/crewhire/personel_Btn2_dis.bmp");
 	if (!btn2_dis) {
 		g_game->message("CrewHire: Error loading button2 disabled");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn2_dis);
 
 	//Create and initialize the HireMore button for the module
 	m_hiremoreBtn = new Button(btn2_norm,btn2_over,btn2_dis,HIREMOREBTN_X,HIREMOREBTN_Y,EVENT_NONE,EVENT_HIREMORE_CLICK, g_game->font24, "Hire More Crew Members", al_map_rgb(0,255,255),"click");
@@ -949,18 +946,21 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn_norm);
 	
 	btn_over = al_load_bitmap("data/crewhire/personel_Btn_hov.bmp");
 	if (!btn_over) {
 		g_game->message("CrewHire: Error loading button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn_over);
 	
 	btn_dis = al_load_bitmap("data/crewhire/personel_Btn_dis.bmp");
 	if (!btn_dis) {
 		g_game->message("CrewHire: Error loading button disabled");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(btn_dis);
 
 	//Create and initialize the Hire button for the module
 	m_hireBtn = new Button(btn_norm,btn_over,btn_dis,HIREBTN_X,HIREBTN_Y,EVENT_NONE,EVENT_HIRE_CLICK, g_game->font24, "Hire", al_map_rgb(0,255,255),"click");
@@ -983,18 +983,21 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading small icons");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(icons_small);
 	
 	icons_small_green = al_load_bitmap("data/crewhire/Icons_small_Green.tga");
 	if (!icons_small_green) {
 		g_game->message("CrewHire: Error loading small green icons");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(icons_small_green);
 	
 	icons_small_red = al_load_bitmap("data/crewhire/Icons_small_Red.tga");
 	if (!icons_small_red) {
 		g_game->message("CrewHire: Error loading small red icons");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(icons_small_red);
 
 	// Load category button bitmaps
 	catbtn_norm = al_load_bitmap("data/crewhire/personel_catBtn.bmp");
@@ -1002,18 +1005,21 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading category button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(catbtn_norm);
 	
 	catbtn_over = al_load_bitmap("data/crewhire/personel_catBtn_hov.bmp");
 	if (!catbtn_over) {
 		g_game->message("CrewHire: Error loading category button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(catbtn_over);
 	
 	catbtn_dis = al_load_bitmap("data/crewhire/personel_catBtn_dis.bmp");
 	if (!catbtn_dis) {
 		g_game->message("CrewHire: Error loading category button disabled");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(catbtn_dis);
 
 	//create crew buttons	
 	BITMAP *temp = al_create_bitmap(30,30);
@@ -1048,9 +1054,9 @@ bool ModuleCrewHire::Init()
 		al_set_target_bitmap(temp); al_draw_bitmap_region(icons_small_red, 30 * i, 0, 30, 30, 0, 0, 0);
 		al_set_target_bitmap(temp); al_draw_bitmap(m_PositionBtns[i]->GetImgDisabled(), 0, 0, 0);
 
-	alfont_textout_ex(m_PositionBtns[i]->GetImgNormal(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
-	alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
-	alfont_textout_ex(m_PositionBtns[i]->GetImgDisabled(), g_game->font24, positions[i], 35, 4, color_to_int(al_map_rgb(0,255,255)), -1);
+	alfont_textout_ex(m_PositionBtns[i]->GetImgNormal(), g_game->font24, positions[i], 35, 4, al_map_rgb(0,255,255), al_map_rgba(0, 0, 0, 0));
+	alfont_textout_ex(m_PositionBtns[i]->GetImgMouseOver(), g_game->font24, positions[i], 35, 4, al_map_rgb(0,255,255), al_map_rgba(0, 0, 0, 0));
+	alfont_textout_ex(m_PositionBtns[i]->GetImgDisabled(), g_game->font24, positions[i], 35, 4, al_map_rgb(0,255,255), al_map_rgba(0, 0, 0, 0));
 	}
 	al_destroy_bitmap(temp);
 
@@ -1060,6 +1066,7 @@ bool ModuleCrewHire::Init()
 		g_game->message("CrewHire: Error loading personel_miniPositions");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(m_miniSkills);
 
 	//tell questmgr that Personnel event has occurred
 	g_game->questMgr->raiseEvent(18);
@@ -1212,13 +1219,13 @@ void ModuleCrewHire::Draw()
 
 		for (int i=0; i < (int)tOfficers.size(); i++)
 		{
-			if (tOfficers[i]->GetOfficerType() != OFFICER_NONE)
-				alfont_textout_ex(g_game->GetBackBuffer(), g_game->font24, tOfficers[i]->name.c_str(),CREWPOSITION_X, CREWPOSITION_Y +((tOfficers[i]->GetOfficerType()-1)*CREWSPACING), color_to_int(((tOfficers[i]->GetOfficerType()-1) == selectedPosition ?  al_map_rgb(0,255,255) : al_map_rgb(255,255,255))), -1);
+		if (tOfficers[i]->GetOfficerType() != OFFICER_NONE)
+			alfont_textout_ex(g_game->GetBackBuffer(), g_game->font24, tOfficers[i]->name.c_str(),CREWPOSITION_X, CREWPOSITION_Y +((tOfficers[i]->GetOfficerType()-1)*CREWSPACING), ((tOfficers[i]->GetOfficerType()-1) == selectedPosition ?  al_map_rgb(0,255,255) : al_map_rgb(255,255,255)), al_map_rgba(0, 0, 0, 0));
 		}
 			break;
 
 		case UNEMPLOYEED_SCREEN:
-			//unemployeed->Draw(g_game->GetBackBuffer());
+			unemployeed->Draw(g_game->GetBackBuffer());
 
 			unemployeedType->Draw(g_game->GetBackBuffer());
 
@@ -1325,6 +1332,7 @@ void ModuleCrewHire::RefreshUnassignedCrewBox()
 
 void ModuleCrewHire::RefreshUnemployeedCrewBox()
 {
+	unemployeed->Clear();
 	unemployeedType->Clear();
 
 	for (int i=0; i < (int)g_game->gameState->m_unemployedOfficers.size(); i++)

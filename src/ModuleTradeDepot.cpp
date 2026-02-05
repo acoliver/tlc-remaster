@@ -641,7 +641,7 @@ void ModuleTradeDepot::Draw()
    BITMAP* canvas = g_game->GetBackBuffer();
 
 	al_set_target_bitmap(canvas);
-	al_draw_bitmap_region(m_background, 0, 0, al_get_bitmap_width(screen), al_get_bitmap_height(screen), 0, 0, 0);
+	al_draw_bitmap(m_background, 0, 0, 0);
 
    alfont_set_font_size(g_game->font10,LIST_TEXTHEIGHT);
    m_playerListValue->Draw(canvas);
@@ -652,14 +652,14 @@ void ModuleTradeDepot::Draw()
    alfont_set_font_size(g_game->font10,PLAYER_BALANCE_TEXTHEIGHT);
    ostringstream balStr;
    balStr << g_game->gameState->getCredits();
-   alfont_textout_right(canvas,g_game->font10,balStr.str().c_str(),PLAYER_BALANCE_X,PLAYER_BALANCE_Y,color_to_int(PLAYER_BALANCE_TEXTCOL));
+   alfont_textout_right(canvas,g_game->font10,balStr.str().c_str(),PLAYER_BALANCE_X,PLAYER_BALANCE_Y,PLAYER_BALANCE_TEXTCOL);
 
    if (m_sellTotal > 0)
    {
       alfont_set_font_size(g_game->font10,SELLTOTAL_TEXTHEIGHT);
       ostringstream sellStr;
       sellStr << m_sellTotal;
-      alfont_textout_right(canvas,g_game->font10,sellStr.str().c_str(),SELLTOTAL_X,SELLTOTAL_Y,color_to_int(SELLTOTAL_TEXTCOL));
+      alfont_textout_right(canvas,g_game->font10,sellStr.str().c_str(),SELLTOTAL_X,SELLTOTAL_Y,SELLTOTAL_TEXTCOL);
    }
 
    if (m_buyTotal > 0)
@@ -667,7 +667,7 @@ void ModuleTradeDepot::Draw()
       alfont_set_font_size(g_game->font10,BUYTOTAL_TEXTHEIGHT);
       ostringstream buyStr;
       buyStr << m_buyTotal;
-      alfont_textout(canvas,g_game->font10,buyStr.str().c_str(),BUYTOTAL_X,BUYTOTAL_Y,color_to_int(BUYTOTAL_TEXTCOL));
+      alfont_textout(canvas,g_game->font10,buyStr.str().c_str(),BUYTOTAL_X,BUYTOTAL_Y,BUYTOTAL_TEXTCOL);
    }
 
    if (m_tradeMode == TM_PROMPTING)
@@ -675,7 +675,7 @@ void ModuleTradeDepot::Draw()
       al_set_target_bitmap(canvas);
       al_draw_bitmap_region(m_promptBackground, 0, 0, al_get_bitmap_width(m_promptBackground), al_get_bitmap_height(m_promptBackground), PROMPTBG_X, PROMPTBG_Y, 0);
       alfont_set_font_size(g_game->font10,PROMPT_VAL_TEXTHEIGHT);
-      alfont_textout(canvas,g_game->font10,m_promptText.c_str(),QTYTEXT_X+PROMPTBG_X,QTYTEXT_Y+PROMPTBG_Y,color_to_int(PROMPT_TEXT_COLOR));
+      alfont_textout(canvas,g_game->font10,m_promptText.c_str(),QTYTEXT_X+PROMPTBG_X,QTYTEXT_Y+PROMPTBG_Y,PROMPT_TEXT_COLOR);
 
 	int nlen = alfont_text_length(g_game->font10,m_promptText.c_str());
       al_draw_bitmap_region(m_cursor[m_cursorIdx], 0, 0, al_get_bitmap_width(m_cursor[m_cursorIdx]), al_get_bitmap_height(m_cursor[m_cursorIdx]), QTYTEXT_X+PROMPTBG_X+nlen+2, CURSOR_Y+PROMPTBG_Y, 0);
@@ -691,7 +691,7 @@ void ModuleTradeDepot::Draw()
       int qty = atoi(m_promptText.c_str());
       ostringstream str;
       str << "Price " << (qty * m_promptItem.value);
-      alfont_textout(canvas,g_game->font10,str.str().c_str(),PRICE_X+PROMPTBG_X,PRICE_Y+PROMPTBG_Y,color_to_int(PROMPTBTN_TEXT_COLOR));
+      alfont_textout(canvas,g_game->font10,str.str().c_str(),PRICE_X+PROMPTBG_X,PRICE_Y+PROMPTBG_Y,PROMPTBTN_TEXT_COLOR);
    }
 
    for (int i = 0; i < TRADEDEPOT_NUMBUTTONS; i++)

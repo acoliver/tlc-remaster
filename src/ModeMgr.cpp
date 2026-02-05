@@ -15,6 +15,9 @@
 #include "MessageBoxWindow.h"
 #include "PauseMenu.h"
 #include "AudioSystem.h"
+#include <allegro5/fshook.h>
+#include <allegro5/fshook.h>
+
 
 
 using namespace std;
@@ -75,9 +78,16 @@ void ModeMgr::EndGame()
 
 void ModeMgr::AddMode(string modeName, Module *rootModule, std::string musicPath) 
 {
-	if ( musicPath.compare("") != 0 && !file_exists(musicPath.c_str(),FA_ALL,NULL) ){
-		std::string error = "ModeMgr::AddMode: [ERROR] file " + musicPath + " does not exist";
-		g_game->fatalerror(error);
+	if (musicPath.compare("") != 0) {
+		ALLEGRO_FS_ENTRY *musicEntry = al_create_fs_entry(musicPath.c_str());
+		bool musicExists = musicEntry && al_fs_entry_exists(musicEntry);
+		if (musicEntry) {
+			al_destroy_fs_entry(musicEntry);
+		}
+		if (!musicExists) {
+			std::string error = "ModeMgr::AddMode: [ERROR] file " + musicPath + " does not exist";
+			g_game->fatalerror(error);
+		}
 	}
 
 	Mode *newmode = new Mode(rootModule, musicPath);

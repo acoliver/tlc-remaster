@@ -792,7 +792,7 @@ void ModuleMedical::Draw()
     int RIGHT_X = right_offset;
     int RIGHT_Y = 85;
 
-	if(right_offset < SCREEN_W)
+	if(right_offset < SCREEN_WIDTH)
 	{
 		//draw crew list viewer
 		al_set_target_bitmap(g_game->GetBackBuffer());
@@ -1021,7 +1021,7 @@ void ModuleMedical::Draw()
 			}
 		}
 	}else{
-		if(right_offset < SCREEN_W)
+		if(right_offset < SCREEN_WIDTH)
         {
 			right_offset += VIEWER_MOVE_RATE;
 		}

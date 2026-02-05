@@ -43,7 +43,7 @@ bool ModuleStartup::Init()
 	}
 
 	//create fader scratch pad
-	fader = al_create_bitmap(SCREEN_W, SCREEN_H);
+	fader = al_create_bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	return true;
 }
@@ -89,7 +89,7 @@ int ModuleStartup::fadein(BITMAP *dest, BITMAP *source, int speed)
 	if (loop < 256-speed)
 	{
 		loop += speed;
-		clear(fader);
+		{ ALLEGRO_BITMAP *_old = al_get_target_bitmap(); al_set_target_bitmap(fader); al_clear_to_color(al_map_rgba(0, 0, 0, 0)); al_set_target_bitmap(_old); }
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 		al_set_target_bitmap(source); al_draw_bitmap(fader, 0, 0, 0);
 		al_set_target_bitmap(dest); al_draw_bitmap_region(fader, 0, 0, al_get_bitmap_width(source), al_get_bitmap_height(source), 0, 0, 0);
@@ -110,14 +110,14 @@ int ModuleStartup::fadeout(BITMAP *dest, BITMAP *source, int speed)
 	if (loop > speed)
 	{
 		loop -= speed;
-		clear(fader);
+		{ ALLEGRO_BITMAP *_old = al_get_target_bitmap(); al_set_target_bitmap(fader); al_clear_to_color(al_map_rgba(0, 0, 0, 0)); al_set_target_bitmap(_old); }
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 		al_set_target_bitmap(source); al_draw_bitmap(fader, 0, 0, 0);
 		al_set_target_bitmap(dest); al_draw_bitmap_region(fader, 0, 0, al_get_bitmap_width(source), al_get_bitmap_height(source), 0, 0, 0);
 	}
 	else {
 		al_set_target_bitmap(dest);
-		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(source)+1, al_get_bitmap_height(source)+1, int_to_al_color((0 << 16) | (0 << 8) | 0));
+		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(source)+1, al_get_bitmap_height(source)+1, al_map_rgb(0, 0, 0));
 		loop = 255;
 		retval = 1;
 	}
@@ -147,7 +147,8 @@ void ModuleStartup::Draw()
 			}
 
 	} else {
-		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(copyright, 0, 0, al_get_bitmap_width(copyright), al_get_bitmap_height(copyright), 0, 0, 0);
+		al_set_target_bitmap(g_game->GetBackBuffer());
+		al_draw_bitmap_region(copyright, 0, 0, al_get_bitmap_width(copyright), al_get_bitmap_height(copyright), 0, 0, 0);
 		if (Util::ReentrantDelay(4000))
 			display_mode = 2;
 	}

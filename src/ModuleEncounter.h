@@ -182,7 +182,6 @@ public:
 	bool Init();
 	void Update();
 	void Draw();
-	void Print(string text, int color, long delay);
 	void OnKeyPress(int keyCode);
 	void OnKeyPressed(int keyCode);
 	void OnKeyReleased(int keyCode);
@@ -194,6 +193,7 @@ public:
 	void OnMouseWheelDown(int x, int y);
 	void OnEvent(Event *event);
 	void Close();
+	void Print(string text, ALLEGRO_COLOR color, long delay);
 	void commInitStatement();
 	void commInitQuestion();
 	void commInitPosture();

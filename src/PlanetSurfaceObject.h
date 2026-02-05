@@ -129,7 +129,7 @@ public:
 	int getThreshold2()							const { return threshold2; }
 	int getThreshold3()							const { return threshold3; }
 
-	int getMinimapColor()						const { return minimapColor; }
+	ALLEGRO_COLOR getMinimapColor()			const { return minimapColor; }
 	int getMinimapSize()						const { return minimapSize; }
 
 	//mutators
@@ -194,7 +194,7 @@ public:
 	void setThreshold2(int initThreshold2)			{ threshold2 = initThreshold2; }
 	void setThreshold3(int initThreshold3)			{ threshold3 = initThreshold3; }
 
-	void setMinimapColor(int initColor)				{ minimapColor = initColor; }
+	void setMinimapColor(ALLEGRO_COLOR initColor)	{ minimapColor = initColor; }
 	void setMinimapSize(int initSize)				{ minimapSize = initSize; }
 
     std::string description;
@@ -227,7 +227,7 @@ protected:
 	//Label *hoverLabel;
 	bool selected;
 	bool scanned;
-	int minimapColor; //Minimap dot color
+	ALLEGRO_COLOR minimapColor; //Minimap dot color
 	int minimapSize; //Size of the minimap dot
 
 	static std::map<std::string, BITMAP*> graphics; 

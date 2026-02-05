@@ -65,7 +65,7 @@ PlanetSurfaceObject::PlanetSurfaceObject() :
 	threshold1(0),
 	threshold2(0),
 	threshold3(0),
-	minimapColor(color_to_int(BRTORANGE)),
+	minimapColor(BRTORANGE),
 	minimapSize(1)
 {
 	defaultAnim = new Animation(0, 1, 0);
@@ -128,7 +128,7 @@ PlanetSurfaceObject::PlanetSurfaceObject(lua_State* LuaVM, std::string ScriptNam
 	threshold1(0),
 	threshold2(0),
 	threshold3(0),
-	minimapColor(color_to_int(BRTORANGE)),
+	minimapColor(BRTORANGE),
 	minimapSize(1)
 {
 	defaultAnim = new Animation(0, 1, 0);
@@ -231,7 +231,7 @@ int PlanetSurfaceObject::load(const char *filename)
 	this->colHalfWidth = this->width/2;
 	this->colHalfHeight = this->height/2;
 
-	set_alpha_blender();
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
     return 1;
 }
 
@@ -357,7 +357,7 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		{ 
 			float _cx = al_get_bitmap_width(finalFrame) / 2.0f; 
 			float _cy = al_get_bitmap_height(finalFrame) / 2.0f; 
-			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
 			al_draw_rotated_bitmap(finalFrame, _cx, _cy, (int)(x - g_game->gameState->player->posPlanet.x) + _cx, (int)(y - g_game->gameState->player->posPlanet.y) + _cy, _angle_rad, 0); 
 		}
 
@@ -385,7 +385,7 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		{ 
 			float _cx = al_get_bitmap_width(scrapFrame) / 2.0f; 
 			float _cy = al_get_bitmap_height(scrapFrame) / 2.0f; 
-			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
 			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, (int)(x - g_game->gameState->player->posPlanet.x) + _cx, (int)(y - g_game->gameState->player->posPlanet.y) + _cy, _angle_rad, 0); 
 		}
 
@@ -415,7 +415,7 @@ void PlanetSurfaceObject::Draw(BITMAP *dest)
 		{ 
 			float _cx = al_get_bitmap_width(scrapFrame) / 2.0f; 
 			float _cy = al_get_bitmap_height(scrapFrame) / 2.0f; 
-			float _angle_rad = ((float)fixtof(itofix((int)(angle / 0.7f / 2.0f)))) * ALLEGRO_PI * 2.0f / 256.0f; 
+			float _angle_rad = ((float)((int)(angle / 0.7f / 2.0f))) * ALLEGRO_PI * 2.0f / 256.0f; 
 			al_draw_rotated_bitmap(scrapFrame, _cx, _cy, 0 + _cx, 0 + _cy, _angle_rad, 0); 
 		}
 

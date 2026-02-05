@@ -668,7 +668,8 @@ void ModulePlanetOrbit::Update()
 		    r.bottom = r.top + 4;
 		    int color = ((100+rand() % 155) << 16) | (0 << 8) | (100+rand() % 155);
 		    al_set_target_bitmap(pbody->planetTopography);
-		    al_draw_filled_rectangle(r.left, r.top, r.right+1, r.bottom+1, int_to_al_color(color));
+		    int r_val = getr(color), g_val = getg(color), b_val = getb(color);
+		    al_draw_filled_rectangle(r.left, r.top, r.right+1, r.bottom+1, al_map_rgb(r_val, g_val, b_val));
         }
 
         g_game->audioSystem->Play( audio_scan );
@@ -718,7 +719,7 @@ void ModulePlanetOrbit::Draw()
 	static int asw = (int)g_game->getGlobalNumber("AUX_SCREEN_WIDTH");
 	static int ash = (int)g_game->getGlobalNumber("AUX_SCREEN_HEIGHT");
 	al_set_target_bitmap(g_game->GetBackBuffer());
-	al_draw_filled_rectangle(asx, asy, asx + asw+1, asy + ash+1, int_to_al_color((0 << 16) | (0 << 8) | 0));
+	al_draw_filled_rectangle(asx, asy, asx + asw+1, asy + ash+1, al_map_rgb(0, 0, 0));
 
     //draw message window
     text->Draw(g_game->GetBackBuffer());

@@ -45,6 +45,8 @@
 #include <allegro5/allegro_audio.h>     /* Audio playback */
 #include <allegro5/allegro_acodec.h>    /* Audio codecs (WAV, OGG, etc.) */
 #include <allegro5/allegro_native_dialog.h> /* Native message boxes */
+#include <cctype>
+#include <cstring>
 
 /*=============================================================================
  * TYPE COMPATIBILITY LAYER
@@ -115,7 +117,7 @@ typedef ALLEGRO_KEYBOARD_STATE KEYBOARD_STATE;
 /* Bitmap creation and destruction */
 #define create_bitmap(w, h) al_create_bitmap(w, h)
 #define destroy_bitmap(bmp) al_destroy_bitmap(bmp)
-#define load_bitmap(filename, pal) al_load_bitmap(filename)
+#define load_bitmap(filename, pal) tlc_load_bitmap(filename)
 #define save_bitmap(filename, bmp) al_save_bitmap(filename, bmp)
 
 /* Bitmap properties */
@@ -306,6 +308,175 @@ struct ALFONT_FONT;
 #define bitmap_width(bmp) al_get_bitmap_width(bmp)
 #define bitmap_height(bmp) al_get_bitmap_height(bmp)
 
+
+/*=============================================================================
+ * MAGENTA MASK CONVERSION + LOAD HELPER
+ *===========================================================================*/
+
+inline void tlc_convert_magenta_to_alpha(ALLEGRO_BITMAP *bitmap);
+
+inline bool tlc_is_magenta_mask_asset(const char *filename)
+{
+    if (!filename) {
+        return false;
+    }
+
+    const char *ext = strrchr(filename, '.');
+    if (!ext) {
+        return false;
+    }
+
+    char extLower[8];
+    size_t extLen = strlen(ext);
+    if (extLen >= sizeof(extLower)) {
+        extLen = sizeof(extLower) - 1;
+    }
+    for (size_t i = 0; i < extLen; ++i) {
+        extLower[i] = (char)std::tolower((unsigned char)ext[i]);
+    }
+    extLower[extLen] = '\0';
+
+    if (strcmp(extLower, ".bmp") != 0) {
+        return false;
+    }
+
+    const char *base = strrchr(filename, '/');
+    base = base ? base + 1 : filename;
+
+    static const char *const kExplicitSkip[] = {
+        "medical_gui_viewer.bmp",
+        "medical_gui_viewer_right.bmp",
+        "medical_gui_viewer_left.bmp",
+        "gui_messagewindow.bmp",
+        "gui_socket.bmp",
+        "gui_viewer.bmp",
+        "gui_viewer_right.bmp",
+        "gui_aux.bmp",
+        "shipconfig_btn_deactive.bmp",
+        "shipconfig_btn_norm.bmp",
+        "shipconfig_btn_over.bmp",
+        "shipconfig_cursor0.bmp",
+        "bank_background.bmp",
+        "bank_banner.bmp",
+        "bank_button_confirm_hover.bmp",
+        "bank_button_confirm_normal.bmp",
+        "bank_button_exit.bmp",
+        "bank_button_exit_hover.bmp",
+        "bank_button_help.bmp",
+        "bank_button_help_hover.bmp",
+        "bank_button_pay_hover.bmp",
+        "bank_button_pay_normal.bmp",
+        "bank_button_take_hover.bmp",
+        "bank_button_take_normal.bmp",
+        "bank_calc_button_deactivate.bmp",
+        "bank_calc_button_hover.bmp",
+        "bank_calc_button_normal.bmp",
+        "bank_help_window.bmp",
+        "cantina_background.bmp",
+        "militaryops_background.bmp",
+        "researchlab_background.bmp",
+        "tradedepot_background.bmp",
+        "tradedepot_btn.bmp",
+        "tradedepot_btn_mo.bmp",
+        "tradedepot_cursor0.bmp",
+        "tradedepot_cursor1.bmp",
+        "tradedepot_filterbtn.bmp",
+        "tradedepot_filterbtn_mo.bmp",
+        "tradedepot_promptbtn.bmp",
+        "tradedepot_promptbtn_mo.bmp",
+        "tradedepot_quantity_prompt.bmp",
+        "tradedepot_spindownbtn.bmp",
+        "tradedepot_spindownbtn_mo.bmp",
+        "tradedepot_spinupbtn.bmp",
+        "tradedepot_spinupbtn_mo.bmp",
+        "crewlist_bar.bmp",
+        "crewlist_bar2.bmp",
+        "crewlist_bar3.bmp",
+        "crewlist_bar4.bmp",
+        "crewlist_bar5.bmp",
+        "crewlist_bar6.bmp",
+        "crewlist_bar7.bmp",
+        "crewlist_bar8.bmp",
+        "crewlist_bar9.bmp",
+        "crewlist_bar10.bmp",
+        "crewlist_bar11.bmp",
+        "crewlist_bar12.bmp",
+        "crewlist_bar13.bmp",
+        "crewlist_bar14.bmp",
+        "crewlist_bar15.bmp",
+        "crewlist_bar16.bmp",
+        "crewlist_bar17.bmp",
+        "crewlist_bar18.bmp",
+        "crewlist_bar19.bmp",
+        "crewlist_bar20.bmp",
+        "crewlist_bar21.bmp",
+        "crewlist_bar22.bmp",
+        "crewlist_bar23.bmp",
+        "crewlist_bar24.bmp",
+        "crewlist_bar25.bmp",
+        "crewlist_bar26.bmp",
+        "crewlist_bar27.bmp",
+        "crewlist_bar28.bmp",
+        "crewlist_bar29.bmp",
+        "crewlist_bar30.bmp",
+        "crewlist_bar31.bmp",
+        "crewlist_bar32.bmp",
+        "crewlist_bar33.bmp",
+        "crewlist_bar34.bmp",
+        "crewlist_bar35.bmp",
+        "crewlist_bar36.bmp",
+        "crewlist_bar37.bmp",
+        "crewlist_bar38.bmp",
+        "crewlist_bar39.bmp",
+        "crewlist_bar40.bmp",
+        "crewlist_bar41.bmp",
+        "crewlist_bar42.bmp",
+        "crewlist_bar43.bmp",
+        "crewlist_bar44.bmp",
+        "crewlist_bar45.bmp",
+        "crewlist_bar46.bmp",
+        "crewlist_bar47.bmp",
+        "crewlist_bar48.bmp",
+        "crewlist_bar49.bmp",
+        "crewlist_bar50.bmp",
+        "crewlist_bar51.bmp",
+        "crewlist_bar52.bmp",
+        "crewlist_bar53.bmp",
+        "crewlist_bar54.bmp",
+        "crewlist_bar55.bmp",
+        "crewlist_bar56.bmp",
+        "crewlist_bar57.bmp",
+        "crewlist_bar58.bmp",
+
+
+        "crewlist_bar59.bmp",
+        "crewlist_bar60.bmp",
+        "crewlist_bar61.bmp",
+        "crewlist_bar62.bmp",
+        "crewlist_bar63.bmp",
+        "crewlist_bar64.bmp"
+    };
+
+    for (size_t i = 0; i < sizeof(kExplicitSkip) / sizeof(kExplicitSkip[0]); ++i) {
+        if (strcmp(base, kExplicitSkip[i]) == 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+inline ALLEGRO_BITMAP *tlc_load_bitmap(const char *filename)
+{
+    ALLEGRO_BITMAP *bitmap = al_load_bitmap(filename);
+    if (bitmap && tlc_is_magenta_mask_asset(filename)) {
+        tlc_convert_magenta_to_alpha(bitmap);
+    }
+    return bitmap;
+}
+
+
+
 /* For code that needs a "screen" global - this should point to display backbuffer */
 /* The game must set this during initialization */
 extern ALLEGRO_BITMAP *_tlc_screen;
@@ -314,6 +485,10 @@ extern ALLEGRO_DISPLAY *_tlc_display;
 
 /* Screen dimensions - game should set these during init */
 extern int SCREEN_W, SCREEN_H;
+
+#ifndef TLC_DISABLE_MAGENTA_LOAD_HOOK
+#define al_load_bitmap tlc_load_bitmap
+#endif
 
 /*=============================================================================
  * DISPLAY/GRAPHICS MODE COMPATIBILITY
@@ -608,9 +783,33 @@ inline bool tlc_allegro5_init_all()
  */
 inline void tlc_convert_magenta_to_alpha(ALLEGRO_BITMAP *bitmap)
 {
-    if (bitmap) {
-        al_convert_mask_to_alpha(bitmap, al_map_rgb(255, 0, 255));
+    if (!bitmap) {
+        return;
     }
+
+    ALLEGRO_LOCKED_REGION *lock = al_lock_bitmap(bitmap, ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE, ALLEGRO_LOCK_READWRITE);
+    if (lock) {
+        unsigned char *row = (unsigned char *)lock->data;
+        int width = al_get_bitmap_width(bitmap);
+        int height = al_get_bitmap_height(bitmap);
+        for (int y = 0; y < height; ++y) {
+            unsigned char *px = row;
+            for (int x = 0; x < width; ++x) {
+                unsigned char r = px[0];
+                unsigned char g = px[1];
+                unsigned char b = px[2];
+                if (r == 255 && g == 0 && b == 255) {
+                    px[3] = 0;
+                }
+                px += 4;
+            }
+            row += lock->pitch;
+        }
+        al_unlock_bitmap(bitmap);
+        return;
+    }
+
+    al_convert_mask_to_alpha(bitmap, al_map_rgb(255, 0, 255));
 }
 
 /*

@@ -15,8 +15,10 @@
 #include <alfont.h>
 #include <memory.h>
 #include <cstdio>
+#include <allegro5/fshook.h>
 #include <sstream>
 #include "LogFile.h"
+
 
 
 #include "Game.h"
@@ -604,9 +606,16 @@ bool ValidatePortraits()
 			}
 		}
 
-		if ( doCheck && !file_exists(filepath.c_str(),FA_ALL,NULL) ){
-            debug << "[WARNING]: portrait " << filepath << " for item # does not exist: " << item->id << endl;
-			retval=false;
+		if (doCheck) {
+			ALLEGRO_FS_ENTRY *portraitEntry = al_create_fs_entry(filepath.c_str());
+			bool portraitExists = portraitEntry && al_fs_entry_exists(portraitEntry);
+			if (portraitEntry) {
+				al_destroy_fs_entry(portraitEntry);
+			}
+			if (!portraitExists) {
+				debug << "[WARNING]: portrait " << filepath << " for item # does not exist: " << item->id << endl;
+				retval = false;
+			}
 		}
 	}
 
@@ -715,12 +724,12 @@ bool Game::Initialize_Graphics()
     //since this func can be called repeatedly, let's skip redundancies
     if (desktop_width == 0)
     {
-        get_desktop_resolution(&desktop_width, &desktop_height);
-        debug << "Desktop resolution: " << desktop_width << " x " << desktop_height << endl;
+		get_desktop_resolution(&desktop_width, &desktop_height);
+		debug << "Desktop resolution: " << desktop_width << " x " << desktop_height << endl;
 
-        desktop_colordepth = al_get_display_option(al_get_current_display(), ALLEGRO_COLOR_SIZE);
-        if (desktop_colordepth == 0) desktop_colordepth = 32;
-        debug << "Desktop color depth: " << desktop_colordepth << endl;
+		desktop_colordepth = 32;
+		debug << "Desktop color depth: " << desktop_colordepth << endl;
+
     }
     else
         debug << "Attempting to reset graphics mode..." << endl;
@@ -1223,10 +1232,15 @@ void Game::RunGame()
             //keep the mouse cursor image on the screen
             ALLEGRO_MOUSE_STATE current_mouse_state;
             al_get_mouse_state(&current_mouse_state);
-            int mx = (int)((double)current_mouse_state.x / screen_scaling);
-            int my = (int)((double)current_mouse_state.y / screen_scaling);
+			int mx = (int)((double)current_mouse_state.x / screen_scaling);
+			int my = (int)((double)current_mouse_state.y / screen_scaling);
+			int cx = (actual_width - scale_width) / 2;
+			mx = (int)((double)(current_mouse_state.x - cx) / screen_scaling);
+			mx = Util::ClampValue(mx, 0, SCREEN_WIDTH - 1);
+			my = Util::ClampValue(my, 0, SCREEN_HEIGHT - 1);
 			cursor->setX(mx); 
 			cursor->setY(my); 
+
 			cursor->Draw(m_backbuffer); 
 		}
 		else {
@@ -1359,6 +1373,14 @@ void Game::UpdateMouse()
 	int current_mouse_y = (screen_scaling > 0) ? (int)((double)mouseState.y / screen_scaling) : mouseState.y;
 	int current_mouse_z = mouseState.z;
 	int current_mouse_b = mouseState.buttons;
+	// Account for centered backbuffer when display is wider than the internal resolution.
+	if (screen_scaling > 0) {
+		int cx = (actual_width - scale_width) / 2;
+		current_mouse_x = (int)((double)(mouseState.x - cx) / screen_scaling);
+		current_mouse_y = (int)((double)mouseState.y / screen_scaling);
+		current_mouse_x = Util::ClampValue(current_mouse_x, 0, SCREEN_WIDTH - 1);
+		current_mouse_y = Util::ClampValue(current_mouse_y, 0, SCREEN_HEIGHT - 1);
+	}
 
 	// Debug: periodically log mouse_b state
 	static int last_mouse_b = -1;
@@ -1696,15 +1718,15 @@ bool Game::InitializeModules()
 void Game::PrintDefault(BITMAP *dest,int x,int y, std::string text,ALLEGRO_COLOR color)
 {
 	// Use font12 as the default font for PrintDefault
-	alfont_textprintf_ex(dest, font12, x, y, color_to_int(color), 0, text.c_str());
+	alfont_textprintf_ex(dest, font12, x, y, color, al_map_rgba(0, 0, 0, 0), text.c_str());
 }
 
 void Game::Print(BITMAP *dest, ALFONT_FONT *_font, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)
 {
 	if (shadow) {
-		alfont_textprintf_ex(dest, _font, x+2, y+2, color_to_int(BLACK), 0, text.c_str());
+		alfont_textprintf_ex(dest, _font, x+2, y+2, BLACK, al_map_rgba(0, 0, 0, 0), text.c_str());
 	}
-	alfont_textprintf_ex(dest, _font, x, y, color_to_int(color), 0, text.c_str());
+	alfont_textprintf_ex(dest, _font, x, y, color, al_map_rgba(0, 0, 0, 0), text.c_str());
 }
 
 void Game::Print12(BITMAP *dest, int x,int y,std::string text, ALLEGRO_COLOR color, bool shadow)

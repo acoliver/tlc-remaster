@@ -116,7 +116,9 @@ void ModuleTitleScreen::Update(){}
 void ModuleTitleScreen::Draw()
 {
 	string text;
-	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_scaled_bitmap(m_background, 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background), 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()), 0);
+	al_set_target_bitmap(g_game->GetBackBuffer());
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+	al_draw_scaled_bitmap(m_background, 0, 0, al_get_bitmap_width(m_background), al_get_bitmap_height(m_background), 0, 0, al_get_bitmap_width(g_game->GetBackBuffer()), al_get_bitmap_height(g_game->GetBackBuffer()), 0);
 	btnTitle->Run(g_game->GetBackBuffer(),true);
 	btnNewGame->Run(g_game->GetBackBuffer(),true);
 	btnLoadGame->Run(g_game->GetBackBuffer(),true);
@@ -156,11 +158,6 @@ void ModuleTitleScreen::Draw()
 			break;
 
 		case 704: //QUIT GAME
-			title_mode = 705;
-			break;
-
-		case 705:
-			g_game->shutdown();
 			break;
 
 	}
@@ -173,7 +170,7 @@ void ModuleTitleScreen::OnKeyPressed(int keyCode){}
 void ModuleTitleScreen::OnKeyReleased(int keyCode)
 {
 	if (keyCode == KEY_ESC)
-		title_mode = 704;
+		g_game->shutdown();
 }
 
 void ModuleTitleScreen::OnMouseMove(int x, int y)
@@ -218,7 +215,7 @@ void ModuleTitleScreen::OnEvent(Event *event)
 			title_mode = 703;
 			break;
 		case 704: //exit game
-			title_mode = 704;
+			g_game->shutdown();
 			break;
 	}
 }

@@ -9,6 +9,8 @@
 #include "GameState.h"
 #include "Util.h"
 
+#include <allegro5/fshook.h>
+
 #include <string>
 #include <sstream>
 using namespace std;
@@ -99,17 +101,19 @@ bool ModuleCaptainsLounge::Init()
 	}
 
 	// Load exit button bitmaps
-	exit_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_back.tga");
+	exit_btn_norm = (BITMAP*)al_load_bitmap("data/captainslounge/generic_exit_btn_norm.bmp");
 	if (!exit_btn_norm) {
 		g_game->message("CaptainsLounge: Error loading exit button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(exit_btn_norm);
 	
-	exit_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_back_mouseover.tga");
+	exit_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/generic_exit_btn_over.bmp");
 	if (!exit_btn_over) {
 		g_game->message("CaptainsLounge: Error loading exit button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(exit_btn_over);
 	
     //create exit button
     m_backBtn = new Button(exit_btn_norm, exit_btn_over,NULL,
@@ -186,12 +190,14 @@ bool ModuleCaptainsLounge::Init()
 		g_game->message("CaptainsLounge: Error loading save button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(save_btn_norm);
 	
 	save_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_save_mouseover.bmp");
 	if (!save_btn_over) {
 		g_game->message("CaptainsLounge: Error loading save button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(save_btn_over);
 
 	int y = BTN_BASE_Y;
 	for (int i = 0; i < CAPTAINSLOUNGE_NUMSLOTS; i++)
@@ -229,12 +235,14 @@ bool ModuleCaptainsLounge::Init()
 		g_game->message("CaptainsLounge: Error loading yes button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(yes_btn_norm);
 	
 	yes_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_yes_mouseover.bmp");
 	if (!yes_btn_over) {
 		g_game->message("CaptainsLounge: Error loading yes button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(yes_btn_over);
 	
 	m_yesBtn = new Button(yes_btn_norm, yes_btn_over, NULL,YES_X,YES_Y,EVENT_NONE,EVENT_YES);
 	if (!m_yesBtn->IsInitialized())	return false;
@@ -245,12 +253,14 @@ bool ModuleCaptainsLounge::Init()
 		g_game->message("CaptainsLounge: Error loading no button normal");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(no_btn_norm);
 	
 	no_btn_over = (BITMAP*)al_load_bitmap("data/captainslounge/captainslounge_no_mouseover.bmp");
 	if (!no_btn_over) {
 		g_game->message("CaptainsLounge: Error loading no button over");
 		return false;
 	}
+	tlc_convert_magenta_to_alpha(no_btn_over);
 	
 	m_noBtn = new Button(no_btn_norm, no_btn_over, NULL,NO_X,NO_Y,EVENT_NONE,EVENT_NO);
 	if (!m_noBtn->IsInitialized()) return false;
@@ -270,24 +280,43 @@ bool ModuleCaptainsLounge::Init()
 	if (m_requestedCaptainCreation)
 	{
         string newcaptainfile = "saves/newcaptain.dat";
-		if (exists(newcaptainfile.c_str()))
+		ALLEGRO_FS_ENTRY *newCaptainEntry = al_create_fs_entry(newcaptainfile.c_str());
+		bool hasNewCaptain = newCaptainEntry && al_fs_entry_exists(newCaptainEntry);
+		if (newCaptainEntry) {
+			al_destroy_fs_entry(newCaptainEntry);
+		}
+		if (hasNewCaptain)
 		{
 			char buf[1024];
 			sprintf(buf, SAVEFILE_FMT_STRING, m_requestedCaptainCreationSlotNum);
 			string gameFile = buf;
 
-			if (exists(gameFile.c_str()))
-            {
-			    delete_file(gameFile.c_str());
-            }
-
-			GameState * gs = GameState::LoadGame(newcaptainfile);
-			if (gs != NULL)
-			{
-			    gs->SaveGame(gameFile);
+			ALLEGRO_FS_ENTRY *saveEntry = al_create_fs_entry(gameFile.c_str());
+			if (saveEntry) {
+				if (al_fs_entry_exists(saveEntry)) {
+					if (!al_remove_fs_entry(saveEntry)) {
+						g_game->message("CaptainsLounge: Error deleting existing save file");
+					}
+				}
+				al_destroy_fs_entry(saveEntry);
 			}
 
-			delete_file(newcaptainfile.c_str());
+			GameState *newCaptainState = GameState::LoadGame(newcaptainfile);
+			if (!newCaptainState || !g_game->gameState->SaveGame(gameFile)) {
+				g_game->message("CaptainsLounge: Error saving new captain file");
+			} else {
+				g_game->gameState->m_captainSelected = true;
+			}
+
+			ALLEGRO_FS_ENTRY *newCaptainRemove = al_create_fs_entry(newcaptainfile.c_str());
+			if (newCaptainRemove) {
+				if (al_fs_entry_exists(newCaptainRemove)) {
+					if (!al_remove_fs_entry(newCaptainRemove)) {
+						g_game->message("CaptainsLounge: Error deleting new captain temp save");
+					}
+				}
+				al_destroy_fs_entry(newCaptainRemove);
+			}
 		}
 
 		m_requestedCaptainCreation = false;
@@ -629,7 +658,7 @@ void ModuleCaptainsLounge::Draw()
 			g_game->Print20(g_game->GetBackBuffer(), x+140,y, str.c_str(), TEXTCOL);
 	}
 
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"SAVE",BTN_SAVECAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"SAVE",BTN_SAVECAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
 }
 	else
 	{
@@ -687,9 +716,9 @@ void ModuleCaptainsLounge::Draw()
 
 	//modules should not be calling alfont functions directly--use the engine
 
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"NEW",BTN_NEWCAPTAIN_X+(m_newCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"DEL",BTN_DELCAPTAIN_X+(m_delCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
-	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"LOAD",BTN_SELCAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,color_to_int(TEXTCOL));
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"NEW",BTN_NEWCAPTAIN_X+(m_newCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"DEL",BTN_DELCAPTAIN_X+(m_delCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font24,"LOAD",BTN_SELCAPTAIN_X+(m_selCaptBtns[0]->GetWidth()/2),BTN_BASE_Y-TEXTHEIGHT_BTN_TITLES-18,TEXTCOL);
 
 	if (m_modalPromptActive)
 	{
@@ -699,7 +728,7 @@ void ModuleCaptainsLounge::Draw()
 	int y = MODALPROMPT_START_Y;
 	for (vector<string>::iterator i = m_modalPromptStrings.begin(); i != m_modalPromptStrings.end(); ++i)
 	{
-		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font32,(*i).c_str(),SCREEN_WIDTH/2,y,color_to_int(TEXTCOL));
+		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font32,(*i).c_str(),SCREEN_WIDTH/2,y,TEXTCOL);
 		y += TEXTHEIGHT_MODALPROMPT + 2;
 	}
 
@@ -862,7 +891,13 @@ void ModuleCaptainsLounge::OnEvent(Event *event)
 	{
 		char buf[1024];
 		sprintf(buf,SAVEFILE_FMT_STRING,m_modalPromptSlotNum);
-		delete_file(buf);
+		ALLEGRO_FS_ENTRY *saveEntry = al_create_fs_entry(buf);
+		if (saveEntry) {
+			if (!al_remove_fs_entry(saveEntry)) {
+				g_game->message("CaptainsLounge: Error deleting save file");
+			}
+			al_destroy_fs_entry(saveEntry);
+		}
 		LoadGames();
 	}
 
@@ -947,8 +982,18 @@ void ModuleCaptainsLounge::OnEvent(Event *event)
 	{
 		char buf[1024];
 		sprintf(buf,SAVEFILE_FMT_STRING,m_modalPromptSlotNum);
-		delete_file(buf);
-		g_game->gameState->SaveGame(buf);
+		ALLEGRO_FS_ENTRY *saveEntry = al_create_fs_entry(buf);
+		if (saveEntry) {
+			if (al_fs_entry_exists(saveEntry)) {
+				if (!al_remove_fs_entry(saveEntry)) {
+					g_game->message("CaptainsLounge: Error deleting existing save file");
+				}
+			}
+			al_destroy_fs_entry(saveEntry);
+		}
+		if (!g_game->gameState->SaveGame(buf)) {
+			g_game->message("CaptainsLounge: Error saving game file");
+		}
 		LoadGames();
 	}
 

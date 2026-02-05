@@ -6,6 +6,7 @@
 #include "ModeMgr.h"
 #include "Game.h"
 #include "Label.h"
+#include <allegro5/fshook.h>
 using namespace std;
 
 
@@ -427,7 +428,7 @@ void ModuleCaptainCreation::Draw()
 	case WP_PROFESSION_CHOICE:
 		{
 			al_set_target_bitmap(g_game->GetBackBuffer());
-			al_draw_bitmap_region(m_professionChoiceBackground, 0, 0, al_get_display_width(al_get_current_display()), al_get_display_height(al_get_current_display()), 0, 0, 0);
+			al_draw_bitmap(m_professionChoiceBackground, 0, 0, 0);
 			al_draw_bitmap_region(m_scientificBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_SCIENTIFIC_X, PROFBTN_SCIENTIFIC_Y, 0);
 			al_draw_bitmap_region(m_freelanceBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_FREELANCE_X, PROFBTN_FREELANCE_Y, 0);
 			al_draw_bitmap_region(m_militaryBtn, 0, 0, PROFBTN_WIDTH, PROFBTN_HEIGHT, PROFBTN_MILITARY_X, PROFBTN_MILITARY_Y, 0);
@@ -462,13 +463,13 @@ void ModuleCaptainCreation::Draw()
 
 			al_draw_bitmap_region(m_backBtn, 0, 0, BACKBTN_WIDTH, BACKBTN_HEIGHT, BACKBTN_X, BACKBTN_Y, 0);
 
-		alfont_set_font_size(g_game->font10, TEXTHEIGHT_TITLES);
-		alfont_textout_centre(g_game->GetBackBuffer(),g_game->font10,"Captain Details",al_get_bitmap_width(g_game->GetBackBuffer())/2,30,color_to_int(TEXTCOL));
+	alfont_set_font_size(g_game->font10, TEXTHEIGHT_TITLES);
+	alfont_textout_centre(g_game->GetBackBuffer(),g_game->font10,"Captain Details",al_get_bitmap_width(g_game->GetBackBuffer())/2,30,TEXTCOL);
 
-		alfont_set_font_size(g_game->font10,TEXTHEIGHT_NAME);
-		char n[128];
-		sprintf(n,"Name: %s", m_name.c_str());
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,NAME_X,NAME_Y,color_to_int(TEXTCOL),n);
+	alfont_set_font_size(g_game->font10,TEXTHEIGHT_NAME);
+	char n[128];
+	sprintf(n,"Name: %s", m_name.c_str());
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,NAME_X,NAME_Y,TEXTCOL,n);
 
 			int nlen = alfont_text_length(g_game->font10,n);
 			al_draw_bitmap_region(m_cursor[m_cursorIdx], 0, 0, al_get_bitmap_width(m_cursor[m_cursorIdx]), al_get_bitmap_height(m_cursor[m_cursorIdx]), NAME_X+nlen+2, CURSOR_Y, 0);
@@ -481,37 +482,37 @@ void ModuleCaptainCreation::Draw()
 				m_cursorIdx = 0;
 			}
 
-			alfont_set_font_size(g_game->font10,TEXTHEIGHT_ATTRIBUTES);
+		alfont_set_font_size(g_game->font10,TEXTHEIGHT_ATTRIBUTES);
 
-//			alfont_textprintf(m_canvas,g_game->font10,ATTS_X,ATTS_Y,color_to_int(TEXTCOL),"Starting Attributes");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,DURABILITY_X,DURABILITY_Y,color_to_int(TEXTCOL),"Durability");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,LEARNRATE_X,LEARNRATE_Y,color_to_int(TEXTCOL),"Learn Rate");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,SCIENCE_X,SCIENCE_Y,color_to_int(TEXTCOL),"Science");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,NAVIGATION_X,NAVIGATION_Y,color_to_int(TEXTCOL),"Navigation");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,TACTICS_X,TACTICS_Y,color_to_int(TEXTCOL),"Tactics");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ENGINEERING_X,ENGINEERING_Y,color_to_int(TEXTCOL),"Engineering");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,COMMUNICATION_X,COMMUNICATION_Y,color_to_int(TEXTCOL),"Communication");
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,MEDICAL_X,MEDICAL_Y,color_to_int(TEXTCOL),"Medical");
+//			alfont_textprintf(m_canvas,g_game->font10,ATTS_X,ATTS_Y,TEXTCOL,"Starting Attributes");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,DURABILITY_X,DURABILITY_Y,TEXTCOL,"Durability");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,LEARNRATE_X,LEARNRATE_Y,TEXTCOL,"Learn Rate");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,SCIENCE_X,SCIENCE_Y,TEXTCOL,"Science");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,NAVIGATION_X,NAVIGATION_Y,TEXTCOL,"Navigation");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,TACTICS_X,TACTICS_Y,TEXTCOL,"Tactics");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ENGINEERING_X,ENGINEERING_Y,TEXTCOL,"Engineering");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,COMMUNICATION_X,COMMUNICATION_Y,TEXTCOL,"Communication");
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,MEDICAL_X,MEDICAL_Y,TEXTCOL,"Medical");
 
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_AVAILPTS_COMMON_X+20,DURABILITY_Y,color_to_int(TEXTCOL),"%d available",m_availPts);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,DURABILITY_Y,color_to_int(TEXTCOL),"%d",m_attributes.durability);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,LEARNRATE_Y,color_to_int(TEXTCOL),"%d",m_attributes.learnRate);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_AVAILPTS_COMMON_X+20,SCIENCE_Y,color_to_int(TEXTCOL),"%d available",m_availProfPts);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,SCIENCE_Y,color_to_int(TEXTCOL),"%d",m_attributes.science);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,NAVIGATION_Y,color_to_int(TEXTCOL),"%d",m_attributes.navigation);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,TACTICS_Y,color_to_int(TEXTCOL),"%d",m_attributes.tactics);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,ENGINEERING_Y,color_to_int(TEXTCOL),"%d",m_attributes.engineering);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,COMMUNICATION_Y,color_to_int(TEXTCOL),"%d",m_attributes.communication);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,MEDICAL_Y,color_to_int(TEXTCOL),"%d",m_attributes.medical);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_AVAILPTS_COMMON_X+20,DURABILITY_Y,TEXTCOL,"%d available",m_availPts);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,DURABILITY_Y,TEXTCOL,"%d",m_attributes.durability);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,LEARNRATE_Y,TEXTCOL,"%d",m_attributes.learnRate);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_AVAILPTS_COMMON_X+20,SCIENCE_Y,TEXTCOL,"%d available",m_availProfPts);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,SCIENCE_Y,TEXTCOL,"%d",m_attributes.science);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,NAVIGATION_Y,TEXTCOL,"%d",m_attributes.navigation);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,TACTICS_Y,TEXTCOL,"%d",m_attributes.tactics);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,ENGINEERING_Y,TEXTCOL,"%d",m_attributes.engineering);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,COMMUNICATION_Y,TEXTCOL,"%d",m_attributes.communication);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_VALS_COMMON_X,MEDICAL_Y,TEXTCOL,"%d",m_attributes.medical);
 
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,DURABILITY_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.durability);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,LEARNRATE_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.learnRate);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,SCIENCE_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.science);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,NAVIGATION_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.navigation);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,TACTICS_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.tactics);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,ENGINEERING_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.engineering);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,COMMUNICATION_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.communication);
-		alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,MEDICAL_Y,color_to_int(TEXTCOL)," (%d max)",m_attributesMax.medical);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,DURABILITY_Y,TEXTCOL," (%d max)",m_attributesMax.durability);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,LEARNRATE_Y,TEXTCOL," (%d max)",m_attributesMax.learnRate);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,SCIENCE_Y,TEXTCOL," (%d max)",m_attributesMax.science);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,NAVIGATION_Y,TEXTCOL," (%d max)",m_attributesMax.navigation);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,TACTICS_Y,TEXTCOL," (%d max)",m_attributesMax.tactics);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,ENGINEERING_Y,TEXTCOL," (%d max)",m_attributesMax.engineering);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,COMMUNICATION_Y,TEXTCOL," (%d max)",m_attributesMax.communication);
+	alfont_textprintf(g_game->GetBackBuffer(),g_game->font10,ATTS_MAX_COMMON_X,MEDICAL_Y,TEXTCOL," (%d max)",m_attributesMax.medical);
 
 			al_set_target_bitmap(g_game->GetBackBuffer());
 			al_draw_bitmap_region(m_plusBtn, 0, 0, al_get_bitmap_width(m_plusBtn), al_get_bitmap_height(m_plusBtn), PLUS_DURABILITY_X, PLUS_DURABILITY_Y, 0);
@@ -1518,7 +1519,17 @@ void ModuleCaptainCreation::OnEvent(Event *event)
         else
             amount = 20;
         g_game->gameState->m_items.AddItems(ITEM_ENDURIUM, amount);
-		g_game->gameState->SaveGame("newcaptain.dat");
+		if (!al_make_directory("saves")) {
+			ALLEGRO_FS_ENTRY *saveDirEntry = al_create_fs_entry("saves");
+			bool saveDirExists = saveDirEntry && al_fs_entry_exists(saveDirEntry);
+			if (saveDirEntry) {
+				al_destroy_fs_entry(saveDirEntry);
+			}
+			if (!saveDirExists) {
+				debug << "CaptainCreation: Failed to create saves directory" << endl;
+			}
+		}
+		g_game->gameState->SaveGame("saves/newcaptain.dat");
 
 		creationComplete = true;
 	}

@@ -211,7 +211,7 @@ bool ModuleStarmap::Init()
 						(int)( (*i)->TILE().Y * ratioY),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 2 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 2),
-						int_to_al_color((0 << 16) | (170 << 8) | 255), 1.0);
+						al_map_rgb(0, 170, 255), 1.0);
 				//}
 				flux_sprite.setX((*i)->TILE().X * ratioX - 4);
 				flux_sprite.setY((*i)->TILE().Y * ratioY - 4);
@@ -329,7 +329,7 @@ void ModuleStarmap::Draw()
 						(int)( (*i)->TILE().Y * ratioY - 4 ),
 						(int)( (*i)->TILE_EXIT().X * ratioX + 4 ),
 						(int)( (*i)->TILE_EXIT().Y * ratioY + 4 ),
-						int_to_al_color((0 << 16) | (170 << 8) | 255), 1.0);
+						al_map_rgb(0, 170, 255), 1.0);
 					(*i)->rLINE_DRAWN() = true;
 				}
 				if((*i)->DRAWN() == false){
@@ -344,7 +344,7 @@ void ModuleStarmap::Draw()
 		int new_x_offset = 120+X_OFFSET;
 		int new_y_offset = Y_OFFSET+viewer_offset_y;
 		int text_y = 480;
-		int fontColor = (0 << 16) | (0 << 8) | 0;
+		ALLEGRO_COLOR fontColor = al_map_rgb(0, 0, 0);
 		al_set_target_bitmap(text); al_clear_to_color(al_map_rgb(255, 0, 255));
 
 		al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(starview, 0, 0, MAP_WIDTH, MAP_HEIGHT, new_x_offset, new_y_offset, 0);
@@ -364,19 +364,23 @@ void ModuleStarmap::Draw()
 			float fuel = distance * max_vel / 100 / g_game->gameState->getShip().getEngineClass();
 			
 			// position
-			textprintf_centre_ex(text, g_game->font12, 115, text_y, fontColor, -1, "%.0f", playerPos.x );
-			textprintf_centre_ex(text, g_game->font12, 189, text_y, fontColor, -1, "%.0f", playerPos.y );
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", playerPos.x);
+			  alfont_textout_centre(text, g_game->font12, _buf, 115, text_y, fontColor); }
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", playerPos.y);
+			  alfont_textout_centre(text, g_game->font12, _buf, 189, text_y, fontColor); }
 
 			// distance
-			textprintf_centre_ex(text, g_game->font12, 505, text_y, fontColor, -1, "%.1f", distance );
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.1f", distance);
+			  alfont_textout_centre(text, g_game->font12, _buf, 505, text_y, fontColor); }
 
 			// fuel
-			textprintf_centre_ex(text, g_game->font12, 620, text_y, fontColor, -1, "%.2f", fuel );
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.2f", fuel);
+			  alfont_textout_centre(text, g_game->font12, _buf, 620, text_y, fontColor); }
 		
 
 			al_set_target_bitmap(g_game->GetBackBuffer());
 			al_draw_circle((int)(playerPos.x * ratioX + new_x_offset), 
-			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, int_to_al_color((0 << 16) | (255 << 8) | 0), 1.0);
+			 (int)(new_y_offset + (playerPos.y) * ratioY), 4, al_map_rgb(0, 255, 0), 1.0);
 		}
 
 		// destination
@@ -389,18 +393,22 @@ void ModuleStarmap::Draw()
 			if (g_game->getGlobalBoolean("DEBUG_MODE") == true) 
                 g_game->gameState->player->set_galactic_pos(m_destPos.x * 128,m_destPos.y * 128);
 
-			textprintf_centre_ex(text, g_game->font12, 310, text_y, fontColor, -1, "%.0f", m_destPos.x );
-			textprintf_centre_ex(text, g_game->font12, 380, text_y, fontColor, -1, "%.0f", m_destPos.y );
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", m_destPos.x);
+			  alfont_textout_centre(text, g_game->font12, _buf, 310, text_y, fontColor); }
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", m_destPos.y);
+			  alfont_textout_centre(text, g_game->font12, _buf, 380, text_y, fontColor); }
 			al_set_target_bitmap(g_game->GetBackBuffer());
 			al_draw_circle((int)(m_destPos.x * ratioX + new_x_offset), 
-			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, int_to_al_color((255 << 16) | (0 << 8) | 0), 1.0);
+			(int)(new_y_offset + (m_destPos.y) * ratioY), 4, al_map_rgb(255, 0, 0), 1.0);
 		}
 		//else if the mouse cursor is near a starsystem, we want to print the coordinates 
 		//of that starsystem instead of the actual coordinates under the mouse pointer
 		else if(m_bOver_Star == true){
 			// we want "%i" here rather than "%.0f" since star_x, star_y are integers
-			textprintf_centre_ex(text, g_game->font12, 310, text_y, fontColor, -1, "%i", star_x );
-			textprintf_centre_ex(text, g_game->font12, 380, text_y, fontColor, -1, "%i", star_y );
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%i", star_x);
+			  alfont_textout_centre(text, g_game->font12, _buf, 310, text_y, fontColor); }
+			{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%i", star_y);
+			  alfont_textout_centre(text, g_game->font12, _buf, 380, text_y, fontColor); }
 			star_label->Refresh();
 			star_label->SetX((int)(cursorPos.x * ratioX + new_x_offset + 10));
 			star_label->SetY((int)(cursorPos.y * ratioY + new_y_offset));
@@ -408,8 +416,10 @@ void ModuleStarmap::Draw()
 			}
 		//else print the the coordinate under mouse pointer
 			else{
-				textprintf_centre_ex(text, g_game->font12, 310, text_y, fontColor, -1, "%.0f", cursorPos.x);
-				textprintf_centre_ex(text, g_game->font12, 380, text_y, fontColor, -1, "%.0f", cursorPos.y);
+				{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", cursorPos.x);
+				  alfont_textout_centre(text, g_game->font12, _buf, 310, text_y, fontColor); }
+				{ char _buf[64]; snprintf(_buf, sizeof(_buf), "%.0f", cursorPos.y);
+				  alfont_textout_centre(text, g_game->font12, _buf, 380, text_y, fontColor); }
 			}
 		}
 		//draw generated text

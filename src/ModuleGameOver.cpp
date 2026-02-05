@@ -110,7 +110,7 @@ void ModuleGameOver::Draw()
 {
 	//Module::Draw();
 
-	clear(g_game->GetBackBuffer());
+	{ ALLEGRO_BITMAP *_old = al_get_target_bitmap(); al_set_target_bitmap(g_game->GetBackBuffer()); al_clear_to_color(al_map_rgba(0, 0, 0, 0)); al_set_target_bitmap(_old); }
 	
 	//g_game->setFontSize(120);
 	g_game->Print32(g_game->GetBackBuffer(), 400, 300, "G A M E  O V E R", RED);

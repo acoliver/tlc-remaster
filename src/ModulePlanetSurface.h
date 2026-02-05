@@ -152,9 +152,9 @@ public:
 	void updateCargoFillPercent();
 	double CalcDistance(PlanetSurfaceObject *PSO1, PlanetSurfaceObject *PSO2);
 	void PostMessage(std::string text);
-	void PostMessage(std::string text, int color);
-	void PostMessage(std::string text, int color, int blanksBefore);
-	void PostMessage(std::string text, int color, int blanksBefore, int blanksAfter);
+	void PostMessage(std::string text, ALLEGRO_COLOR color);
+	void PostMessage(std::string text, ALLEGRO_COLOR color, int blanksBefore);
+	void PostMessage(std::string text, ALLEGRO_COLOR color, int blanksBefore, int blanksAfter);
 	void LoadPortrait(std::string name, std::string filepath);
 	void ShowPortrait(std::string name);
 	void CheckForCollisions(PlanetSurfaceObject *PSO);

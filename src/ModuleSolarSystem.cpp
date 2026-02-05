@@ -750,7 +750,7 @@ void ModuleSolarSystem::updateMiniMap()
 
 	//clear aux window
 	al_set_target_bitmap(g_game->GetBackBuffer());
-	al_draw_filled_rectangle(asx, asy, asx + asw+1, asy + ash+1, int_to_al_color((0 << 16) | (0 << 8) | 0));
+	al_draw_filled_rectangle(asx, asy, asx + asw+1, asy + ash+1, al_map_rgb(0, 0, 0));
 
 	//draw ellipses representing planetary orbits
 	int rx,ry,cx,cy;
@@ -764,7 +764,7 @@ void ModuleSolarSystem::updateMiniMap()
 			rx = (int)( (2 + i) * 8.9 );
 			ry = (int)( (2 + i) * 8.9 );
 			al_set_target_bitmap(g_game->GetBackBuffer());
-			al_draw_ellipse(cx, cy, rx, ry, int_to_al_color((12 << 16) | (12 << 8) | 24), 1.0);
+			al_draw_ellipse(cx, cy, rx, ry, al_map_rgb(12, 12, 24), 1.0);
 		}
 	}
 
@@ -813,7 +813,8 @@ void ModuleSolarSystem::updateMiniMap()
 			px = (int)(asx + planets[i].tilex * 2.28);
 			py = (int)(asy + planets[i].tiley * 2.28);
 			al_set_target_bitmap(g_game->GetBackBuffer());
-			al_draw_filled_circle(px, py, planets[i].radius, int_to_al_color(planet_color));
+			int r = getr(planet_color), g = getg(planet_color), b = getb(planet_color);
+			al_draw_filled_circle(px, py, planets[i].radius, al_map_rgb(r, g, b));
 		}
 	}
 

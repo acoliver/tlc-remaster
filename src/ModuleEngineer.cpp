@@ -355,13 +355,15 @@ void ModuleEngineer::Draw()
 					ship.partInRepair = PART_NONE;
 			}
 		}else{
-			ship.partInRepair = PART_NONE;
-			g_game->printout(g_game->g_scrollbox, eng + "The lasers are now fully functional!", BLUE, 5000);
-		}
-		textout_ex(text, g_game->font22, s.c_str(), 580, 115, color_to_int(LTGREEN), -1);
-	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 580, 115, color_to_int(LTBLUE), -1);
+		ship.partInRepair = PART_NONE;
+		g_game->printout(g_game->g_scrollbox, eng + "The lasers are now fully functional!", BLUE, 5000);
 	}
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTGREEN, 580, 115, 0, s.c_str());
+}else{
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTBLUE, 580, 115, 0, s.c_str());
+}
 
 	s = "MISSILES: " + ship.getMissileLauncherClassString();
 	if(ship.partInRepair == PART_MISSILES){
@@ -377,13 +379,15 @@ void ModuleEngineer::Draw()
 					ship.partInRepair = PART_NONE;
 			}
 		}else{
-			ship.partInRepair = PART_NONE;
-			g_game->printout(g_game->g_scrollbox, eng + "The missile system is now fully functional!", BLUE,5000);
-		}
-		textout_ex(text, g_game->font22, s.c_str(), 175, 160, color_to_int(LTGREEN), -1);
-	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 175, 160, color_to_int(LTBLUE), -1);
+		ship.partInRepair = PART_NONE;
+		g_game->printout(g_game->g_scrollbox, eng + "The missile system is now fully functional!", BLUE,5000);
 	}
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTGREEN, 175, 160, 0, s.c_str());
+}else{
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTBLUE, 175, 160, 0, s.c_str());
+}
 
 	s = "HULL";
 	if(ship.partInRepair == PART_HULL){
@@ -399,16 +403,17 @@ void ModuleEngineer::Draw()
 					ship.partInRepair = PART_NONE;
 			}
 		}else{
-			ship.partInRepair = PART_NONE;
-			g_game->printout(g_game->g_scrollbox, eng + "The hull is now fully repaired!", BLUE, 5000);
-		}
-		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, color_to_int(LTGREEN), -1);
-	}else{
-		alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, color_to_int(LTBLUE), -1);
+		ship.partInRepair = PART_NONE;
+		g_game->printout(g_game->g_scrollbox, eng + "The hull is now fully repaired!", BLUE, 5000);
 	}
+	alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTGREEN, al_map_rgba(0, 0, 0, 0));
+}else{
+	alfont_textout_centre_ex(text, g_game->font22, s.c_str(), 565 + al_get_bitmap_width(img_bar_base)/2, 210, LTBLUE, al_map_rgba(0, 0, 0, 0));
+}
 
-	s = "ARMOR: " + ship.getArmorClassString();
-	textout_ex(text, g_game->font22, s.c_str(), 155, 250, color_to_int(LTBLUE), -1);
+s = "ARMOR: " + ship.getArmorClassString();
+al_set_target_bitmap(text);
+al_draw_text((ALLEGRO_FONT*)g_game->font22, LTBLUE, 155, 250, 0, s.c_str());
 
 	s = "SHIELDS: " + ship.getShieldClassString();
 	if(ship.partInRepair == PART_SHIELDS){
@@ -425,14 +430,16 @@ void ModuleEngineer::Draw()
 					ship.partInRepair = PART_NONE;
 			}
 		}else{
-			ship.partInRepair = PART_NONE;
-			ship.setShieldCapacity(ship.getMaxShieldCapacity());
-			g_game->printout(g_game->g_scrollbox, eng + "The shields are now fully functional!", BLUE,5000);
-		}
-		textout_ex(text, g_game->font22, s.c_str(), 550, 305, color_to_int(LTGREEN), -1);
-	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 550, 305, color_to_int(LTBLUE), -1);
+		ship.partInRepair = PART_NONE;
+		ship.setShieldCapacity(ship.getMaxShieldCapacity());
+		g_game->printout(g_game->g_scrollbox, eng + "The shields are now fully functional!", BLUE,5000);
 	}
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTGREEN, 550, 305, 0, s.c_str());
+}else{
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTBLUE, 550, 305, 0, s.c_str());
+}
 
 	s = "ENGINES: " + ship.getEngineClassString();
 	if(ship.partInRepair == PART_ENGINES){
@@ -448,13 +455,15 @@ void ModuleEngineer::Draw()
 					ship.partInRepair = PART_NONE;
 			}
 		}else{
-			ship.partInRepair = PART_NONE;
-			g_game->printout(g_game->g_scrollbox, eng + "The engines are now fully repaired!", BLUE, 5000);
-		}
-		textout_ex(text, g_game->font22, s.c_str(), 170, 365, color_to_int(LTGREEN), -1);
-	}else{
-		textout_ex(text, g_game->font22, s.c_str(), 170, 365, color_to_int(LTBLUE), -1);
+		ship.partInRepair = PART_NONE;
+		g_game->printout(g_game->g_scrollbox, eng + "The engines are now fully repaired!", BLUE, 5000);
 	}
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTGREEN, 170, 365, 0, s.c_str());
+}else{
+	al_set_target_bitmap(text);
+	al_draw_text((ALLEGRO_FONT*)g_game->font22, LTBLUE, 170, 365, 0, s.c_str());
+}
 	g_game->gameState->setShip(ship);
 	al_set_target_bitmap(g_game->GetBackBuffer()); al_draw_bitmap_region(text, 0, 0, VIEWER_WIDTH, VIEWER_HEIGHT, X_OFFSET, viewer_offset_y, 0);
 

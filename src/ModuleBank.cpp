@@ -443,10 +443,10 @@ void ModuleBank::render_text(){
 
 	if(b_considering_pay){
 		sprintf(c_output,"PAY:");
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, CALC_TEXT_X, CALC_TEXT_Y, color_to_int(al_map_rgb(255,255,255)), c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, CALC_TEXT_X, CALC_TEXT_Y, al_map_rgb(255,255,255), c_output);
 	}else if(b_considering_take){
 		sprintf(c_output,"TAKE:");
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, CALC_TEXT_X, CALC_TEXT_Y, color_to_int(al_map_rgb(255,255,255)), c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, CALC_TEXT_X, CALC_TEXT_Y, al_map_rgb(255,255,255), c_output);
 	}
 	int x = CALC_OUT_X, y = CALC_OUT_Y;
 	if(!digit_list.empty()){
@@ -455,7 +455,7 @@ void ModuleBank::render_text(){
 		for(std::list<int>::iterator i = digit_list.begin(); i != digit_list.end(); i++, digit*=10){
 			total += (*i) * digit;
 			sprintf(c_output,"%i", (*i));
-			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, x, y, color_to_int(al_map_rgb(255,255,255)), c_output);
+			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, x, y, al_map_rgb(255,255,255), c_output);
 			x -= 16;
 		}
 		if(total > MAX_LOAN){
@@ -466,32 +466,32 @@ void ModuleBank::render_text(){
 		}
 	}else{
 		sprintf(c_output,"0");
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, x, y, color_to_int(al_map_rgb(255,255,255)), c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, x, y, al_map_rgb(255,255,255), c_output);
 	}
 	
 	sprintf(c_output,"Date: %s", g_game->gameState->stardate.GetFullDateString().c_str());//display date
-	alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y, color_to_int(al_map_rgb(255,255,255)),c_output);
+	alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y, al_map_rgb(255,255,255),c_output);
 
 	sprintf(c_output,"Credits: %i", g_game->gameState->getCredits()); //display credits
-	alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE, color_to_int(al_map_rgb(255,255,255)),c_output);
+	alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE, al_map_rgb(255,255,255),c_output);
 
 	alfont_set_font_size(g_game->font10,INFO_FONT_SIZE);
 	if(this->b_has_loan == true){ //does the player have a loan?
 		sprintf(c_output,"Date Taken: %s", date_taken.GetDateString().c_str());
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*2, color_to_int(al_map_rgb(255,255,255)),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*2, al_map_rgb(255,255,255),c_output);
 		
 		sprintf(c_output,"Amount Owed: %i", i_amount_owed);
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*3, color_to_int(al_map_rgb(255,255,255)),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*3, al_map_rgb(255,255,255),c_output);
 		
 		if( is_overdue() ){
 		sprintf(c_output,"Payment: %i", i_minimum_payment);
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*6, color_to_int(ORANGE),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*6, ORANGE,c_output);
 
 		sprintf(c_output,"Due: %s", m_due_date.GetDateString().c_str());
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*7, color_to_int(ORANGE),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*7, ORANGE,c_output);
 
 		sprintf(c_output,"PAYMENT OVERDUE!");
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*8, color_to_int(ORANGE), c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*8, ORANGE, c_output);
 		
 			if(!m_bWarned){
 				g_game->ShowMessageBoxWindow("", " - Your payment is overdue! - ", 400, 150);
@@ -500,18 +500,18 @@ void ModuleBank::render_text(){
 
 		}else{
 			sprintf(c_output,"Payment: %i", i_minimum_payment);
-			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*6, color_to_int(al_map_rgb(255,255,255)),c_output);
+			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*6, al_map_rgb(255,255,255),c_output);
 
 			sprintf(c_output,"Due: %s", m_due_date.GetDateString().c_str());
-			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*7, color_to_int(al_map_rgb(255,255,255)),c_output);
+			alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*7, al_map_rgb(255,255,255),c_output);
 		}
 		
 		sprintf(c_output,"Interest Rate: %.2f", f_interest_rate);
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*4, color_to_int(al_map_rgb(255,255,255)),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*4, al_map_rgb(255,255,255),c_output);
 
 	}/*else{
 		sprintf(c_output,"Loan Amount: %i", i_max_loan);
-		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*3, color_to_int(al_map_rgb(255,255,255)),c_output);
+		alfont_textprintf(g_game->GetBackBuffer(), g_game->font10, INFO_OUTPUT_X, INFO_OUTPUT_Y + INFO_FONT_SIZE*3, al_map_rgb(255,255,255),c_output);
 	}*/
 }
 

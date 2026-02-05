@@ -35,7 +35,7 @@ private:
 	void updateMiniMap();
 	void checkShipPosition();
 	bool checkSystemBoundary(int x,int y);
-	void Print(std::string str, int color, int delay);
+	void Print(std::string str, ALLEGRO_COLOR color, int delay);
 
 	//this struct helps to simplify searches when ship moves over a planet
 	struct planet_t {

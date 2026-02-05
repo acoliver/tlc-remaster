@@ -215,11 +215,11 @@ bool Button::Run(BITMAP *canvas, bool trans)
 	if(fontPtr != NULL && buttonText.length() > 0)
 	{
 		//get center of the button
-		int textX = x + GetWidth()/2;
-		int textY = y + GetHeight()/2 - alfont_get_font_height(fontPtr)/2;
+	int textX = x + GetWidth()/2;
+	int textY = y + GetHeight()/2 - alfont_get_font_height(fontPtr)/2;
 
-		alfont_textout_centre_ex(canvas, fontPtr, buttonText.c_str(), textX, textY, color_to_int(textColor), 0);
-	}
+	alfont_textout_centre_ex(canvas, fontPtr, buttonText.c_str(), textX, textY, textColor, al_map_rgba(0, 0, 0, 0));
+}
 
    if (mouseIsOverButton)
    {

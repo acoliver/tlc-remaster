@@ -71,9 +71,9 @@ const int ENCOUNTER_ALIENATTACK_EVENT      = 8002;
  * delay =-1 means print only once.
  * otherwise delay is number of millisecond to wait between same message.
  */
-void ModuleEncounter::Print(string str, int color, long delay)
+void ModuleEncounter::Print(string str, ALLEGRO_COLOR color, long delay)
 {
-	g_game->printout(text, str, int_to_al_color(color), delay);
+	g_game->printout(text, str, color, delay);
 }
 
 ModuleEncounter::ModuleEncounter(void) :
@@ -402,11 +402,11 @@ bool ModuleEncounter::Init()
 	//force start in "show control" mode for the time being
 	if (!g_game->doShowControls()) g_game->toggleShowControls();
 
-    Print("F - toggle FULLSCREEN mode (hide the controls)", color_to_int(WHITE), -1);
-    Print("PGUP - toggle the shield", color_to_int(WHITE), -1);
-    Print("PGDN - toggle the weapons", color_to_int(WHITE), -1);
-    Print("CTRL or Z - fire missile", color_to_int(WHITE), -1);
-    Print("ALT or X - fire laser", color_to_int(WHITE), -1);
+    Print("F - toggle FULLSCREEN mode (hide the controls)", WHITE, -1);
+    Print("PGUP - toggle the shield", WHITE, -1);
+    Print("PGDN - toggle the weapons", WHITE, -1);
+    Print("CTRL or Z - fire missile", WHITE, -1);
+    Print("ALT or X - fire laser", WHITE, -1);
 	
 	return true;
 }
@@ -559,7 +559,7 @@ bool ModuleEncounter::Encounter_Init()
 
     if (g_game->getGlobalBoolean("DEBUG_MODE") == true)
     {
-    	Print("Posture: " + g_game->gameState->playerPosture, color_to_int(WHITE), 5000);      
+    	Print("Posture: " + g_game->gameState->playerPosture, WHITE, 5000);      
     }
 
     ostringstream filename;
@@ -1068,7 +1068,7 @@ void ModuleEncounter::commDoAlienResponse()			//jjh
 
 		//replace keywords in dialog string with data values
 		out = replaceKeyWords(out);
-		Print(alienName + "->" + out, color_to_int(CLR_TRANS), 1000);
+		Print(alienName + "->" + out, CLR_TRANS, 1000);
 		commCheckCurrentAction();
 		text->ScrollToBottom();
 
@@ -1098,9 +1098,9 @@ void ModuleEncounter::commDoAlienAttack()
 			}
 			else {
 				//done waiting, now display alien response
-				Print("", color_to_int(WHITE), 0);
-				Print( tac + "Captain, they're arming weapons!", color_to_int(CLR_ALERT), 0);
-				Print("", color_to_int(WHITE), 0);
+				Print("", WHITE, 0);
+				Print( tac + "Captain, they're arming weapons!", CLR_ALERT, 0);
+				Print("", WHITE, 0);
 				text->ScrollToBottom();
 				//enable the CP
 				g_game->ControlPanelActivity = true;
@@ -1191,10 +1191,10 @@ void ModuleEncounter::commDoGreeting()
 	std::string greeting = replaceKeyWords(script->getGlobalString("GREETING"));
 	text->Clear();
 	if (g_game->gameState->playerPosture != "hostile")
-		Print(com + "Hailing frequencies open. Sending greeting...", color_to_int(CLR_MSG), 5000);
+		Print(com + "Hailing frequencies open. Sending greeting...", CLR_MSG, 5000);
 	else
-		Print(com + "Hailing frequencies open. Sending our demands...", color_to_int(CLR_MSG), 5000);
-	Print(greeting, color_to_int(CLR_TRANS), 5000);
+		Print(com + "Hailing frequencies open. Sending our demands...", CLR_MSG, 5000);
+	Print(greeting, CLR_TRANS, 5000);
 	text->ScrollToBottom();
 
 	bFlagDoResponse = true;
@@ -1412,13 +1412,13 @@ void ModuleEncounter::OnEvent(Event *event)
 			if (laser == 0 && missile == 0) {
 				if (g_game->gameState->getWeaponStatus() == false) {  // trying to arm inexistent weapons
 
-					Print(tac + "Sir, we have no weapons.", color_to_int(ORANGE), 5000);
+					Print(tac + "Sir, we have no weapons.", ORANGE, 5000);
 					//do random response
 					if (Util::Random(1,5) == 1) {
-						Print(nav + "Remember, you spent those credits at the Cantina instead?", color_to_int(GREEN), 5000);
+						Print(nav + "Remember, you spent those credits at the Cantina instead?", GREEN, 5000);
 						//do random reaction
 						if (Util::Random(1,5) == 1) {
-							Print(sci + "Watch the attitude, " + nav + "!", color_to_int(YELLOW), 5000);
+							Print(sci + "Watch the attitude, " + nav + "!", YELLOW, 5000);
 						}
 					}
 				}
@@ -1432,15 +1432,15 @@ void ModuleEncounter::OnEvent(Event *event)
 				g_game->gameState->setWeaponStatus(weaponStatus);
 				if (weaponStatus) {
 					if (laser > 0)
-						Print(tac + "Laser capacitors charging", color_to_int(ORANGE), 2000);
+						Print(tac + "Laser capacitors charging", ORANGE, 2000);
 					if (missile > 0)
-						Print(tac + "Missile launcher primed and ready", color_to_int(ORANGE), 2000);
+						Print(tac + "Missile launcher primed and ready", ORANGE, 2000);
 				}
 				else {
 					if (laser > 0)
-						Print(tac + "Lasers disarmed", color_to_int(ORANGE), 2000);
+						Print(tac + "Lasers disarmed", ORANGE, 2000);
 					if (missile > 0)
-						Print(tac + "Missile launcher disarmed", color_to_int(ORANGE), 2000);
+						Print(tac + "Missile launcher disarmed", ORANGE, 2000);
 				}
 			}
 			break;
@@ -1448,7 +1448,7 @@ void ModuleEncounter::OnEvent(Event *event)
 			ship = g_game->gameState->getShip();
 			if (ship.getShieldClass() == 0) {
 				if (g_game->gameState->getShieldStatus() == false)
-					Print(tac + "Sir, we have no shields.", color_to_int(ORANGE), 2000);
+					Print(tac + "Sir, we have no shields.", ORANGE, 2000);
 
 				else // shield destroyed during combat; force them down
 					g_game->gameState->setShieldStatus(false);
@@ -1458,9 +1458,9 @@ void ModuleEncounter::OnEvent(Event *event)
 				shieldStatus = g_game->gameState->getShieldStatus();
 				g_game->gameState->setShieldStatus( !shieldStatus );
 				if (shieldStatus)
-					Print(tac + "Dropping shields.", color_to_int(ORANGE), 2000);
+					Print(tac + "Dropping shields.", ORANGE, 2000);
 				else
-					Print(tac + "Aye, sir; shields up.", color_to_int(ORANGE), 2000);
+					Print(tac + "Aye, sir; shields up.", ORANGE, 2000);
 			}
 			break;
 		case EVENT_SHOW_CONTROLS: adjustVerticalCoords(
@@ -1470,11 +1470,11 @@ void ModuleEncounter::OnEvent(Event *event)
 		//Pause Screen events
 		case (int)(0xDEADBEEF + 2): //save game
 			//g_game->gameState->AutoSave();
-			Print("<Game Save is not available during encounters>", color_to_int(WHITE), -1);
+			Print("<Game Save is not available during encounters>", WHITE, -1);
 			break;
 		case (int)(0xDEADBEEF + 3): //load game
 			g_game->gameState->AutoLoad();
-			//Print("<Game Load is not available during encounters>", color_to_int(WHITE), -1);
+			//Print("<Game Load is not available during encounters>", WHITE, -1);
 			break;
 		case (int)(0xDEADBEEF + 4): //quit game
 			g_game->setVibration(0);
@@ -1490,30 +1490,30 @@ void ModuleEncounter::OnEvent(Event *event)
 
 		case EVENT_COMM_HAIL:
 			if (getShipCount() == 0) {
-				Print(com + "There are no alien ships to hail", color_to_int(YELLOW), 2000);
+				Print(com + "There are no alien ships to hail", YELLOW, 2000);
 				module_mode = 1;
 			}
 			else {
 				if (alienHailingUs && !flag_greeting) {
-					Print(com + "Responding...", color_to_int(CLR_MSG), 5000);
+					Print(com + "Responding...", CLR_MSG, 5000);
 					module_mode = 0;
 					commDoGreeting();
 				}
 				else if (!flag_greeting)
 				{
-					Print(com + "Hailing...", color_to_int(CLR_MSG), 2000);
+					Print(com + "Hailing...", CLR_MSG, 2000);
 					module_mode = 0;
 					commDoGreeting();
 				}
 				else
 					(module_mode == 0) ?
-						Print(com + "Sir, communication channel is open already.", color_to_int(CLR_MSG), 5000) :
-						Print(com + "Sir, they are ignoring our hail.", color_to_int(CLR_MSG), 5000);
+						Print(com + "Sir, communication channel is open already.", CLR_MSG, 5000) :
+						Print(com + "Sir, they are ignoring our hail.", CLR_MSG, 5000);
 			}
 			break;
 
 		case EVENT_COMM_DISTRESS:
-			Print(com + "Interstellar communications are currently being jammed by nearby alien hyperspace sources.", color_to_int(YELLOW), 5000);
+			Print(com + "Interstellar communications are currently being jammed by nearby alien hyperspace sources.", YELLOW, 5000);
 			break;
 
 		case EVENT_COMM_STATEMENT:
@@ -1535,7 +1535,7 @@ void ModuleEncounter::OnEvent(Event *event)
 				//since communication ended from player decision, we consider it a success
 				//and therefore award one skill point for it.
 				//if ( currentCom->SkillUp(SKILL_COMMUNICATION) )
-				//	Print(com + "I think I'm getting better at this.", color_to_int(PURPLE),5000);
+				//	Print(com + "I think I'm getting better at this.", PURPLE,5000);
 			}
 			break;
 
@@ -1599,22 +1599,22 @@ void ModuleEncounter::Update()
 	if (flag_DoHyperspace)
 	{
 		if ( g_game->gameState->getShieldStatus() ) {
-			Print(nav + "We can't enter hyperspace with our shields activated.", color_to_int(ORANGE), 5000);
+			Print(nav + "We can't enter hyperspace with our shields activated.", ORANGE, 5000);
 			flag_DoHyperspace = false;
 		} else if( g_game->gameState->getWeaponStatus() ){
-			Print(nav + "We can't enter hyperspace with our weapons armed.", color_to_int(ORANGE), 5000);
+			Print(nav + "We can't enter hyperspace with our weapons armed.", ORANGE, 5000);
 			flag_DoHyperspace = false;
 		}
 
 		if (playerAttacked) {
-			Print(nav + "Sir, the hyperspace field has failed!", color_to_int(RED), 5000);
+			Print(nav + "Sir, the hyperspace field has failed!", RED, 5000);
 			flag_DoHyperspace = false;
 		}
 	}
 	//CAN the player bug out?
 	if (flag_DoHyperspace)
 	{
-		Print(nav + "Engaging hyperspace engine...", color_to_int(ORANGE), -1);
+		Print(nav + "Engaging hyperspace engine...", ORANGE, -1);
 		// SW force player to stop
 		playerShip->ApplyBraking();
 		//wait for countdown
@@ -1622,7 +1622,7 @@ void ModuleEncounter::Update()
 		{
 			hyperspaceCountdown--;
 			os << hyperspaceCountdown << "...";
-			Print(os.str(), color_to_int(ORANGE), -1);
+			Print(os.str(), ORANGE, -1);
 			if (hyperspaceCountdown == 0)
 			{
 				g_game->gameState->m_ship.ConsumeFuel();
@@ -1666,7 +1666,7 @@ void ModuleEncounter::Update()
 	//if this is a friendly alien, they will initiate conversation
 	if (g_game->gameState->getAlienAttitude() > 60 && !bFlagChatting && !alienHailingUs && !flag_greeting && !playerAttacked) {
 		alienHailingUs = true;
-		Print(com + "Sir, we're being hailed", color_to_int(STEEL), 8000);
+		Print(com + "Sir, we're being hailed", STEEL, 8000);
 	}
 
 	//update dialog and combat sections
@@ -1928,13 +1928,13 @@ void ModuleEncounter::pickupRandomDropItem()
 
 		//if the artifact is already in hold
 		if (numInHold > 0) {
-			Print(sci + "This stuff is useless!", color_to_int(RED), 1000);
+			Print(sci + "This stuff is useless!", RED, 1000);
 			return;
 		}
 
 		//else we pick exactly one of that artifact
 		g_game->gameState->m_items.AddItems(itemid, 1);
-		Print (sci + "We found the " + item->name + "!", color_to_int(RED), 1000);
+		Print (sci + "We found the " + item->name + "!", RED, 1000);
 
 		//broadcast inventory change
 		Event e(CARGO_EVENT_UPDATE);
@@ -1947,7 +1947,7 @@ void ModuleEncounter::pickupRandomDropItem()
 	int freeSpace = g_game->gameState->m_ship.getAvailableSpace();
 
 	if ( freeSpace <= 0 ){
-		Print(eng + "Sir, we don't have any space left in the cargo hold!", color_to_int(RED), 1000);
+		Print(eng + "Sir, we don't have any space left in the cargo hold!", RED, 1000);
 		return;
 	}
 
@@ -1961,7 +1961,7 @@ void ModuleEncounter::pickupRandomDropItem()
 		os << numitems << " cubic meters of " << item->name << "." :
 		os << "one cubic meter of " << item->name << ".";
 
-	Print(os.str(), color_to_int(YELLOW), 1000);
+	Print(os.str(), YELLOW, 1000);
 
 	//broadcast inventory change
 	Event e(CARGO_EVENT_UPDATE);
@@ -1985,7 +1985,7 @@ void ModuleEncounter::pickupAsteroidMineral()
 
 	int freeSpace = g_game->gameState->m_ship.getAvailableSpace();
 	if ( freeSpace <= 0 ){
-		Print(eng + "Sir, we don't have any space left in the cargo hold!", color_to_int(RED), 1000);
+		Print(eng + "Sir, we don't have any space left in the cargo hold!", RED, 1000);
 		return;
 	}
 
@@ -1999,7 +1999,7 @@ void ModuleEncounter::pickupAsteroidMineral()
 		os << numitems << " cubic meters of " << item->name << "." :
 		os << "one cubic meter of " << item->name << ".";
 
-	Print(os.str(), color_to_int(YELLOW), 1000);
+	Print(os.str(), YELLOW, 1000);
 
 	//broadcast inventory change
 	Event e(CARGO_EVENT_UPDATE);
@@ -2089,7 +2089,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 	{
 		switch(other->getObjectType()) {
 			case OBJ_ENEMYFIRE:
-				Print(tac + "We're under attack!", color_to_int(RED), -1);
+				Print(tac + "We're under attack!", RED, -1);
 				player->ApplyImpact(other);
 				ImpactPlayer(player,other);
 				g_game->audioSystem->Play(snd_laserhit);
@@ -2100,7 +2100,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_ALIENSHIP:
-				Print(nav + "Collision alert!", color_to_int(YELLOW), 5000);
+				Print(nav + "Collision alert!", YELLOW, 5000);
 				applyDamageToShip( 1, true );
 				player->ApplyImpact(other);
 				ImpactPlayer(player,other);
@@ -2108,7 +2108,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_ASTEROID_BIG:
-				Print(nav + "Major collision alert!", color_to_int(YELLOW), 5000);
+				Print(nav + "Major collision alert!", YELLOW, 5000);
 				applyDamageToShip( 2, true );
 				player->ApplyImpact(other);
 				ImpactPlayer(player,other);
@@ -2116,7 +2116,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_ASTEROID_MED:
-				Print(nav + "Collision alert!", color_to_int(YELLOW), 5000);
+				Print(nav + "Collision alert!", YELLOW, 5000);
 				applyDamageToShip( 1, true );
 				player->ApplyImpact(other);
 				ImpactPlayer(player,other);
@@ -2124,7 +2124,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_POWERUP_HEALTH: //fix hull
-				Print(eng + "We got a Hull Powerup!", color_to_int(GREEN), 1000);
+				Print(eng + "We got a Hull Powerup!", GREEN, 1000);
 				other->setAlive(false);
 				ship = g_game->gameState->getShip();
                 ship.augHullIntegrity(20);
@@ -2132,7 +2132,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_POWERUP_SHIELD: //fix shield
-				Print(tac + "We got a Shield Powerup!", color_to_int(GREEN), 1000);
+				Print(tac + "We got a Shield Powerup!", GREEN, 1000);
 				other->setAlive(false);
 				ship = g_game->gameState->getShip();
 				shield = ship.getShieldCapacity() + 20 * g_game->gameState->getShip().getShieldClass();
@@ -2142,7 +2142,7 @@ void ModuleEncounter::combatTestPlayerCollision(CombatObject *other)
 				break;
 
 			case OBJ_POWERUP_ARMOR: //fix armor
-				Print(eng + "We got an Armor Powerup!", color_to_int(GREEN), 1000);
+				Print(eng + "We got an Armor Powerup!", GREEN, 1000);
 				other->setAlive(false);
 				ship = g_game->gameState->getShip();
 				armor = ship.getArmorIntegrity() + 20 * g_game->gameState->getShip().getArmorClass();
@@ -2179,29 +2179,29 @@ void ModuleEncounter::damageAlienAttitude()
 		bFlagDoAttack = true;
 		os.str("");
 		os << com << "The " << alienName << " now despise us.";
-		Print(os.str(), color_to_int(STEEL), -1);
+		Print(os.str(), STEEL, -1);
 	}
 	else if (attitude < 50) {
 		bFlagDoAttack = true;
 		os.str("");
 		os << com << "The " << alienName << " now hate us.";
-		Print(os.str(), color_to_int(STEEL), -1);
+		Print(os.str(), STEEL, -1);
 	}
 	else if (attitude < 60) {
 		bFlagDoAttack = true;
 		os.str("");
 		os << com << "The " << alienName << " now distrust us.";
-		Print(os.str(), color_to_int(STEEL), -1);
+		Print(os.str(), STEEL, -1);
 	}
 	else if (attitude < 80) {
 		os.str("");
 		os << com << "What are you doing!? The " << alienName << " trust us!";
-		Print(os.str(), color_to_int(STEEL), 5000);
+		Print(os.str(), STEEL, 5000);
 	}
 	else {
 		os.str("");
 		os << com << "Are you crazy!? The " << alienName << " are friendly!";
-		Print(os.str(), color_to_int(STEEL), 5000);
+		Print(os.str(), STEEL, 5000);
 	}
 }
 
@@ -2276,7 +2276,7 @@ void ModuleEncounter::combatDoCollision(CombatObject *first, CombatObject *secon
 						//award a skill point to the tactical officer
 						Officer *currentTac = g_game->gameState->getCurrentTac();
 						if (currentTac->SkillUp(SKILL_TACTICAL))
-							Print(currentTac->getLastName() + "-> I think I'm getting better at this.", color_to_int(PURPLE),5000);
+							Print(currentTac->getLastName() + "-> I think I'm getting better at this.", PURPLE,5000);
 					}
 
 					//if alien doesn't realize it yet, tell them we're hostile
@@ -2634,8 +2634,8 @@ void ModuleEncounter::Combat_Update()
 	if (shipcount == 0) {
 		string tac = g_game->gameState->getCurrentTac()->getLastName() + "-> ";
 		string nav = g_game->gameState->getCurrentNav()->getLastName() + "-> ";
-		Print(tac + "All enemy ships have been destroyed!", color_to_int(STEEL), 10000);
-		Print(nav + "Captain, we can return to hyperspace when you''re ready.", color_to_int(GREEN), 10000);
+		Print(tac + "All enemy ships have been destroyed!", STEEL, 10000);
+		Print(nav + "Captain, we can return to hyperspace when you''re ready.", GREEN, 10000);
 	}
 	else {
 		//check for sensor scan/analysis
@@ -2859,7 +2859,7 @@ void ModuleEncounter::Combat_Draw()
 		}
 		else {
 			g_game->gameState->setShieldStatus( false );
-			Print(tac + "Sir! Shields are depleted!", color_to_int(RED), 6000);
+			Print(tac + "Sir! Shields are depleted!", RED, 6000);
 		}
 	}
 
@@ -3033,13 +3033,13 @@ void ModuleEncounter::fireLaser()
 	int fireRate = g_game->gameState->getShip().getLaserFiringRate();
 
 	if (laserClass == 0 || laserDamage == 0) {
-		Print(tac + "We do not have a laser", color_to_int(YELLOW), -1);
+		Print(tac + "We do not have a laser", YELLOW, -1);
 		return;
 	}
 
 	//are weapons armed?
 	if (!g_game->gameState->getWeaponStatus() ) {
-		Print(tac + "The weapons are not armed yet!", color_to_int(YELLOW), 5000);
+		Print(tac + "The weapons are not armed yet!", YELLOW, 5000);
 		return;
 	}
 
@@ -3072,13 +3072,13 @@ void ModuleEncounter::fireMissile()
 	int fireRate = g_game->gameState->getShip().getMissileLauncherFiringRate(); //used to be 1000
 
 	if (missileClass == 0 || missileDamage == 0) {
-		Print(tac + "We have no missile launcher", color_to_int(YELLOW), -1);
+		Print(tac + "We have no missile launcher", YELLOW, -1);
 		return;
 	}
 
 	//are weapons armed?
 	if (!g_game->gameState->getWeaponStatus() ) {
-		Print(tac + "The weapons are not armed!", color_to_int(YELLOW), 5000);
+		Print(tac + "The weapons are not armed!", YELLOW, 5000);
 		return;
 	}
 
@@ -3440,7 +3440,7 @@ void ModuleEncounter::readGlobalsFromScript()
 
 	if (new_skill > current_skill)
 		if (currentCom->SkillUp(SKILL_COMMUNICATION, new_skill-current_skill))
-			Print(com + "I think i am getting better at this", color_to_int(PURPLE), 5000);
+			Print(com + "I think i am getting better at this", PURPLE, 5000);
 
 	//see if script has upgraded any ship systems
 	Ship ship = g_game->gameState->getShip();
@@ -3449,57 +3449,57 @@ void ModuleEncounter::readGlobalsFromScript()
 	int engine = script->getGlobalNumber("ship_engine_class");
 	if (engine > ship.getEngineClass()){
 		if(engine <= ship.getMaxEngineClass()) {
-			Print("Engines upgraded to class " + Util::ToString(engine) + "!", color_to_int(YELLOW), 1000);
+			Print("Engines upgraded to class " + Util::ToString(engine) + "!", YELLOW, 1000);
 			ship.setEngineClass( engine );
 		}
-		else Print("Engines already at maximum level!", color_to_int(RED), 1000);
+		else Print("Engines already at maximum level!", RED, 1000);
 	}
 
 	int shield = script->getGlobalNumber("ship_shield_class");
 	if (shield > ship.getShieldClass()){
 		if (shield <= ship.getMaxShieldClass()) {
-			Print("Shields upgraded to class " + Util::ToString(shield) + "!", color_to_int(YELLOW), 1000);
+			Print("Shields upgraded to class " + Util::ToString(shield) + "!", YELLOW, 1000);
 			ship.setShieldClass( shield );
 		}
-		else Print("Shields already at maximum level!", color_to_int(RED), 1000);
+		else Print("Shields already at maximum level!", RED, 1000);
 	}
 
 	int armor = script->getGlobalNumber("ship_armor_class");
 	if (armor > ship.getArmorClass()){
 		if (armor <= ship.getMaxArmorClass()) {
-			Print("Armor upgraded to class " + Util::ToString(armor) + "!", color_to_int(YELLOW), 1000);
+			Print("Armor upgraded to class " + Util::ToString(armor) + "!", YELLOW, 1000);
 			ship.setArmorClass( armor );
 		}
-		else Print("Armor already at maximum level!", color_to_int(RED), 1000);
+		else Print("Armor already at maximum level!", RED, 1000);
 	}
 
 	int laser = script->getGlobalNumber("ship_laser_class");
 	if (laser > ship.getLaserClass()){
 		//if (laser <= ship.getMaxLaserClass()) { // Enforced in scripts, need for special class 9 weapons Quest #56
-			Print("Lasers upgraded to class " + Util::ToString(laser) + "!", color_to_int(YELLOW), 1000);
+			Print("Lasers upgraded to class " + Util::ToString(laser) + "!", YELLOW, 1000);
 			ship.setLaserClass( laser );
 		//}
-		//else Print("Lasers already at maximum level!", color_to_int(RED), 1000);
+		//else Print("Lasers already at maximum level!", RED, 1000);
 	}
 	if (laser < ship.getLaserClass()){
 		//        if (laser <= ship.getMaxLaserClass()) {
-            Print("Lasers downgraded to class " + Util::ToString(laser) + "!", color_to_int(YELLOW), 1000);
+            Print("Lasers downgraded to class " + Util::ToString(laser) + "!", YELLOW, 1000);
             ship.setLaserClass( laser ); 
 	}
 	int missile = script->getGlobalNumber("ship_missile_class");
 	if (missile > ship.getMissileLauncherClass()){
 		//if (missile <= ship.getMaxMissileLauncherClass()) {
-			Print("Missile launcher upgraded to class " + Util::ToString(missile) + "!", color_to_int(YELLOW), 1000);
+			Print("Missile launcher upgraded to class " + Util::ToString(missile) + "!", YELLOW, 1000);
 			ship.setMissileLauncherClass( missile );
 		//}
-	//	else Print("Missile launcher already at maximum level!", color_to_int(RED), 1000);
+	//	else Print("Missile launcher already at maximum level!", RED, 1000);
 	}
 	if (missile < ship.getMissileLauncherClass()){
 		//if (missile <= ship.getMaxMissileLauncherClass()) {
-			Print("Missile launcher downgraded to class " + Util::ToString(missile) + "!", color_to_int(YELLOW), 1000);
+			Print("Missile launcher downgraded to class " + Util::ToString(missile) + "!", YELLOW, 1000);
 			ship.setMissileLauncherClass( missile );
 		//}
-	//	else Print("Missile launcher already at maximum level!", color_to_int(RED), 1000);
+	//	else Print("Missile launcher already at maximum level!", RED, 1000);
 	}
 	g_game->gameState->setShip( ship );
 
@@ -3531,10 +3531,10 @@ void ModuleEncounter::readGlobalsFromScript()
 		//artifact
 		if (pItem->IsArtifact()){
 			if (newcount > numInHold){
-				Print("We received the " + pItem->name + " from the " + alienName + ".", color_to_int(PURPLE), 1000);		//artifacts to/from aliens jjh 
+				Print("We received the " + pItem->name + " from the " + alienName + ".", PURPLE, 1000);		//artifacts to/from aliens jjh 
 				g_game->gameState->m_items.SetItemCount(pItem->id, 1);        //get exactly one
 			} else {
-				Print("We gave the " + pItem->name + " to the " + alienName + ".", color_to_int(PURPLE), 1000);
+				Print("We gave the " + pItem->name + " to the " + alienName + ".", PURPLE, 1000);
 				g_game->gameState->m_items.RemoveItems(pItem->id, numInHold); //give all
 			}
 
@@ -3555,7 +3555,7 @@ void ModuleEncounter::readGlobalsFromScript()
 		if (received){
 
 			if ( freeSpace <= 0 ){
-				Print("We don't have any space left in the cargo hold!", color_to_int(RED), 1000);
+				Print("We don't have any space left in the cargo hold!", RED, 1000);
 				return;
 			}
 			
@@ -3567,7 +3567,7 @@ void ModuleEncounter::readGlobalsFromScript()
 			if ( numInHold <= 0 ){
 				msg << "We did not give anything to the " + alienName + ".";
 				msg << " We had no " + pItem->name + " in the hold.";
-				Print(msg.str(), color_to_int(RED), 1000);
+				Print(msg.str(), RED, 1000);
 				return;
 			}
 			
@@ -3582,7 +3582,7 @@ void ModuleEncounter::readGlobalsFromScript()
 			msg << "one cubic meter of ";
 
 		msg << pItem->name << (received? " from the " : " to the ") << alienName << ".";
-		Print(msg.str(), color_to_int(PURPLE), 1000);
+		Print(msg.str(), PURPLE, 1000);
 
 		//update the inventory
 		received?
